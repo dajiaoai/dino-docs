@@ -2,6 +2,13 @@
 
 本文档介绍如何通过 SDK 在您的 Web 应用中嵌入大角几何画板。适用于教学系统、在线题库、教辅 App 等需要几何交互能力的场景。
 
+<iframe
+  src="https://dajiaoai.com/e/33TA3484"
+  style="width: 100%; height: 480px; border: 1px solid var(--vp-c-divider); border-radius: 8px;"
+  allow="fullscreen"
+  title="Algeo SDK 嵌入示例"
+></iframe>
+
 ## 安装
 
 ### npm
@@ -75,4 +82,6 @@ try {
 
 ## 更多示例
 
-SDK 包内提供 `examples` 目录，包含基础嵌入、SDK 用法、切换画板、loadFile、REPL 等示例。在 `packages/algeo-sdk` 目录下执行 `npx serve .` 可本地运行。
+[嵌入示例](https://dajiaoai.github.io/algeo-sdk/examples/)：在线查看基础嵌入、SDK 方式、切换画板、loadFile、REPL 等案例。
+
+SDK 包内提供 `examples` 目录，包含上述示例源码。在 `packages/algeo-sdk` 目录下执行 `npx serve .` 可本地运行。

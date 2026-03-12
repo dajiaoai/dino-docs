@@ -2,6 +2,13 @@
 
 This guide explains how to embed the Dino-GSP geometry canvas in your web application via the SDK. It applies to teaching systems, online question banks, educational apps, and other scenarios that require geometry interactivity.
 
+<iframe
+  src="https://dajiaoai.com/e/33TA3484"
+  style="width: 100%; height: 480px; border: 1px solid var(--vp-c-divider); border-radius: 8px;"
+  allow="fullscreen"
+  title="Algeo SDK Embedded Example"
+></iframe>
+
 ## Installation
 
 ### npm
@@ -53,9 +60,9 @@ For dynamic loading, slide switching, and other capabilities, use Option 1 (SDK)
 
 ## Configuration Options
 
-| Property    | Type     | Default | Description                                                       |
-| ----------- | -------- | ------- | ----------------------------------------------------------------- |
-| `initialId` | `string` | `''`    | Initial share ID to load; empty for a blank canvas                |
+| Property    | Type     | Default | Description                                        |
+| ----------- | -------- | ------- | -------------------------------------------------- |
+| `initialId` | `string` | `''`    | Initial share ID to load; empty for a blank canvas |
 
 ## Error Handling
 
@@ -75,4 +82,6 @@ Common error codes: `IFRAME_NOT_READY`, `TIMEOUT`, `DESTROYED`, `BAD_REQUEST`. S
 
 ## More Examples
 
-The SDK package includes an `examples` directory with basic embedding, SDK usage, slide switching, loadFile, REPL, and more. Run `npx serve .` in the `packages/algeo-sdk` directory to try them locally.
+[Embedded examples](https://dajiaoai.github.io/algeo-sdk/examples/): view basic embedding, SDK usage, slide switching, loadFile, REPL, and more online.
+
+The SDK package includes an `examples` directory with the source code. Run `npx serve .` in the `packages/algeo-sdk` directory to try them locally.
