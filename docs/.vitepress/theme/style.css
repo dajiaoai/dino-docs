@@ -1,0 +1,23 @@
+/* 加宽 VitePress 布局 */
+:root {
+  --vp-layout-max-width: 1728px;
+}
+
+/* 加宽文档内容区域（默认 688px） */
+.VPDoc.has-aside .content-container {
+  max-width: 900px !important;
+}
+
+.VPDoc:not(.has-sidebar) .content {
+  max-width: 900px !important;
+}
+
+@media (min-width: 1440px) {
+  .VPDoc:not(.has-sidebar) .content {
+    max-width: 960px !important;
+  }
+
+  .VPDoc:not(.has-sidebar) .container {
+    max-width: 1200px !important;
+  }
+}
