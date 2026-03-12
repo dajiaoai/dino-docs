@@ -1,6 +1,9 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
+  head: [
+    ['link', { rel: 'icon', href: '/favicon.ico' }],
+  ],
   title: '大角几何开放平台',
   description: '大角几何开放平台：SDK 接入嵌入式几何画板，规划中接口服务、AI 几何能力等',
   base: '/',
