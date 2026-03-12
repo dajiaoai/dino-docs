@@ -1,3 +1,8 @@
+---
+title: Protocol Reference
+description: FileContentV10 structure, error codes - Dino-GSP Open Platform
+---
+
 # Protocol Reference
 
 This document describes the postMessage communication protocol between the Dino-GSP embedded canvas and the parent page.

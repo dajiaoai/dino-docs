@@ -1,3 +1,8 @@
+---
+title: REPL Capabilities
+description: REPL command categories, geometry types, output format, syntax constraints - Dino-GSP
+---
+
 # REPL Capabilities
 
 REPL (Read-Eval-Print Loop) is the Dino-GSP canvas’s **interactive command interface**, providing full control over the canvas for AI and developers. Execute single commands via the SDK’s `repl` method; output is in **AI-oriented document/text format** (tables, structured text) for easy parsing and decision-making.

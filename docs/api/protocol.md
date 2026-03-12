@@ -1,3 +1,8 @@
+---
+title: 协议说明
+description: FileContentV10 结构、错误码 - 大角几何开放平台
+---
+
 # 协议说明
 
 本文档描述大角几何内嵌画板与父页面之间的 postMessage 通信协议。

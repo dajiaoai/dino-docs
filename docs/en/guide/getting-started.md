@@ -1,3 +1,8 @@
+---
+title: Getting Started
+description: SDK installation, basic usage, configuration, and error handling - Dino-GSP Open Platform
+---
+
 # Getting Started
 
 This guide explains how to embed the Dino-GSP geometry canvas in your web application via the SDK. It applies to teaching systems, online question banks, educational apps, and other scenarios that require geometry interactivity.
@@ -78,7 +83,7 @@ try {
 }
 ```
 
-Common error codes: `IFRAME_NOT_READY`, `TIMEOUT`, `DESTROYED`, `BAD_REQUEST`. See [Protocol](./api/protocol#error-codes) for the full list.
+Common error codes: `IFRAME_NOT_READY`, `TIMEOUT`, `DESTROYED`, `BAD_REQUEST`. See [Protocol](../api/protocol#error-codes) for the full list.
 
 ## More Examples
 

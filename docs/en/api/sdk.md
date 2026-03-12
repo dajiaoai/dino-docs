@@ -1,3 +1,8 @@
+---
+title: SDK API Reference
+description: API docs - AlgeoSdk.create, loadShareById, loadFile, switchSlide, repl, and more
+---
+
 # SDK API Reference
 
 ## Constants

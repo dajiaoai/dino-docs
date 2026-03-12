@@ -1,12 +1,71 @@
 import { defineConfig } from 'vitepress'
+import type { HeadConfig } from 'vitepress'
+
+const HOSTNAME = 'https://open.dajiaoai.com'
+
+function getCanonicalUrl(page: string): string {
+  const path = page
+    .replace(/\.md$/, '')
+    .replace(/\/index$/, '')
+    .replace(/^index$/, '')
+  return path ? `${HOSTNAME}/${path}` : `${HOSTNAME}/`
+}
 
 export default defineConfig({
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
+    ['meta', { name: 'theme-color', content: '#3c8772' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:site_name', content: '大角几何开放平台' }],
+    ['meta', { property: 'og:image', content: `${HOSTNAME}/og-image.png` }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
   ],
   title: '大角几何开放平台',
+  titleTemplate: ':title | 大角几何开放平台',
   description: '大角几何开放平台：SDK 接入嵌入式几何画板，规划中接口服务、AI 几何能力等',
   base: '/',
+  lastUpdated: true,
+  sitemap: {
+    hostname: HOSTNAME,
+  },
+  transformHead({ page, pageData, title, description }) {
+    const canonical = getCanonicalUrl(page)
+    const ogTitle = (pageData.frontmatter?.title as string) || title
+    const ogDesc = (pageData.frontmatter?.description as string) || description
+    const head: HeadConfig[] = [
+      ['link', { rel: 'canonical', href: canonical }],
+      ['meta', { property: 'og:url', content: canonical }],
+      ['meta', { property: 'og:title', content: ogTitle }],
+      ['meta', { property: 'og:description', content: ogDesc }],
+      ['meta', { name: 'twitter:title', content: ogTitle }],
+      ['meta', { name: 'twitter:description', content: ogDesc }],
+    ]
+    if (page.startsWith('en/')) {
+      head.push(['meta', { property: 'og:locale', content: 'en' }])
+    } else {
+      head.push(['meta', { property: 'og:locale', content: 'zh_CN' }])
+    }
+    return head
+  },
+  transformPageData(pageData) {
+    const isHome = pageData.relativePath === 'index.md' || pageData.relativePath === 'en/index.md'
+    if (isHome) {
+      const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: '大角几何',
+        url: HOSTNAME,
+        description: '几何能力基础设施',
+      }
+      pageData.frontmatter ??= {}
+      pageData.frontmatter.head ??= []
+      pageData.frontmatter.head.push([
+        'script',
+        { type: 'application/ld+json' },
+        JSON.stringify(jsonLd),
+      ])
+    }
+  },
   locales: {
     root: {
       label: '简体中文',

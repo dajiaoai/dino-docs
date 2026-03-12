@@ -1,3 +1,8 @@
+---
+title: SDK API 参考
+description: API 文档：AlgeoSdk.create、loadShareById、loadFile、switchSlide、repl 等
+---
+
 # SDK API 参考
 
 ## 常量

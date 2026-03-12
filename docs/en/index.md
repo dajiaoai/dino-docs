@@ -1,3 +1,8 @@
+---
+title: Dino-GSP Open Platform
+description: Geometry capability infrastructure - SDK for embedded geometry canvas, planned API services, AI geometry capabilities
+---
+
 # Dino-GSP Open Platform
 
 Dino-GSP is committed to becoming the **geometry capability infrastructure**, enabling geometry drawing and understanding to be embedded in more products and systems through componentization, API-ization, and Agent-ization. For math and geometry capabilities, turn to Dino-GSP.
