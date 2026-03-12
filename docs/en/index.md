@@ -1,6 +1,6 @@
-# Algeo Open Platform
+# Dino-GSP Open Platform
 
-Algeo is committed to becoming the **geometry capability infrastructure**, enabling geometry drawing and understanding to be embedded in more products and systems through componentization, API-ization, and Agent-ization. For math and geometry capabilities, turn to Algeo.
+Dino-GSP is committed to becoming the **geometry capability infrastructure**, enabling geometry drawing and understanding to be embedded in more products and systems through componentization, API-ization, and Agent-ization. For math and geometry capabilities, turn to Dino-GSP.
 
 ## Available Capabilities
 
@@ -36,7 +36,7 @@ The following capabilities are under development. Stay tuned:
 | **AI Geometry**   | "Geometry expert" in AI systems      | AI problem solving, intelligent tutoring, geometry operations in multi-step reasoning, MCP Server callable by LLM/Agent |
 | **Geometry Render API** | Promoting DSL as the de facto content standard | Text/structured input → geometry graphics, locking question banks, textbooks, content production pipelines |
 
-Through open platform capabilities and partnerships, we aim to embed Algeo in more teaching systems, online question banks, and AI products, expanding the reach of geometry capabilities.
+Through open platform capabilities and partnerships, we aim to embed Dino-GSP in more teaching systems, online question banks, and AI products, expanding the reach of geometry capabilities.
 
 ## Documentation
 

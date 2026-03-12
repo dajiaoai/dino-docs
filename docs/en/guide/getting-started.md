@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide explains how to embed the Algeo geometry canvas in your web application via the SDK. It applies to teaching systems, online question banks, educational apps, and other scenarios that require geometry interactivity.
+This guide explains how to embed the Dino-GSP geometry canvas in your web application via the SDK. It applies to teaching systems, online question banks, educational apps, and other scenarios that require geometry interactivity.
 
 ## Installation
 

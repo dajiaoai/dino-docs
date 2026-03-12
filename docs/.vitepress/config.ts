@@ -33,6 +33,8 @@ export default defineConfig({
       label: 'English',
       lang: 'en',
       link: '/en/',
+      title: 'Dino-GSP Open Platform',
+      description: 'Dino-GSP Open Platform: SDK for embedded geometry canvas, planned API services, AI geometry capabilities, and more',
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },

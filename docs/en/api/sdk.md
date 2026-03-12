@@ -8,7 +8,7 @@ SDK version string, injected at build time.
 
 ```javascript
 import { VERSION } from '@dajiaoai/algeo-sdk';
-console.log('Algeo SDK version:', VERSION);
+console.log('Dino-GSP SDK version:', VERSION);
 ```
 
 ## Class AlgeoSdk

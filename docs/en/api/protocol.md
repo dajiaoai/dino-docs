@@ -1,6 +1,6 @@
 # Protocol Reference
 
-This document describes the postMessage communication protocol between the Algeo embedded canvas and the parent page.
+This document describes the postMessage communication protocol between the Dino-GSP embedded canvas and the parent page.
 
 Type definitions (e.g. `FileContent`, `Slide`) are available in the [algeo-protocol repository](https://github.com/dajiaoai/algeo-protocol).
 

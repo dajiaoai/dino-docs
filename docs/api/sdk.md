@@ -8,7 +8,7 @@ SDK 版本号字符串，构建时注入。
 
 ```javascript
 import { VERSION } from '@dajiaoai/algeo-sdk';
-console.log('Algeo SDK version:', VERSION);
+console.log('大角几何 SDK version:', VERSION);
 ```
 
 ## 类 AlgeoSdk
