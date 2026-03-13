@@ -13,18 +13,18 @@ function getCanonicalUrl(page: string): string {
 }
 
 const gaHead: HeadConfig[] =
-  process.env.NODE_ENV === 'production'
+  process.argv.includes('build')
     ? [
-        ['script', { async: '', src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}` }],
-        [
-          'script',
-          {},
-          `window.dataLayer = window.dataLayer || [];
+      ['script', { async: '', src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}` }],
+      [
+        'script',
+        {},
+        `window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${GA_ID}');`,
-        ],
-      ]
+      ],
+    ]
     : []
 
 export default defineConfig({
