@@ -2,6 +2,7 @@ import { defineConfig } from 'vitepress'
 import type { HeadConfig } from 'vitepress'
 
 const HOSTNAME = 'https://open.dajiaoai.com'
+const GA_ID = 'G-ZVQ5PXBPGG'
 
 function getCanonicalUrl(page: string): string {
   const path = page
@@ -11,8 +12,24 @@ function getCanonicalUrl(page: string): string {
   return path ? `${HOSTNAME}/${path}` : `${HOSTNAME}/`
 }
 
+const gaHead: HeadConfig[] =
+  process.env.NODE_ENV === 'production'
+    ? [
+        ['script', { async: '', src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}` }],
+        [
+          'script',
+          {},
+          `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${GA_ID}');`,
+        ],
+      ]
+    : []
+
 export default defineConfig({
   head: [
+    ...gaHead,
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'theme-color', content: '#3c8772' }],
     ['meta', { property: 'og:type', content: 'website' }],
