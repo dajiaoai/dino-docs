@@ -5,6 +5,7 @@
   "type": "module",
   "description": "大角几何开放平台 - SDK、协议层、文档站",
   "scripts": {
+    "build": "npm run docs:build",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs"
