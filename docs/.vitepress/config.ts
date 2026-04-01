@@ -99,6 +99,7 @@ export default defineConfig({
         nav: [
           { text: '首页', link: '/' },
           { text: 'SDK 接入', link: '/guide/getting-started' },
+          { text: '联系我们', link: '/CONTACT' },
         ],
         sidebar: [
           {
@@ -128,6 +129,7 @@ export default defineConfig({
         nav: [
           { text: 'Home', link: '/en/' },
           { text: 'SDK', link: '/en/guide/getting-started' },
+          { text: 'Contact', link: '/en/CONTACT' },
         ],
         sidebar: [
           {

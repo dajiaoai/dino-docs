@@ -48,6 +48,13 @@ The following capabilities are under development. Stay tuned:
 
 Through open platform capabilities and partnerships, we aim to embed Dino-GSP in more teaching systems, online question banks, and AI products, expanding the reach of geometry capabilities.
 
+## Contact Us
+
+If you want to discuss integration opportunities, get the latest platform updates, or join the community, visit [Contact](./CONTACT).
+
+- Business inquiries
+- Community access and platform updates
+
 ## Documentation
 
 | Document                                   | Description                                                                               |
@@ -57,3 +64,4 @@ Through open platform capabilities and partnerships, we aim to embed Dino-GSP in
 | [REPL Capabilities](./guide/repl)          | REPL command categories, geometry types, output format, syntax constraints                |
 | [Protocol](./api/protocol)                 | FileContentV10 structure, error codes                                                     |
 | [Commercial License](./COMMERCIAL_LICENSE) | Free iframe distribution scope, commercial licensing triggers, and cooperation boundaries |
+| [Contact](./CONTACT)                       | Business inquiries, community access, and platform update channel                         |
