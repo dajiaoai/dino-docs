@@ -57,11 +57,12 @@ If you want to discuss integration opportunities, get the latest platform update
 
 ## Documentation
 
-| Document                                   | Description                                                                               |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------- |
-| [Getting Started](./guide/getting-started) | SDK installation, basic usage, configuration, and error handling                          |
-| [SDK API](./api/sdk)                       | loadShareById, loadFile, switchSlide, getSlideCount, repl                                 |
-| [REPL Capabilities](./guide/repl)          | REPL command categories, geometry types, output format, syntax constraints                |
-| [Protocol](./api/protocol)                 | FileContentV10 structure, error codes                                                     |
-| [Commercial License](./COMMERCIAL_LICENSE) | Free iframe distribution scope, commercial licensing triggers, and cooperation boundaries |
-| [Contact](./CONTACT)                       | Business inquiries, community access, and platform update channel                         |
+| Document                                   | Description                                                                     |
+| ------------------------------------------ | ------------------------------------------------------------------------------- |
+| [Getting Started](./guide/getting-started) | SDK installation, basic usage, configuration, and error handling                |
+| [SDK API](./api/sdk)                       | loadShareById, loadFile, switchSlide, getSlideCount, repl                       |
+| [REPL Capabilities](./guide/repl)          | REPL command categories, geometry types, output format, syntax constraints      |
+| [Protocol](./api/protocol)                 | FileContentV10 structure, error codes                                           |
+| [Free Use](./FREE_USE)                     | Free direct embedding scope for courseware, PPT, and branded public content use |
+| [Commercial License](./COMMERCIAL_LICENSE) | Commercial-license boundaries for deep integration, control, and customization  |
+| [Contact](./CONTACT)                       | Business inquiries, community access, and platform update channel               |

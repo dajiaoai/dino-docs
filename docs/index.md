@@ -63,5 +63,6 @@ sdk.loadShareById('33TA3484');
 | [SDK API](./api/sdk)                 | loadShareById、loadFile、switchSlide、getSlideCount、repl |
 | [REPL 能力](./guide/repl)            | REPL 命令分类、几何类型、输出格式、语法约束               |
 | [协议说明](./api/protocol)           | FileContentV10 结构、错误码                               |
-| [商业许可说明](./COMMERCIAL_LICENSE) | iframe 免费传播范围、商业许可触发条件与合作边界           |
+| [免费使用说明](./FREE_USE)           | 保留品牌的直接嵌入、课件/PPT 使用边界与免费范围           |
+| [商业许可说明](./COMMERCIAL_LICENSE) | 深度集成、程序化控制、品牌定制等商业许可适用边界          |
 | [联系我们](./CONTACT)                | 商务合作咨询、社群加入方式、平台进展获取入口              |

@@ -113,7 +113,10 @@ export default defineConfig({
           },
           {
             text: '平台规范',
-            items: [{ text: '商业许可说明', link: '/COMMERCIAL_LICENSE' }],
+            items: [
+              { text: '免费使用说明', link: '/FREE_USE' },
+              { text: '商业许可说明', link: '/COMMERCIAL_LICENSE' },
+            ],
           },
         ],
       },
@@ -144,6 +147,7 @@ export default defineConfig({
           {
             text: 'Platform Specs',
             items: [
+              { text: 'Free Use', link: '/en/FREE_USE' },
               { text: 'Commercial License', link: '/en/COMMERCIAL_LICENSE' },
             ],
           },
