@@ -29,25 +29,31 @@ const sdk = await AlgeoSdk.create(document.getElementById('container'));
 sdk.loadShareById('33TA3484');
 ```
 
+**Embedded examples:**
+
+- [View embedded examples online](https://dajiaoai.github.io/algeo-sdk/examples/)
+- Quickly review capabilities such as basic embedding, SDK initialization, content loading, canvas switching, and REPL interaction
+
 See [Getting Started](./guide/getting-started) and [SDK API Reference](./api/sdk).
 
 ## Planned Capabilities (Coming Soon)
 
 The following capabilities are under development. Stay tuned:
 
-| Capability        | Positioning                          | Typical Use Cases                                                                 |
-| ----------------- | ------------------------------------ | --------------------------------------------------------------------------------- |
-| **API Services**  | Upstream geometry content production | Cloud rendering (DSL → PNG/SVG/TikZ), AI image generation, batch and offline rendering |
-| **AI Geometry**   | "Geometry expert" in AI systems      | AI problem solving, intelligent tutoring, geometry operations in multi-step reasoning, MCP Server callable by LLM/Agent |
-| **Geometry Render API** | Promoting DSL as the de facto content standard | Text/structured input → geometry graphics, locking question banks, textbooks, content production pipelines |
+| Capability              | Positioning                                    | Typical Use Cases                                                                                                       |
+| ----------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| **API Services**        | Upstream geometry content production           | Cloud rendering (DSL → PNG/SVG/TikZ), AI image generation, batch and offline rendering                                  |
+| **AI Geometry**         | "Geometry expert" in AI systems                | AI problem solving, intelligent tutoring, geometry operations in multi-step reasoning, MCP Server callable by LLM/Agent |
+| **Geometry Render API** | Promoting DSL as the de facto content standard | Text/structured input → geometry graphics, locking question banks, textbooks, content production pipelines              |
 
 Through open platform capabilities and partnerships, we aim to embed Dino-GSP in more teaching systems, online question banks, and AI products, expanding the reach of geometry capabilities.
 
 ## Documentation
 
-| Document                                | Description                                                       |
-| --------------------------------------- | ----------------------------------------------------------------- |
-| [Getting Started](./guide/getting-started) | SDK installation, basic usage, configuration, and error handling |
-| [SDK API](./api/sdk)                    | loadShareById, loadFile, switchSlide, getSlideCount, repl         |
-| [REPL Capabilities](./guide/repl)       | REPL command categories, geometry types, output format, syntax constraints |
-| [Protocol](./api/protocol)              | FileContentV10 structure, error codes                             |
+| Document                                   | Description                                                                               |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------- |
+| [Getting Started](./guide/getting-started) | SDK installation, basic usage, configuration, and error handling                          |
+| [SDK API](./api/sdk)                       | loadShareById, loadFile, switchSlide, getSlideCount, repl                                 |
+| [REPL Capabilities](./guide/repl)          | REPL command categories, geometry types, output format, syntax constraints                |
+| [Protocol](./api/protocol)                 | FileContentV10 structure, error codes                                                     |
+| [Commercial License](./COMMERCIAL_LICENSE) | Free iframe distribution scope, commercial licensing triggers, and cooperation boundaries |

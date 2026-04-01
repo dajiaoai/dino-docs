@@ -29,6 +29,11 @@ const sdk = await AlgeoSdk.create(document.getElementById('container'));
 sdk.loadShareById('33TA3484');
 ```
 
+**嵌入示例展示：**
+
+- [在线查看嵌入示例](https://dajiaoai.github.io/algeo-sdk/examples/)
+- 可快速了解基础嵌入、SDK 初始化、加载内容、切换画板、REPL 交互等能力
+
 详见 [快速开始](./guide/getting-started) 与 [SDK API 参考](./api/sdk)。
 
 ## 规划中能力（敬请期待）
@@ -45,9 +50,10 @@ sdk.loadShareById('33TA3484');
 
 ## 文档导航
 
-| 文档                                | 说明                                                      |
-| ----------------------------------- | --------------------------------------------------------- |
-| [快速开始](./guide/getting-started) | SDK 安装、基础用法、配置与错误处理                        |
-| [SDK API](./api/sdk)                | loadShareById、loadFile、switchSlide、getSlideCount、repl |
-| [REPL 能力](./guide/repl)           | REPL 命令分类、几何类型、输出格式、语法约束               |
-| [协议说明](./api/protocol)          | FileContentV10 结构、错误码                               |
+| 文档                                 | 说明                                                      |
+| ------------------------------------ | --------------------------------------------------------- |
+| [快速开始](./guide/getting-started)  | SDK 安装、基础用法、配置与错误处理                        |
+| [SDK API](./api/sdk)                 | loadShareById、loadFile、switchSlide、getSlideCount、repl |
+| [REPL 能力](./guide/repl)            | REPL 命令分类、几何类型、输出格式、语法约束               |
+| [协议说明](./api/protocol)           | FileContentV10 结构、错误码                               |
+| [商业许可说明](./COMMERCIAL_LICENSE) | iframe 免费传播范围、商业许可触发条件与合作边界           |

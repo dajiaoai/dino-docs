@@ -1,21 +1,26 @@
-import { defineConfig } from 'vitepress'
-import type { HeadConfig } from 'vitepress'
+import { defineConfig } from 'vitepress';
+import type { HeadConfig } from 'vitepress';
 
-const HOSTNAME = 'https://open.dajiaoai.com'
-const GA_ID = 'G-ZVQ5PXBPGG'
+const HOSTNAME = 'https://open.dajiaoai.com';
+const GA_ID = 'G-ZVQ5PXBPGG';
 
 function getCanonicalUrl(page: string): string {
   const path = page
     .replace(/\.md$/, '')
     .replace(/\/index$/, '')
-    .replace(/^index$/, '')
-  return path ? `${HOSTNAME}/${path}` : `${HOSTNAME}/`
+    .replace(/^index$/, '');
+  return path ? `${HOSTNAME}/${path}` : `${HOSTNAME}/`;
 }
 
-const gaHead: HeadConfig[] =
-  process.argv.includes('build')
-    ? [
-      ['script', { async: '', src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}` }],
+const gaHead: HeadConfig[] = process.argv.includes('build')
+  ? [
+      [
+        'script',
+        {
+          async: '',
+          src: `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`,
+        },
+      ],
       [
         'script',
         {},
@@ -25,7 +30,7 @@ gtag('js', new Date());
 gtag('config', '${GA_ID}');`,
       ],
     ]
-    : []
+  : [];
 
 export default defineConfig({
   head: [
@@ -39,16 +44,17 @@ export default defineConfig({
   ],
   title: '大角几何开放平台',
   titleTemplate: ':title | 大角几何开放平台',
-  description: '大角几何开放平台：SDK 接入嵌入式几何画板，规划中接口服务、AI 几何能力等',
+  description:
+    '大角几何开放平台：SDK 接入嵌入式几何画板，规划中接口服务、AI 几何能力等',
   base: '/',
   lastUpdated: true,
   sitemap: {
     hostname: HOSTNAME,
   },
   transformHead({ page, pageData, title, description }) {
-    const canonical = getCanonicalUrl(page)
-    const ogTitle = (pageData.frontmatter?.title as string) || title
-    const ogDesc = (pageData.frontmatter?.description as string) || description
+    const canonical = getCanonicalUrl(page);
+    const ogTitle = (pageData.frontmatter?.title as string) || title;
+    const ogDesc = (pageData.frontmatter?.description as string) || description;
     const head: HeadConfig[] = [
       ['link', { rel: 'canonical', href: canonical }],
       ['meta', { property: 'og:url', content: canonical }],
@@ -56,16 +62,18 @@ export default defineConfig({
       ['meta', { property: 'og:description', content: ogDesc }],
       ['meta', { name: 'twitter:title', content: ogTitle }],
       ['meta', { name: 'twitter:description', content: ogDesc }],
-    ]
+    ];
     if (page.startsWith('en/')) {
-      head.push(['meta', { property: 'og:locale', content: 'en' }])
+      head.push(['meta', { property: 'og:locale', content: 'en' }]);
     } else {
-      head.push(['meta', { property: 'og:locale', content: 'zh_CN' }])
+      head.push(['meta', { property: 'og:locale', content: 'zh_CN' }]);
     }
-    return head
+    return head;
   },
   transformPageData(pageData) {
-    const isHome = pageData.relativePath === 'index.md' || pageData.relativePath === 'en/index.md'
+    const isHome =
+      pageData.relativePath === 'index.md' ||
+      pageData.relativePath === 'en/index.md';
     if (isHome) {
       const jsonLd = {
         '@context': 'https://schema.org',
@@ -73,14 +81,14 @@ export default defineConfig({
         name: '大角几何',
         url: HOSTNAME,
         description: '几何能力基础设施',
-      }
-      pageData.frontmatter ??= {}
-      pageData.frontmatter.head ??= []
+      };
+      pageData.frontmatter ??= {};
+      pageData.frontmatter.head ??= [];
       pageData.frontmatter.head.push([
         'script',
         { type: 'application/ld+json' },
         JSON.stringify(jsonLd),
-      ])
+      ]);
     }
   },
   locales: {
@@ -91,6 +99,7 @@ export default defineConfig({
         nav: [
           { text: '首页', link: '/' },
           { text: 'SDK 接入', link: '/guide/getting-started' },
+          { text: '商业许可', link: '/COMMERCIAL_LICENSE' },
         ],
         sidebar: [
           {
@@ -102,6 +111,10 @@ export default defineConfig({
               { text: '协议说明', link: '/api/protocol' },
             ],
           },
+          {
+            text: '平台规范',
+            items: [{ text: '商业许可说明', link: '/COMMERCIAL_LICENSE' }],
+          },
         ],
       },
     },
@@ -110,20 +123,28 @@ export default defineConfig({
       lang: 'en',
       link: '/en/',
       title: 'Dino-GSP Open Platform',
-      description: 'Dino-GSP Open Platform: SDK for embedded geometry canvas, planned API services, AI geometry capabilities, and more',
+      description:
+        'Dino-GSP Open Platform: SDK for embedded geometry canvas, planned API services, AI geometry capabilities, and more',
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },
           { text: 'SDK', link: '/en/guide/getting-started' },
+          { text: 'Commercial License', link: '/en/COMMERCIAL_LICENSE' },
         ],
         sidebar: [
           {
-            text: 'Guide',
+            text: 'SDK',
             items: [
               { text: 'Getting Started', link: '/en/guide/getting-started' },
               { text: 'SDK API', link: '/en/api/sdk' },
               { text: 'REPL Capabilities', link: '/en/guide/repl' },
               { text: 'Protocol', link: '/en/api/protocol' },
+            ],
+          },
+          {
+            text: 'Platform Specs',
+            items: [
+              { text: 'Commercial License', link: '/en/COMMERCIAL_LICENSE' },
             ],
           },
         ],
@@ -134,8 +155,6 @@ export default defineConfig({
     search: {
       provider: 'local',
     },
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/dajiaoai/' },
-    ],
+    socialLinks: [{ icon: 'github', link: 'https://github.com/dajiaoai/' }],
   },
-})
+});
