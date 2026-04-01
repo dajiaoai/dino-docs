@@ -99,7 +99,6 @@ export default defineConfig({
         nav: [
           { text: '首页', link: '/' },
           { text: 'SDK 接入', link: '/guide/getting-started' },
-          { text: '商业许可', link: '/COMMERCIAL_LICENSE' },
         ],
         sidebar: [
           {
@@ -129,7 +128,6 @@ export default defineConfig({
         nav: [
           { text: 'Home', link: '/en/' },
           { text: 'SDK', link: '/en/guide/getting-started' },
-          { text: 'Commercial License', link: '/en/COMMERCIAL_LICENSE' },
         ],
         sidebar: [
           {
