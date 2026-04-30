@@ -1,68 +1,42 @@
 ---
 title: Dino-GSP Open Platform
-description: Geometry capability infrastructure - SDK for embedded geometry canvas, planned API services, AI geometry capabilities
+description: Documentation entry for developers and partners covering the guide, SDK access, console, and contact channels
 ---
 
 # Dino-GSP Open Platform
 
 Dino-GSP is committed to becoming the **geometry capability infrastructure**, enabling geometry drawing and understanding to be embedded in more products and systems through componentization, API-ization, and Agent-ization. For math and geometry capabilities, turn to Dino-GSP.
 
-## Available Capabilities
+## Documentation Entry
 
-### SDK Integration: Embedded Geometry Canvas
+| Section    | Goal                                                                        | Entry                     |
+| ---------- | --------------------------------------------------------------------------- | ------------------------- |
+| Guide      | Understand platform capabilities, cooperation models, and integration norms | [Open Guide](./guide/)    |
+| SDK Access | Look up versions, examples, APIs, and protocol details                      | [Open SDK Access](./sdk/) |
+| Console    | Learn the current status of developer app management and authorization      | [Open Console](./console) |
+| Contact    | Reach business support and community channels                               | [Open Contact](./CONTACT) |
 
-With `@dajiaoai/algeo-sdk`, you can embed a geometry canvas in any web container with rich interactive capabilities:
+## Current Focus
 
-- **Low integration cost**: Create an embedded canvas by binding to a DOM container; integration takes < 1 day
-- **Full interactivity**: Supports loading files, switching canvases, REPL commands, and more
+The public platform currently centers on **SDK access** for embedding geometry presentation and selected editing capabilities into your own web product. Around that, the platform also defines:
 
-**Quick start:**
+- low-friction embed integration,
+- deeper commercial cooperation and authorization,
+- future-facing API service and AI geometry directions.
 
-```bash
-npm install @dajiaoai/algeo-sdk
-```
+## You May Be Looking For
 
-```javascript
-import { AlgeoSdk } from '@dajiaoai/algeo-sdk';
+- Start with the [Guide](./guide/) if you want to decide whether the platform fits your business.
+- Go to [SDK Access](./sdk/) if you need APIs, protocol details, or runnable examples.
+- Open [Console](./console) if you want to understand developer app management and authorization.
+- Visit [Contact](./CONTACT) for business support and community access.
 
-const sdk = await AlgeoSdk.create(document.getElementById('container'));
-sdk.loadShareById('33TA3484');
-```
+## Capability Directions
 
-**Embedded examples:**
+| Direction                    | Status          | Notes                                                                          |
+| ---------------------------- | --------------- | ------------------------------------------------------------------------------ |
+| Geometry Embed SDK           | Available       | Public docs cover embedding, examples, protocols, and versioned SDK references |
+| Developer Console            | Private preview | Used for developer app management and authorization, enabled on request        |
+| API Services and AI Geometry | Planned         | Documented as direction only until public interfaces are ready                 |
 
-- [View embedded examples online](https://dajiaoai.github.io/algeo-sdk/examples/)
-- Quickly review capabilities such as basic embedding, SDK initialization, content loading, canvas switching, and REPL interaction
-
-See [Getting Started](./guide/getting-started) and [SDK API Reference](./api/sdk).
-
-## Planned Capabilities (Coming Soon)
-
-The following capabilities are under development. Stay tuned:
-
-| Capability              | Positioning                                    | Typical Use Cases                                                                                                       |
-| ----------------------- | ---------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| **API Services**        | Upstream geometry content production           | Cloud rendering (DSL → PNG/SVG/TikZ), AI image generation, batch and offline rendering                                  |
-| **AI Geometry**         | "Geometry expert" in AI systems                | AI problem solving, intelligent tutoring, geometry operations in multi-step reasoning, MCP Server callable by LLM/Agent |
-| **Geometry Render API** | Promoting DSL as the de facto content standard | Text/structured input → geometry graphics, locking question banks, textbooks, content production pipelines              |
-
-Through open platform capabilities and partnerships, we aim to embed Dino-GSP in more teaching systems, online question banks, and AI products, expanding the reach of geometry capabilities.
-
-## Contact Us
-
-If you want to discuss integration opportunities, get the latest platform updates, or join the community, visit [Contact](./CONTACT).
-
-- Business inquiries
-- Community access and platform updates
-
-## Documentation
-
-| Document                                   | Description                                                                     |
-| ------------------------------------------ | ------------------------------------------------------------------------------- |
-| [Getting Started](./guide/getting-started) | SDK installation, basic usage, configuration, and error handling                |
-| [SDK API](./api/sdk)                       | loadShareById, loadFile, switchSlide, getSlideCount, repl                       |
-| [REPL Capabilities](./guide/repl)          | REPL command categories, geometry types, output format, syntax constraints      |
-| [Protocol](./api/protocol)                 | FileContentV10 structure, error codes                                           |
-| [Free Use](./FREE_USE)                     | Free direct embedding scope for courseware, PPT, and branded public content use |
-| [Commercial License](./COMMERCIAL_LICENSE) | Commercial-license boundaries for deep integration, control, and customization  |
-| [Contact](./CONTACT)                       | Business inquiries, community access, and platform update channel               |
+For direct technical onboarding, go to [SDK Access](./sdk/) to choose between the 1.2.1 and 2.4.2-beta documentation tracks.

@@ -97,28 +97,64 @@ export default defineConfig({
       lang: 'zh-CN',
       themeConfig: {
         nav: [
-          { text: '首页', link: '/' },
-          { text: 'SDK 接入', link: '/guide/getting-started' },
+          { text: '指南', link: '/guide/' },
+          { text: 'SDK 接入', link: '/sdk/' },
           { text: '联系我们', link: '/CONTACT' },
+          { text: '控制台', link: '/console' },
         ],
-        sidebar: [
-          {
-            text: 'SDK 接入',
-            items: [
-              { text: '快速开始', link: '/guide/getting-started' },
-              { text: 'SDK API', link: '/api/sdk' },
-              { text: 'REPL 能力', link: '/guide/repl' },
-              { text: '协议说明', link: '/api/protocol' },
-            ],
-          },
-          {
-            text: '平台规范',
-            items: [
-              { text: '免费使用说明', link: '/FREE_USE' },
-              { text: '商业许可说明', link: '/COMMERCIAL_LICENSE' },
-            ],
-          },
-        ],
+        sidebar: {
+          '/guide/': [
+            {
+              text: '指南',
+              items: [
+                { text: '平台概览', link: '/guide/' },
+                { text: '能力总览', link: '/guide/capabilities' },
+                { text: '适用场景', link: '/guide/scenarios' },
+              ],
+            },
+            {
+              text: '接入与授权',
+              items: [
+                { text: '免费使用说明', link: '/guide/FREE_USE' },
+                { text: '商业许可说明', link: '/guide/COMMERCIAL_LICENSE' },
+              ],
+            },
+          ],
+          '/sdk/': [
+            {
+              text: 'SDK 文档中心',
+              items: [{ text: '概览', link: '/sdk/' }],
+            },
+            {
+              text: 'SDK 1.2.1',
+              items: [
+                { text: '版本概览', link: '/sdk/1.2.1/' },
+                { text: '快速开始', link: '/sdk/1.2.1/getting-started' },
+                { text: 'API 参考', link: '/sdk/1.2.1/api' },
+                { text: '协议参考', link: '/sdk/1.2.1/protocol' },
+                { text: '示例索引', link: '/sdk/1.2.1/examples' },
+              ],
+            },
+            {
+              text: 'SDK 2.4.2-beta',
+              items: [
+                { text: '版本概览', link: '/sdk/2.4.2-beta/' },
+                { text: '快速开始', link: '/sdk/2.4.2-beta/getting-started' },
+                { text: '演示模式', link: '/sdk/2.4.2-beta/presentation' },
+                { text: '编辑模式', link: '/sdk/2.4.2-beta/editor' },
+                { text: '示例中心', link: '/sdk/2.4.2-beta/examples' },
+                { text: '协议与数据格式', link: '/sdk/2.4.2-beta/protocol' },
+                {
+                  text: '事件与错误',
+                  link: '/sdk/2.4.2-beta/events-and-errors',
+                },
+                { text: 'Beta 限制说明', link: '/sdk/2.4.2-beta/limitations' },
+              ],
+            },
+          ],
+          '/console': [],
+          '/CONTACT': [],
+        },
       },
     },
     en: {
@@ -130,28 +166,82 @@ export default defineConfig({
         'Dino-GSP Open Platform: SDK for embedded geometry canvas, planned API services, AI geometry capabilities, and more',
       themeConfig: {
         nav: [
-          { text: 'Home', link: '/en/' },
-          { text: 'SDK', link: '/en/guide/getting-started' },
+          { text: 'Guide', link: '/en/guide/' },
+          { text: 'SDK Access', link: '/en/sdk/' },
+          { text: 'Console', link: '/en/console' },
           { text: 'Contact', link: '/en/CONTACT' },
         ],
-        sidebar: [
-          {
-            text: 'SDK',
-            items: [
-              { text: 'Getting Started', link: '/en/guide/getting-started' },
-              { text: 'SDK API', link: '/en/api/sdk' },
-              { text: 'REPL Capabilities', link: '/en/guide/repl' },
-              { text: 'Protocol', link: '/en/api/protocol' },
-            ],
-          },
-          {
-            text: 'Platform Specs',
-            items: [
-              { text: 'Free Use', link: '/en/FREE_USE' },
-              { text: 'Commercial License', link: '/en/COMMERCIAL_LICENSE' },
-            ],
-          },
-        ],
+        sidebar: {
+          '/en/guide/': [
+            {
+              text: 'Guide',
+              items: [
+                { text: 'Overview', link: '/en/guide/' },
+                { text: 'Capabilities', link: '/en/guide/capabilities' },
+                { text: 'Scenarios', link: '/en/guide/scenarios' },
+              ],
+            },
+            {
+              text: 'Access & Licensing',
+              items: [
+                { text: 'Free Use', link: '/en/guide/FREE_USE' },
+                {
+                  text: 'Commercial License',
+                  link: '/en/guide/COMMERCIAL_LICENSE',
+                },
+              ],
+            },
+          ],
+          '/en/sdk/': [
+            {
+              text: 'SDK Hub',
+              items: [{ text: 'Overview', link: '/en/sdk/' }],
+            },
+            {
+              text: 'SDK 1.2.1',
+              items: [
+                { text: 'Overview', link: '/en/sdk/1.2.1/' },
+                {
+                  text: 'Getting Started',
+                  link: '/en/sdk/1.2.1/getting-started',
+                },
+                { text: 'API Reference', link: '/en/sdk/1.2.1/api' },
+                { text: 'Protocol Reference', link: '/en/sdk/1.2.1/protocol' },
+                { text: 'Examples', link: '/en/sdk/1.2.1/examples' },
+              ],
+            },
+            {
+              text: 'SDK 2.4.2-beta',
+              items: [
+                { text: 'Overview', link: '/en/sdk/2.4.2-beta/' },
+                {
+                  text: 'Getting Started',
+                  link: '/en/sdk/2.4.2-beta/getting-started',
+                },
+                {
+                  text: 'Presentation Mode',
+                  link: '/en/sdk/2.4.2-beta/presentation',
+                },
+                { text: 'Editor Mode', link: '/en/sdk/2.4.2-beta/editor' },
+                { text: 'Examples', link: '/en/sdk/2.4.2-beta/examples' },
+                {
+                  text: 'Protocol & Data Format',
+                  link: '/en/sdk/2.4.2-beta/protocol',
+                },
+                {
+                  text: 'Events & Errors',
+                  link: '/en/sdk/2.4.2-beta/events-and-errors',
+                },
+                {
+                  text: 'Beta Limitations',
+                  link: '/en/sdk/2.4.2-beta/limitations',
+                },
+              ],
+            },
+          ],
+          '/en/console': [],
+          '/en/CONTACT': [],
+        },
       },
     },
   },
