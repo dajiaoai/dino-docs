@@ -1,6 +1,6 @@
 {
   "name": "dino-open",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "description": "大角几何开放平台 - SDK、协议层、文档站",
