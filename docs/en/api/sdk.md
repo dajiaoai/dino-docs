@@ -104,7 +104,7 @@ Get the total number of slides in the currently loaded content. Often used with 
 
 Execute a single REPL command. REPL is the canvas’s interactive command interface, providing full control for AI and developers: slide management, defining geometry objects, querying state, style control, etc. Output is in AI-oriented document/text format (tables, structured text) for easy parsing and decision-making.
 
-See [REPL Capabilities](/sdk/repl).
+See [REPL Capabilities](/en/sdk/repl).
 
 `repl(command: string)` → `Promise<{ output: string }>`
 

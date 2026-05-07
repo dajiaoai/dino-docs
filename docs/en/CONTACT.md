@@ -15,9 +15,9 @@ You are welcome to join the Dino-GSP Open Platform community group for:
 - Discussions around SDK, REPL, and open capabilities
 - Exchanges with the team and ecosystem partners
 
-The community QR code will be added soon.
+<img src="https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/3adfd830-ef1af4b4-f714-447f-8010-ee698f6104c3.jpg" alt="Dino-GSP Open Platform community QR code" style="height: 226px; width: auto;" />
 
-Before the QR code is published, please email business@dajiaoai.com with the subject line "Open Platform Community Request" to get the current join method.
+If the QR code has expired or cannot be scanned, please email business@dajiaoai.com with the subject line "Open Platform Community Request".
 
 ## Business Inquiries
 

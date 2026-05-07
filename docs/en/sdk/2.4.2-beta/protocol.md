@@ -1,8 +1,50 @@
 ---
 title: SDK 2.4.2-beta Protocol and Data Format
-description: Message protocol overview and FileContentV10 usage notes
+description: FileContentV10 data structure and integration guidance
 ---
 
-# SDK 2.4.2-beta Protocol and Data Format
+# Protocol and Data Format
 
-The newer SDK still relies on host-to-iframe `postMessage` communication and FileContentV10-based content loading.
+Dino-GSP SDK uses a JSON-based domain-specific language (DSL). The protocol describes document metadata, multi-slide structure, and the underlying geometric entities.
+
+## Basic Structure
+
+A standard document JSON object (`FileContentV10`) contains the following core fields:
+
+```typescript
+interface FileContentV10 {
+  slides: SlideV2[];
+  messages: SeedChatMessage[];
+  metadata: {
+    version: '10';
+  };
+}
+```
+
+Each `SlideV2` slide object has the following structure:
+
+```typescript
+interface SlideV2 {
+  definitions: DefinitionV2[]; // list of geometric object definitions
+  uvarMap: [string, number][]; // current value map for user variables (sliders, etc.)
+  styleSheet: SlideStyleSheetV2; // canvas stylesheet (background, axes, grid, per-object styles, etc.)
+  doc: DocOp[]; // canvas rich-text content (Quill Delta format)
+}
+```
+
+## Core Field Reference
+
+| Field                  | Type                 | Description                                                                            |
+| :--------------------- | :------------------- | :------------------------------------------------------------------------------------- |
+| `metadata.version`     | `'10'`               | Protocol version number; always the string `"10"`                                      |
+| `slides`               | `SlideV2[]`          | Slide array; each slide represents an independent geometry canvas                      |
+| `slides[].definitions` | `DefinitionV2[]`     | List of geometric object definitions: points, lines, circles, functions, sliders, etc. |
+| `slides[].uvarMap`     | `[string, number][]` | Current value map for user variables (sliders, etc.), as `[name, value]` pairs         |
+| `slides[].styleSheet`  | `SlideStyleSheetV2`  | Canvas stylesheet including background, axes, grid, and per-object style config        |
+| `slides[].doc`         | `DocOp[]`            | Canvas rich-text content (Quill Delta Op format)                                       |
+| `messages`             | `SeedChatMessage[]`  | AI conversation history including user and assistant messages                          |
+
+## Integration Tips
+
+1. **Direct storage**: In editor mode, you can save the retrieved JSON object as-is directly to your database.
+2. **Dynamic generation**: If you need to generate figures on the server or AI side, it is recommended to send drawing sequences to the canvas via `REPL` rather than manually constructing the `definitions` array. The underlying figure definition syntax (Style v2) is complex, and manual construction is error-prone.

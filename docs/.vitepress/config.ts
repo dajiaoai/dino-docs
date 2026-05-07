@@ -195,7 +195,7 @@ export default defineConfig({
               text: 'SDK Hub',
               items: [
                 { text: 'Overview', link: '/en/sdk/' },
-                { text: 'REPL', link: '/sdk/repl' },
+                { text: 'REPL', link: '/en/sdk/repl' },
               ],
             },
             {
@@ -214,10 +214,6 @@ export default defineConfig({
                 {
                   text: 'Protocol & Data Format',
                   link: '/en/sdk/2.4.2-beta/protocol',
-                },
-                {
-                  text: 'Events & Errors',
-                  link: '/en/sdk/2.4.2-beta/events-and-errors',
                 },
               ],
             },
