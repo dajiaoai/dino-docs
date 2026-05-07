@@ -62,10 +62,21 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 
 销毁当前实例，移除 DOM 内容并释放通信监听。
 
-## 事件监听
+## 事件订阅
+
+`on(event, listener)` 返回一个取消订阅函数，应在组件卸载或实例销毁前调用以避免内存泄漏。
 
 ```typescript
-presentation.on('loaded', (data) => {
-  console.log('内容加载完成', data);
+// 订阅 ready 事件，画板就绪后再执行后续操作
+const unsubscribe = presentation.on('ready', (event) => {
+  console.log('画板就绪，iframe 版本：', event.version);
+  console.log('当前模式：', event.mode);
 });
+
+// 不再需要时取消订阅
+unsubscribe();
 ```
+
+| 事件名  | 触发时机                          | 回调参数类型                                               |
+| ------- | --------------------------------- | ---------------------------------------------------------- |
+| `ready` | iframe 完成初始化，可开始调用方法 | `{ type: 'ready', mode: string, version: string \| null }` |

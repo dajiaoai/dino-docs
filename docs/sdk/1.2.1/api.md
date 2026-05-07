@@ -7,7 +7,7 @@ description: 基于 1.2.1 版本的类、方法与事件说明
 
 本文档详述 `AlgeoSdk` 类在 1.2.1 版本中提供的公共接口。
 
-## 入口静态方法
+## 实例创建
 
 ### `AlgeoSdk.create(container, options): Promise<AlgeoSdk>`
 
@@ -46,31 +46,3 @@ description: 基于 1.2.1 版本的类、方法与事件说明
 ### `destroy(): void`
 
 手动销毁 SDK 实例，移除 iframe 及其监听器。
-
----
-
-## 事件订阅
-
-### `on(event: string, listener: Function): () => void`
-
-监听 SDK 内部或 iframe 发出的事件。返回一个取消订阅的函数。
-
-| 事件名  | 说明                           | 参数                                |
-| ------- | ------------------------------ | ----------------------------------- |
-| `ready` | iframe 已完成初始化并就绪      | `{ version: string }`               |
-| `error` | 通信过程或 iframe 内部发生错误 | `{ code: string, message: string }` |
-
----
-
-## 异常类 `AlgeoSdkError`
-
-当方法执行失败或超时（默认 30s）时，Promise 会抛出此错误。
-
-```typescript
-interface AlgeoSdkError {
-  name: 'AlgeoSdkError';
-  code: string; // 见协议参考中的错误码
-  message: string;
-  details?: any;
-}
-```

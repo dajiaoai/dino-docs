@@ -19,9 +19,3 @@ description: 1.2.1 版本 postMessage 协议与错误码定义
 | `EMBED_UNKNOWN_METHOD`       | 当前版本的内嵌页不支持该操作                               |
 | `EMBED_IFRAME_NOT_READY`     | 画板尚未就绪，请在 `ready` 事件触发后再调用 API            |
 | `EMBED_TIMEOUT`              | 请求处理超时（默认 30s）                                   |
-
----
-
-## 就绪通知
-
-当画板完成初始化并准备好接收指令时，会触发 SDK 的 `ready` 事件。建议在此事件触发后再显示画板遮罩或执行自动加载逻辑。

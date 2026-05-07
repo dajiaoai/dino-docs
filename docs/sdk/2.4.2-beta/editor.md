@@ -54,7 +54,7 @@ SDK 将编辑器的 API 进行了模块化拆分：
 - `canUndo() / canRedo(): boolean`: 判断当前是否可进行相应操作。
 - `clear()`: 清空历史记录。
 
-### 4. 模式/ UI API (`editor.mode`)
+### 4. 模式 API (`editor.mode`)
 
 动态调整 UI。
 

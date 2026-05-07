@@ -39,4 +39,4 @@ The public platform currently centers on **SDK access** for embedding geometry p
 | Developer Console            | Private preview | Used for developer app management and authorization, enabled on request        |
 | API Services and AI Geometry | Planned         | Documented as direction only until public interfaces are ready                 |
 
-For direct technical onboarding, go to [SDK Access](./sdk/) to choose between the 1.2.1 and 2.4.2-beta documentation tracks.
+For direct technical onboarding, go to [SDK Access](./sdk/) for the full documentation.

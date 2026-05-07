@@ -126,19 +126,8 @@ export default defineConfig({
               items: [{ text: '概览', link: '/sdk/' }],
             },
             {
-              text: 'SDK 1.2.1',
-              items: [
-                { text: '版本概览', link: '/sdk/1.2.1/' },
-                { text: '快速开始', link: '/sdk/1.2.1/getting-started' },
-                { text: 'API 参考', link: '/sdk/1.2.1/api' },
-                { text: '协议参考', link: '/sdk/1.2.1/protocol' },
-                { text: '示例索引', link: '/sdk/1.2.1/examples' },
-              ],
-            },
-            {
               text: 'SDK 2.4.2-beta',
               items: [
-                { text: '版本概览', link: '/sdk/2.4.2-beta/' },
                 { text: '快速开始', link: '/sdk/2.4.2-beta/getting-started' },
                 { text: '演示模式', link: '/sdk/2.4.2-beta/presentation' },
                 { text: '编辑模式', link: '/sdk/2.4.2-beta/editor' },
@@ -148,7 +137,15 @@ export default defineConfig({
                   text: '事件与错误',
                   link: '/sdk/2.4.2-beta/events-and-errors',
                 },
-                { text: 'Beta 限制说明', link: '/sdk/2.4.2-beta/limitations' },
+              ],
+            },
+            {
+              text: 'SDK 1.2.1',
+              items: [
+                { text: '快速开始', link: '/sdk/1.2.1/getting-started' },
+                { text: 'API 参考', link: '/sdk/1.2.1/api' },
+                { text: '协议参考', link: '/sdk/1.2.1/protocol' },
+                { text: '示例索引', link: '/sdk/1.2.1/examples' },
               ],
             },
           ],
@@ -198,22 +195,8 @@ export default defineConfig({
               items: [{ text: 'Overview', link: '/en/sdk/' }],
             },
             {
-              text: 'SDK 1.2.1',
-              items: [
-                { text: 'Overview', link: '/en/sdk/1.2.1/' },
-                {
-                  text: 'Getting Started',
-                  link: '/en/sdk/1.2.1/getting-started',
-                },
-                { text: 'API Reference', link: '/en/sdk/1.2.1/api' },
-                { text: 'Protocol Reference', link: '/en/sdk/1.2.1/protocol' },
-                { text: 'Examples', link: '/en/sdk/1.2.1/examples' },
-              ],
-            },
-            {
               text: 'SDK 2.4.2-beta',
               items: [
-                { text: 'Overview', link: '/en/sdk/2.4.2-beta/' },
                 {
                   text: 'Getting Started',
                   link: '/en/sdk/2.4.2-beta/getting-started',
@@ -232,10 +215,18 @@ export default defineConfig({
                   text: 'Events & Errors',
                   link: '/en/sdk/2.4.2-beta/events-and-errors',
                 },
+              ],
+            },
+            {
+              text: 'SDK 1.2.1',
+              items: [
                 {
-                  text: 'Beta Limitations',
-                  link: '/en/sdk/2.4.2-beta/limitations',
+                  text: 'Getting Started',
+                  link: '/en/sdk/1.2.1/getting-started',
                 },
+                { text: 'API Reference', link: '/en/sdk/1.2.1/api' },
+                { text: 'Protocol Reference', link: '/en/sdk/1.2.1/protocol' },
+                { text: 'Examples', link: '/en/sdk/1.2.1/examples' },
               ],
             },
           ],

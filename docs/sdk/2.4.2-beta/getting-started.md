@@ -7,6 +7,13 @@ description: 使用新版 SDK 入口快速创建演示模式或编辑模式实�
 
 本指南旨在帮助您快速掌握如何在大角几何开放平台中集成内嵌式几何画板。
 
+<iframe
+  src="https://dajiaoai.com/embed/edit/123456/33TA3484"
+  style="width: 100%; height: 480px; border: 1px solid var(--vp-c-divider); border-radius: 8px;"
+  allow="fullscreen"
+  title="Algeo SDK 嵌入示例"
+></iframe>
+
 ## 1. 安装与配置
 
 ### npm 方式 (推荐)
@@ -76,7 +83,6 @@ editor.on('save', (event) => {
 ## 4. 常见问题
 
 - **如何获取 appId？** 请在开发者控制台申请或联系我们的技术支持。
-- **是否支持 iframe 通信？** SDK 内部已封装好 postMessage 通信逻辑，暴露为 Promise 风格的 API。
 
 ## 5. 下一步建议
 
