@@ -16,7 +16,7 @@
 
 - `index.md`
 - `guide/getting-started.md`
-- `guide/repl.md`
+- `sdk/repl.md`
 - `api/sdk.md`
 - `api/protocol.md`
 

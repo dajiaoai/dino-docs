@@ -1,0 +1,30 @@
+<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- circumscribed circle: center (24,26) r=15 -->
+  <circle cx="24" cy="26" r="15"
+          stroke="#01b88b" stroke-width="1.6" opacity="0.5"
+          stroke-dasharray="4 3"/>
+
+  <!-- triangle fill -->
+  <path d="M24 11 L39 41 H9 Z" fill="rgba(166,104,184,0.07)"/>
+
+  <!-- triangle edges -->
+  <path d="M24 11 L39 41 H9 Z"
+        stroke="#a668b8" stroke-width="1.8" stroke-linejoin="round"/>
+
+  <!-- vertices -->
+  <circle cx="24" cy="11" r="2.2" fill="#a668b8"/>
+  <circle cx="39" cy="41" r="2.2" fill="#a668b8"/>
+  <circle cx="9"  cy="41" r="2.2" fill="#a668b8"/>
+
+  <!-- circumcenter dot -->
+  <circle cx="24" cy="26" r="2.8" fill="#01b88b"/>
+
+  <!-- radii (faint) -->
+  <line x1="24" y1="26" x2="24" y2="11" stroke="#01b88b" stroke-width="1" opacity="0.25"/>
+  <line x1="24" y1="26" x2="39" y2="41" stroke="#01b88b" stroke-width="1" opacity="0.25"/>
+  <line x1="24" y1="26" x2="9"  y2="41" stroke="#01b88b" stroke-width="1" opacity="0.25"/>
+
+  <!-- 4-pointed sparkle (AI), top-right -->
+  <path d="M40.5 4 L41.8 7 L45 8 L41.8 9 L40.5 12 L39.2 9 L36 8 L39.2 7 Z"
+        fill="#01b88b" opacity="0.85"/>
+</svg>

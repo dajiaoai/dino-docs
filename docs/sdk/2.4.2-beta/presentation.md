@@ -56,7 +56,7 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 核心 API：向画板发送 REPL 执行序列。可用于自动化绘图、设置参数等。
 
 - **示例**: `presentation.repl('P1(2,3); P2(-1,0); SEG(P1, P2);')`
-- **详细指令**: [查看 REPL 完整手册](../../guide/repl)
+- **详细指令**: [查看 REPL 完整手册](/sdk/repl)
 
 ### `destroy(): void`
 

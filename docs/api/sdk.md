@@ -74,8 +74,8 @@ console.log('大角几何 SDK version:', VERSION);
 
 `loadFile(content: FileContentV10)` → `Promise<{ success: true }>`
 
-| 参数      | 说明                                                                             |
-| --------- | -------------------------------------------------------------------------------- |
+| 参数      | 说明                                                                                       |
+| --------- | ------------------------------------------------------------------------------------------ |
 | `content` | 文件内容对象，类型定义见 [algeo-protocol 仓库](https://github.com/dajiaoai/algeo-protocol) |
 
 ---
@@ -104,7 +104,7 @@ console.log('大角几何 SDK version:', VERSION);
 
 执行 REPL 单条命令。REPL 是画板的交互式命令接口，面向 AI 与开发者提供对画板的完整操作能力：画板管理、定义几何对象、查询状态、样式控制等。输出为面向 AI 的文档/文本格式（表格、结构化文本），便于解析和决策。
 
-详见 [REPL 能力](../guide/repl)。
+详见 [REPL 能力](/sdk/repl)。
 
 `repl(command: string)` → `Promise<{ output: string }>`
 

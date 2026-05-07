@@ -101,6 +101,7 @@ export default defineConfig({
           { text: 'SDK 接入', link: '/sdk/' },
           { text: '联系我们', link: '/CONTACT' },
           { text: '控制台', link: '/console' },
+          { text: '主站', link: 'https://dajiaoai.com' },
         ],
         sidebar: {
           '/guide/': [
@@ -123,7 +124,10 @@ export default defineConfig({
           '/sdk/': [
             {
               text: 'SDK 文档中心',
-              items: [{ text: '概览', link: '/sdk/' }],
+              items: [
+                { text: '概览', link: '/sdk/' },
+                { text: 'REPL', link: '/sdk/repl' },
+              ],
             },
             {
               text: 'SDK 2.4.2-beta',
@@ -132,11 +136,7 @@ export default defineConfig({
                 { text: '演示模式', link: '/sdk/2.4.2-beta/presentation' },
                 { text: '编辑模式', link: '/sdk/2.4.2-beta/editor' },
                 { text: '示例中心', link: '/sdk/2.4.2-beta/examples' },
-                { text: '协议与数据格式', link: '/sdk/2.4.2-beta/protocol' },
-                {
-                  text: '事件与错误',
-                  link: '/sdk/2.4.2-beta/events-and-errors',
-                },
+                { text: '数据协议', link: '/sdk/2.4.2-beta/protocol' },
               ],
             },
             {
@@ -167,6 +167,7 @@ export default defineConfig({
           { text: 'SDK Access', link: '/en/sdk/' },
           { text: 'Console', link: '/en/console' },
           { text: 'Contact', link: '/en/CONTACT' },
+          { text: 'Main Site', link: 'https://dajiaoai.com' },
         ],
         sidebar: {
           '/en/guide/': [
@@ -192,7 +193,10 @@ export default defineConfig({
           '/en/sdk/': [
             {
               text: 'SDK Hub',
-              items: [{ text: 'Overview', link: '/en/sdk/' }],
+              items: [
+                { text: 'Overview', link: '/en/sdk/' },
+                { text: 'REPL', link: '/sdk/repl' },
+              ],
             },
             {
               text: 'SDK 2.4.2-beta',
@@ -237,6 +241,7 @@ export default defineConfig({
     },
   },
   themeConfig: {
+    logo: { src: '/logo.svg', width: 24, height: 24, alt: '大角几何' },
     search: {
       provider: 'local',
     },

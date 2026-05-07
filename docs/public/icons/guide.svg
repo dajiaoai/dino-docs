@@ -1,0 +1,13 @@
+<svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- outer ring -->
+  <circle cx="24" cy="24" r="18" stroke="#01b88b" stroke-width="1.8"/>
+  <!-- cardinal ticks -->
+  <path d="M24 7v3M24 38v3M7 24h3M38 24h3"
+        stroke="#01b88b" stroke-width="1.8" stroke-linecap="round"/>
+  <!-- compass needle: north purple, south green -->
+  <path d="M24 13 L27.5 24 L24 27 L20.5 24 Z" fill="#a668b8"/>
+  <path d="M24 35 L20.5 24 L24 27 L27.5 24 Z" fill="#01b88b" opacity="0.55"/>
+  <!-- pivot -->
+  <circle cx="24" cy="24" r="2" fill="white" fill-opacity="0.9"/>
+  <circle cx="24" cy="24" r="2" stroke="#888" stroke-width="0.8"/>
+</svg>

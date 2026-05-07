@@ -1,6 +1,181 @@
+/* 品牌色 */
+:root {
+  --vp-c-brand-1: #01b88b;
+  --vp-c-brand-2: #009e77;
+  --vp-c-brand-3: #33c9a1;
+  --vp-c-brand-soft: rgba(1, 184, 139, 0.12);
+  --vp-button-brand-bg: var(--vp-c-brand-1);
+  --vp-button-brand-hover-bg: var(--vp-c-brand-2);
+  --vp-button-brand-active-bg: var(--vp-c-brand-2);
+}
+
 /* 加宽 VitePress 布局 */
 :root {
   --vp-layout-max-width: 1728px;
+}
+
+/* Hero 按钮：初始隐藏，打字机完成后由 JS 加 hero-ready class 触发进场 */
+.VPHero .actions {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: none;
+  pointer-events: none;
+}
+
+body.hero-ready .VPHero .actions {
+  animation: hero-actions-in 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  pointer-events: auto;
+}
+
+@keyframes hero-actions-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero 区域：图片容器尺寸（SVG 插图自适应） */
+.VPHero .image-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 全页背景：双色径向渐变 + 点阵网格（铺满整个页面） */
+/* 覆盖 VitePress 在 body 上的 background-color，保留底色变量同时叠加渐变 */
+body {
+  background-color: var(--vp-c-bg);
+  background-image:
+    radial-gradient(
+      ellipse 55% 45% at 15% 25%,
+      rgba(1, 184, 139, 0.16) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 50% at 85% 15%,
+      rgba(166, 104, 184, 0.13) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 80% 80%,
+      rgba(1, 184, 139, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(circle, rgba(1, 184, 139, 0.28) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    auto,
+    28px 28px;
+  background-attachment: fixed;
+}
+
+html.dark body {
+  background-image:
+    radial-gradient(
+      ellipse 55% 45% at 15% 25%,
+      rgba(1, 184, 139, 0.2) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      ellipse 50% 50% at 85% 15%,
+      rgba(166, 104, 184, 0.16) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 40% 35% at 80% 80%,
+      rgba(1, 184, 139, 0.13) 0%,
+      transparent 50%
+    ),
+    radial-gradient(circle, rgba(1, 184, 139, 0.32) 1px, transparent 1px);
+  background-size:
+    auto,
+    auto,
+    auto,
+    28px 28px;
+  background-attachment: fixed;
+}
+
+/* Hero 区域：透明（由全页背景透出） */
+.VPHero {
+  background: transparent;
+}
+
+/* ─── 导航栏：毛玻璃 ─────────────────────────────────── */
+.VPNav {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  border-bottom: 1px solid rgba(1, 184, 139, 0.12) !important;
+}
+
+html.dark .VPNav {
+  background: rgba(22, 22, 24, 0.8) !important;
+  border-bottom: 1px solid rgba(1, 184, 139, 0.14) !important;
+}
+
+/* 仅首页：导航栏全透明，增强一体感 */
+body:has(.VPHome) .VPNav {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-bottom-color: transparent !important;
+}
+
+/* ─── 侧边栏：毛玻璃 ─────────────────────────────────── */
+.VPSidebar {
+  background: rgba(250, 252, 251, 0.82) !important;
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  border-right: 1px solid rgba(1, 184, 139, 0.1) !important;
+}
+
+html.dark .VPSidebar {
+  background: rgba(20, 20, 22, 0.85) !important;
+  border-right: 1px solid rgba(1, 184, 139, 0.12) !important;
+}
+
+/* ─── 文档页顶部本地导航栏：毛玻璃 ──────────────────── */
+.VPLocalNav {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(1, 184, 139, 0.1) !important;
+}
+
+html.dark .VPLocalNav {
+  background: rgba(22, 22, 24, 0.8) !important;
+  border-bottom: 1px solid rgba(1, 184, 139, 0.12) !important;
+}
+
+/* ─── 右侧 Aside 面板：毛玻璃 ────────────────────────── */
+.VPDocAside {
+  background: transparent;
+}
+
+/* Feature 卡片：毛玻璃 + 品牌色边框与 hover 效果 */
+.VPFeature {
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(12px) saturate(1.3);
+  -webkit-backdrop-filter: blur(12px) saturate(1.3);
+  border: 1px solid rgba(1, 184, 139, 0.18) !important;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+html.dark .VPFeature {
+  background: rgba(24, 24, 27, 0.65) !important;
+  border: 1px solid rgba(1, 184, 139, 0.16) !important;
+}
+
+.VPFeature:hover {
+  border-color: var(--vp-c-brand-3) !important;
+  box-shadow: 0 4px 24px rgba(1, 184, 139, 0.18);
 }
 
 /* 加宽文档内容区域（默认 688px） */

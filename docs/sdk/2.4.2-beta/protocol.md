@@ -1,44 +1,45 @@
-# 数据协议 (DSL V1.0)
+# 数据协议
 
-大角几何 SDK 采用了一种基于 JSON 的领域专用语言（DSL），版本号目前为 `1.0`。该协议描述了文档元数据、多页画板结构以及底层的几何实体。
+大角几何 SDK 采用了一种基于 JSON 的领域专用语言（DSL）。该协议描述了文档元数据、多页画板结构以及底层的几何实体。
 
 ## 基本结构
 
-一个标准的文档 JSON 对象（FileContentV1.0）包含以下核心字段：
+一个标准的文档 JSON 对象（`FileContentV10`）包含以下核心字段：
 
-```json
-{
-  "version": "1.0",
-  "metadata": {
-    "title": "图形标题",
-    "updatedAt": 1700000000000
-  },
-  "slides": [
-    {
-      "id": "slide_1",
-      "elements": [...],
-      "viewConfig": {
-        "viewport": { "x": 0, "y": 0, "zoom": 1 },
-        "grid": true
-      }
-    }
-  ]
+```typescript
+interface FileContentV10 {
+  slides: SlideV2[];
+  messages: SeedChatMessage[];
+  metadata: {
+    version: '10';
+  };
+}
+```
+
+其中每个 `SlideV2` 画板对象的结构为：
+
+```typescript
+interface SlideV2 {
+  definitions: DefinitionV2[]; // 几何对象定义列表
+  uvarMap: [string, number][]; // 用户变量（滑块等）的当前值映射
+  styleSheet: SlideStyleSheetV2; // 画板样式表（背景色、坐标轴、网格、各对象样式等）
+  doc: DocOp[]; // 画板富文本文档内容（Quill Delta 格式）
 }
 ```
 
 ## 核心字段说明
 
-| 字段                  | 类型   | 说明                                     |
-| :-------------------- | :----- | :--------------------------------------- |
-| `version`             | string | 协议版本，固定为 `"1.0"`                 |
-| `slides`              | Array  | 画板数组，每个画板代表一个独立的几何画布 |
-| `slides[].elements`   | Array  | 几何图形元素，遵循内部私有格式           |
-| `slides[].viewConfig` | Object | 视口配置，包括缩放比例、网格显示与背景色 |
+| 字段                   | 类型                 | 说明                                                     |
+| :--------------------- | :------------------- | :------------------------------------------------------- |
+| `metadata.version`     | `'10'`               | 协议版本号，固定为字符串 `"10"`                          |
+| `slides`               | `SlideV2[]`          | 画板数组，每个画板代表一个独立的几何画布                 |
+| `slides[].definitions` | `DefinitionV2[]`     | 几何对象定义列表，描述点、线、圆、函数、滑块等对象       |
+| `slides[].uvarMap`     | `[string, number][]` | 用户变量（滑块等）的当前值映射，格式为 `[变量名, 值]` 对 |
+| `slides[].styleSheet`  | `SlideStyleSheetV2`  | 画板样式表，包含背景、坐标轴、网格及各对象的样式配置     |
+| `slides[].doc`         | `DocOp[]`            | 画板富文本内容（Quill Delta Op 格式）                    |
+| `messages`             | `SeedChatMessage[]`  | AI 对话历史记录，包含用户与助手的消息列表                |
 
 ## 进阶集成建议
 
 1. **直接保存**：在编辑模式下，您可以直接将获取到的 JSON 全量存储到您的数据库。
-2. **动态生成**：如果您需要在服务端或 AI 侧生成图形，建议通过 `REPL` 给画板发送绘图序列，而不是手动拼接 `elements` 数组，因为底层图形定义语法（Style v2）较为复杂，手动拼接容易出错。
-3. **版本兼容**：目前 SDK 2.4.2 向下兼容 1.x 版本的简单 JSON 结构，但建议新项目统一采用 V1.0 多页结构。
-
-> 具体的 `elements` 内部属性属于高度动态优化的二进制/JSON 混合格式，一般不建议开发者手动解析。如需通过代码修改图形，请优先使用 [REPL](../../guide/repl)。
+2. **动态生成**：如果您需要在服务端或 AI 侧生成图形，建议通过 `REPL` 给画板发送绘图序列，而不是手动拼接 `definitions` 数组，因为底层图形定义语法（Style v2）较为复杂，手动拼接容易出错。

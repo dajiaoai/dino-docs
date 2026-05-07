@@ -62,24 +62,82 @@ SDK 将编辑器的 API 进行了模块化拆分：
 
 ## 事件监听
 
-### `save` 事件
+使用 `editor.on(event, listener)` 订阅事件，返回值为取消订阅函数；也可以使用 `editor.off(event, listener)` 手动取消。
 
-当用户点击编辑器内置导航栏的“保存”按钮时触发。
+**支持的事件一览：**
+
+| 事件名          | 事件数据                                                    | 说明                                                                               |
+| --------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| `ready`         | `{ type: 'ready', mode, version }`                          | iframe 初始化完成                                                                  |
+| `contentChange` | `{ type: 'contentChange', source: 'user', content }`        | 用户在 iframe 内编辑后回传完整 `FileContentV10`                                    |
+| `slideChange`   | `{ type: 'slideChange', index }`                            | 用户在 iframe 内切换画板后回传当前索引                                             |
+| `save`          | `{ type: 'save', stage: 'request' \| 'success', content }` | `stage: 'request'` 时由宿主处理保存逻辑；`stage: 'success'` 时表示保存流程已完成  |
+
+---
+
+### `ready` 事件
+
+iframe 完成初始化后触发，可在此时读取内嵌页协议版本。
 
 ```typescript
-editor.on('save', (event) => {
-  const content = event.content;
-  // 将 content 保存到您的服务器
-  console.log('保存成功');
+editor.on('ready', (event) => {
+  console.log('编辑器已就绪，协议版本：', event.version);
 });
 ```
+
+---
 
 ### `contentChange` 事件
 
-当编辑器内的几何图形、画板结构发生任何变化时触发。
+用户在 iframe 内对几何图形或画板结构做出任何修改后触发，回传完整的 `FileContentV10`。
 
 ```typescript
 editor.on('contentChange', (event) => {
-  console.log('内容已更新');
+  // event.source 固定为 'user'
+  console.log('内容已更新', event.content);
 });
 ```
+
+---
+
+### `slideChange` 事件
+
+用户在 iframe 内切换画板后触发，回传当前画板索引（从 0 开始）。
+
+```typescript
+editor.on('slideChange', (event) => {
+  console.log('当前画板索引：', event.index);
+});
+```
+
+---
+
+### `save` 事件
+
+`save` 事件分为两个阶段：
+
+1. **`request` 阶段**：用户点击保存按钮时触发。宿主需要在回调中完成持久化，并返回结果对象。只有宿主返回 `{ status: 'success' }` 后，iframe 才会展示成功态并继续触发 `success` 阶段。
+2. **`success` 阶段**：宿主确认保存成功后触发，此时 `event.content` 为最终保存的完整内容。
+
+```typescript
+editor.on('save', async (event) => {
+  if (event.stage === 'request') {
+    const response = await fetch('/api/geometry-doc/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: event.content }),
+    });
+
+    if (!response.ok) {
+      return { status: 'error', message: '保存失败' };
+    }
+
+    return { status: 'success' };
+  }
+
+  // stage === 'success'：iframe 已展示成功态
+  console.log('保存成功，最终内容：', event.content);
+});
+```
+
+> **注意**：`request` 阶段的监听器必须返回一个 Promise（或使用 async 函数），否则 iframe 将无法收到宿主的处理结果。
