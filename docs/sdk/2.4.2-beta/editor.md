@@ -23,6 +23,16 @@ const editor: EmbeddedEditor = await createEditor(container, {
 });
 ```
 
+## 获取 appId
+
+要使用编辑模式，您需要有效的 `appId`：
+
+1. 访问 [开发者控制台](https://open.dajiaoai.com/console/dashboard)
+2. 注册您的应用并获取 `appId`
+3. 在初始化编辑器时使用该 `appId`
+
+详见 [快速开始](./getting-started#获取-appid)。
+
 ## API 模块参考
 
 SDK 将编辑器的 API 进行了模块化拆分：
@@ -66,12 +76,12 @@ SDK 将编辑器的 API 进行了模块化拆分：
 
 **支持的事件一览：**
 
-| 事件名          | 事件数据                                                    | 说明                                                                               |
-| --------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| `ready`         | `{ type: 'ready', mode, version }`                          | iframe 初始化完成                                                                  |
-| `contentChange` | `{ type: 'contentChange', source: 'user', content }`        | 用户在 iframe 内编辑后回传完整 `FileContentV10`                                    |
-| `slideChange`   | `{ type: 'slideChange', index }`                            | 用户在 iframe 内切换画板后回传当前索引                                             |
-| `save`          | `{ type: 'save', stage: 'request' \| 'success', content }` | `stage: 'request'` 时由宿主处理保存逻辑；`stage: 'success'` 时表示保存流程已完成  |
+| 事件名          | 事件数据                                                   | 说明                                                                             |
+| --------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| `ready`         | `{ type: 'ready', mode, version }`                         | iframe 初始化完成                                                                |
+| `contentChange` | `{ type: 'contentChange', source: 'user', content }`       | 用户在 iframe 内编辑后回传完整 `FileContentV10`                                  |
+| `slideChange`   | `{ type: 'slideChange', index }`                           | 用户在 iframe 内切换画板后回传当前索引                                           |
+| `save`          | `{ type: 'save', stage: 'request' \| 'success', content }` | `stage: 'request'` 时由宿主处理保存逻辑；`stage: 'success'` 时表示保存流程已完成 |
 
 ---
 

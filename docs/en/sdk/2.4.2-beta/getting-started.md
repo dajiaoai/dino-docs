@@ -80,11 +80,22 @@ editor.on('save', (event) => {
 });
 ```
 
-## 4. FAQ
+## 4. Getting an appId
 
-- **How do I get an appId?** Apply through the developer console or contact our technical support.
+Editor Mode requires an `appId` for authentication. Follow these steps to obtain one:
 
-## 5. Next Steps
+1. **Access Developer Console**: Go to the [Dino-GSP Open Platform Console](https://open.dajiaoai.com/console/dashboard)
+2. **Register Application**: Create a new application in the console and fill in the application details
+3. **Retrieve Credentials**: The system will generate your `appId`. Copy this ID for use in your SDK configuration
+
+Need help? [Contact us](../../CONTACT).
+
+## 5. FAQ
+
+- **Why does Editor Mode require an appId?** It ensures the legitimacy and security of your application.
+- **Does appId expire?** Your appId is valid long-term, but you can manage it in the console.
+
+## 6. Next Steps
 
 - For fine-grained control over canvas elements, read [Presentation Mode Reference](./presentation).
 - For implementing complex editor functionality, read [Editor Mode Reference](./editor).

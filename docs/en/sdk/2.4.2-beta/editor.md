@@ -28,6 +28,16 @@ const editor: EmbeddedEditor = await createEditor(container, {
 });
 ```
 
+## Getting an appId
+
+To use Editor Mode, you need a valid `appId`:
+
+1. Visit the [Developer Console](https://open.dajiaoai.com/console/dashboard)
+2. Register your application and obtain your `appId`
+3. Use this `appId` when initializing the editor
+
+See [Getting Started](./getting-started#getting-an-appid) for details.
+
 ## API Module Reference
 
 The SDK organizes the editor API into modules:

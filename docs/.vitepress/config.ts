@@ -100,7 +100,10 @@ export default defineConfig({
           { text: '指南', link: '/guide/' },
           { text: 'SDK 接入', link: '/sdk/' },
           { text: '联系我们', link: '/CONTACT' },
-          { text: '控制台', link: '/console' },
+          {
+            text: '控制台',
+            link: 'https://open.dajiaoai.com/console/dashboard',
+          },
           { text: '主站', link: 'https://dajiaoai.com' },
         ],
         sidebar: {
@@ -149,7 +152,6 @@ export default defineConfig({
               ],
             },
           ],
-          '/console': [],
           '/CONTACT': [],
         },
       },
@@ -165,7 +167,10 @@ export default defineConfig({
         nav: [
           { text: 'Guide', link: '/en/guide/' },
           { text: 'SDK Access', link: '/en/sdk/' },
-          { text: 'Console', link: '/en/console' },
+          {
+            text: 'Console',
+            link: 'https://open.dajiaoai.com/console/dashboard',
+          },
           { text: 'Contact', link: '/en/CONTACT' },
           { text: 'Main Site', link: 'https://dajiaoai.com' },
         ],
@@ -230,7 +235,6 @@ export default defineConfig({
               ],
             },
           ],
-          '/en/console': [],
           '/en/CONTACT': [],
         },
       },
