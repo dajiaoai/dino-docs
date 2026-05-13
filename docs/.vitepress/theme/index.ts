@@ -3,6 +3,7 @@ import DefaultTheme from 'vitepress/theme';
 import './style.css';
 import HeroIllustration from './HeroIllustration.vue';
 import HeroInfo from './HeroInfo.vue';
+import CopyDocButton from './CopyDocButton.vue';
 
 const GA_ID = 'G-ZVQ5PXBPGG';
 
@@ -12,6 +13,7 @@ export default {
     h(DefaultTheme.Layout, null, {
       'home-hero-info': () => h(HeroInfo),
       'home-hero-image': () => h(HeroIllustration),
+      'aside-outline-before': () => h(CopyDocButton),
     }),
   enhanceApp({ router }) {
     if (typeof window === 'undefined') return;

@@ -196,3 +196,190 @@ html.dark .VPFeature {
     max-width: 1200px !important;
   }
 }
+
+/* 文档页目录区上方：复制文档按钮（与目录一起固定） */
+.VPDocAside .doc-copy-action {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.VPDocAside .doc-copy-btn {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-button-alt-bg);
+  color: var(--vp-button-alt-text);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: none;
+  transition:
+    transform 0.22s ease,
+    border-color 0.2s ease,
+    background-color 0.22s ease,
+    color 0.22s ease;
+  animation: copy-btn-enter 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.VPDocAside .doc-copy-btn:hover {
+  transform: translateY(-1px);
+  background: var(--vp-button-alt-hover-bg);
+  border-color: var(--vp-c-default-soft);
+}
+
+.VPDocAside .doc-copy-btn:active {
+  transform: translateY(0);
+  background: var(--vp-button-alt-active-bg);
+}
+
+.VPDocAside .doc-copy-btn:disabled {
+  cursor: default;
+  opacity: 0.88;
+}
+
+.VPDocAside .doc-copy-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+}
+
+.VPDocAside .doc-copy-btn__icon svg {
+  animation: copy-icon-in 0.22s ease;
+}
+
+.VPDocAside .doc-copy-btn.is-copying {
+  color: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+}
+
+.VPDocAside .doc-copy-btn.is-copying .doc-copy-btn__icon {
+  animation: copy-spin 0.8s linear infinite;
+}
+
+.VPDocAside .doc-copy-btn.is-success {
+  color: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-2);
+  background: var(--vp-c-brand-soft);
+}
+
+.VPDocAside .doc-copy-btn.is-success .doc-copy-btn__icon {
+  animation: copy-pop 0.3s ease;
+}
+
+.VPDocAside .doc-copy-btn.is-error {
+  color: var(--vp-c-danger-1);
+  border-color: var(--vp-c-danger-1);
+  background: var(--vp-c-danger-soft);
+}
+
+.VPDocAside .doc-copy-toast {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 6px);
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.2;
+  color: var(--vp-c-danger-1);
+  border: 1px solid var(--vp-c-danger-1);
+  background: var(--vp-c-bg-soft);
+}
+
+.doc-copy-toast-fade-enter-active,
+.doc-copy-toast-fade-leave-active {
+  transition:
+    opacity 0.22s ease,
+    transform 0.22s ease;
+}
+
+.doc-copy-toast-fade-enter-from,
+.doc-copy-toast-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-6px);
+}
+
+html.dark .VPDocAside .doc-copy-btn {
+  background: var(--vp-button-alt-bg);
+  border-color: var(--vp-c-divider);
+}
+
+html.dark .VPDocAside .doc-copy-btn.is-success {
+  color: #5dddb3;
+  background: rgba(14, 48, 39, 0.9);
+  border-color: rgba(93, 221, 179, 0.42);
+}
+
+html.dark .VPDocAside .doc-copy-btn.is-error {
+  color: var(--vp-c-danger-1);
+  background: var(--vp-c-danger-soft);
+  border-color: var(--vp-c-danger-1);
+}
+
+html.dark .VPDocAside .doc-copy-toast {
+  color: var(--vp-c-danger-1);
+  border-color: var(--vp-c-danger-1);
+  background: var(--vp-c-bg-soft);
+}
+
+@keyframes copy-btn-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes copy-icon-in {
+  from {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes copy-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes copy-pop {
+  0% {
+    transform: scale(0.8);
+  }
+  70% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .VPDocAside .doc-copy-action {
+    display: none;
+  }
+}
