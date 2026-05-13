@@ -1,13 +1,44 @@
-# 大角几何开放平台 - 线上部署说明
+# DinoDocs 开放平台
 
-本文档面向运维，说明如何构建并部署文档站。
+DinoDocs 是一个开放的数学几何平台，旨在为开发者和教育工作者提供强大的工具和文档支持。
+
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![License](https://img.shields.io/badge/license-MIT-blue)
+
+---
+
+## 📖 目录
+
+- [项目简介](#项目简介)
+- [环境要求](#环境要求)
+- [快速开始](#快速开始)
+- [部署指南](#部署指南)
+  - [使用 Nginx](#使用-nginx)
+- [贡献指南](#贡献指南)
+- [开源许可证](#开源许可证)
+
+---
+
+## 项目简介
+
+DinoDocs 提供了一个现代化的几何计算平台，支持在线部署和多语言文档，帮助用户快速上手并应用于实际场景。
+
+> **✨ 特性亮点：**
+>
+> - 支持多语言文档
+> - 易于部署和扩展
+> - 丰富的几何计算工具
+
+---
 
 ## 环境要求
 
 - Node.js >= 18
 - npm
 
-## 构建步骤
+---
+
+## 快速开始
 
 ```bash
 # 1. 安装依赖
@@ -19,7 +50,11 @@ npm run build
 
 构建产物输出到 **`docs/.vitepress/dist`** 目录。
 
-## Nginx 配置
+---
+
+## 部署指南
+
+### 使用 Nginx
 
 将 Nginx 的 `root` 指向构建产物目录：
 
@@ -28,7 +63,7 @@ server {
     listen 80;
     server_name open.dajiaoai.com;
 
-    root /path/to/dino-open/docs/.vitepress/dist;   # 替换为实际部署路径
+    root /path/to/dino-docs/docs/.vitepress/dist;   # 替换为实际部署路径
     index index.html;
 
     location / {
@@ -38,23 +73,12 @@ server {
     # 静态资源缓存
     location /assets/ {
         expires 1y;
-        add_header Cache-Control "public, immutable";
     }
 }
 ```
 
-> **说明**：VitePress 为 SPA，需配置 `try_files` 以支持前端路由（如 `/guide/getting-started` 直接访问）。
+---
 
-## 部署路径示例
+## 开源许可证
 
-| 场景       | root 路径示例                          |
-|------------|----------------------------------------|
-| 项目根目录 | `/var/www/dino-open/docs/.vitepress/dist` |
-| 仅 dist    | `/var/www/open-docs`（构建后复制 dist 内容到此目录） |
-
-## 验证
-
-部署后访问：
-
-- 首页：`https://open.dajiaoai.com/`
-- 文档：`https://open.dajiaoai.com/guide/getting-started`
+本项目基于 [MIT License](LICENSE) 开源。
