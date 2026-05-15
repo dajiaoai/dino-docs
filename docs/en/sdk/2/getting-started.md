@@ -1,9 +1,9 @@
 ---
-title: SDK 2.4.2-beta Getting Started
+title: SDK 2.x Getting Started
 description: Quick start for the newer createPresentation and createEditor entry points
 ---
 
-# SDK 2.4.2-beta Getting Started
+# SDK 2.x Getting Started
 
 This guide helps you quickly get started with embedding the Dino-GSP geometry canvas into your web application through the Open Platform.
 
@@ -19,13 +19,13 @@ This guide helps you quickly get started with embedding the Dino-GSP geometry ca
 ### npm (Recommended)
 
 ```bash
-npm install @dajiaoai/algeo-sdk@2.4.2
+npm install @dajiaoai/algeo-sdk@2
 ```
 
 ### CDN
 
 ```html
-<script src="https://unpkg.com/@dajiaoai/algeo-sdk@2.4.2/dist/algeo-sdk.umd.js"></script>
+<script src="https://unpkg.com/@dajiaoai/algeo-sdk@2/dist/algeo-sdk.umd.js"></script>
 ```
 
 ## 2. Core Concepts

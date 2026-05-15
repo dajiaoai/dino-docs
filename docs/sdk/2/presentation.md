@@ -1,5 +1,5 @@
 ---
-title: SDK 2.4.2-beta 演示模式
+title: SDK 2.x 演示模式
 description: 查询新版演示模式的初始化方式、核心方法与适用场景
 ---
 

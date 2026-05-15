@@ -1,5 +1,5 @@
 ---
-title: SDK 2.4.2-beta Presentation Mode
+title: SDK 2.x Presentation Mode
 description: Presentation-mode entry points, methods, and usage focus
 ---
 

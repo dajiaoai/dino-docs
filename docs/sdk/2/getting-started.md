@@ -1,9 +1,9 @@
 ---
-title: SDK 2.4.2-beta 快速开始
+title: SDK 2.x 快速开始
 description: 使用新版 SDK 入口快速创建演示模式或编辑模式实例
 ---
 
-# SDK 2.4.2-beta 快速开始
+# SDK 2.x 快速开始
 
 本指南旨在帮助您快速掌握如何在大角几何开放平台中集成内嵌式几何画板。
 
@@ -19,13 +19,13 @@ description: 使用新版 SDK 入口快速创建演示模式或编辑模式实�
 ### npm 方式 (推荐)
 
 ```bash
-npm install @dajiaoai/algeo-sdk@2.4.2
+npm install @dajiaoai/algeo-sdk@2
 ```
 
 ### CDN 方式
 
 ```html
-<script src="https://unpkg.com/@dajiaoai/algeo-sdk@2.4.2/dist/algeo-sdk.umd.js"></script>
+<script src="https://unpkg.com/@dajiaoai/algeo-sdk@2/dist/algeo-sdk.umd.js"></script>
 ```
 
 ## 2. 核心概念

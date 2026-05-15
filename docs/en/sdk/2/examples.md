@@ -1,5 +1,5 @@
 ---
-title: SDK 2.4.2-beta Examples
+title: SDK 2.x Examples
 description: Map the current example set to common integration goals
 ---
 

@@ -16,14 +16,14 @@ Dino-GSP SDK is an embedded geometry interaction solution for developers. With t
 
 ## Version Lines
 
-We currently maintain two parallel version lines. Choose based on your integration depth:
+We expose two stable entry lines. Choose based on your integration goal:
 
-| Version                                        | Positioning                   | Best for                                                                                                       |
-| :--------------------------------------------- | :---------------------------- | :------------------------------------------------------------------------------------------------------------- |
-| [**2.4.2-beta**](./2.4.2-beta/getting-started) | **Recommended feature track** | New integrations; requires editor mode, deep UI customization, or finer-grained canvas management.             |
-| [**1.2.1**](./1.2.1/getting-started)           | **Compatibility reference**   | Maintaining existing integrations; only needs basic presentation, slide switching, and simple content loading. |
+| Version Entry                        | Positioning                   | Best for                                                                                                           |
+| :----------------------------------- | :---------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| [**2.x**](./2/getting-started)       | **Recommended feature track** | New integrations; automatically follows the latest 2.x release and supports editor mode plus deeper customization. |
+| [**1.2.1**](./1.2.1/getting-started) | **Compatibility reference**   | Maintaining existing integrations; only needs basic presentation, slide switching, and simple content loading.     |
 
 ## Documentation Guide
 
-1. **Quick start**: If this is your first time, go directly to [2.4.2-beta / Getting Started](./2.4.2-beta/getting-started).
+1. **Quick start**: If this is your first time, go directly to [2.x / Getting Started](./2/getting-started).
 2. **Deep control**: For automated drawing or AI interaction scenarios, see [REPL Capabilities](/en/sdk/repl).

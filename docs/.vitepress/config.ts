@@ -1,5 +1,6 @@
 import { defineConfig } from 'vitepress';
 import type { HeadConfig } from 'vitepress';
+import { createSdkSidebar } from './sdkVersions';
 
 const HOSTNAME = 'https://open.dajiaoai.com';
 const GA_ID = 'G-ZVQ5PXBPGG';
@@ -124,34 +125,7 @@ export default defineConfig({
               ],
             },
           ],
-          '/sdk/': [
-            {
-              text: 'SDK 文档中心',
-              items: [
-                { text: '概览', link: '/sdk/' },
-                { text: 'REPL', link: '/sdk/repl' },
-              ],
-            },
-            {
-              text: 'SDK 2.4.2-beta',
-              items: [
-                { text: '快速开始', link: '/sdk/2.4.2-beta/getting-started' },
-                { text: '演示模式', link: '/sdk/2.4.2-beta/presentation' },
-                { text: '编辑模式', link: '/sdk/2.4.2-beta/editor' },
-                { text: '示例中心', link: '/sdk/2.4.2-beta/examples' },
-                { text: '数据协议', link: '/sdk/2.4.2-beta/protocol' },
-              ],
-            },
-            {
-              text: 'SDK 1.2.1',
-              items: [
-                { text: '快速开始', link: '/sdk/1.2.1/getting-started' },
-                { text: 'API 参考', link: '/sdk/1.2.1/api' },
-                { text: '协议参考', link: '/sdk/1.2.1/protocol' },
-                { text: '示例索引', link: '/sdk/1.2.1/examples' },
-              ],
-            },
-          ],
+          '/sdk/': createSdkSidebar(''),
           '/CONTACT': [],
         },
       },
@@ -195,46 +169,7 @@ export default defineConfig({
               ],
             },
           ],
-          '/en/sdk/': [
-            {
-              text: 'SDK Hub',
-              items: [
-                { text: 'Overview', link: '/en/sdk/' },
-                { text: 'REPL', link: '/en/sdk/repl' },
-              ],
-            },
-            {
-              text: 'SDK 2.4.2-beta',
-              items: [
-                {
-                  text: 'Getting Started',
-                  link: '/en/sdk/2.4.2-beta/getting-started',
-                },
-                {
-                  text: 'Presentation Mode',
-                  link: '/en/sdk/2.4.2-beta/presentation',
-                },
-                { text: 'Editor Mode', link: '/en/sdk/2.4.2-beta/editor' },
-                { text: 'Examples', link: '/en/sdk/2.4.2-beta/examples' },
-                {
-                  text: 'Protocol & Data Format',
-                  link: '/en/sdk/2.4.2-beta/protocol',
-                },
-              ],
-            },
-            {
-              text: 'SDK 1.2.1',
-              items: [
-                {
-                  text: 'Getting Started',
-                  link: '/en/sdk/1.2.1/getting-started',
-                },
-                { text: 'API Reference', link: '/en/sdk/1.2.1/api' },
-                { text: 'Protocol Reference', link: '/en/sdk/1.2.1/protocol' },
-                { text: 'Examples', link: '/en/sdk/1.2.1/examples' },
-              ],
-            },
-          ],
+          '/en/sdk/': createSdkSidebar('en/'),
           '/en/CONTACT': [],
         },
       },

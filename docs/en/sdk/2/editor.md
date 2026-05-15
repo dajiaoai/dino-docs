@@ -1,5 +1,5 @@
 ---
-title: SDK 2.4.2-beta Editor Mode
+title: SDK 2.x Editor Mode
 description: Editor-mode entry points, API modules, events, and integration guidance
 ---
 

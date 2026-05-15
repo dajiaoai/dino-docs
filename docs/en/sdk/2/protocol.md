@@ -1,5 +1,5 @@
 ---
-title: SDK 2.4.2-beta Protocol and Data Format
+title: SDK 2.x Protocol and Data Format
 description: FileContentV10 data structure and integration guidance
 ---
 
