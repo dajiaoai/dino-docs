@@ -66,7 +66,7 @@ If you need to embed an editable drawing tool:
 import { createEditor } from '@dajiaoai/algeo-sdk';
 
 const editor = await createEditor(document.getElementById('algeo-editor'), {
-  auth: { appId: 'YOUR_APP_ID' }, // required for editor mode
+  auth: { appId: 'YTVJDQZR' }, // required for editor mode
   ui: {
     navbar: true, // top navigation bar toggle
     slidePanel: true, // side slide thumbnail panel toggle

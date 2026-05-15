@@ -66,7 +66,7 @@ setTimeout(() => {
 import { createEditor } from '@dajiaoai/algeo-sdk';
 
 const editor = await createEditor(document.getElementById('algeo-editor'), {
-  auth: { appId: '您的 APP_ID' }, // 编辑模式必需
+  auth: { appId: 'YTVJDQZR' }, // 编辑模式必需
   ui: {
     navbar: true, // 顶部导航开关
     slidePanel: true, // 侧边栏缩略图开关

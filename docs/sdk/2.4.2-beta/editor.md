@@ -14,7 +14,7 @@
 import { createEditor, EmbeddedEditor } from '@dajiaoai/algeo-sdk';
 
 const editor: EmbeddedEditor = await createEditor(container, {
-  auth: { appId: 'YOUR_APP_ID' },
+  auth: { appId: 'YTVJDQZR' },
   ui: {
     navbar: true, // 顶部导航（包含保存按钮、文件信息等）
     slidePanel: true, // 侧边画板缩略图预览

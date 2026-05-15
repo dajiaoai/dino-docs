@@ -19,7 +19,7 @@ Editor mode provides the host application with a full geometry creation environm
 import { createEditor, EmbeddedEditor } from '@dajiaoai/algeo-sdk';
 
 const editor: EmbeddedEditor = await createEditor(container, {
-  auth: { appId: 'YOUR_APP_ID' },
+  auth: { appId: 'YTVJDQZR' },
   ui: {
     navbar: true, // top navigation (includes save button, file info, etc.)
     slidePanel: true, // side slide thumbnail preview
