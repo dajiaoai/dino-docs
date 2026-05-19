@@ -177,6 +177,7 @@ export default defineConfig({
   },
   themeConfig: {
     logo: { src: '/logo.svg', width: 24, height: 24, alt: '大角几何' },
+    outline: { level: [2, 3] },
     search: {
       provider: 'local',
     },
