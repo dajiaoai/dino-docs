@@ -115,24 +115,39 @@ html.dark body {
 }
 
 /* ─── 导航栏：毛玻璃 ─────────────────────────────────── */
-.VPNav {
-  background: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+*/ .VPNav {
+  position: relative;
+  background: transparent !important;
   border-bottom: 1px solid rgba(1, 184, 139, 0.12) !important;
 }
 
+.VPNav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(14px) saturate(1.4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  pointer-events: none;
+}
+
 html.dark .VPNav {
-  background: rgba(22, 22, 24, 0.8) !important;
   border-bottom: 1px solid rgba(1, 184, 139, 0.14) !important;
+}
+
+html.dark .VPNav::before {
+  background: rgba(22, 22, 24, 0.8);
 }
 
 /* 仅首页：导航栏全透明，增强一体感 */
 body:has(.VPHome) .VPNav {
-  background: transparent !important;
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
   border-bottom-color: transparent !important;
+}
+
+body:has(.VPHome) .VPNav::before {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 /* ─── 侧边栏：毛玻璃 ─────────────────────────────────── */
