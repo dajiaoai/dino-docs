@@ -8,7 +8,7 @@ description: Quick start for the newer createPresentation and createEditor entry
 This guide helps you quickly get started with embedding the Dino-GSP geometry canvas into your web application through the Open Platform.
 
 <iframe
-  src="https://dajiaoai.com/embed/edit/123456/33TA3484"
+  src="https://dajiaoai.com/embed/edit/YTVJDQZR/33TA3484"
   style="width: 100%; height: 480px; border: 1px solid var(--vp-c-divider); border-radius: 8px;"
   allow="fullscreen"
   title="Algeo SDK Embed Example"
