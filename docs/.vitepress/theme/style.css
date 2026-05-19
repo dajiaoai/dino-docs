@@ -9,6 +9,15 @@
   --vp-button-brand-active-bg: var(--vp-c-brand-2);
 }
 
+/* 行内代码：覆盖默认品牌色，改为正文色以提升可读性 */
+:root {
+  --vp-code-color: #1a1a1a;
+}
+
+html.dark {
+  --vp-code-color: #e6edf3;
+}
+
 /* 加宽 VitePress 布局 */
 :root {
   --vp-layout-max-width: 1728px;
