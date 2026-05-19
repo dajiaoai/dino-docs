@@ -61,6 +61,38 @@ Manage multi-slide documents.
 - `duplicate(index: number): Promise<void>`: Duplicate the specified slide.
 - `reorder(from: number, to: number): Promise<void>`: Reorder slides.
 
+#### 2.1 `exportImage(options?)`
+
+> Available since **2.6.0**
+
+Export the specified slide(s) (or all slides) as images, returning an `ExportedSlideImage[]` array.
+
+```typescript
+editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>
+```
+
+**`ExportSlideImageOptions` (optional):**
+
+| Parameter      | Type             | Default | Description                                                    |
+| -------------- | ---------------- | ------- | -------------------------------------------------------------- |
+| `slideIndices` | `number[]`       | -       | 1-based indices of slides to export; omit to export all slides |
+| `format`       | `'png' \| 'jpg'` | `'png'` | Image format                                                   |
+| `width`        | `number`         | -       | Output image width in pixels                                   |
+| `height`       | `number`         | -       | Output image height in pixels                                  |
+| `quality`      | `number`         | `0.92`  | Image quality (0–1, applies to `jpg` only)                     |
+| `autoFit`      | `boolean`        | -       | Auto-fit output size to canvas content                         |
+| `padding`      | `number`         | -       | Padding in pixels when `autoFit` is enabled                    |
+
+**`ExportedSlideImage` (array item):**
+
+| Property | Type             | Description                    |
+| -------- | ---------------- | ------------------------------ |
+| `index`  | `number`         | Slide index (1-based)          |
+| `blob`   | `Blob`           | Image binary data              |
+| `format` | `'png' \| 'jpg'` | Actual export format           |
+| `width`  | `number`         | Actual export width in pixels  |
+| `height` | `number`         | Actual export height in pixels |
+
 ### 3. History API (`editor.history`)
 
 Control undo and redo.

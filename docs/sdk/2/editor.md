@@ -56,6 +56,38 @@ SDK 将编辑器的 API 进行了模块化拆分：
 - `duplicate(index: number): Promise<void>`: 复制指定画板。
 - `reorder(from: number, to: number): Promise<void>`: 调整画板顺序。
 
+#### 2.1 `exportImage(options?)`
+
+> 从 **2.6.0** 起支持
+
+将指定画板（或全部画板）导出为图片，返回 `ExportedSlideImage[]` 数组。
+
+```typescript
+editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>
+```
+
+**`ExportSlideImageOptions`（可选参数）：**
+
+| 参数           | 类型             | 默认值  | 说明                                                |
+| -------------- | ---------------- | ------- | --------------------------------------------------- |
+| `slideIndices` | `number[]`       | -       | 要导出的画板索引数组（1-based）；不传则导出全部画板 |
+| `format`       | `'png' \| 'jpg'` | `'png'` | 图片格式                                            |
+| `width`        | `number`         | -       | 导出图片宽度（像素）                                |
+| `height`       | `number`         | -       | 导出图片高度（像素）                                |
+| `quality`      | `number`         | `0.92`  | 图片质量（0~1，仅 `jpg` 格式生效）                  |
+| `autoFit`      | `boolean`        | -       | 是否自动适应画板内容缩放                            |
+| `padding`      | `number`         | -       | 自动适应时的内边距（像素）                          |
+
+**`ExportedSlideImage`（返回数组元素）：**
+
+| 属性     | 类型             | 说明                 |
+| -------- | ---------------- | -------------------- |
+| `index`  | `number`         | 画板索引（1-based）  |
+| `blob`   | `Blob`           | 图片二进制数据       |
+| `format` | `'png' \| 'jpg'` | 实际导出格式         |
+| `width`  | `number`         | 实际导出宽度（像素） |
+| `height` | `number`         | 实际导出高度（像素） |
+
 ### 3. 历史 API (`editor.history`)
 
 控制撤销与重做。

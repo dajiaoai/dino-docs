@@ -1,6 +1,6 @@
 ﻿# 范例中心 (SDK Examples)
 
-我们在 `algeo-sdk` 仓库的 `examples/` 目录下提供了 11 个标准示例，涵盖了从基础嵌入到高级 API 服务的所有核心场景。
+我们在 `algeo-sdk` 仓库的 `examples/` 目录下提供了12 个标准示例，涵盖了从基础嵌入到高级 API 服务的所有核心场景。
 
 ## 基础集成
 
@@ -53,6 +53,10 @@
 ### [11-editor-share-id.html](https://dajiaoai.github.io/algeo-sdk/examples/11-editor-share-id.html)
 
 展示如何在编辑器模式下，通过分享 ID 加载已有内容进行二次编辑。
+
+### [12-export-slide-image.html](https://dajiaoai.github.io/algeo-sdk/examples/12-export-slide-image.html)
+
+展示如何调用 `editor.slides.exportImage()` 导出画板图片。支持默认导出全部画板，也可通过 `slideIndices`（1-based）指定导出范围，可配置图片格式、分辨率与质量。
 
 ---
 

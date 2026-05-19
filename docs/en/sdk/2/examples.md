@@ -5,7 +5,7 @@ description: Map the current example set to common integration goals
 
 # Examples
 
-The `algeo-sdk` repository provides 11 standard examples in the `examples/` directory, covering all core scenarios from basic embedding to advanced API usage.
+The `algeo-sdk` repository provides 12 standard examples in the `examples/` directory, covering all core scenarios from basic embedding to advanced API usage.
 
 ## Basic Integration
 
@@ -58,6 +58,10 @@ Listens to the editor's `save` and `contentChange` events and prints changes to 
 ### [11-editor-share-id.html](https://dajiaoai.github.io/algeo-sdk/examples/11-editor-share-id.html)
 
 Shows how to load existing content by share ID in editor mode for secondary editing.
+
+### [12-export-slide-image.html](https://dajiaoai.github.io/algeo-sdk/examples/12-export-slide-image.html)
+
+Demonstrates how to call `editor.slides.exportImage()` to export slides as images. Supports exporting all slides by default, or targeting specific slides via `slideIndices` (1-based). Image format, dimensions, and quality are all configurable.
 
 ---
 
