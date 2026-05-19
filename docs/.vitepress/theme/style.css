@@ -407,3 +407,20 @@ html.dark .VPDocAside .doc-copy-toast {
     display: none;
   }
 }
+
+@media (max-width: 959px) {
+  /* 覆盖 VitePress 组件的 scoped position: relative */
+  .VPNav {
+    position: fixed !important;
+  }
+
+  /* 为固定导航腾出顶部空间，避免内容被遮挡 */
+  .VPContent {
+    padding-top: var(--vp-nav-height);
+  }
+
+  /* 文档页内嵌本地导航（sticky）需从 nav 底部开始吸顶，而非从视口顶部 */
+  .VPLocalNav {
+    top: var(--vp-nav-height) !important;
+  }
+}
