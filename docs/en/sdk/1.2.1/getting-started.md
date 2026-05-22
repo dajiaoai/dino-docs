@@ -22,15 +22,9 @@ This guide explains how to embed the Dino-GSP geometry canvas in your web applic
 npm install @dajiaoai/algeo-sdk@1.2.1
 ```
 
-### CDN
-
-```html
-<script src="https://unpkg.com/@dajiaoai/algeo-sdk@1.2.1/dist/algeo-sdk.umd.js"></script>
-```
-
 ## Basic Usage
 
-### Option 1: SDK (Recommended)
+### Option 1: SDK
 
 ```javascript
 import { AlgeoSdk } from '@dajiaoai/algeo-sdk';

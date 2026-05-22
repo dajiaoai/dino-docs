@@ -9,7 +9,7 @@ Dino-GSP SDK is an embedded geometry interaction solution for developers. With t
 
 ## Core Values
 
-- **Minimal integration**: Supports both `npm` install and `CDN` import — basic canvas embedding in as little as 10 minutes.
+- **Minimal integration**: Supports installation through `npm` — basic canvas embedding in as little as 10 minutes.
 - **Dual modes**: "Presentation Mode" for content delivery and "Editor Mode" for content creation.
 - **Programmatic control**: Comprehensive API and a powerful REPL command set for deep canvas control through JavaScript or AI instructions.
 - **Cross-platform compatibility**: Built on the standard `postMessage` protocol, compatible with all mainstream web containers.

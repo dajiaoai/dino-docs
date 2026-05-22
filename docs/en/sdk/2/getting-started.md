@@ -16,16 +16,10 @@ This guide helps you quickly get started with embedding the Dino-GSP geometry ca
 
 ## 1. Installation and Setup
 
-### npm (Recommended)
+### npm
 
 ```bash
 npm install @dajiaoai/algeo-sdk@2
-```
-
-### CDN
-
-```html
-<script src="https://unpkg.com/@dajiaoai/algeo-sdk@2/dist/algeo-sdk.umd.js"></script>
 ```
 
 ## 2. Core Concepts

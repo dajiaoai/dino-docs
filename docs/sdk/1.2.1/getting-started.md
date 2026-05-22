@@ -22,15 +22,9 @@ description: 基于 1.2.1 版本的安装、基础用法与错误处理说明
 npm install @dajiaoai/algeo-sdk@1.2.1
 ```
 
-### CDN
-
-```html
-<script src="https://unpkg.com/@dajiaoai/algeo-sdk@1.2.1/dist/algeo-sdk.umd.js"></script>
-```
-
 ## 基础用法
 
-### 方式一：SDK（推荐）
+### 方式一：SDK
 
 ```javascript
 import { AlgeoSdk } from '@dajiaoai/algeo-sdk';

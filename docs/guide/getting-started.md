@@ -22,15 +22,9 @@ description: SDK 安装、基础用法、配置与错误处理 - 大角几何开
 npm install @dajiaoai/algeo-sdk
 ```
 
-### CDN
-
-```html
-<script src="https://unpkg.com/@dajiaoai/algeo-sdk@1.2.0/dist/algeo-sdk.umd.js"></script>
-```
-
 ## 基础用法
 
-### 方式一：SDK（推荐）
+### 方式一：SDK
 
 ```javascript
 import { AlgeoSdk } from '@dajiaoai/algeo-sdk';

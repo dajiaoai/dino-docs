@@ -16,16 +16,10 @@ description: 使用新版 SDK 入口快速创建演示模式或编辑模式实�
 
 ## 1. 安装与配置
 
-### npm 方式 (推荐)
+### npm 方式
 
 ```bash
 npm install @dajiaoai/algeo-sdk@2
-```
-
-### CDN 方式
-
-```html
-<script src="https://unpkg.com/@dajiaoai/algeo-sdk@2/dist/algeo-sdk.umd.js"></script>
 ```
 
 ## 2. 核心概念
