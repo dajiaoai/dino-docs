@@ -8,6 +8,7 @@ const state = ref<CopyState>('idle');
 const toastText = ref('');
 const toastVisible = ref(false);
 const { lang, page } = useData();
+const FEEDBACK_REPO = 'https://github.com/dajiaoai/dino-docs';
 
 const isEnglish = computed(() => lang.value.toLowerCase().startsWith('en'));
 const i18nText = computed(() => {
@@ -22,6 +23,8 @@ const i18nText = computed(() => {
       copiedAria: 'Copy succeeded',
       missing: 'No content to copy',
       failed: 'Copy failed, try again',
+      feedback: 'Feedback',
+      feedbackTitle: 'Open a GitHub issue for this document',
     };
   }
 
@@ -35,7 +38,49 @@ const i18nText = computed(() => {
     copiedAria: '复制成功',
     missing: '未找到可复制内容',
     failed: '复制失败，请重试',
+    feedback: '文档反馈',
+    feedbackTitle: '为当前文档提交 GitHub Issue',
   };
+});
+
+const sourceRelativePath = computed(() => {
+  const relativePath = page.value.relativePath?.trim();
+  if (!relativePath) {
+    return '';
+  }
+  return `docs/${relativePath}`;
+});
+
+const feedbackUrl = computed(() => {
+  const relativePath = sourceRelativePath.value;
+  if (!relativePath) {
+    return `${FEEDBACK_REPO}/issues/new`;
+  }
+
+  const pageUrl = typeof window === 'undefined' ? '' : window.location.href;
+  const sourceUrl = `${FEEDBACK_REPO}/blob/main/${relativePath}`;
+  const title = isEnglish.value
+    ? `Docs feedback: ${relativePath}`
+    : `文档反馈：${relativePath}`;
+  const body = isEnglish.value
+    ? [
+        `Source file: ${sourceUrl}`,
+        pageUrl ? `Page URL: ${pageUrl}` : '',
+        '',
+        'Feedback:',
+      ]
+        .filter(Boolean)
+        .join('\n')
+    : [
+        `源文件：${sourceUrl}`,
+        pageUrl ? `页面地址：${pageUrl}` : '',
+        '',
+        '反馈内容：',
+      ]
+        .filter(Boolean)
+        .join('\n');
+
+  return `${FEEDBACK_REPO}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}`;
 });
 
 let resetTimer: number | undefined;
@@ -258,6 +303,32 @@ onBeforeUnmount(() => {
         }}
       </span>
     </button>
+    <a
+      class="doc-copy-btn doc-feedback-btn"
+      :href="feedbackUrl"
+      target="_blank"
+      rel="noreferrer"
+      :title="i18nText.feedbackTitle"
+      :aria-label="i18nText.feedbackTitle"
+    >
+      <span class="doc-copy-btn__icon" aria-hidden="true">
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none">
+          <path
+            d="M3 4.4A1.4 1.4 0 0 1 4.4 3h7.2A1.4 1.4 0 0 1 13 4.4v4.2A1.4 1.4 0 0 1 11.6 10H7.2l-2.9 2.4c-.5.4-1.3.1-1.3-.6V10A1.4 1.4 0 0 1 1.6 8.6V4.4A1.4 1.4 0 0 1 3 4.4Z"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M5.2 5.8h5.6M5.2 8h3.8"
+            stroke="currentColor"
+            stroke-width="1.4"
+            stroke-linecap="round"
+          />
+        </svg>
+      </span>
+      <span class="doc-copy-btn__text">{{ i18nText.feedback }}</span>
+    </a>
 
     <Transition name="doc-copy-toast-fade">
       <span v-if="toastVisible" class="doc-copy-toast" role="status">

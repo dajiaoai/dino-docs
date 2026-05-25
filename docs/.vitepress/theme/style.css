@@ -226,6 +226,8 @@ html.dark .VPFeature {
   position: relative;
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
   margin-bottom: 12px;
 }
 
@@ -257,6 +259,10 @@ html.dark .VPFeature {
   transform: translateY(-1px);
   background: var(--vp-button-alt-hover-bg);
   border-color: var(--vp-c-default-soft);
+}
+
+.VPDocAside .doc-feedback-btn {
+  text-decoration: none;
 }
 
 .VPDocAside .doc-copy-btn:active {
