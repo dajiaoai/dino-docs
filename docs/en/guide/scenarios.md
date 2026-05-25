@@ -1,50 +1,183 @@
 ---
 title: Scenarios
-description: Decide whether Dino-GSP Open Platform fits your business scenario
+description: Understand Dino-GSP Open Platform from business scenarios first, with recommended capability units and example integrations
 ---
 
 # Scenarios
 
-Mathematical geometry is a core foundation of many education products, but building a complex geometry sketchpad system in-house often involves an extremely high technical barrier. By decoupling its underlying capabilities, Dino-GSP Open Platform can adapt to the following typical business scenarios.
+If you prefer to start from “what kind of product am I building?”, this page is the better entry point. Each scenario below maps to recommended capability units and a representative integration example.
+
+## How to read this page
+
+- Want to know whether your product is a fit: jump to the scenario closest to your business.
+- Want to know what to integrate: check the “Recommended capability units” under each scenario.
+- Want clearer capability boundaries first: return to [Capabilities](./capabilities#capability-summary).
+
+<a id="scenario-mapping"></a>
+
+## Scenario-to-capability mapping
+
+| Scenario                                         | Core goal                                                            | Recommended capability units                                                                                                                                                                                             |
+| :----------------------------------------------- | :------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Online Education and Smart Classrooms            | Make abstract geometry dynamic inside teaching flows                 | [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation), [AI Agent Geometry Interaction](./capabilities#capability-ai-agent)                                                                     |
+| Digital Question Banks and Content Platforms     | Lower figure production cost and improve exercise interactivity      | [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation), [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol), [Image and Structured Export](./capabilities#capability-export) |
+| AI Tutoring                                      | Let models reason with geometry and deliver more vivid explanations  | [AI Agent Geometry Interaction](./capabilities#capability-ai-agent), [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)                                                                              |
+| Lesson Plan and Courseware Authoring Tools       | Let curriculum teams produce geometry directly in their own systems  | [Embedded Editor Canvas](./capabilities#capability-embedded-editor), [Image and Structured Export](./capabilities#capability-export)                                                                                     |
+| Independent Developers and Math Innovation Tools | Reuse mature geometry infrastructure and focus on product innovation | [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol), [Image and Structured Export](./capabilities#capability-export)                                                                                  |
+
+<a id="scenario-online-education"></a>
 
 ## 1. Online Education and Smart Classrooms
 
-In the digital teaching process, dynamic geometry demonstrations can make abstract mathematical logic intuitive.
+This is the most typical teaching-display scenario. The goal is to insert dynamic geometry naturally into classroom and learning workflows.
 
-- **Dynamic lesson embedding**: Embed interactive geometry figures directly into lesson pages, allowing teachers to demonstrate in real time and students to explore interactively.
-- **Courseware interaction upgrade**: Replace static images with geometry figures that support dragging, parameter linkage, and animation playback — boosting classroom engagement.
+**You may be building**
+
+- Online classroom products
+- Interactive lesson pages
+- Courseware playback systems
+- Learning tablets or classroom large-screen systems
+
+**Recommended capability units**
+
+- [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation)
+- [AI Agent Geometry Interaction](./capabilities#capability-ai-agent)
+
+**Why it fits**
+
+- Static figures can become draggable, demonstrable, and replayable learning content.
+- If your teaching system includes an AI assistant, the assistant can draw while explaining.
+
+**Typical examples**
+
+- A teacher explains congruent triangles with a dynamic figure whose vertices can be dragged live in class.
+- An AI teaching assistant outputs text explanation while automatically adding auxiliary lines to the canvas.
+
+<a id="scenario-question-bank"></a>
 
 ## 2. Digital Question Banks and Content Platforms
 
-Provide a low-cost, high-efficiency illustration solution for large-scale math problem sets.
+These scenarios usually involve large content volume and frequent updates. Creating static figures manually for every problem is expensive, so a better model is to structure geometry content and render, interact with, and export it on demand.
 
-- **Structured figure loading**: Render geometry figures quickly through the protocol, eliminating the need to manually produce static images for every problem.
-- **Dynamic problem association**: Embed interactive canvases directly into exercises, letting students verify their thinking by manipulating the figure as they solve a problem.
+**You may be building**
+
+- Question-bank platforms
+- Search-and-solution pages
+- Practice systems
+- Educational content platforms
+
+**Recommended capability units**
+
+- [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation)
+- [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)
+- [Image and Structured Export](./capabilities#capability-export)
+
+**Why it fits**
+
+- You can present dynamic figures on the front end while processing geometry in code on the back end.
+- Geometry content can be connected to existing question-bank workflows and result pipelines.
+
+**Typical examples**
+
+- A problem detail page loads an interactive figure so students can verify a conclusion by dragging points.
+- An operations system generates thumbnails and display figures in bulk from structured geometry data.
+
+<a id="scenario-ai-tutoring"></a>
 
 ## 3. AI Tutoring
 
-Dino-GSP is an AI-native geometry engine, with deep integration designed specifically for large language models (LLMs) and intelligent agents.
+The key in this scenario is giving AI real geometry-operating ability. If a model can only output text, its geometry explanation can feel dry.
 
-- **Dynamic drawing and explanation**: When explaining a geometry problem, AI can call the interface to draw in real time on the canvas — showing auxiliary line construction or figure transformation processes.
-- **Intelligent interaction diagnostics**: Retrieve the student's canvas operation state programmatically in real time, helping AI accurately identify where the student's problem-solving breaks down.
+**You may be building**
+
+- AI tutors
+- Intelligent Q&A tools
+- Automated problem-solving and explanation products
+- Agent-driven math learning assistants
+
+**Recommended capability units**
+
+- [AI Agent Geometry Interaction](./capabilities#capability-ai-agent)
+- [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)
+
+**Why it fits**
+
+- The model can include drawing steps directly in its reasoning chain and make geometry part of the explanation context.
+- The system can inspect figure state in real time to support stronger diagnosis, explanation, and follow-up.
+
+**Typical examples**
+
+- While explaining a proof about equal inscribed angles, AI constructs the circle, chord, and relevant angles step by step.
+- An intelligent tutoring system inspects how a student manipulates the figure and judges whether the student truly understood the relationship.
+
+<a id="scenario-authoring-tools"></a>
 
 ## 4. Lesson Plan and Courseware Authoring Tools
 
-Empower curriculum teams to increase digital content production efficiency.
+This scenario serves content producers. The emphasis is production efficiency, lower repetitive effort, and easier geometry reuse across systems.
 
-- **Canvas component integration**: Lesson plan tools can embed an editor-mode canvas directly, allowing teachers to quickly generate professional geometry figures while writing lesson plans.
-- **Content sharing and migration**: Based on the standardized structured protocol, geometry content can be seamlessly transferred and re-edited across different curriculum systems.
+**You may be building**
+
+- Lesson-plan authoring platforms
+- Courseware production tools
+- Curriculum collaboration systems
+- Content production back offices
+
+**Recommended capability units**
+
+- [Embedded Editor Canvas](./capabilities#capability-embedded-editor)
+- [Image and Structured Export](./capabilities#capability-export)
+
+**Why it fits**
+
+- Professional geometry editing becomes a built-in part of the content workflow.
+- Figures can be delivered as images while preserving structured outputs for later editing.
+
+**Typical examples**
+
+- A teacher edits a geometry figure directly inside a lesson-prep system and exports it into a courseware page.
+- A curriculum team builds a reusable library of structured geometry assets inside its own content platform.
+
+<a id="scenario-independent-developers"></a>
 
 ## 5. Independent Developers and Math Innovation Tools
 
-If you are building a vertical math tool (such as function graph generators or specific theorem verifiers):
+If your innovation is a new interaction, analysis method, or subject-specific application, it is usually better to reuse the underlying geometry infrastructure directly.
 
-- **Geometry infrastructure**: Directly invoke Dino-GSP's rendering and computation capabilities — no need to build a geometry constraint solver from scratch — so you can focus your energy on the core innovation of your business logic.
+**You may be building**
 
-## Integration Guidance: How to Choose?
+- Function-graph tools
+- Theorem verification tools
+- Math lab applications
+- Vertical math products
 
-| Your goal                                  | Recommended approach                                      |
-| :----------------------------------------- | :-------------------------------------------------------- |
-| Display dynamic figures on a web page only | **[Direct iframe embed](../sdk/)**                        |
-| Control the canvas based on business logic | **[SDK integration](../sdk/)**                            |
-| Building an AI-driven teaching product     | **[REPL and intelligent agent integration](../sdk/repl)** |
+**Recommended capability units**
+
+- [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)
+- [Image and Structured Export](./capabilities#capability-export)
+
+**Why it fits**
+
+- You can focus on your own algorithms, interaction model, or product design while reusing low-level rendering and geometry constraints.
+- This is often the fastest way to validate a new product direction before deepening the integration later.
+
+**Typical examples**
+
+- A theorem-verification tool generates figures through structured protocol data and renders final results through export capability.
+- A math lab app uses the SDK to control parameter changes and reflect them on the canvas in real time.
+
+## How to choose an integration path
+
+| Your goal                                              | Start here                                                                      |
+| :----------------------------------------------------- | :------------------------------------------------------------------------------ |
+| I only need to show dynamic figures                    | [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation) |
+| I need editing and content production in my own system | [Embedded Editor Canvas](./capabilities#capability-embedded-editor)             |
+| I need code-level canvas and data control              | [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)          |
+| I need AI to call geometry capabilities                | [AI Agent Geometry Interaction](./capabilities#capability-ai-agent)             |
+| I need image or structured outputs                     | [Image and Structured Export](./capabilities#capability-export)                 |
+
+## Continue from the scenario view
+
+- To understand each capability unit in more detail: see [Capabilities](./capabilities#capability-summary)
+- To move directly into engineering docs: see [SDK Docs](../sdk/)
+- To focus on AI and agents first: see [REPL Capabilities](../sdk/repl)

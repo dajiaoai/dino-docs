@@ -49,8 +49,8 @@ To help you find what you need quickly, choose your reading path based on your f
 
 If you are evaluating product fit or understanding cooperation models:
 
-- **[Capabilities](./capabilities)**: What core features does the platform currently offer?
-- **[Scenarios](./scenarios)**: How do these capabilities address real business pain points?
+- **[Capability Unit Summary](./capabilities#capability-summary)**: What capability units are currently available?
+- **[Scenario-to-Capability Mapping](./scenarios#scenario-mapping)**: Which capabilities fit which business scenarios?
 
 ### 🛠️ Technical Implementation & Developer Guide
 
