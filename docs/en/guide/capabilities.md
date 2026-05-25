@@ -5,25 +5,25 @@ description: Understand Dino-GSP Open Platform through customer-facing capabilit
 
 # Capabilities
 
-If you already know what kind of product you are building, start with [Scenarios](./scenarios#scenario-mapping). If you want to understand what Dino-GSP exposes as productized capabilities and what each part is good for, this page is the right entry point.
+If you already know what kind of product you are building, start with <a href="./scenarios.html#scenario-mapping" target="_blank" rel="noreferrer">Scenarios</a>. If you want to understand what Dino-GSP exposes as productized capabilities and what each part is good for, this page is the right entry point.
 
 ## How to read this page
 
 - Want a fast feasibility check: start with the capability summary table below.
 - Want to know where a capability fits: check the “Suitable scenarios” and “Typical examples” under each capability unit.
-- Want to work backward from business needs to integration choices: continue with [Scenarios](./scenarios#scenario-mapping).
+- Want to work backward from business needs to integration choices: continue with <a href="./scenarios.html#scenario-mapping" target="_blank" rel="noreferrer">Scenarios</a>.
 
 <a id="capability-summary"></a>
 
 ## Capability unit summary
 
-| Capability unit               | What it solves                                                      | Best for                                                           | Related scenarios                                                                                                                                                                   |
-| :---------------------------- | :------------------------------------------------------------------ | :----------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Embedded Presentation Canvas  | Put dynamic geometry directly into your pages                       | Question banks, classrooms, courseware platforms                   | [Online Education and Smart Classrooms](./scenarios#scenario-online-education), [Digital Question Banks and Content Platforms](./scenarios#scenario-question-bank)                  |
-| Embedded Editor Canvas        | Embed a professional geometry editor into your own system           | Curriculum platforms, lesson-authoring tools, content back offices | [Lesson Plan and Courseware Authoring Tools](./scenarios#scenario-authoring-tools)                                                                                                  |
-| Geometry Protocol and JS SDK  | Load, control, save, and export canvas state in code                | Teams that need deep integration                                   | [Digital Question Banks and Content Platforms](./scenarios#scenario-question-bank), [Independent Developers and Math Innovation Tools](./scenarios#scenario-independent-developers) |
-| AI Agent Geometry Interaction | Let AI or agents draw, inspect, and update geometry while reasoning | AI tutors, intelligent explanation products, automated workflows   | [AI Tutoring](./scenarios#scenario-ai-tutoring)                                                                                                                                     |
-| Image and Structured Export   | Turn geometry content into images or reusable structured output     | Content production, question-bank pipelines, result delivery flows | [Digital Question Banks and Content Platforms](./scenarios#scenario-question-bank), [Lesson Plan and Courseware Authoring Tools](./scenarios#scenario-authoring-tools)              |
+| Capability unit               | What it solves                                                      | Best for                                                           | Related scenarios                                                                                                                                                                                                                                                                     |
+| :---------------------------- | :------------------------------------------------------------------ | :----------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Embedded Presentation Canvas  | Put dynamic geometry directly into your pages                       | Question banks, classrooms, courseware platforms                   | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">Online Education and Smart Classrooms</a>, <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>                  |
+| Embedded Editor Canvas        | Embed a professional geometry editor into your own system           | Curriculum platforms, lesson-authoring tools, content back offices | <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>                                                                                                                                                   |
+| Geometry Protocol and JS SDK  | Load, control, save, and export canvas state in code                | Teams that need deep integration                                   | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>, <a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">Independent Developers and Math Innovation Tools</a> |
+| AI Agent Geometry Interaction | Let AI or agents draw, inspect, and update geometry while reasoning | AI tutors, intelligent explanation products, automated workflows   | <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI Tutoring</a>                                                                                                                                                                                      |
+| Image and Structured Export   | Turn geometry content into images or reusable structured output     | Content production, question-bank pipelines, result delivery flows | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>, <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>              |
 
 <a id="capability-embedded-presentation"></a>
 
@@ -39,8 +39,8 @@ This is the easiest capability unit to understand and often the fastest to adopt
 
 **Suitable scenarios**
 
-- [Online Education and Smart Classrooms](./scenarios#scenario-online-education)
-- [Digital Question Banks and Content Platforms](./scenarios#scenario-question-bank)
+- <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">Online Education and Smart Classrooms</a>
+- <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>
 
 **Typical examples**
 
@@ -66,8 +66,8 @@ This capability unit is for content production. You embed a professional editor 
 
 **Suitable scenarios**
 
-- [Lesson Plan and Courseware Authoring Tools](./scenarios#scenario-authoring-tools)
-- [Digital Question Banks and Content Platforms](./scenarios#scenario-question-bank)
+- <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>
+- <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>
 
 **Typical examples**
 
@@ -93,9 +93,9 @@ This capability unit is for teams that need code-level control. Through the SDK 
 
 **Suitable scenarios**
 
-- [Digital Question Banks and Content Platforms](./scenarios#scenario-question-bank)
-- [Independent Developers and Math Innovation Tools](./scenarios#scenario-independent-developers)
-- [Lesson Plan and Courseware Authoring Tools](./scenarios#scenario-authoring-tools)
+- <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>
+- <a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">Independent Developers and Math Innovation Tools</a>
+- <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>
 
 **Typical examples**
 
@@ -121,8 +121,8 @@ This capability unit is for AI-native products. The goal is to give a model, age
 
 **Suitable scenarios**
 
-- [AI Tutoring](./scenarios#scenario-ai-tutoring)
-- [Online Education and Smart Classrooms](./scenarios#scenario-online-education)
+- <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI Tutoring</a>
+- <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">Online Education and Smart Classrooms</a>
 
 **Typical examples**
 
@@ -148,9 +148,9 @@ Many products ultimately need deliverable outputs such as images, structured dat
 
 **Suitable scenarios**
 
-- [Digital Question Banks and Content Platforms](./scenarios#scenario-question-bank)
-- [Lesson Plan and Courseware Authoring Tools](./scenarios#scenario-authoring-tools)
-- [Independent Developers and Math Innovation Tools](./scenarios#scenario-independent-developers)
+- <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>
+- <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>
+- <a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">Independent Developers and Math Innovation Tools</a>
 
 **Typical examples**
 

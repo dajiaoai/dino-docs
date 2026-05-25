@@ -11,19 +11,19 @@ If you prefer to start from “what kind of product am I building?”, this page
 
 - Want to know whether your product is a fit: jump to the scenario closest to your business.
 - Want to know what to integrate: check the “Recommended capability units” under each scenario.
-- Want clearer capability boundaries first: return to [Capabilities](./capabilities#capability-summary).
+- Want clearer capability boundaries first: return to <a href="./capabilities.html#capability-summary" target="_blank" rel="noreferrer">Capabilities</a>.
 
 <a id="scenario-mapping"></a>
 
 ## Scenario-to-capability mapping
 
-| Scenario                                         | Core goal                                                            | Recommended capability units                                                                                                                                                                                             |
-| :----------------------------------------------- | :------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Online Education and Smart Classrooms            | Make abstract geometry dynamic inside teaching flows                 | [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation), [AI Agent Geometry Interaction](./capabilities#capability-ai-agent)                                                                     |
-| Digital Question Banks and Content Platforms     | Lower figure production cost and improve exercise interactivity      | [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation), [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol), [Image and Structured Export](./capabilities#capability-export) |
-| AI Tutoring                                      | Let models reason with geometry and deliver more vivid explanations  | [AI Agent Geometry Interaction](./capabilities#capability-ai-agent), [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)                                                                              |
-| Lesson Plan and Courseware Authoring Tools       | Let curriculum teams produce geometry directly in their own systems  | [Embedded Editor Canvas](./capabilities#capability-embedded-editor), [Image and Structured Export](./capabilities#capability-export)                                                                                     |
-| Independent Developers and Math Innovation Tools | Reuse mature geometry infrastructure and focus on product innovation | [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol), [Image and Structured Export](./capabilities#capability-export)                                                                                  |
+| Scenario                                         | Core goal                                                            | Recommended capability units                                                                                                                                                                                                                                                                                                                                                |
+| :----------------------------------------------- | :------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Online Education and Smart Classrooms            | Make abstract geometry dynamic inside teaching flows                 | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">Embedded Presentation Canvas</a>, <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent Geometry Interaction</a>                                                                                                                      |
+| Digital Question Banks and Content Platforms     | Lower figure production cost and improve exercise interactivity      | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">Embedded Presentation Canvas</a>, <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>, <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a> |
+| AI Tutoring                                      | Let models reason with geometry and deliver more vivid explanations  | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent Geometry Interaction</a>, <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>                                                                                                                               |
+| Lesson Plan and Courseware Authoring Tools       | Let curriculum teams produce geometry directly in their own systems  | <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">Embedded Editor Canvas</a>, <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>                                                                                                                                      |
+| Independent Developers and Math Innovation Tools | Reuse mature geometry infrastructure and focus on product innovation | <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>, <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>                                                                                                                                   |
 
 <a id="scenario-online-education"></a>
 
@@ -40,8 +40,8 @@ This is the most typical teaching-display scenario. The goal is to insert dynami
 
 **Recommended capability units**
 
-- [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation)
-- [AI Agent Geometry Interaction](./capabilities#capability-ai-agent)
+- <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">Embedded Presentation Canvas</a>
+- <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent Geometry Interaction</a>
 
 **Why it fits**
 
@@ -68,9 +68,9 @@ These scenarios usually involve large content volume and frequent updates. Creat
 
 **Recommended capability units**
 
-- [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation)
-- [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)
-- [Image and Structured Export](./capabilities#capability-export)
+- <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">Embedded Presentation Canvas</a>
+- <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>
+- <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>
 
 **Why it fits**
 
@@ -97,8 +97,8 @@ The key in this scenario is giving AI real geometry-operating ability. If a mode
 
 **Recommended capability units**
 
-- [AI Agent Geometry Interaction](./capabilities#capability-ai-agent)
-- [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)
+- <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent Geometry Interaction</a>
+- <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>
 
 **Why it fits**
 
@@ -125,8 +125,8 @@ This scenario serves content producers. The emphasis is production efficiency, l
 
 **Recommended capability units**
 
-- [Embedded Editor Canvas](./capabilities#capability-embedded-editor)
-- [Image and Structured Export](./capabilities#capability-export)
+- <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">Embedded Editor Canvas</a>
+- <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>
 
 **Why it fits**
 
@@ -153,8 +153,8 @@ If your innovation is a new interaction, analysis method, or subject-specific ap
 
 **Recommended capability units**
 
-- [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)
-- [Image and Structured Export](./capabilities#capability-export)
+- <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>
+- <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>
 
 **Why it fits**
 
@@ -168,16 +168,16 @@ If your innovation is a new interaction, analysis method, or subject-specific ap
 
 ## How to choose an integration path
 
-| Your goal                                              | Start here                                                                      |
-| :----------------------------------------------------- | :------------------------------------------------------------------------------ |
-| I only need to show dynamic figures                    | [Embedded Presentation Canvas](./capabilities#capability-embedded-presentation) |
-| I need editing and content production in my own system | [Embedded Editor Canvas](./capabilities#capability-embedded-editor)             |
-| I need code-level canvas and data control              | [Geometry Protocol and JS SDK](./capabilities#capability-sdk-protocol)          |
-| I need AI to call geometry capabilities                | [AI Agent Geometry Interaction](./capabilities#capability-ai-agent)             |
-| I need image or structured outputs                     | [Image and Structured Export](./capabilities#capability-export)                 |
+| Your goal                                              | Start here                                                                                                                       |
+| :----------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- |
+| I only need to show dynamic figures                    | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">Embedded Presentation Canvas</a> |
+| I need editing and content production in my own system | <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">Embedded Editor Canvas</a>             |
+| I need code-level canvas and data control              | <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>          |
+| I need AI to call geometry capabilities                | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent Geometry Interaction</a>             |
+| I need image or structured outputs                     | <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>                 |
 
 ## Continue from the scenario view
 
-- To understand each capability unit in more detail: see [Capabilities](./capabilities#capability-summary)
+- To understand each capability unit in more detail: see <a href="./capabilities.html#capability-summary" target="_blank" rel="noreferrer">Capabilities</a>
 - To move directly into engineering docs: see [SDK Docs](../sdk/)
 - To focus on AI and agents first: see [REPL Capabilities](../sdk/repl)

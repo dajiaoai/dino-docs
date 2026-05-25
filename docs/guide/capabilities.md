@@ -5,25 +5,25 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 # 能力总览
 
-如果你已经明确要解决什么业务问题，请先看 [适用场景](./scenarios#scenario-mapping)。如果你更关心我们到底开放了哪些能力、每种能力能做到什么，这一页可以帮助你快速建立整体认知。
+如果你已经明确要解决什么业务问题，请先看 <a href="./scenarios.html#scenario-mapping" target="_blank" rel="noreferrer">适用场景</a>。如果你更关心我们到底开放了哪些能力、每种能力能做到什么，这一页可以帮助你快速建立整体认知。
 
 ## 如何阅读这一页
 
 - 想快速判断能不能接入：先看下方的“能力单元速览”。
 - 想知道某种能力适合哪里：看每个能力单元中的“适用场景”和“典型例子”。
-- 想从业务需求反推能力组合：再跳转到 [适用场景](./scenarios#scenario-mapping) 查看场景页中的推荐组合。
+- 想从业务需求反推能力组合：再跳转到 <a href="./scenarios.html#scenario-mapping" target="_blank" rel="noreferrer">适用场景</a> 查看场景页中的推荐组合。
 
 <a id="capability-summary"></a>
 
 ## 能力单元速览
 
-| 能力单元          | 解决什么问题                                        | 适合谁                             | 关联场景                                                                                                                            |
-| :---------------- | :-------------------------------------------------- | :--------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
-| 嵌入式演示画板    | 把动态几何图直接展示到你的页面里                    | 题库、课堂、课件平台               | [在线教育与智慧课堂](./scenarios#scenario-online-education)、[数字化题库与内容平台](./scenarios#scenario-question-bank)             |
-| 嵌入式编辑画板    | 把可编辑的专业几何画板嵌入到你的业务系统中          | 教研平台、备课工具、内容生产后台   | [教案与课件生产工具](./scenarios#scenario-authoring-tools)                                                                          |
-| 几何协议与 JS SDK | 用代码加载、控制、保存和导出画板状态                | 有研发能力、需要深度集成的团队     | [数字化题库与内容平台](./scenarios#scenario-question-bank)、[独立开发者与数学创新工具](./scenarios#scenario-independent-developers) |
-| AI Agent 几何交互 | 让 AI 或 Agent 在推理过程中实时作图、读状态、改图形 | AI Tutor、智能讲解、自动化解题产品 | [AI 智能辅导](./scenarios#scenario-ai-tutoring)                                                                                     |
-| 图片与结构化导出  | 把几何内容输出为图片、协议数据或后续可处理结果      | 内容生产、题库加工、结果落地链路   | [数字化题库与内容平台](./scenarios#scenario-question-bank)、[教案与课件生产工具](./scenarios#scenario-authoring-tools)              |
+| 能力单元          | 解决什么问题                                        | 适合谁                             | 关联场景                                                                                                                                                                                                                              |
+| :---------------- | :-------------------------------------------------- | :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 嵌入式演示画板    | 把动态几何图直接展示到你的页面里                    | 题库、课堂、课件平台               | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>、<a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>             |
+| 嵌入式编辑画板    | 把可编辑的专业几何画板嵌入到你的业务系统中          | 教研平台、备课工具、内容生产后台   | <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>                                                                                                                           |
+| 几何协议与 JS SDK | 用代码加载、控制、保存和导出画板状态                | 有研发能力、需要深度集成的团队     | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">独立开发者与数学创新工具</a> |
+| AI Agent 几何交互 | 让 AI 或 Agent 在推理过程中实时作图、读状态、改图形 | AI Tutor、智能讲解、自动化解题产品 | <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI 智能辅导</a>                                                                                                                                      |
+| 图片与结构化导出  | 把几何内容输出为图片、协议数据或后续可处理结果      | 内容生产、题库加工、结果落地链路   | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>              |
 
 <a id="capability-embedded-presentation"></a>
 
@@ -39,8 +39,8 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 **适用场景**
 
-- [在线教育与智慧课堂](./scenarios#scenario-online-education)
-- [数字化题库与内容平台](./scenarios#scenario-question-bank)
+- <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>
+- <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>
 
 **典型例子**
 
@@ -66,8 +66,8 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 **适用场景**
 
-- [教案与课件生产工具](./scenarios#scenario-authoring-tools)
-- [数字化题库与内容平台](./scenarios#scenario-question-bank)
+- <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>
+- <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>
 
 **典型例子**
 
@@ -93,9 +93,9 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 **适用场景**
 
-- [数字化题库与内容平台](./scenarios#scenario-question-bank)
-- [独立开发者与数学创新工具](./scenarios#scenario-independent-developers)
-- [教案与课件生产工具](./scenarios#scenario-authoring-tools)
+- <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>
+- <a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">独立开发者与数学创新工具</a>
+- <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>
 
 **典型例子**
 
@@ -121,8 +121,8 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 **适用场景**
 
-- [AI 智能辅导](./scenarios#scenario-ai-tutoring)
-- [在线教育与智慧课堂](./scenarios#scenario-online-education)
+- <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI 智能辅导</a>
+- <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>
 
 **典型例子**
 
@@ -148,9 +148,9 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 **适用场景**
 
-- [数字化题库与内容平台](./scenarios#scenario-question-bank)
-- [教案与课件生产工具](./scenarios#scenario-authoring-tools)
-- [独立开发者与数学创新工具](./scenarios#scenario-independent-developers)
+- <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>
+- <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>
+- <a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">独立开发者与数学创新工具</a>
 
 **典型例子**
 
