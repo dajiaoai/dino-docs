@@ -56,6 +56,8 @@ If you are evaluating product fit or understanding cooperation models:
 
 If you are an engineer responsible for the integration:
 
+- **[AI Access](../ai/)**: Explore MCP and future AI-native integration methods such as Skills and CLI.
+- **[API Access](../api/)**: Check the current API access status, which is in private beta.
 - **[SDK Access](../sdk/)**: Get the SDK, browse API docs and development examples.
 - **[REPL Capabilities](../sdk/repl)**: Learn how to drive the geometry engine programmatically.
 

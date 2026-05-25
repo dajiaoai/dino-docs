@@ -29,6 +29,10 @@ Typical scenarios include:
 
 Contact: business@dajiaoai.com
 
+Enterprise WeChat:
+
+<img src="https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/841edf50-screenshot-20260525-175003.png" alt="Business inquiry Enterprise WeChat QR code" style="height: 226px; width: auto;" />
+
 To help us respond faster, please include the following in your email when possible:
 
 - Your team or product name

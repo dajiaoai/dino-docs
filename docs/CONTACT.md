@@ -29,6 +29,10 @@ description: 联系大角几何开放平台，获取商务合作支持、社群�
 
 联系邮箱：business@dajiaoai.com
 
+企业微信：
+
+<img src="https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/841edf50-screenshot-20260525-175003.png" alt="商务合作企业微信二维码" style="height: 226px; width: auto;" />
+
 建议在邮件中简要说明以下信息，以便我们更快响应：
 
 - 所属团队或产品名称

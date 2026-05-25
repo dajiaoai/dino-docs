@@ -99,7 +99,14 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: '指南', link: '/guide/' },
-          { text: 'SDK 接入', link: '/sdk/' },
+          {
+            text: '接入',
+            items: [
+              { text: 'SDK 接入', link: '/sdk/' },
+              { text: 'AI 接入', link: '/ai/' },
+              { text: 'API 接入', link: '/api/' },
+            ],
+          },
           { text: '联系我们', link: '/CONTACT' },
           {
             text: '控制台',
@@ -125,6 +132,22 @@ export default defineConfig({
               ],
             },
           ],
+          '/ai/': [
+            {
+              text: 'AI 接入',
+              items: [
+                { text: '概览', link: '/ai/' },
+                { text: 'MCP 接入', link: '/ai/mcp' },
+                { text: 'MCP 计费说明', link: '/ai/mcp-billing' },
+              ],
+            },
+          ],
+          '/api/': [
+            {
+              text: 'API 接入',
+              items: [{ text: '概览', link: '/api/' }],
+            },
+          ],
           '/sdk/': createSdkSidebar(''),
           '/CONTACT': [],
         },
@@ -140,7 +163,14 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Guide', link: '/en/guide/' },
-          { text: 'SDK Access', link: '/en/sdk/' },
+          {
+            text: 'Access',
+            items: [
+              { text: 'SDK Access', link: '/en/sdk/' },
+              { text: 'AI Access', link: '/en/ai/' },
+              { text: 'API Access', link: '/en/api/' },
+            ],
+          },
           {
             text: 'Console',
             link: 'https://open.dajiaoai.com/console/dashboard',
@@ -167,6 +197,22 @@ export default defineConfig({
                   link: '/en/guide/COMMERCIAL_LICENSE',
                 },
               ],
+            },
+          ],
+          '/en/ai/': [
+            {
+              text: 'AI Access',
+              items: [
+                { text: 'Overview', link: '/en/ai/' },
+                { text: 'MCP Integration', link: '/en/ai/mcp' },
+                { text: 'MCP Billing', link: '/en/ai/mcp-billing' },
+              ],
+            },
+          ],
+          '/en/api/': [
+            {
+              text: 'API Access',
+              items: [{ text: 'Overview', link: '/en/api/' }],
             },
           ],
           '/en/sdk/': createSdkSidebar('en/'),
