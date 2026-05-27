@@ -66,7 +66,7 @@ MCP（Model Context Protocol）让支持该协议的 AI 客户端直接调用大
 在终端运行：
 
 ```bash
-claude mcp add --transport http dajiao-algeo https://api.dajiaoai.com/mcp --header "Authorization: Bearer YOUR_TOKEN_HERE"
+claude mcp add --transport http dino-gsp https://api.dajiaoai.com/mcp --header "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
 
 添加成功后，可在 Claude Code 会话中使用 `/mcp` 查看服务状态。
@@ -78,7 +78,7 @@ claude mcp add --transport http dajiao-algeo https://api.dajiaoai.com/mcp --head
 ```json
 {
   "mcpServers": {
-    "dajiao-algeo": {
+    "dino-gsp": {
       "url": "https://api.dajiaoai.com/mcp",
       "headers": {
         "Authorization": "Bearer YOUR_TOKEN_HERE"
@@ -97,7 +97,7 @@ claude mcp add --transport http dajiao-algeo https://api.dajiaoai.com/mcp --head
 ```json
 {
   "servers": {
-    "dajiao-algeo": {
+    "dino-gsp": {
       "type": "http",
       "url": "https://api.dajiaoai.com/mcp",
       "headers": {
@@ -117,7 +117,7 @@ claude mcp add --transport http dajiao-algeo https://api.dajiaoai.com/mcp --head
 ```json
 {
   "mcpServers": {
-    "dajiao-algeo": {
+    "dino-gsp": {
       "type": "http",
       "url": "https://api.dajiaoai.com/mcp",
       "headers": {

@@ -9,20 +9,10 @@ This page describes the current billing rules for Dino-GSP MCP.
 
 ## Billing rules
 
-| Scenario                | Billing rule                    | Notes                                  |
-| :---------------------- | :------------------------------ | :------------------------------------- |
-| MCP Server call         | `1` billing point               | Base charge                            |
-| Image generation call   | Additional `100` billing points | Added on top of the base charge        |
-| File export call        | Additional `1` billing point    | Added on top of the base charge        |
-| Other tool capabilities | No extra charge                 | Currently only the base charge applies |
-
-## Typical billing examples
-
-| Call type                                | Base charge | Extra charge | Total                |
-| :--------------------------------------- | :---------- | :----------- | :------------------- |
-| One regular MCP call                     | `1`         | `0`          | `1` billing point    |
-| One conversation that generates an image | `1`         | `100`        | `101` billing points |
-| One conversation that exports a file     | `1`         | `1`          | `2` billing points   |
+| Scenario                    | Billing rule         | Notes            |
+| :-------------------------- | :------------------- | :--------------- |
+| Image generation call       | `100` billing points | Charged per call |
+| Other tool capability calls | `1` billing point    | Charged per call |
 
 ## How to top up
 
@@ -32,8 +22,7 @@ The current exchange rate is `1` CNY = `10000` billing points. Top-ups are curre
 
 ## Current scope
 
-- The additional image-generation charge applies to `export_image`
-- The additional file-export charge applies to `export_project`
-- Other capabilities such as `algeo_repl` and `import_project` currently only incur the base charge
+- The image-generation charge applies to `export_image`: `100` billing points per call
+- Other capabilities such as `export_project`, `algeo_repl`, and `import_project` are charged `1` billing point per call
 
 If the billing rules change later, please refer to the console, official announcements, or the latest documentation.

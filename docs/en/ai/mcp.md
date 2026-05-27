@@ -66,7 +66,7 @@ If you are using a Codex environment that supports CLI-based MCP configuration, 
 Run:
 
 ```bash
-claude mcp add --transport http dajiao-algeo https://api.dajiaoai.com/mcp --header "Authorization: Bearer YOUR_TOKEN_HERE"
+claude mcp add --transport http dino-gsp https://api.dajiaoai.com/mcp --header "Authorization: Bearer YOUR_TOKEN_HERE"
 ```
 
 After adding the server, run `/mcp` in Claude Code to inspect its status.
@@ -78,7 +78,7 @@ Edit `.cursor/mcp.json`:
 ```json
 {
   "mcpServers": {
-    "dajiao-algeo": {
+    "dino-gsp": {
       "url": "https://api.dajiaoai.com/mcp",
       "headers": {
         "Authorization": "Bearer YOUR_TOKEN_HERE"
@@ -97,7 +97,7 @@ Create or edit `.vscode/mcp.json` in your workspace:
 ```json
 {
   "servers": {
-    "dajiao-algeo": {
+    "dino-gsp": {
       "type": "http",
       "url": "https://api.dajiaoai.com/mcp",
       "headers": {
@@ -117,7 +117,7 @@ Open the MCP configuration page in WorkBuddy and add the following:
 ```json
 {
   "mcpServers": {
-    "dajiao-algeo": {
+    "dino-gsp": {
       "type": "http",
       "url": "https://api.dajiaoai.com/mcp",
       "headers": {
