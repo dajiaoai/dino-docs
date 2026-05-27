@@ -52,14 +52,6 @@ MCP（Model Context Protocol）让支持该协议的 AI 客户端直接调用大
 
 ## 可用工具
 
-当前推荐的接入工具包括：
-
-- Codex
-- Claude Code
-- Cursor
-- VS Code
-- WorkBuddy
-
 ### Codex
 
 在 Codex 中添加 MCP 服务时，选择 `Streamable HTTP`，并填写以下信息：
@@ -150,6 +142,5 @@ claude mcp add --transport http dajiao-algeo https://api.dajiaoai.com/mcp --head
 优先检查以下几项：
 
 - `Authorization` 请求头是否存在
-- Token 是否仍然有效
 - 是否使用了准确的 `Bearer ` 前缀
 - 服务地址是否填写为 `https://api.dajiaoai.com/mcp`

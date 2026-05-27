@@ -52,14 +52,6 @@ In most clients you do not need to memorize tool names. If tool calling is enabl
 
 ## Available tools
 
-The currently recommended integration tools include:
-
-- Codex
-- Claude Code
-- Cursor
-- VS Code
-- WorkBuddy
-
 ### Codex
 
 When adding the MCP service in Codex, choose `Streamable HTTP` and fill in the following:
@@ -150,6 +142,5 @@ After saving, return to the MCP list and confirm that the service loads successf
 Check the following first:
 
 - The `Authorization` header is present
-- The token is still valid
 - The value includes the exact `Bearer ` prefix
 - The endpoint is exactly `https://api.dajiaoai.com/mcp`
