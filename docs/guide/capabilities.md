@@ -20,7 +20,7 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 | 能力单元          | 解决什么问题                                        | 适合谁                             | 关联场景                                                                                                                                                                                                                              |
 | :---------------- | :-------------------------------------------------- | :--------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | 嵌入式演示画板    | 把动态几何图直接展示到你的页面里                    | 题库、课堂、课件平台               | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>、<a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>             |
-| 嵌入式编辑画板    | 把可编辑的专业几何画板嵌入到你的业务系统中          | 教研平台、备课工具、内容生产后台   | <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>                                                                                                                           |
+| 嵌入式编辑画板    | 把可编辑的专业几何画板嵌入到你的业务系统中          | 教研平台、备课工具、内容生产后台   | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>、<a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>             |
 | 几何协议与 JS SDK | 用代码加载、控制、保存和导出画板状态                | 有研发能力、需要深度集成的团队     | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">独立开发者与数学创新工具</a> |
 | AI Agent 几何交互 | 让 AI 或 Agent 在推理过程中实时作图、读状态、改图形 | AI Tutor、智能讲解、自动化解题产品 | <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI 智能辅导</a>                                                                                                                                      |
 | 图片与结构化导出  | 把几何内容输出为图片、协议数据或后续可处理结果      | 内容生产、题库加工、结果落地链路   | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>              |
@@ -66,6 +66,7 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 **适用场景**
 
+- <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>
 - <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>
 - <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>
 
