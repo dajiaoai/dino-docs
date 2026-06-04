@@ -26,6 +26,20 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 });
 ```
 
+### UI 配置
+
+```typescript
+const presentation: EmbeddedPresentation = await createPresentation(container, {
+  ui: {
+    logo: true,
+  },
+});
+```
+
+| 属性      | 类型      | 默认值 | 说明                                    |
+| --------- | --------- | ------ | --------------------------------------- |
+| `ui.logo` | `boolean` | `true` | 是否显示 logo 水印。从 `2.7.0` 起支持。 |
+
 ## API 参考
 
 ### `loadShareById(id: string): Promise<Result>`

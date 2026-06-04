@@ -26,6 +26,20 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 });
 ```
 
+### UI Configuration
+
+```typescript
+const presentation: EmbeddedPresentation = await createPresentation(container, {
+  ui: {
+    logo: true,
+  },
+});
+```
+
+| Property  | Type      | Default | Description                                                  |
+| --------- | --------- | ------- | ------------------------------------------------------------ |
+| `ui.logo` | `boolean` | `true`  | Whether to show the logo watermark. Supported since `2.7.0`. |
+
 ## API Reference
 
 ### `loadShareById(id: string): Promise<Result>`

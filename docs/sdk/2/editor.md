@@ -16,12 +16,23 @@ import { createEditor, EmbeddedEditor } from '@dajiaoai/algeo-sdk';
 const editor: EmbeddedEditor = await createEditor(container, {
   auth: { appId: 'YTVJDQZR' },
   ui: {
-    navbar: true, // 顶部导航（包含保存按钮、文件信息等）
-    slidePanel: true, // 侧边画板缩略图预览
-    toolboxPanel: true, // 绘图工具栏
+    navbar: false,
   },
 });
 ```
+
+### UI 配置
+
+编辑模式支持通过 `ui` 配置控制各个面板的显示/隐藏。
+
+| 属性              | 类型      | 默认值 | 说明                                            |
+| ----------------- | --------- | ------ | ----------------------------------------------- |
+| `ui.navbar`       | `boolean` | `true` | 是否显示顶部导航栏（包含保存按钮、文件信息等）  |
+| `ui.slidePanel`   | `boolean` | `true` | 是否显示画板缩略图面板                          |
+| `ui.toolboxPanel` | `boolean` | `true` | 是否显示绘图工具栏                              |
+| `ui.algebraPanel` | `boolean` | `true` | 是否显示代数面板                                |
+| `ui.docPanel`     | `boolean` | `true` | 是否显示文档面板                                |
+| `ui.helpEntry`    | `boolean` | `true` | 是否显示编辑模式的帮助入口。从 `2.7.0` 起支持。 |
 
 ## 获取 appId
 

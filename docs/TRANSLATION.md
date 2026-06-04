@@ -17,7 +17,6 @@
 - `index.md`
 - `guide/getting-started.md`
 - `sdk/repl.md`
-- `api/sdk.md`
 - `api/protocol.md`
 
 ## 翻译规范

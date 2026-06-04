@@ -21,12 +21,23 @@ import { createEditor, EmbeddedEditor } from '@dajiaoai/algeo-sdk';
 const editor: EmbeddedEditor = await createEditor(container, {
   auth: { appId: 'YTVJDQZR' },
   ui: {
-    navbar: true, // top navigation (includes save button, file info, etc.)
-    slidePanel: true, // side slide thumbnail preview
-    toolboxPanel: true, // drawing toolbar
+    navbar: false,
   },
 });
 ```
+
+### UI Configuration
+
+Use `ui` to control visibility of editor panels.
+
+| Property          | Type      | Default | Description                                                                  |
+| ----------------- | --------- | ------- | ---------------------------------------------------------------------------- |
+| `ui.navbar`       | `boolean` | `true`  | Whether to show the top navigation bar (including Save button and file info) |
+| `ui.slidePanel`   | `boolean` | `true`  | Whether to show the slide thumbnail panel                                    |
+| `ui.toolboxPanel` | `boolean` | `true`  | Whether to show the drawing toolbox                                          |
+| `ui.algebraPanel` | `boolean` | `true`  | Whether to show the algebra panel                                            |
+| `ui.docPanel`     | `boolean` | `true`  | Whether to show the document panel                                           |
+| `ui.helpEntry`    | `boolean` | `true`  | Whether to show the help entry in editor mode. Supported since `2.7.0`.      |
 
 ## Getting an appId
 
