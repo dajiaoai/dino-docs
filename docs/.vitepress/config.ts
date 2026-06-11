@@ -144,8 +144,20 @@ export default defineConfig({
           ],
           '/api/': [
             {
-              text: 'API 接入',
-              items: [{ text: '概览', link: '/api/' }],
+              text: '开始接入',
+              items: [
+                { text: '概览', link: '/api/' },
+                { text: '鉴权说明', link: '/api/auth' },
+                { text: '定价说明', link: '/api/pricing' },
+              ],
+            },
+            {
+              text: '接口参考',
+              items: [
+                { text: '智能生图服务', link: '/api/agent' },
+                { text: '渲染服务', link: '/api/render' },
+                { text: '模型说明', link: '/api/models' },
+              ],
             },
           ],
           '/sdk/': createSdkSidebar(''),
@@ -211,8 +223,23 @@ export default defineConfig({
           ],
           '/en/api/': [
             {
-              text: 'API Access',
-              items: [{ text: 'Overview', link: '/en/api/' }],
+              text: 'Getting Started',
+              items: [
+                { text: 'Overview', link: '/en/api/' },
+                { text: 'Authentication', link: '/en/api/auth' },
+                { text: 'Pricing', link: '/en/api/pricing' },
+              ],
+            },
+            {
+              text: 'API Reference',
+              items: [
+                {
+                  text: 'Intelligent Image Generation',
+                  link: '/en/api/agent',
+                },
+                { text: 'Render API', link: '/en/api/render' },
+                { text: 'Models', link: '/en/api/models' },
+              ],
             },
           ],
           '/en/sdk/': createSdkSidebar('en/'),
