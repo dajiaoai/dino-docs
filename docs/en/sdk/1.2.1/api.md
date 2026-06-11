@@ -27,7 +27,7 @@ All instance methods return a `Promise` and resolve/reject after the iframe resp
 
 Load the canvas content for the specified share ID.
 
-### `loadFile(content: FileContentV10): Promise<void>`
+### `loadFile(content: FileContentLatest): Promise<void>`
 
 Inject canvas JSON content conforming to the protocol spec.
 
@@ -46,3 +46,4 @@ Execute a REPL command in the current canvas context.
 ### `destroy(): void`
 
 Manually destroy the SDK instance, removing the iframe and its listeners.
+

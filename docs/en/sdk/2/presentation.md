@@ -49,9 +49,9 @@ Load content by a Dino-GSP share ID.
 - **Parameter**: `id`: string (e.g. `'33TA3484'`)
 - **Returns**: Metadata indicating load success or failure.
 
-### `loadFile(content: FileContentV10): Promise<Result>`
+### `loadFile(content: FileContentLatest): Promise<Result>`
 
-Load structured JSON data conforming to the FileContentV10 protocol.
+Load structured JSON data conforming to the FileContentLatest protocol.
 
 - **Parameter**: `content`: see [Protocol Reference](./protocol)
 
@@ -94,3 +94,4 @@ unsubscribe();
 | Event   | Triggered when                                      | Callback type                                              |
 | ------- | --------------------------------------------------- | ---------------------------------------------------------- |
 | `ready` | iframe finishes initialization; API calls can begin | `{ type: 'ready', mode: string, version: string \| null }` |
+

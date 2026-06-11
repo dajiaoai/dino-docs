@@ -27,7 +27,7 @@ description: 基于 1.2.1 版本的类、方法与事件说明
 
 加载指定分享 ID 的画板内容。
 
-### `loadFile(content: FileContentV10): Promise<void>`
+### `loadFile(content: FileContentLatest): Promise<void>`
 
 直接注入符合规格的画板 JSON 内容。
 
@@ -46,3 +46,4 @@ description: 基于 1.2.1 版本的类、方法与事件说明
 ### `destroy(): void`
 
 手动销毁 SDK 实例，移除 iframe 及其监听器。
+

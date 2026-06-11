@@ -1,6 +1,6 @@
 ---
 title: Protocol Reference
-description: FileContentV10 structure, error codes - Dino-GSP Open Platform
+description: FileContentLatest structure, error codes - Dino-GSP Open Platform
 ---
 
 # Protocol Reference
@@ -27,3 +27,4 @@ Type definitions (e.g. `FileContent`, `Slide`) are available in the [algeo-proto
 | `EMBED_IFRAME_NOT_READY`     | iframe not ready                                                             |
 | `EMBED_TIMEOUT`              | Request timeout                                                              |
 | `EMBED_DESTROYED`            | Instance destroyed                                                           |
+

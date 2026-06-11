@@ -49,9 +49,9 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 - **参数**: `id`: string (如 '33TA3484')
 - **返回**: 加载成功或失败的元数据。
 
-### `loadFile(content: FileContentV10): Promise<Result>`
+### `loadFile(content: FileContentLatest): Promise<Result>`
 
-加载符合 FileContentV10 协议的结构化 JSON 数据。
+加载符合 FileContentLatest 协议的结构化 JSON 数据。
 
 - **参数**: `content`: [DSL 协议详情](./protocol)
 
@@ -94,3 +94,4 @@ unsubscribe();
 | 事件名  | 触发时机                          | 回调参数类型                                               |
 | ------- | --------------------------------- | ---------------------------------------------------------- |
 | `ready` | iframe 完成初始化，可开始调用方法 | `{ type: 'ready', mode: string, version: string \| null }` |
+

@@ -57,8 +57,8 @@ The SDK organizes the editor API into modules:
 
 Handles overall content loading and retrieval.
 
-- `loadContent(content: FileContentV10): Promise<void>`: Overwrite-load the current content.
-- `getContent(): Promise<FileContentV10>`: Retrieve the complete DSL data from the current editor.
+- `loadContent(content: FileContentLatest): Promise<void>`: Overwrite-load the current content.
+- `getContent(): Promise<FileContentLatest>`: Retrieve the complete DSL data from the current editor.
 
 ### 2. Slides API (`editor.slides`)
 
@@ -127,7 +127,7 @@ Use `editor.on(event, listener)` to subscribe; it returns an unsubscribe functio
 | Event           | Event data                                                 | Description                                                                             |
 | --------------- | ---------------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | `ready`         | `{ type: 'ready', mode, version }`                         | iframe initialization complete                                                          |
-| `contentChange` | `{ type: 'contentChange', source: 'user', content }`       | Fires after the user edits inside the iframe; returns the full `FileContentV10`         |
+| `contentChange` | `{ type: 'contentChange', source: 'user', content }`       | Fires after the user edits inside the iframe; returns the full `FileContentLatest`         |
 | `slideChange`   | `{ type: 'slideChange', index }`                           | Fires after the user switches slides inside the iframe; returns the current index       |
 | `save`          | `{ type: 'save', stage: 'request' \| 'success', content }` | `stage: 'request'`: host handles persistence; `stage: 'success'`: save flow is complete |
 
@@ -147,7 +147,7 @@ editor.on('ready', (event) => {
 
 ### `contentChange` Event
 
-Fires after the user makes any modification to geometry figures or the slide structure inside the iframe. Returns the full `FileContentV10`.
+Fires after the user makes any modification to geometry figures or the slide structure inside the iframe. Returns the full `FileContentLatest`.
 
 ```typescript
 editor.on('contentChange', (event) => {
@@ -199,3 +199,4 @@ editor.on('save', async (event) => {
 ```
 
 > **Note**: The `request`-stage listener must return a Promise (or be an `async` function), otherwise the iframe will not receive the host's handling result.
+

@@ -1,6 +1,6 @@
 ---
 title: SDK 2.x Protocol and Data Format
-description: FileContentV10 data structure and integration guidance
+description: FileContentLatest data structure and integration guidance
 ---
 
 # Protocol and Data Format
@@ -9,10 +9,10 @@ Dino-GSP SDK uses a JSON-based domain-specific language (DSL). The protocol desc
 
 ## Basic Structure
 
-A standard document JSON object (`FileContentV10`) contains the following core fields:
+A standard document JSON object (`FileContentLatest`) contains the following core fields:
 
 ```typescript
-interface FileContentV10 {
+interface FileContentLatest {
   slides: SlideV2[];
   messages: SeedChatMessage[];
   metadata: {
@@ -48,3 +48,4 @@ interface SlideV2 {
 
 1. **Direct storage**: In editor mode, you can save the retrieved JSON object as-is directly to your database.
 2. **Dynamic generation**: If you need to generate figures on the server or AI side, it is recommended to send drawing sequences to the canvas via `REPL` rather than manually constructing the `definitions` array. The underlying figure definition syntax (Style v2) is complex, and manual construction is error-prone.
+

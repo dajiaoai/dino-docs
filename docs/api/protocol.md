@@ -1,6 +1,6 @@
 ---
 title: 协议说明
-description: FileContentV10 结构、错误码 - 大角几何开放平台
+description: FileContentLatest 结构、错误码 - 大角几何开放平台
 ---
 
 # 协议说明
@@ -27,3 +27,4 @@ description: FileContentV10 结构、错误码 - 大角几何开放平台
 | `EMBED_IFRAME_NOT_READY`       | iframe 未就绪                                         |
 | `EMBED_TIMEOUT`                | 请求超时                                              |
 | `EMBED_DESTROYED`              | 实例已销毁                                            |
+

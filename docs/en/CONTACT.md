@@ -5,9 +5,17 @@ description: Contact Dino-GSP Open Platform for business inquiries, community ac
 
 # Contact
 
-If you want to integrate Dino-GSP Open Platform, or get access to community discussion and the latest platform updates, this page is the right place to reach us.
+If you need technical support, want to get the latest platform updates, or are interested in business cooperation, this page is the right place to reach us.
 
-## Community
+## 🛠️ Technical Support
+
+If you encounter technical issues or need technical support, please contact our technical team via Enterprise WeChat:
+
+<img src="https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/841edf50-screenshot-20260525-175003.png" alt="Technical support Enterprise WeChat QR code" style="height: 226px; width: auto;" />
+
+Or email support@dajiaoai.com with a description of the issue, and we will respond within 2-5 business days.
+
+## 📢 Community
 
 You are welcome to join the Dino-GSP Open Platform community group for:
 
@@ -19,7 +27,7 @@ You are welcome to join the Dino-GSP Open Platform community group for:
 
 If the QR code has expired or cannot be scanned, please email business@dajiaoai.com with the subject line "Open Platform Community Request".
 
-## Business Inquiries
+## 🤝 Business Inquiries
 
 Typical scenarios include:
 

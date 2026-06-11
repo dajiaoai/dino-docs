@@ -52,8 +52,8 @@ SDK 将编辑器的 API 进行了模块化拆分：
 
 处理内容的整体加载与获取。
 
-- `loadContent(content: FileContentV10): Promise<void>`: 覆盖加载当前内容。
-- `getContent(): Promise<FileContentV10>`: 获取当前编辑器中的完整 DSL 数据。
+- `loadContent(content: FileContentLatest): Promise<void>`: 覆盖加载当前内容。
+- `getContent(): Promise<FileContentLatest>`: 获取当前编辑器中的完整 DSL 数据。
 
 ### 2. 画板 API (`editor.slides`)
 
@@ -122,7 +122,7 @@ editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSl
 | 事件名          | 事件数据                                                   | 说明                                                                             |
 | --------------- | ---------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | `ready`         | `{ type: 'ready', mode, version }`                         | iframe 初始化完成                                                                |
-| `contentChange` | `{ type: 'contentChange', source: 'user', content }`       | 用户在 iframe 内编辑后回传完整 `FileContentV10`                                  |
+| `contentChange` | `{ type: 'contentChange', source: 'user', content }`       | 用户在 iframe 内编辑后回传完整 `FileContentLatest`                                  |
 | `slideChange`   | `{ type: 'slideChange', index }`                           | 用户在 iframe 内切换画板后回传当前索引                                           |
 | `save`          | `{ type: 'save', stage: 'request' \| 'success', content }` | `stage: 'request'` 时由宿主处理保存逻辑；`stage: 'success'` 时表示保存流程已完成 |
 
@@ -142,7 +142,7 @@ editor.on('ready', (event) => {
 
 ### `contentChange` 事件
 
-用户在 iframe 内对几何图形或画板结构做出任何修改后触发，回传完整的 `FileContentV10`。
+用户在 iframe 内对几何图形或画板结构做出任何修改后触发，回传完整的 `FileContentLatest`。
 
 ```typescript
 editor.on('contentChange', (event) => {
@@ -194,3 +194,4 @@ editor.on('save', async (event) => {
 ```
 
 > **注意**：`request` 阶段的监听器必须返回一个 Promise（或使用 async 函数），否则 iframe 将无法收到宿主的处理结果。
+

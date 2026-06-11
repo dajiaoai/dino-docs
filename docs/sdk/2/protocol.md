@@ -4,10 +4,10 @@
 
 ## 基本结构
 
-一个标准的文档 JSON 对象（`FileContentV10`）包含以下核心字段：
+一个标准的文档 JSON 对象（`FileContentLatest`）包含以下核心字段：
 
 ```typescript
-interface FileContentV10 {
+interface FileContentLatest {
   slides: SlideV2[];
   messages: SeedChatMessage[];
   metadata: {
@@ -43,3 +43,4 @@ interface SlideV2 {
 
 1. **直接保存**：在编辑模式下，您可以直接将获取到的 JSON 全量存储到您的数据库。
 2. **动态生成**：如果您需要在服务端或 AI 侧生成图形，建议通过 `REPL` 给画板发送绘图序列，而不是手动拼接 `definitions` 数组，因为底层图形定义语法（Style v2）较为复杂，手动拼接容易出错。
+
