@@ -103,8 +103,8 @@ export default defineConfig({
             text: '接入',
             items: [
               { text: 'SDK 接入', link: '/sdk/' },
-              { text: 'AI 接入', link: '/ai/' },
               { text: 'API 接入', link: '/api/' },
+              { text: 'AI 接入', link: '/ai/' },
             ],
           },
           { text: '联系我们', link: '/CONTACT' },
@@ -148,7 +148,7 @@ export default defineConfig({
               items: [
                 { text: '概览', link: '/api/' },
                 { text: '鉴权说明', link: '/api/auth' },
-                { text: '定价说明', link: '/api/pricing' },
+                { text: 'API 计费说明', link: '/api/pricing' },
               ],
             },
             {
@@ -179,8 +179,8 @@ export default defineConfig({
             text: 'Access',
             items: [
               { text: 'SDK Access', link: '/en/sdk/' },
-              { text: 'AI Access', link: '/en/ai/' },
               { text: 'API Access', link: '/en/api/' },
+              { text: 'AI Access', link: '/en/ai/' },
             ],
           },
           {
@@ -227,7 +227,7 @@ export default defineConfig({
               items: [
                 { text: 'Overview', link: '/en/api/' },
                 { text: 'Authentication', link: '/en/api/auth' },
-                { text: 'Pricing', link: '/en/api/pricing' },
+                { text: 'API Billing', link: '/en/api/pricing' },
               ],
             },
             {

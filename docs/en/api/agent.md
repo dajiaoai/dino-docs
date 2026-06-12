@@ -5,6 +5,8 @@ description: Describe Dino Geometry open platform intelligent image generation A
 
 # Intelligent Image Generation Service
 
+**Base URL: `https://api.dajiaoai.com`**
+
 This document describes the Agent task API provided by the Dino Geometry Open Platform.
 
 The Intelligent Image Generation API works asynchronously: the creation request returns a `taskId` immediately, and you poll the task detail endpoint to retrieve the result once generation is complete.
@@ -17,7 +19,7 @@ The Intelligent Image Generation API works asynchronously: the creation request 
 | List tasks | `/api/agent/tasks` | `GET` |
 | Task detail | `/api/agent/tasks/:taskId` | `GET` |
 
-See [Authentication](/en/api/auth) for auth and [Pricing](/en/api/pricing) for billing.
+See [Authentication](/en/api/auth) for auth and [API Billing](/en/api/pricing) for billing.
 
 ## 1. Create a task `POST /api/agent/run`
 
@@ -38,14 +40,14 @@ Notes: `model` is required. At least one of `content` or images is required. If 
 ### Example requests
 
 ```bash
-curl -X POST http://127.0.0.1:3000/api/agent/run \
+curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
   -F "model=dinogeo-1-pro" \
   -F "content=Draw an equilateral triangle with side length 4 and add a draggable vertex A."
 ```
 
 ```bash
-curl -X POST http://127.0.0.1:3000/api/agent/run \
+curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
   -F "model=dinogeo-1-pro" \
   -F "content=Draw the geometric figure that combines the elements from these reference images." \
@@ -87,7 +89,7 @@ curl -X POST http://127.0.0.1:3000/api/agent/run \
 ### Example request
 
 ```bash
-curl "http://127.0.0.1:3000/api/agent/tasks?page=1&pageSize=20&status=finished" \
+curl "https://api.dajiaoai.com/api/agent/tasks?page=1&pageSize=20&status=finished" \
   -H "Authorization: Bearer djo_xxx"
 ```
 
@@ -127,7 +129,7 @@ curl "http://127.0.0.1:3000/api/agent/tasks?page=1&pageSize=20&status=finished" 
 ### Example request
 
 ```bash
-curl http://127.0.0.1:3000/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
+curl https://api.dajiaoai.com/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
   -H "Authorization: Bearer djo_xxx"
 ```
 
@@ -147,18 +149,6 @@ curl http://127.0.0.1:3000/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
     "imgUrls": null,
     "status": "finished",
     "artifactUrl": "https://dl.easeplay.vip/dajiao-open/dev/mcp/.../result.algeo",
-    "extra": {
-      "output": {
-        "state": "finished",
-        "nextStep": null,
-        "comment": "已完成绘图任务。"
-      },
-      "usage": {
-        "inputTokens": 123,
-        "outputTokens": 456,
-        "totalTokens": 579
-      }
-    },
     "createdAt": "2026-06-08T10:00:00.000Z",
     "updatedAt": "2026-06-08T10:00:05.000Z"
   }
@@ -176,7 +166,7 @@ curl http://127.0.0.1:3000/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
 - `created`: task is stored and waiting for a worker
 - `running`: worker has started processing
 - `finished`: task completed, `artifactUrl` is available
-- `error`: task failed, see `extra.errorCode` and `extra.errorMessage`
+- `error`: task failed
 
 ## Polling guidance
 
@@ -191,7 +181,7 @@ When the task completes, `artifactUrl` points to a Dino Geometry project file (`
 ## Billing
 
 - Billing type: agent
-- Cost per call: varies by model — see [Pricing](/en/api/pricing)
+- Cost per call: varies by model — see [API Billing](/en/api/pricing)
 - Deducted on successful execution
 
 ## Typical call flow
@@ -199,4 +189,4 @@ When the task completes, `artifactUrl` points to a Dino Geometry project file (`
 1. Call `POST /api/agent/run` to create a task.
 2. Receive the `taskId`.
 3. Poll `GET /api/agent/tasks/:taskId` until the status is `finished` or `error`.
-4. When `finished`, download the result from `artifactUrl`; use `extra.output` and `extra.usage` for additional details.
+4. When `finished`, download the result from `artifactUrl`.

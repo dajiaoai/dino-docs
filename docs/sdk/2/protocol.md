@@ -11,7 +11,7 @@ interface FileContentLatest {
   slides: SlideV2[];
   messages: SeedChatMessage[];
   metadata: {
-    version: '10';
+    version: '11';
   };
 }
 ```
@@ -31,7 +31,7 @@ interface SlideV2 {
 
 | 字段                   | 类型                 | 说明                                                     |
 | :--------------------- | :------------------- | :------------------------------------------------------- |
-| `metadata.version`     | `'10'`               | 协议版本号，固定为字符串 `"10"`                          |
+| `metadata.version`     | `'11'`               | 协议版本号，固定为字符串 `"11"`                          |
 | `slides`               | `SlideV2[]`          | 画板数组，每个画板代表一个独立的几何画布                 |
 | `slides[].definitions` | `DefinitionV2[]`     | 几何对象定义列表，描述点、线、圆、函数、滑块等对象       |
 | `slides[].uvarMap`     | `[string, number][]` | 用户变量（滑块等）的当前值映射，格式为 `[变量名, 值]` 对 |

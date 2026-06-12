@@ -16,7 +16,7 @@ interface FileContentLatest {
   slides: SlideV2[];
   messages: SeedChatMessage[];
   metadata: {
-    version: '10';
+    version: '11';
   };
 }
 ```
@@ -36,7 +36,7 @@ interface SlideV2 {
 
 | Field                  | Type                 | Description                                                                            |
 | :--------------------- | :------------------- | :------------------------------------------------------------------------------------- |
-| `metadata.version`     | `'10'`               | Protocol version number; always the string `"10"`                                      |
+| `metadata.version`     | `'11'`               | Protocol version number; always the string `"11"`                                      |
 | `slides`               | `SlideV2[]`          | Slide array; each slide represents an independent geometry canvas                      |
 | `slides[].definitions` | `DefinitionV2[]`     | List of geometric object definitions: points, lines, circles, functions, sliders, etc. |
 | `slides[].uvarMap`     | `[string, number][]` | Current value map for user variables (sliders, etc.), as `[name, value]` pairs         |

@@ -5,214 +5,78 @@ description: 描述大角几何开放平台 HTTP 渲染接口，支持 PNG、SVG
 
 # 渲染接口
 
-本文档描述大角几何开放平台 HTTP 渲染接口。接口接收一个 `FileContentLatest` 项目内容，渲染指定画板并在上传成功后返回导出文件地址与元数据。
+**Base URL：`https://api.dajiaoai.com`**
+
+接口接收一个符合[大角几何工程文件协议](/sdk/2/protocol)的项目内容，渲染指定画板并返回导出文件地址与元数据。
 
 ## 概览
 
-- 方法：`POST`
-- Content-Type：`application/json`
-- 鉴权方式：详见 [鉴权说明](/api/auth)
+| 说明 | 路径 | 方法 |
+| --- | --- | --- |
+| 导出 PNG | `/api/render` | `POST` |
+| 导出 SVG | `/api/render-svg` | `POST` |
+| 导出 TikZ/TeX | `/api/render-tikz` | `POST` |
 
-当前提供以下三个接口：
-
-| 路径               | 格式 | 说明                                 |
-| ------------------ | ---- | ------------------------------------ |
-| `/api/render`      | PNG  | 保留原有接口，返回 PNG 文件元数据。  |
-| `/api/render-svg`  | SVG  | 新增接口，返回 SVG 文件元数据。      |
-| `/api/render-tikz` | TikZ | 新增接口，返回 TikZ/TeX 文件元数据。 |
+鉴权方式见[鉴权说明](/api/auth)，计费规则见[API 计费说明](/api/pricing)。
 
 ## 请求头
 
 除 `Authorization` 外，可选传入：
 
-- `x-request-id`：业务请求标识。服务会把它用于额度扣费记录和日志关联；未传时服务会自动生成 UUID。
+- `x-request-id`：业务请求标识，未传时服务自动生成 UUID。
 
 ## 请求体
 
-三个接口都接收 JSON 请求体。公共字段如下：
+三个接口共用以下 JSON 字段：
 
 | 字段              | 类型                | 必填 | 说明                                                    |
 | ----------------- | ------------------- | ---- | ------------------------------------------------------- |
-| `content`         | `FileContentLatest` | 是   | 要渲染的项目内容，且 `metadata.version` 必须为 `"10"`。 |
-| `slideIndex`      | `number`            | 否   | 要渲染的画板序号，从 `1` 开始计数。                     |
+| `content`         | `FileContentLatest` | 是   | 要渲染的项目内容，格式见[大角几何工程文件协议](/sdk/2/protocol)。 |
+| `slideIndex`      | `number`            | 否   | 要渲染的画板序号，从 `1` 开始，默认第 `1` 个画板。     |
 | `size.width`      | `number`            | 否   | 逻辑画布宽度，正整数，默认 `1024`。                     |
 | `size.height`     | `number`            | 否   | 逻辑画布高度，正整数，默认 `1024`。                     |
 | `camera.offset.x` | `number`            | 否   | 覆盖渲染相机中心点 `x`。                                |
 | `camera.offset.y` | `number`            | 否   | 覆盖渲染相机中心点 `y`。                                |
 | `camera.scale`    | `number`            | 否   | 覆盖渲染相机缩放比例。                                  |
 
-其中：
+`/api/render` 额外支持 `pixelRatio`（默认 `1`），其余两个接口不接收此字段。
 
-- `/api/render` 额外支持 `pixelRatio`，默认 `1`
-- `/api/render-svg` 和 `/api/render-tikz` 不接收 `pixelRatio`
+### 尺寸限制
 
-### content 的最小合法骨架
-
-`content` 必须满足 `FileContentLatest` 的最小结构：
-
-```json
-{
-  "metadata": {
-    "version": "10"
-  },
-  "messages": [],
-  "slides": [
-    {
-      "definitions": [],
-      "uvarMap": [],
-      "styleSheet": {},
-      "doc": []
-    }
-  ]
-}
-```
-
-说明：
-
-- `slides` 不能为空，否则即使通过结构校验，渲染时也会失败。
-- 实际项目里通常应直接传入主站或 SDK 导出的完整 `FileContentLatest`，不要手写简化版业务数据。
-
-### 默认值与限制
-
-- 默认 `size` 为 `1024 x 1024`
-- `/api/render` 默认 `pixelRatio` 为 `1`
-- 实际物理尺寸按以下公式计算：
+`/api/render` 的物理尺寸由以下公式计算，且不得超过 `2048 x 2048`：
 
 ```text
-physicalWidth = round(width * pixelRatio)
+physicalWidth  = round(width * pixelRatio)
 physicalHeight = round(height * pixelRatio)
 ```
 
-- `/api/render` 当前限制为：`width * pixelRatio <= 2048` 且 `height * pixelRatio <= 2048`
-- `slideIndex` 按 `1` 开始计数
-- 当前三个 HTTP API 在省略 `slideIndex` 时，都会回退到第 `1` 个画板
-
-> 虽然共享 schema 注释写的是“省略时导出当前画板”，但当前 HTTP 接口没有传入“当前画板”上下文，因此实际行为都是导出第一个画板。
-
-## PNG 请求示例
+## 导出 PNG `POST /api/render`
 
 ```bash
-curl -X POST http://127.0.0.1:3000/api/render \
+curl -X POST https://api.dajiaoai.com/api/render \
   -H "Authorization: Bearer djo_xxx" \
   -H "Content-Type: application/json" \
   -H "x-request-id: render-demo-001" \
   -d '{
     "slideIndex": 1,
-    "size": {
-      "width": 768,
-      "height": 768
-    },
+    "size": { "width": 768, "height": 768 },
     "pixelRatio": 2,
-    "camera": {
-      "offset": {
-        "x": 0,
-        "y": 0
-      },
-      "scale": 1
-    },
+    "camera": { "offset": { "x": 0, "y": 0 }, "scale": 1 },
     "content": {
-      "metadata": {
-        "version": "10"
-      },
+      "metadata": { "version": "11" },
       "messages": [],
-      "slides": [
-        {
-          "definitions": [],
-          "uvarMap": [],
-          "styleSheet": {},
-          "doc": []
-        }
-      ]
+      "slides": [{ "definitions": [], "uvarMap": [], "styleSheet": {}, "doc": [] }]
     }
   }'
 ```
 
-## SVG 请求示例
-
-```bash
-curl -X POST http://127.0.0.1:3000/api/render-svg \
-  -H "Authorization: Bearer djo_xxx" \
-  -H "Content-Type: application/json" \
-  -H "x-request-id: render-svg-demo-001" \
-  -d '{
-    "slideIndex": 1,
-    "size": {
-      "width": 768,
-      "height": 768
-    },
-    "camera": {
-      "offset": {
-        "x": 0,
-        "y": 0
-      },
-      "scale": 1
-    },
-    "content": {
-      "metadata": {
-        "version": "10"
-      },
-      "messages": [],
-      "slides": [
-        {
-          "definitions": [],
-          "uvarMap": [],
-          "styleSheet": {},
-          "doc": []
-        }
-      ]
-    }
-  }'
-```
-
-## TikZ 请求示例
-
-```bash
-curl -X POST http://127.0.0.1:3000/api/render-tikz \
-  -H "Authorization: Bearer djo_xxx" \
-  -H "Content-Type: application/json" \
-  -H "x-request-id: render-tikz-demo-001" \
-  -d '{
-    "slideIndex": 1,
-    "size": {
-      "width": 768,
-      "height": 768
-    },
-    "camera": {
-      "offset": {
-        "x": 0,
-        "y": 0
-      },
-      "scale": 1
-    },
-    "content": {
-      "metadata": {
-        "version": "10"
-      },
-      "messages": [],
-      "slides": [
-        {
-          "definitions": [],
-          "uvarMap": [],
-          "styleSheet": {},
-          "doc": []
-        }
-      ]
-    }
-  }'
-```
-
-## 成功响应
-
-### PNG
-
-成功时返回 `200 OK`：
+成功返回 `200 OK`：
 
 ```json
 {
   "success": true,
   "url": "https://dl.easeplay.vip/dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.png",
   "filename": "4fa2bc.png",
-  "objectKey": "dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.png",
   "slideIndex": 1,
   "width": 768,
   "height": 768,
@@ -224,32 +88,32 @@ curl -X POST http://127.0.0.1:3000/api/render-tikz \
 }
 ```
 
-字段说明：
+## 导出 SVG `POST /api/render-svg`
 
-| 字段             | 说明                              |
-| ---------------- | --------------------------------- |
-| `url`            | 上传完成后的公开访问地址。        |
-| `filename`       | OSS 对象文件名。                  |
-| `objectKey`      | OSS 对象完整 key。                |
-| `slideIndex`     | 实际渲染的画板序号，从 `1` 开始。 |
-| `width`          | 请求中的逻辑宽度。                |
-| `height`         | 请求中的逻辑高度。                |
-| `pixelRatio`     | 请求中的像素倍率。                |
-| `physicalWidth`  | 实际输出像素宽度。                |
-| `physicalHeight` | 实际输出像素高度。                |
-| `mimeType`       | 当前固定为 `image/png`。          |
-| `size`           | PNG Buffer 字节数。               |
+```bash
+curl -X POST https://api.dajiaoai.com/api/render-svg \
+  -H "Authorization: Bearer djo_xxx" \
+  -H "Content-Type: application/json" \
+  -H "x-request-id: render-svg-demo-001" \
+  -d '{
+    "slideIndex": 1,
+    "size": { "width": 768, "height": 768 },
+    "camera": { "offset": { "x": 0, "y": 0 }, "scale": 1 },
+    "content": {
+      "metadata": { "version": "11" },
+      "messages": [],
+      "slides": [{ "definitions": [], "uvarMap": [], "styleSheet": {}, "doc": [] }]
+    }
+  }'
+```
 
-### SVG
-
-成功时返回 `200 OK`：
+成功返回 `200 OK`：
 
 ```json
 {
   "success": true,
   "url": "https://dl.easeplay.vip/dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.svg",
   "filename": "4fa2bc.svg",
-  "objectKey": "dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.svg",
   "slideIndex": 1,
   "width": 768,
   "height": 768,
@@ -258,16 +122,32 @@ curl -X POST http://127.0.0.1:3000/api/render-tikz \
 }
 ```
 
-### TikZ
+## 导出 TikZ `POST /api/render-tikz`
 
-成功时返回 `200 OK`：
+```bash
+curl -X POST https://api.dajiaoai.com/api/render-tikz \
+  -H "Authorization: Bearer djo_xxx" \
+  -H "Content-Type: application/json" \
+  -H "x-request-id: render-tikz-demo-001" \
+  -d '{
+    "slideIndex": 1,
+    "size": { "width": 768, "height": 768 },
+    "camera": { "offset": { "x": 0, "y": 0 }, "scale": 1 },
+    "content": {
+      "metadata": { "version": "11" },
+      "messages": [],
+      "slides": [{ "definitions": [], "uvarMap": [], "styleSheet": {}, "doc": [] }]
+    }
+  }'
+```
+
+成功返回 `200 OK`：
 
 ```json
 {
   "success": true,
   "url": "https://dl.easeplay.vip/dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.tex",
   "filename": "4fa2bc.tex",
-  "objectKey": "dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.tex",
   "slideIndex": 1,
   "width": 768,
   "height": 768,
@@ -278,46 +158,13 @@ curl -X POST http://127.0.0.1:3000/api/render-tikz \
 
 ## 失败响应
 
-### 400 Bad Request
+| 状态码 | 原因 |
+| --- | --- |
+| `400` | 参数不通过，或 `content` 不符合[大角几何工程文件协议](/sdk/2/protocol) |
+| `401` | API Key 无效 |
 
-以下情况会返回 `400`：
+## 计费说明
 
-- 请求体不是合法 JSON
-- 参数类型不符合 schema
-- `content` 不是合法 `FileContentLatest`
-
-示例：
-
-```json
-{
-  "success": false,
-  "error": "content must be FileContentLatest and metadata.version must be \"10\"."
-}
-```
-
-### 401 Unauthorized
-
-Bearer 鉴权失败时返回 `401`：
-
-```json
-{
-  "success": false,
-  "error": "Missing Authorization header. Use Authorization: Bearer djo_xxx."
-}
-```
-
-## 额度说明
-
-三个接口在执行前都会先扣减一次导出额度：
-
-- `/api/render` 对应 `export_image`
-- `/api/render-svg` 对应 `export_svg`
-- `/api/render-tikz` 对应 `export_tikz`
-
-默认扣费均为：`100` credits / 次
-
-补充说明：
-
-- `export_svg` 与 `export_tikz` 当前默认价格与 `export_image` 一致
-- SVG 导出在服务端仍依赖 `node-canvas` 的 2D context 做文本测量
-- TikZ 导出文件当前使用 `.tex` 后缀，返回 `mimeType: text/plain`
+- 计费类型：render
+- 单次费用：详见[API 计费说明](/api/pricing)
+- 扣费规则：成功执行后扣费

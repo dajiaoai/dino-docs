@@ -79,7 +79,7 @@ editor.on('save', (event) => {
 编辑模式需要 `appId` 进行身份验证。您可以通过以下步骤获取：
 
 1. **访问开发者控制台**：前往 [大角几何开放平台控制台](https://open.dajiaoai.com/console/dashboard)
-2. **注册应用**：在控制台中创建新应用并填写应用信息
+2. **注册应用**：在[控制台](https://open.dajiaoai.com/console)中创建新应用并填写应用信息
 3. **获取凭证**：系统会生成您的 `appId`，复制该 ID 用于 SDK 配置
 
 如需协助，请 [联系我们](../../CONTACT)。
@@ -87,7 +87,7 @@ editor.on('save', (event) => {
 ## 5. 常见问题
 
 - **为什么编辑模式需要 appId？** 这是为了确保应用的合法性和安全性。
-- **appId 有过期时间吗？** 您的 appId 长期有效，但可在控制台中管理。
+- **appId 有过期时间吗？** 您的 appId 长期有效，但可在[控制台](https://open.dajiaoai.com/console)中管理。
 
 ## 6. 下一步建议
 

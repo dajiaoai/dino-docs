@@ -34,8 +34,8 @@ description: API 接入概览，包含渲染接口和 Agent 异步任务接口�
 Authorization: Bearer djo_xxx
 ```
 
-API Key 在控制台中生成。详见[鉴权说明](/api/auth)。
+API Key 在[控制台](https://open.dajiaoai.com/console)中生成。详见[鉴权说明](/api/auth)。
 
 ## 接入咨询
 
-如需了解控制台使用、申请更高配额，请前往[联系我们](../CONTACT)。
+如需了解[控制台](https://open.dajiaoai.com/console)使用、申请更高配额，请前往[联系我们](../CONTACT)。

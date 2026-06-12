@@ -5,24 +5,20 @@ description: Understand the current billing rules for Dino-GSP MCP and how diffe
 
 # MCP Billing
 
-This page describes the current billing rules for Dino-GSP MCP.
+> **All capabilities are currently at 60% off.** The points shown below reflect the actual charge today.
 
 ## Billing rules
 
-| Scenario                    | Billing rule         | Notes            |
-| :-------------------------- | :------------------- | :--------------- |
-| Image generation call       | `100` billing points | Charged per call |
-| Other tool capability calls | `1` billing point    | Charged per call |
+| Capability | List Price | Discount | Current Price | Points Charged |
+| --- | --- | --- | --- | --- |
+| Basic tool calls | ¥0.05 / 100 calls | 40% off | ¥0.03 / 100 calls | 3 pts / call |
+| Image generation | ¥5.0 / 100 calls | 40% off | ¥3.0 / 100 calls | 300 pts / call |
+| LaTeX generation | ¥3.0 / 100 calls | 40% off | ¥1.8 / 100 calls | 180 pts / call |
+
+- Charged per successful call.
 
 ## How to top up
 
-The current exchange rate is `1` CNY = `10000` billing points. Top-ups are currently handled manually through WeChat. If you want to recharge, please scan the QR code below.
+The current exchange rate is `1` CNY = `10,000` points. Top-ups are currently handled manually via WeChat. Scan the QR code below to get in touch.
 
 ![WeChat top-up QR code](https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/841edf50-screenshot-20260525-175003.png)
-
-## Current scope
-
-- The image-generation charge applies to `export_image`: `100` billing points per call
-- Other capabilities such as `export_project`, `algeo_repl`, and `import_project` are charged `1` billing point per call
-
-If the billing rules change later, please refer to the console, official announcements, or the latest documentation.

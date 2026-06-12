@@ -34,8 +34,8 @@ All endpoints require Bearer API Key authentication:
 Authorization: Bearer djo_xxx
 ```
 
-API keys are generated in the console. See [Authentication](/en/api/auth) for details.
+API keys are generated in the [console](https://open.dajiaoai.com/console). See [Authentication](/en/api/auth) for details.
 
 ## Get in touch
 
-For console access or higher quota requests, see [Contact](../CONTACT).
+For [console](https://open.dajiaoai.com/console) access or higher quota requests, see [Contact](../CONTACT).

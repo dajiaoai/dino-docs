@@ -5,6 +5,8 @@ description: 描述大角几何开放平台智能生图接口，支持异步任�
 
 # 智能生图接口
 
+**Base URL：`https://api.dajiaoai.com`**
+
 本文档描述大角几何开放平台 Agent 任务接口。
 
 智能生图接口采用异步模式：提交请求后立即返回 `taskId`，生成完成后通过任务详情接口获取结果。
@@ -17,7 +19,7 @@ description: 描述大角几何开放平台智能生图接口，支持异步任�
 | 任务列表 | `/api/agent/tasks` | `GET` |
 | 任务详情 | `/api/agent/tasks/:taskId` | `GET` |
 
-鉴权方式见[鉴权说明](/api/auth)，计费规则见[定价说明](/api/pricing)。
+鉴权方式见[鉴权说明](/api/auth)，计费规则见[API 计费说明](/api/pricing)。
 
 ## 1. 创建任务 `POST /api/agent/run`
 
@@ -38,14 +40,14 @@ description: 描述大角几何开放平台智能生图接口，支持异步任�
 ### 示例请求
 
 ```bash
-curl -X POST http://127.0.0.1:3000/api/agent/run \
+curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
   -F "model=dinogeo-1-pro" \
   -F "content=请画一个边长为 4 的正三角形，并给出一个可拖拽的顶点 A。"
 ```
 
 ```bash
-curl -X POST http://127.0.0.1:3000/api/agent/run \
+curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
   -F "model=dinogeo-1-pro" \
   -F "content=请综合这些参考图绘制对应的几何图形。" \
@@ -87,7 +89,7 @@ curl -X POST http://127.0.0.1:3000/api/agent/run \
 ### 示例请求
 
 ```bash
-curl "http://127.0.0.1:3000/api/agent/tasks?page=1&pageSize=20&status=finished" \
+curl "https://api.dajiaoai.com/api/agent/tasks?page=1&pageSize=20&status=finished" \
   -H "Authorization: Bearer djo_xxx"
 ```
 
@@ -127,7 +129,7 @@ curl "http://127.0.0.1:3000/api/agent/tasks?page=1&pageSize=20&status=finished" 
 ### 示例请求
 
 ```bash
-curl http://127.0.0.1:3000/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
+curl https://api.dajiaoai.com/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
   -H "Authorization: Bearer djo_xxx"
 ```
 
@@ -179,7 +181,7 @@ curl http://127.0.0.1:3000/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
 ## 计费说明
 
 - 计费类型：agent
-- 单次费用：按模型别名区分，详见[定价说明](/api/pricing)
+- 单次费用：按模型别名区分，详见[API 计费说明](/api/pricing)
 - 扣费时机：任务成功执行后扣费
 
 ## 典型调用流程
