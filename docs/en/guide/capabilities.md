@@ -17,13 +17,14 @@ If you already know what kind of product you are building, start with <a href=".
 
 ## Capability unit summary
 
-| Capability unit               | What it solves                                                      | Best for                                                           | Related scenarios                                                                                                                                                                                                                                                                     |
-| :---------------------------- | :------------------------------------------------------------------ | :----------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Embedded Presentation Canvas  | Put dynamic geometry directly into your pages                       | Question banks, classrooms, courseware platforms                   | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">Online Education and Smart Classrooms</a>, <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>                  |
-| Embedded Editor Canvas        | Embed a professional geometry editor into your own system           | Curriculum platforms, lesson-authoring tools, content back offices | <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>                                                                                                                                                   |
-| Geometry Protocol and JS SDK  | Load, control, save, and export canvas state in code                | Teams that need deep integration                                   | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>, <a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">Independent Developers and Math Innovation Tools</a> |
-| AI Agent Geometry Interaction | Let AI or agents draw, inspect, and update geometry while reasoning | AI tutors, intelligent explanation products, automated workflows   | <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI Tutoring</a>                                                                                                                                                                                      |
-| Image and Structured Export   | Turn geometry content into images or reusable structured output     | Content production, question-bank pipelines, result delivery flows | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>, <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>              |
+| Capability unit                    | What it solves                                                                           | Best for                                                           | Related scenarios                                                                                                                                                                                                                                                                                                                                                                                            |
+| :--------------------------------- | :--------------------------------------------------------------------------------------- | :----------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Embedded Presentation Canvas       | Put dynamic geometry directly into your pages                                            | Question banks, classrooms, courseware platforms                   | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">Online Education and Smart Classrooms</a>, <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>                                                                                                                                         |
+| Embedded Editor Canvas             | Embed a professional geometry editor into your own system                                | Curriculum platforms, lesson-authoring tools, content back offices | <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>                                                                                                                                                                                                                                                                          |
+| Geometry Protocol and JS SDK       | Load, control, save, and export canvas state in code                                     | Teams that need deep integration                                   | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>, <a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">Independent Developers and Math Innovation Tools</a>                                                                                                                        |
+| AI Agent Geometry Interaction      | Let AI or agents draw, inspect, and update geometry while reasoning                      | AI tutors, intelligent explanation products, automated workflows   | <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI Tutoring</a>                                                                                                                                                                                                                                                                                                             |
+| Image and Structured Export        | Turn geometry content into images or reusable structured output                          | Content production, question-bank pipelines, result delivery flows | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>, <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>                                                                                                                                     |
+| HTTP API Server-side Integration   | Call AI figure generation and rendering directly from the backend for end-to-end intelligent geometry production | Backend teams, automated content pipelines, AI applications        | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>, <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>, <a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">Independent Developers and Math Innovation Tools</a> |
 
 <a id="capability-embedded-presentation"></a>
 
@@ -111,28 +112,31 @@ This capability unit is for teams that need code-level control. Through the SDK 
 
 ## 4. AI Agent Geometry Interaction
 
-This capability unit is for AI-native products. The goal is to give a model, agent, or automation flow direct access to geometry operations during reasoning.
+This capability unit is for AI-native products. The goal is to give a model, agent, or automation flow direct access to geometry operations during reasoning. It is currently available through the <a href=”../ai/mcp” target=”_blank” rel=”noreferrer”>MCP protocol</a>, which works with Claude Code, Cursor, VS Code, Codex, and other major AI clients.
 
 **What you get**
 
 - Let AI create, modify, and query geometry objects through instructions.
 - Use the current canvas state as part of model context.
 - Turn explanation workflows into “reason while drawing” interactions.
+- Export images or project files from within a conversation and pass them downstream.
 
 **Suitable scenarios**
 
-- <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI Tutoring</a>
-- <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">Online Education and Smart Classrooms</a>
+- <a href=”./scenarios.html#scenario-ai-tutoring” target=”_blank” rel=”noreferrer”>AI Tutoring</a>
+- <a href=”./scenarios.html#scenario-online-education” target=”_blank” rel=”noreferrer”>Online Education and Smart Classrooms</a>
 
 **Typical examples**
 
-- An AI tutor automatically adds the required auxiliary construction while explaining a proof.
+- An AI tutor automatically adds the required auxiliary construction while explaining a proof via MCP.
 - An intelligent agent inspects the current figure state to decide what geometric relation to verify next.
+- An agent workflow exports an image at the end of its reasoning turn and attaches it to the response.
 
 **When to choose this first**
 
 - Your product already includes LLMs, agents, or automated reasoning flows.
 - You want AI explanations to include live figure manipulation, not text alone.
+- Your scenario is “AI-driven interactive canvas” rather than “batch offline content production” (the latter belongs to HTTP API Server-side Integration).
 
 <a id="capability-export"></a>
 
@@ -162,6 +166,45 @@ Many products ultimately need deliverable outputs such as images, structured dat
 - Your product needs geometry results stored in its own content or workflow system.
 - You need both interactive online content and offline deliverable outputs.
 
+<a id="capability-api"></a>
+
+## 6. HTTP API Server-side Integration
+
+This capability unit is for backend and automation scenarios. It provides standard HTTP endpoints so you can call AI figure generation and rendering without running a browser canvas. The caller here is your server-side code, not a user's browser.
+
+**What you get**
+
+- **AI Figure Generation**: Call the Agent API with a text description or reference images. It returns an interactive geometry project file (`.algeo`) asynchronously. Text-only, image-only, or combined text + image input are all supported (for example, recognizing a hand-drawn sketch).
+- **Rendering**: Call the Render API to convert an existing geometry project into PNG, SVG, or TikZ output. Returns a file URL synchronously.
+- Both API types use Bearer API Key authentication and can be used independently or chained (generate, then render).
+
+**Suitable scenarios**
+
+- <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">Digital Question Banks and Content Platforms</a>
+- <a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">Lesson Plan and Courseware Authoring Tools</a>
+- <a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">Independent Developers and Math Innovation Tools</a>
+
+**Typical examples**
+
+- A question-bank back office automatically generates a geometry figure from the problem text using the Agent API when a new problem is imported, then renders a thumbnail with the Render API.
+- A content platform batch-processes existing geometry projects, exporting PNGs via the Render API for PDF reports or question list pages.
+- A developer uploads a reference image (hand-drawn or screenshot) to the Agent API; AI recognizes the structure and returns an editable geometry project.
+
+**When to choose this first**
+
+- Your content production happens on the server or in an automated pipeline—no user canvas interaction required.
+- You want text or images as input and AI to do the geometry modeling.
+- Your scenario is batch processing or a content pipeline rather than single interactive sessions (which belong to the embedded components or MCP).
+
+**How it compares to other capability units**
+
+| Dimension             | HTTP API Server-side Integration       | Image and Structured Export (SDK)  | AI Agent Geometry Interaction (MCP) |
+| :-------------------- | :------------------------------------- | :--------------------------------- | :---------------------------------- |
+| Where the call runs   | Your server-side code                  | The user's browser                 | AI client / agent runtime           |
+| Input                 | Text / images / geometry project files | Current canvas state               | Natural language instructions       |
+| Canvas required       | No                                     | Yes                                | Optional                            |
+| Typical use           | Batch content production, pipelines    | User-initiated export              | AI draws during live reasoning      |
+
 ## Common capability combinations
 
 ### Display-only integration
@@ -179,7 +222,17 @@ Many products ultimately need deliverable outputs such as images, structured dat
 - Recommended combination: Embedded Editor Canvas + Image and Structured Export
 - Common in: lesson platforms, courseware tools, question-bank operations systems
 
-### AI-native geometry experience
+### AI-native geometry experience (interactive)
 
-- Recommended combination: AI Agent Geometry Interaction + Geometry Protocol and JS SDK
+- Recommended combination: AI Agent Geometry Interaction (MCP) + Geometry Protocol and JS SDK
 - Common in: AI tutors, intelligent explanation products, automated geometry workflows
+
+### Backend batch production or automated content processing
+
+- Recommended combination: HTTP API Server-side Integration (AI Figure Generation + Rendering)
+- Common in: bulk content platforms, automated question-bank pipelines, server-side content workflows with no frontend
+
+### AI-generated figures displayed on the frontend
+
+- Recommended combination: HTTP API Server-side Integration (AI Figure Generation) + Embedded Presentation Canvas
+- Common in: end-to-end flows where AI generates geometry that users then explore interactively

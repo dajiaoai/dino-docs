@@ -17,13 +17,13 @@ description: 从业务场景理解大角几何开放平台适合怎样的接入�
 
 ## 场景与能力的对应关系
 
-| 场景                     | 核心诉求                                   | 推荐能力单元                                                                                                                                                                                                                                                                                                                               |
-| :----------------------- | :----------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 在线教育与智慧课堂       | 让抽象几何知识在教学页面中动态呈现         | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">嵌入式演示画板</a>、<a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">嵌入式编辑画板</a>、<a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a> |
-| 数字化题库与内容平台     | 降低题图生产成本，增强题目交互性           | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">嵌入式演示画板</a>、<a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>    |
-| AI 智能辅导              | 让模型边推理边作图，输出更生动的几何讲解   | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>、<a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>                                                                                                                     |
-| 教案与课件生产工具       | 让教研团队在自己的系统中生产几何内容       | <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">嵌入式编辑画板</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>                                                                                                                        |
-| 独立开发者与数学创新工具 | 直接复用成熟几何基础设施，聚焦自身创新逻辑 | <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>                                                                                                                        |
+| 场景                     | 核心诉求                                   | 推荐能力单元                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| :----------------------- | :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 在线教育与智慧课堂       | 让抽象几何知识在教学页面中动态呈现         | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">嵌入式演示画板</a>、<a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">嵌入式编辑画板</a>、<a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>                                                                                                                                                       |
+| 数字化题库与内容平台     | 降低题图生产成本，增强题目交互性           | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">嵌入式演示画板</a>、<a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>、<a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>                                                 |
+| AI 智能辅导              | 让模型边推理边作图，输出更生动的几何讲解   | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>、<a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>、<a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>                                                                                                                                                                    |
+| 教案与课件生产工具       | 让教研团队在自己的系统中生产几何内容       | <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">嵌入式编辑画板</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>、<a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>                                                                                                                                                                       |
+| 独立开发者与数学创新工具 | 直接复用成熟几何基础设施，聚焦自身创新逻辑 | <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>、<a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>                                                                                                                                                                       |
 
 <a id="scenario-online-education"></a>
 
@@ -80,16 +80,19 @@ description: 从业务场景理解大角几何开放平台适合怎样的接入�
 - <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">嵌入式演示画板</a>
 - <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>
 - <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>
+- <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>
 
 **为什么适合**
 
 - 既可以在前台展示动态题图，也可以在后台用代码批量处理几何内容。
 - 适合把题目、图形、导出结果接入现有题库工作流。
+- 对于大量存量题目，可以通过智能生图接口批量将文字描述或参考图自动转换为可交互的几何项目。
 
 **典型例子**
 
 - 题库详情页加载可交互图形，学生通过拖动验证结论是否成立。
 - 运营后台根据结构化数据批量生成题图缩略图和展示图。
+- 后台定时任务调用智能生图接口，将新录入题目的几何描述批量转换为图形，再通过渲染接口生成预览图。
 
 <a id="scenario-ai-tutoring"></a>
 
@@ -110,18 +113,21 @@ description: 从业务场景理解大角几何开放平台适合怎样的接入�
 
 **推荐能力单元**
 
-- <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>
-- <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>
+- <a href=”./capabilities.html#capability-ai-agent” target=”_blank” rel=”noreferrer”>AI Agent 几何交互</a>（交互式推理）
+- <a href=”./capabilities.html#capability-sdk-protocol” target=”_blank” rel=”noreferrer”>几何协议与 JS SDK</a>
+- <a href=”./capabilities.html#capability-api” target=”_blank” rel=”noreferrer”>HTTP API 服务端接入</a>（自动化生成）
 
 **为什么适合**
 
 - 模型可以把作图过程纳入推理链，让图形成为讲解上下文的一部分。
 - 可以实时读取图形状态，支持更强的诊断、讲解和追问能力。
+- 对于非实时场景（如预生成讲解图、批量制作题目配图），也可以通过智能生图接口在服务端直接从题目描述生成几何项目。
 
 **典型例子**
 
-- AI 在讲“证明圆周角相等”时，自动构造圆、弦和对应角，并逐步展示证明辅助图。
+- AI 在讲”证明圆周角相等”时，通过 MCP 自动构造圆、弦和对应角，并逐步展示证明辅助图。
 - 智能答疑系统根据学生在画板上的拖动结果，判断其是否真正理解了几何关系。
+- 内容平台在后台预生成大量讲解配图：调用智能生图接口将每道例题的解题步骤转换为几何项目，再渲染为图片附在解析中。
 
 <a id="scenario-authoring-tools"></a>
 
@@ -140,16 +146,19 @@ description: 从业务场景理解大角几何开放平台适合怎样的接入�
 
 - <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">嵌入式编辑画板</a>
 - <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>
+- <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>
 
 **为什么适合**
 
 - 可以把专业几何编辑能力直接放进内容生产流程，不用跳出系统单独制图。
 - 图形既能导出图片交付，也能保留结构化结果便于后续再编辑。
+- 对于内容量大的团队，可以通过智能生图接口快速从文字描述生成初稿，再在嵌入式编辑画板中精修。
 
 **典型例子**
 
 - 教师在备课系统里直接插入并编辑几何图，完成后导出到课件页面。
 - 教研团队在内容平台中沉淀可复用的结构化几何素材库。
+- 内容编辑输入例题描述，后台调用智能生图接口生成几何初稿，编辑在前端画板中微调后发布。
 
 <a id="scenario-independent-developers"></a>
 
@@ -168,29 +177,36 @@ description: 从业务场景理解大角几何开放平台适合怎样的接入�
 
 - <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>
 - <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>
+- <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>
 
 **为什么适合**
 
 - 你可以把精力放在自己的核心算法、交互或产品设计上，直接复用底层几何渲染和约束求解能力。
 - 更适合快速验证新产品方向，再逐步加深接入深度。
+- HTTP API 提供了无前端依赖的调用路径，方便在命令行工具、脚本或纯后端应用中直接集成。
 
 **典型例子**
 
 - 一款定理验证工具通过结构化协议生成图形，再调用渲染能力输出结果图。
 - 一款数学实验应用通过 SDK 控制参数变化，并实时展示对应图像变化。
+- 一个命令行脚本批量接收自然语言题目描述，通过智能生图接口生成几何项目并渲染为 PNG 存档。
 
 ## 如何选择接入路径
 
-| 你的目标                         | 建议先看                                                                                                           |
-| :------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
-| 只想先展示动态图形               | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">嵌入式演示画板</a> |
-| 需要在自己的系统里编辑和产出图形 | <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">嵌入式编辑画板</a>       |
-| 需要通过代码控制画板和数据流     | <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>       |
-| 需要让 AI 调用几何能力           | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>           |
-| 需要图片、协议数据等落地结果     | <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>              |
+| 你的目标                                   | 建议先看                                                                                                                |
+| :----------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
+| 只想先展示动态图形                         | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">嵌入式演示画板</a>      |
+| 需要在自己的系统里编辑和产出图形           | <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">嵌入式编辑画板</a>            |
+| 需要通过代码控制画板和数据流               | <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>            |
+| 需要让 AI 在对话 / 推理中调用几何能力      | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>                |
+| 需要图片、协议数据等落地结果               | <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>                   |
+| 需要后端批量生成几何图或渲染导出           | <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>                   |
+| 需要从文字 / 图片自动生成几何图（无前端）  | <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>（智能生图接口）   |
 
 ## 从场景视角继续阅读
 
 - 想了解每个能力单元本身能做什么：看 <a href="./capabilities.html#capability-summary" target="_blank" rel="noreferrer">能力总览</a>
 - 想直接进入工程接入文档：看 [SDK 接入](../sdk/)
 - 想先评估 AI / Agent 方向：看 [交互命令能力介绍](../sdk/repl)
+- 想接入 HTTP API（智能生图 / 渲染导出）：看 [API 接入](../api/)
+- 想接入 MCP / AI 客户端工具：看 [AI 接入](../ai/)
