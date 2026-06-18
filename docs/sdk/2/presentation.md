@@ -22,14 +22,18 @@ import { createPresentation, EmbeddedPresentation } from '@dajiaoai/algeo-sdk';
  * @param options 初始化选项
  */
 const presentation: EmbeddedPresentation = await createPresentation(container, {
+  auth: { appId: 'YTVJDQZR' },
   shareId: '可选初始 ID',
 });
 ```
+
+`appId` 获取方式详见[快速开始：获取 appId](./getting-started.html#_4-获取-appid)。
 
 ### UI 配置
 
 ```typescript
 const presentation: EmbeddedPresentation = await createPresentation(container, {
+  auth: { appId: 'YTVJDQZR' },
   ui: {
     logo: true,
   },
@@ -94,4 +98,3 @@ unsubscribe();
 | 事件名  | 触发时机                          | 回调参数类型                                               |
 | ------- | --------------------------------- | ---------------------------------------------------------- |
 | `ready` | iframe 完成初始化，可开始调用方法 | `{ type: 'ready', mode: string, version: string \| null }` |
-

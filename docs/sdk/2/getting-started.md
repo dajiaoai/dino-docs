@@ -43,6 +43,7 @@ const container = document.getElementById('algeo-viewer');
 
 // 2. 创建并初始化实例
 const presentation = await createPresentation(container, {
+  auth: { appId: 'YTVJDQZR' },
   shareId: '33TA3484', // 可选，初始化后自动加载的内容 ID
 });
 
@@ -60,7 +61,7 @@ setTimeout(() => {
 import { createEditor } from '@dajiaoai/algeo-sdk';
 
 const editor = await createEditor(document.getElementById('algeo-editor'), {
-  auth: { appId: 'YTVJDQZR' }, // 编辑模式必需
+  auth: { appId: 'YTVJDQZR' },
   ui: {
     navbar: true, // 顶部导航开关
     slidePanel: true, // 侧边栏缩略图开关
@@ -76,17 +77,17 @@ editor.on('save', (event) => {
 
 ## 4. 获取 appId
 
-编辑模式需要 `appId` 进行身份验证。您可以通过以下步骤获取：
+SDK 创建演示模式或编辑模式实例时，都需要通过 `auth.appId` 进行身份验证。您可以通过以下步骤获取：
 
 1. **访问开发者控制台**：前往 [大角几何开放平台控制台](https://open.dajiaoai.com/console/dashboard)
 2. **注册应用**：在[控制台](https://open.dajiaoai.com/console)中创建新应用并填写应用信息
-3. **获取凭证**：系统会生成您的 `appId`，复制该 ID 用于 SDK 配置
+3. **获取凭证**：系统会生成您的 `appId`，复制该 ID 并配置到 `auth: { appId: '您的 appId' }`
 
 如需协助，请 [联系我们](../../CONTACT)。
 
 ## 5. 常见问题
 
-- **为什么编辑模式需要 appId？** 这是为了确保应用的合法性和安全性。
+- **为什么 SDK 2.x 需要 appId？** 这是为了确保应用的合法性和安全性，演示模式和编辑模式都应在初始化时传入。
 - **appId 有过期时间吗？** 您的 appId 长期有效，但可在[控制台](https://open.dajiaoai.com/console)中管理。
 
 ## 6. 下一步建议

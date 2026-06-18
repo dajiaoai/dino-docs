@@ -21,6 +21,8 @@ const editor: EmbeddedEditor = await createEditor(container, {
 });
 ```
 
+`appId` 获取方式详见 [快速开始](./getting-started.html#_4-获取-appid)。
+
 ### UI 配置
 
 编辑模式支持通过 `ui` 配置控制各个面板的显示/隐藏。
@@ -33,16 +35,6 @@ const editor: EmbeddedEditor = await createEditor(container, {
 | `ui.algebraPanel` | `boolean` | `true` | 是否显示代数面板                                |
 | `ui.docPanel`     | `boolean` | `true` | 是否显示文档面板                                |
 | `ui.helpEntry`    | `boolean` | `true` | 是否显示编辑模式的帮助入口。从 `2.7.0` 起支持。 |
-
-## 获取 appId
-
-要使用编辑模式，您需要有效的 `appId`：
-
-1. 访问 [开发者控制台](https://open.dajiaoai.com/console/dashboard)
-2. 注册您的应用并获取 `appId`
-3. 在初始化编辑器时使用该 `appId`
-
-详见 [快速开始](./getting-started#获取-appid)。
 
 ## API 模块参考
 

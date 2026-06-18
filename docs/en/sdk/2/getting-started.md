@@ -43,6 +43,7 @@ const container = document.getElementById('algeo-viewer');
 
 // 2. Create and initialize the instance
 const presentation = await createPresentation(container, {
+  auth: { appId: 'YTVJDQZR' },
   shareId: '33TA3484', // optional: content ID to load on initialization
 });
 
@@ -60,7 +61,7 @@ If you need to embed an editable drawing tool:
 import { createEditor } from '@dajiaoai/algeo-sdk';
 
 const editor = await createEditor(document.getElementById('algeo-editor'), {
-  auth: { appId: 'YTVJDQZR' }, // required for editor mode
+  auth: { appId: 'YTVJDQZR' },
   ui: {
     navbar: true, // top navigation bar toggle
     slidePanel: true, // side slide thumbnail panel toggle
@@ -76,17 +77,17 @@ editor.on('save', (event) => {
 
 ## 4. Getting an appId
 
-Editor Mode requires an `appId` for authentication. Follow these steps to obtain one:
+SDK requires `auth.appId` when creating either a Presentation Mode or Editor Mode instance. Follow these steps to obtain one:
 
 1. **Access Developer Console**: Go to the [Dino-GSP Open Platform Console](https://open.dajiaoai.com/console/dashboard)
 2. **Register Application**: Create a new application in the [console](https://open.dajiaoai.com/console) and fill in the application details
-3. **Retrieve Credentials**: The system will generate your `appId`. Copy this ID for use in your SDK configuration
+3. **Retrieve Credentials**: The system will generate your `appId`. Copy this ID and configure it as `auth: { appId: 'your appId' }`
 
 Need help? [Contact us](../../CONTACT).
 
 ## 5. FAQ
 
-- **Why does Editor Mode require an appId?** It ensures the legitimacy and security of your application.
+- **Why does SDK 2.x require an appId?** It ensures the legitimacy and security of your application. Pass it during initialization for both Presentation Mode and Editor Mode.
 - **Does appId expire?** Your appId is valid long-term, but you can manage it in the [console](https://open.dajiaoai.com/console).
 
 ## 6. Next Steps

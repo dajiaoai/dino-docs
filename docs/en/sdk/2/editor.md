@@ -26,6 +26,8 @@ const editor: EmbeddedEditor = await createEditor(container, {
 });
 ```
 
+See [Getting Started](./getting-started.html#_4-getting-an-appid) for how to get an `appId`.
+
 ### UI Configuration
 
 Use `ui` to control visibility of editor panels.
@@ -38,16 +40,6 @@ Use `ui` to control visibility of editor panels.
 | `ui.algebraPanel` | `boolean` | `true`  | Whether to show the algebra panel                                            |
 | `ui.docPanel`     | `boolean` | `true`  | Whether to show the document panel                                           |
 | `ui.helpEntry`    | `boolean` | `true`  | Whether to show the help entry in editor mode. Supported since `2.7.0`.      |
-
-## Getting an appId
-
-To use Editor Mode, you need a valid `appId`:
-
-1. Visit the [Developer Console](https://open.dajiaoai.com/console/dashboard)
-2. Register your application and obtain your `appId`
-3. Use this `appId` when initializing the editor
-
-See [Getting Started](./getting-started#getting-an-appid) for details.
 
 ## API Module Reference
 

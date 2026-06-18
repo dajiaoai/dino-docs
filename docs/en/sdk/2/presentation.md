@@ -22,14 +22,18 @@ import { createPresentation, EmbeddedPresentation } from '@dajiaoai/algeo-sdk';
  * @param options    Initialization options
  */
 const presentation: EmbeddedPresentation = await createPresentation(container, {
+  auth: { appId: 'YTVJDQZR' },
   shareId: 'optional-initial-id',
 });
 ```
+
+See [Getting Started: Getting an appId](./getting-started.html#_4-getting-an-appid) for how to get an `appId`.
 
 ### UI Configuration
 
 ```typescript
 const presentation: EmbeddedPresentation = await createPresentation(container, {
+  auth: { appId: 'YTVJDQZR' },
   ui: {
     logo: true,
   },
@@ -94,4 +98,3 @@ unsubscribe();
 | Event   | Triggered when                                      | Callback type                                              |
 | ------- | --------------------------------------------------- | ---------------------------------------------------------- |
 | `ready` | iframe finishes initialization; API calls can begin | `{ type: 'ready', mode: string, version: string \| null }` |
-
