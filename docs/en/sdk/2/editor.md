@@ -40,10 +40,31 @@ Use `ui` to control visibility of editor panels.
 | `ui.algebraPanel` | `boolean` | `true`  | Whether to show the algebra panel                                            |
 | `ui.docPanel`     | `boolean` | `true`  | Whether to show the document panel                                           |
 | `ui.helpEntry`    | `boolean` | `true`  | Whether to show the help entry in editor mode. Supported since `2.7.0`.      |
+| `ui.aiChatPanel`  | `boolean` | `true`  | Whether to show the AI Chat panel. Supported since `2.8.0`.                  |
 
 ## API Module Reference
 
 The SDK organizes the editor API into modules:
+
+### Create Options (`AlgeoEditorCreateOptions`)
+
+```typescript
+interface AlgeoEditorCreateOptions {
+  auth?: {
+    appId: string;
+  };
+  shareId?: string;
+  initialContent?: FileContentLatest;
+  ui?: AlgeoEditorUiConfig;
+}
+```
+
+| Option           | Type                  | Required | Description                                                  |
+| ---------------- | --------------------- | -------- | ------------------------------------------------------------ |
+| `auth.appId`     | `string`              | yes      | Open Platform application ID for editor-mode authorization   |
+| `shareId`        | `string`              | no       | Shared file ID to load during initialization                 |
+| `initialContent` | `FileContentLatest`   | no       | File content loaded after initialization                     |
+| `ui`             | `AlgeoEditorUiConfig` | no       | Editor UI visibility configuration                           |
 
 ### 1. Document API (`editor.document`)
 
@@ -52,6 +73,13 @@ Handles overall content loading and retrieval.
 - `loadContent(content: FileContentLatest): Promise<void>`: Overwrite-load the current content.
 - `getContent(): Promise<FileContentLatest>`: Retrieve the complete DSL data from the current editor.
 
+```typescript
+await editor.document.loadContent(content);
+const content = await editor.document.getContent();
+```
+
+`loadContent` replaces the current project content and synchronizes editor state. `getContent` reads the latest content from the embedded editor and is useful as a final check before saving.
+
 ### 2. Slides API (`editor.slides`)
 
 Manage multi-slide documents.
@@ -59,10 +87,33 @@ Manage multi-slide documents.
 - `getCount(): number`: Get the total slide count.
 - `getCurrentIndex(): number`: Get the current slide index.
 - `switchTo(index: number): Promise<void>`: Switch to the specified slide.
-- `add(): Promise<void>`: Add a new slide at the end.
+- `add(): Promise<SlideIndexResult>`: Add a new slide at the end.
+- `addAt(index: number): Promise<SlideIndexResult>`: Insert a new slide at the specified position.
 - `remove(index: number): Promise<void>`: Delete the specified slide.
-- `duplicate(index: number): Promise<void>`: Duplicate the specified slide.
-- `reorder(from: number, to: number): Promise<void>`: Reorder slides.
+- `duplicate(index: number, targetIndex?: number): Promise<SlideIndexResult>`: Duplicate the specified slide, optionally inserting it at a target position.
+- `reorder(fromIndex: number, toIndex: number): Promise<void>`: Reorder slides.
+- `exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>`: Export slides as images.
+
+```typescript
+const total = editor.slides.getCount();
+const current = editor.slides.getCurrentIndex();
+
+await editor.slides.switchTo(1);
+const added = await editor.slides.add();
+const inserted = await editor.slides.addAt(0);
+const duplicated = await editor.slides.duplicate(current, current + 1);
+
+await editor.slides.reorder(0, 2);
+await editor.slides.remove(1);
+```
+
+```typescript
+interface SlideIndexResult {
+  index: number;
+}
+```
+
+`switchTo`, `remove`, `duplicate`, and `reorder` use **0-based** indices. `exportImage.slideIndices` uses **1-based** indices to match page-number semantics in export flows.
 
 #### 2.1 `exportImage(options?)`
 
@@ -100,15 +151,86 @@ editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSl
 
 Control undo and redo.
 
-- `undo() / redo()`: Undo or redo.
+- `getCount(): number`: Get the history entry count.
+- `getCurrentIndex(): number`: Get the current history cursor.
+- `undo(): Promise<void>`: Undo.
+- `redo(): Promise<void>`: Redo.
+- `jumpTo(index: number): Promise<void>`: Jump to a specific history entry.
 - `canUndo() / canRedo(): boolean`: Check whether the respective operation is currently available.
-- `clear()`: Clear history.
+- `clear(): Promise<void>`: Clear history.
+
+```typescript
+if (editor.history.canUndo()) {
+  await editor.history.undo();
+}
+
+if (editor.history.canRedo()) {
+  await editor.history.redo();
+}
+
+await editor.history.jumpTo(0);
+await editor.history.clear();
+```
 
 ### 4. Mode API (`editor.mode`)
 
 Dynamically adjust the UI.
 
+- `getUiConfig(): AlgeoEditorUiConfig`: Get the SDK-side cached UI configuration.
 - `setUiConfig(config: Partial<AlgeoEditorUiConfig>): Promise<void>`: Dynamically toggle UI element visibility at runtime.
+
+```typescript
+const ui = editor.mode.getUiConfig();
+
+await editor.mode.setUiConfig({
+  slidePanel: false,
+  aiChatPanel: true,
+});
+```
+
+### 5. AI API (`editor.ai`)
+
+> Supported since **2.8.0**. See [AI Chat in Editor](./ai-chat) for the full integration flow.
+
+The AI API lets the host page send its own AI service results back to the embedded editor. It is usually used together with the `aiRequest` event.
+
+- `consumeStream(input: { stream: ReadableStream<Uint8Array>; signal?: AbortSignal }): Promise<void>`: Consume an SSE `ReadableStream` and parse it into AI stream events.
+- `pushStreamEvent(event: AiStreamEventV1): void`: Push an already parsed AI stream event.
+
+```typescript
+editor.on('aiRequest', async ({ payload, signal }) => {
+  const response = await fetch('/api/ai/chat', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    signal,
+  });
+
+  await editor.ai.consumeStream({
+    stream: response.body!,
+    signal,
+  });
+});
+```
+
+```typescript
+editor.ai.pushStreamEvent({
+  type: 'raw',
+  runId: 'run_123',
+  event: 'response.output_text.delta',
+  data: {
+    type: 'response.output_text.delta',
+    delta: 'Draw a triangle',
+  },
+});
+```
+
+### 6. Lifecycle API
+
+- `destroy(): Promise<void>`: Destroy the SDK instance, remove the iframe, clean up message listeners, and cancel pending requests.
+
+```typescript
+await editor.destroy();
+```
 
 ## Event Listening
 
@@ -122,6 +244,8 @@ Use `editor.on(event, listener)` to subscribe; it returns an unsubscribe functio
 | `contentChange` | `{ type: 'contentChange', source: 'user', content }`       | Fires after the user edits inside the iframe; returns the full `FileContentLatest`         |
 | `slideChange`   | `{ type: 'slideChange', index }`                           | Fires after the user switches slides inside the iframe; returns the current index       |
 | `save`          | `{ type: 'save', stage: 'request' \| 'success', content }` | `stage: 'request'`: host handles persistence; `stage: 'success'`: save flow is complete |
+| `aiRequest`     | `{ type: 'aiRequest', payload, signal }`                   | Embedded editor asks the host to run one AI request. Supported since `2.8.0`.          |
+| `aiCancel`      | `{ type: 'aiCancel', runId, reason }`                      | The active AI request was canceled. Supported since `2.8.0`.                           |
 
 ---
 
@@ -191,4 +315,52 @@ editor.on('save', async (event) => {
 ```
 
 > **Note**: The `request`-stage listener must return a Promise (or be an `async` function), otherwise the iframe will not receive the host's handling result.
+
+---
+
+### `aiRequest` Event
+
+Fires when the user starts an AI conversation in the embedded editor. The host should call its own AI service in the callback and stream results back through `editor.ai`.
+
+```typescript
+editor.on('aiRequest', async ({ payload, signal }) => {
+  const response = await fetch('/api/ai/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    signal,
+  });
+
+  if (!response.ok || !response.body) {
+    throw new Error('AI service request failed');
+  }
+
+  await editor.ai.consumeStream({
+    stream: response.body,
+    signal,
+  });
+});
+```
+
+See [Protocol and Data Format - AI Chat Protocol](./protocol#ai-chat-protocol-sdk-280) for the `payload` structure.
+
+---
+
+### `aiCancel` Event
+
+Fires when the user cancels, a newer request supersedes the active request, or the SDK instance is destroyed.
+
+```typescript
+editor.on('aiCancel', (event) => {
+  console.log('AI request canceled:', event.runId, event.reason);
+});
+```
+
+`reason` values:
+
+| Value        | Description                              |
+| ------------ | ---------------------------------------- |
+| `user`       | The user canceled the request            |
+| `superseded` | A newer request replaced the active one  |
+| `destroyed`  | The SDK instance was destroyed           |
 

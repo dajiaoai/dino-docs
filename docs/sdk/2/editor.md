@@ -35,10 +35,31 @@ const editor: EmbeddedEditor = await createEditor(container, {
 | `ui.algebraPanel` | `boolean` | `true` | 是否显示代数面板                                |
 | `ui.docPanel`     | `boolean` | `true` | 是否显示文档面板                                |
 | `ui.helpEntry`    | `boolean` | `true` | 是否显示编辑模式的帮助入口。从 `2.7.0` 起支持。 |
+| `ui.aiChatPanel`  | `boolean` | `true` | 是否显示 AI 对话面板。从 `2.8.0` 起支持。       |
 
 ## API 模块参考
 
 SDK 将编辑器的 API 进行了模块化拆分：
+
+### 创建参数 (`AlgeoEditorCreateOptions`)
+
+```typescript
+interface AlgeoEditorCreateOptions {
+  auth?: {
+    appId: string;
+  };
+  shareId?: string;
+  initialContent?: FileContentLatest;
+  ui?: AlgeoEditorUiConfig;
+}
+```
+
+| 参数             | 类型                   | 必填 | 说明                                                   |
+| ---------------- | ---------------------- | ---- | ------------------------------------------------------ |
+| `auth.appId`     | `string`               | 是   | 开放平台应用 ID，用于编辑模式鉴权                      |
+| `shareId`        | `string`               | 否   | 初始化时加载的分享文件 ID                              |
+| `initialContent` | `FileContentLatest`    | 否   | 初始化后覆盖加载的文件内容，优先级高于空白编辑器状态   |
+| `ui`             | `AlgeoEditorUiConfig`  | 否   | 编辑器 UI 显隐配置                                     |
 
 ### 1. 文档 API (`editor.document`)
 
@@ -47,6 +68,13 @@ SDK 将编辑器的 API 进行了模块化拆分：
 - `loadContent(content: FileContentLatest): Promise<void>`: 覆盖加载当前内容。
 - `getContent(): Promise<FileContentLatest>`: 获取当前编辑器中的完整 DSL 数据。
 
+```typescript
+await editor.document.loadContent(content);
+const content = await editor.document.getContent();
+```
+
+调用 `loadContent` 会替换当前工程内容，并触发编辑器内部状态同步；调用 `getContent` 会从内嵌编辑器读取最新内容，适合保存前兜底确认。
+
 ### 2. 画板 API (`editor.slides`)
 
 管理多页画板。
@@ -54,10 +82,33 @@ SDK 将编辑器的 API 进行了模块化拆分：
 - `getCount(): number`: 获取总页数。
 - `getCurrentIndex(): number`: 获取当前所在页码。
 - `switchTo(index: number): Promise<void>`: 切换到指定页。
-- `add(): Promise<void>`: 在末尾添加新画板。
+- `add(): Promise<SlideIndexResult>`: 在末尾添加新画板。
+- `addAt(index: number): Promise<SlideIndexResult>`: 在指定位置插入新画板。
 - `remove(index: number): Promise<void>`: 删除指定画板。
-- `duplicate(index: number): Promise<void>`: 复制指定画板。
-- `reorder(from: number, to: number): Promise<void>`: 调整画板顺序。
+- `duplicate(index: number, targetIndex?: number): Promise<SlideIndexResult>`: 复制指定画板，可指定插入位置。
+- `reorder(fromIndex: number, toIndex: number): Promise<void>`: 调整画板顺序。
+- `exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>`: 导出画板图片。
+
+```typescript
+const total = editor.slides.getCount();
+const current = editor.slides.getCurrentIndex();
+
+await editor.slides.switchTo(1);
+const added = await editor.slides.add();
+const inserted = await editor.slides.addAt(0);
+const duplicated = await editor.slides.duplicate(current, current + 1);
+
+await editor.slides.reorder(0, 2);
+await editor.slides.remove(1);
+```
+
+```typescript
+interface SlideIndexResult {
+  index: number;
+}
+```
+
+`switchTo`、`remove`、`duplicate`、`reorder` 中的索引均为 **0-based**。`exportImage` 的 `slideIndices` 为 **1-based**，用于贴近导出场景中的页码表达。
 
 #### 2.1 `exportImage(options?)`
 
@@ -95,15 +146,86 @@ editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSl
 
 控制撤销与重做。
 
-- `undo() / redo()`: 撤销或重做。
+- `getCount(): number`: 获取当前历史记录数量。
+- `getCurrentIndex(): number`: 获取当前历史游标位置。
+- `undo(): Promise<void>`: 撤销。
+- `redo(): Promise<void>`: 重做。
+- `jumpTo(index: number): Promise<void>`: 跳转到指定历史记录。
 - `canUndo() / canRedo(): boolean`: 判断当前是否可进行相应操作。
-- `clear()`: 清空历史记录。
+- `clear(): Promise<void>`: 清空历史记录。
+
+```typescript
+if (editor.history.canUndo()) {
+  await editor.history.undo();
+}
+
+if (editor.history.canRedo()) {
+  await editor.history.redo();
+}
+
+await editor.history.jumpTo(0);
+await editor.history.clear();
+```
 
 ### 4. 模式 API (`editor.mode`)
 
 动态调整 UI。
 
+- `getUiConfig(): AlgeoEditorUiConfig`: 获取 SDK 当前缓存的 UI 配置。
 - `setUiConfig(config: Partial<AlgeoEditorUiConfig>): Promise<void>`: 运行时动态切换 UI 元件的显隐。
+
+```typescript
+const ui = editor.mode.getUiConfig();
+
+await editor.mode.setUiConfig({
+  slidePanel: false,
+  aiChatPanel: true,
+});
+```
+
+### 5. AI API (`editor.ai`)
+
+> 从 **2.8.0** 起支持。完整接入流程见 [编辑器 AI 对话](./ai-chat)。
+
+AI API 用于宿主页面把自己的 AI 服务结果回传给内嵌编辑器。它通常配合 `aiRequest` 事件使用。
+
+- `consumeStream(input: { stream: ReadableStream<Uint8Array>; signal?: AbortSignal }): Promise<void>`: 消费 SSE 格式的流式响应，并自动解析为 AI stream 事件。
+- `pushStreamEvent(event: AiStreamEventV1): void`: 直接推送已经解析好的 AI stream 事件。
+
+```typescript
+editor.on('aiRequest', async ({ payload, signal }) => {
+  const response = await fetch('/api/ai/chat', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+    signal,
+  });
+
+  await editor.ai.consumeStream({
+    stream: response.body!,
+    signal,
+  });
+});
+```
+
+```typescript
+editor.ai.pushStreamEvent({
+  type: 'raw',
+  runId: 'run_123',
+  event: 'response.output_text.delta',
+  data: {
+    type: 'response.output_text.delta',
+    delta: '画一个三角形',
+  },
+});
+```
+
+### 6. 生命周期 API
+
+- `destroy(): Promise<void>`: 销毁 SDK 实例，移除 iframe、清理消息监听器，并取消未完成请求。
+
+```typescript
+await editor.destroy();
+```
 
 ## 事件监听
 
@@ -117,6 +239,8 @@ editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSl
 | `contentChange` | `{ type: 'contentChange', source: 'user', content }`       | 用户在 iframe 内编辑后回传完整 `FileContentLatest`                                  |
 | `slideChange`   | `{ type: 'slideChange', index }`                           | 用户在 iframe 内切换画板后回传当前索引                                           |
 | `save`          | `{ type: 'save', stage: 'request' \| 'success', content }` | `stage: 'request'` 时由宿主处理保存逻辑；`stage: 'success'` 时表示保存流程已完成 |
+| `aiRequest`     | `{ type: 'aiRequest', payload, signal }`                   | 内嵌编辑器请求宿主执行一次 AI 对话。从 `2.8.0` 起支持。                         |
+| `aiCancel`      | `{ type: 'aiCancel', runId, reason }`                      | 当前 AI 请求被取消。从 `2.8.0` 起支持。                                         |
 
 ---
 
@@ -186,4 +310,52 @@ editor.on('save', async (event) => {
 ```
 
 > **注意**：`request` 阶段的监听器必须返回一个 Promise（或使用 async 函数），否则 iframe 将无法收到宿主的处理结果。
+
+---
+
+### `aiRequest` 事件
+
+当用户在内嵌编辑器中发起 AI 对话时触发。宿主需要在回调中调用自己的 AI 服务，并通过 `editor.ai` 把结果回传给编辑器。
+
+```typescript
+editor.on('aiRequest', async ({ payload, signal }) => {
+  const response = await fetch('/api/ai/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+    signal,
+  });
+
+  if (!response.ok || !response.body) {
+    throw new Error('AI 服务调用失败');
+  }
+
+  await editor.ai.consumeStream({
+    stream: response.body,
+    signal,
+  });
+});
+```
+
+`payload` 的结构见 [数据协议 - AI Chat 协议](./protocol#ai-chat-协议-sdk-280)。
+
+---
+
+### `aiCancel` 事件
+
+当用户取消、后续请求覆盖当前请求，或 SDK 实例销毁时触发。
+
+```typescript
+editor.on('aiCancel', (event) => {
+  console.log('AI 请求已取消：', event.runId, event.reason);
+});
+```
+
+`reason` 取值：
+
+| 值           | 说明                         |
+| ------------ | ---------------------------- |
+| `user`       | 用户主动取消                 |
+| `superseded` | 新请求覆盖了当前请求         |
+| `destroyed`  | SDK 实例销毁导致请求被取消   |
 

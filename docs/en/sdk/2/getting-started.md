@@ -94,3 +94,4 @@ Need help? [Contact us](../../CONTACT).
 
 - For fine-grained control over canvas elements, read [Presentation Mode Reference](./presentation).
 - For implementing complex editor functionality, read [Editor Mode Reference](./editor).
+- To enable AI Chat in editor mode, read [AI Chat in Editor](./ai-chat).

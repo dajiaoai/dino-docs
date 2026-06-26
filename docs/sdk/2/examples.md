@@ -1,6 +1,6 @@
 ﻿# 范例中心 (SDK Examples)
 
-我们在 `algeo-sdk` 仓库的 `examples/` 目录下提供了12 个标准示例，涵盖了从基础嵌入到高级 API 服务的所有核心场景。
+我们在 `algeo-sdk` 仓库的 `examples/` 目录下提供了 13 个标准示例，涵盖了从基础嵌入到高级 API 服务的所有核心场景。
 
 ## 基础集成
 
@@ -57,6 +57,10 @@
 ### [12-export-slide-image.html](https://dajiaoai.github.io/algeo-sdk/examples/12-export-slide-image.html)
 
 展示如何调用 `editor.slides.exportImage()` 导出画板图片。支持默认导出全部画板，也可通过 `slideIndices`（1-based）指定导出范围，可配置图片格式、分辨率与质量。
+
+### [13-ai-chat.html](https://dajiaoai.github.io/algeo-sdk/examples/13-ai-chat.html)
+
+展示如何在 SDK 编辑模式下开启 AI 对话功能。宿主页面监听 `aiRequest`，调用自己的 AI 服务，再通过 `editor.ai.consumeStream()` 或 `editor.ai.pushStreamEvent()` 将流式结果回传给内嵌编辑器。
 
 ---
 
