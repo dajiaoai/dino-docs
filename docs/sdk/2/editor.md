@@ -187,10 +187,10 @@ await editor.mode.setUiConfig({
 
 > 从 **2.8.0** 起支持。完整接入流程见 [编辑器 AI 对话](./ai-chat)。
 
-AI API 用于宿主页面把自己的 AI 服务结果回传给内嵌编辑器。它通常配合 `aiRequest` 事件使用。
+AI API 用于宿主页面把大角几何后端经由宿主后端返回的流式结果交给内嵌编辑器。它通常配合 `aiRequest` 事件使用。
 
-- `consumeStream(input: { stream: ReadableStream<Uint8Array>; signal?: AbortSignal }): Promise<void>`: 消费 SSE 格式的流式响应，并自动解析为 AI stream 事件。
-- `pushStreamEvent(event: AiStreamEventV1): void`: 直接推送已经解析好的 AI stream 事件。
+- `consumeStream(input: { stream: ReadableStream<Uint8Array>; signal?: AbortSignal }): Promise<void>`: 消费大角几何后端返回的流式响应。
+- `pushStreamEvent(event: AiStreamEventV1): void`: 底层事件推送接口，主要用于 SDK 内部或与大角几何后端联调；普通接入请优先使用 `consumeStream`。
 
 ```typescript
 editor.on('aiRequest', async ({ payload, signal }) => {
@@ -204,18 +204,6 @@ editor.on('aiRequest', async ({ payload, signal }) => {
     stream: response.body!,
     signal,
   });
-});
-```
-
-```typescript
-editor.ai.pushStreamEvent({
-  type: 'raw',
-  runId: 'run_123',
-  event: 'response.output_text.delta',
-  data: {
-    type: 'response.output_text.delta',
-    delta: '画一个三角形',
-  },
 });
 ```
 
@@ -315,7 +303,7 @@ editor.on('save', async (event) => {
 
 ### `aiRequest` 事件
 
-当用户在内嵌编辑器中发起 AI 对话时触发。宿主需要在回调中调用自己的 AI 服务，并通过 `editor.ai` 把结果回传给编辑器。
+当用户在内嵌编辑器中发起 AI 对话时触发。宿主需要在回调中把 `payload` 原样发给宿主后端，由宿主后端转发到大角几何后端，并通过 `editor.ai.consumeStream()` 处理返回结果。
 
 ```typescript
 editor.on('aiRequest', async ({ payload, signal }) => {
@@ -337,7 +325,7 @@ editor.on('aiRequest', async ({ payload, signal }) => {
 });
 ```
 
-`payload` 的结构见 [数据协议 - AI Chat 协议](./protocol#ai-chat-协议-sdk-280)。
+`payload` 是编辑器生成的 AI 请求上下文，普通接入场景请按原样转发；完整流程见 [编辑器 AI 对话](./ai-chat)。
 
 ---
 

@@ -7,6 +7,8 @@ description: Map the current example set to common integration goals
 
 The `algeo-sdk` repository provides 13 standard examples in the `examples/` directory, covering all core scenarios from basic embedding to advanced API usage.
 
+You can first open the [SDK examples home page](https://dajiaoai.github.io/algeo-sdk/examples/index.html) to browse all examples.
+
 ## Basic Integration
 
 ### [01-basic-iframe.html](https://dajiaoai.github.io/algeo-sdk/examples/01-basic-iframe.html)
@@ -65,7 +67,7 @@ Demonstrates how to call `editor.slides.exportImage()` to export slides as image
 
 ### [13-ai-chat.html](https://dajiaoai.github.io/algeo-sdk/examples/13-ai-chat.html)
 
-Shows how to enable AI Chat in SDK editor mode. The host page listens for `aiRequest`, calls its own AI service, and streams results back to the embedded editor through `editor.ai.consumeStream()` or `editor.ai.pushStreamEvent()`.
+Shows how to enable AI Chat in SDK editor mode. The host page listens for `aiRequest`, sends the request to the host backend, forwards it to the Dino-GSP backend, and handles the returned stream through `editor.ai.consumeStream()`.
 
 ---
 
