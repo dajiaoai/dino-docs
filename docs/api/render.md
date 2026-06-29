@@ -29,26 +29,13 @@ description: 描述大角几何开放平台 HTTP 渲染接口，支持 PNG、SVG
 
 三个接口共用以下 JSON 字段：
 
-| 字段              | 类型                | 必填 | 说明                                                    |
-| ----------------- | ------------------- | ---- | ------------------------------------------------------- |
-| `content`         | `FileContentLatest` | 是   | 要渲染的项目内容，格式见[大角几何工程文件协议](/sdk/2/protocol)。 |
-| `slideIndex`      | `number`            | 否   | 要渲染的画板序号，从 `1` 开始，默认第 `1` 个画板。     |
-| `size.width`      | `number`            | 否   | 逻辑画布宽度，正整数，默认 `1024`。                     |
-| `size.height`     | `number`            | 否   | 逻辑画布高度，正整数，默认 `1024`。                     |
-| `camera.offset.x` | `number`            | 否   | 覆盖渲染相机中心点 `x`。                                |
-| `camera.offset.y` | `number`            | 否   | 覆盖渲染相机中心点 `y`。                                |
-| `camera.scale`    | `number`            | 否   | 覆盖渲染相机缩放比例。                                  |
-
-`/api/render` 额外支持 `pixelRatio`（默认 `1`），其余两个接口不接收此字段。
-
-### 尺寸限制
-
-`/api/render` 的物理尺寸由以下公式计算，且不得超过 `2048 x 2048`：
-
-```text
-physicalWidth  = round(width * pixelRatio)
-physicalHeight = round(height * pixelRatio)
-```
+| 字段 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `viewBound` | `object` | 是 | 逻辑视口边界，格式为 `{ left, right, bottom, top }`，要求 `left < right` 且 `bottom < top`。实际输出画布的像素尺寸按 `width = right - left`、`height = top - bottom` 计算。 |
+| `content` | `FileContentLatest` | 是 | 要渲染的项目内容，格式见[大角几何工程文件协议](/sdk/2/protocol)。 |
+| `slideIndex` | `number` | 否 | 要渲染的画板序号，从 `1` 开始，默认第 `1` 个画板。 |
+| `scale` | `number` | 否 | 相机缩放比例（每逻辑单位对应的像素数），正数。省略时使用目标画板当前 `camera.scale`。 |
+| `template` | `object` | 否 | 渲染母版，可在[大角几何母版](https://dajiaoai.com/master-templates)页面下载母版数据。 |
 
 ## 导出 PNG `POST /api/render`
 
@@ -59,13 +46,32 @@ curl -X POST https://api.dajiaoai.com/api/render \
   -H "x-request-id: render-demo-001" \
   -d '{
     "slideIndex": 1,
-    "size": { "width": 768, "height": 768 },
-    "pixelRatio": 2,
-    "camera": { "offset": { "x": 0, "y": 0 }, "scale": 1 },
+    "viewBound": {
+      "left": -10,
+      "right": 10,
+      "bottom": -10,
+      "top": 10
+    },
+    "scale": 50,
+    "template": {
+      "backgroundStyle": {
+        "background": { "color": "#ffffff" },
+        "grid": {},
+        "xaxis": {},
+        "yaxis": {}
+      },
+      "defaultStyle": {
+        "types": [["Point", { "pointSize": 1, "color": "#000000" }]],
+        "typeLabels": [],
+        "textType": {},
+        "sliderType": {},
+        "buttonType": {}
+      }
+    },
     "content": {
       "metadata": { "version": "11" },
       "messages": [],
-      "slides": [{ "definitions": [], "uvarMap": [], "styleSheet": {}, "doc": [] }]
+      "slides": [{ "definitions": [{ "kind": "primitive", "id": "A", "source": "Point(0, ?)", "label": "{{id}}" }, { "kind": "primitive", "id": "B", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "C", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "a", "source": "Segment(A, B)" }, { "kind": "primitive", "id": "b", "source": "Segment(B, C)" }, { "kind": "primitive", "id": "c", "source": "Segment(C, A)" }], "uvarMap": [["A.0", 3], ["B.0", -3], ["C.0", 2]], "styleSheet": { "background": {}, "xaxis": { "show": false }, "yaxis": { "show": false }, "grid": {}, "types": [], "typeLabels": [], "primitives": [], "primitiveLabels": [], "textType": {}, "texts": [], "sliderType": {}, "sliders": [], "buttonType": {}, "buttons": [] }, "doc": [], "camera": { "offset": [0, 0], "scale": 50 } }]
     }
   }'
 ```
@@ -77,12 +83,17 @@ curl -X POST https://api.dajiaoai.com/api/render \
   "success": true,
   "url": "https://dl.easeplay.vip/dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.png",
   "filename": "4fa2bc.png",
+  "objectKey": "dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.png",
   "slideIndex": 1,
+  "viewBound": {
+    "left": -10,
+    "right": 10,
+    "bottom": -10,
+    "top": 10
+  },
   "width": 768,
   "height": 768,
-  "pixelRatio": 2,
-  "physicalWidth": 1536,
-  "physicalHeight": 1536,
+  "scale": 50,
   "mimeType": "image/png",
   "size": 24831
 }
@@ -97,12 +108,17 @@ curl -X POST https://api.dajiaoai.com/api/render-svg \
   -H "x-request-id: render-svg-demo-001" \
   -d '{
     "slideIndex": 1,
-    "size": { "width": 768, "height": 768 },
-    "camera": { "offset": { "x": 0, "y": 0 }, "scale": 1 },
+    "viewBound": {
+      "left": -10,
+      "right": 10,
+      "bottom": -10,
+      "top": 10
+    },
+    "scale": 50,
     "content": {
       "metadata": { "version": "11" },
       "messages": [],
-      "slides": [{ "definitions": [], "uvarMap": [], "styleSheet": {}, "doc": [] }]
+      "slides": [{ "definitions": [{ "kind": "primitive", "id": "A", "source": "Point(0, ?)", "label": "{{id}}" }, { "kind": "primitive", "id": "B", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "C", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "a", "source": "Segment(A, B)" }, { "kind": "primitive", "id": "b", "source": "Segment(B, C)" }, { "kind": "primitive", "id": "c", "source": "Segment(C, A)" }], "uvarMap": [["A.0", 3], ["B.0", -3], ["C.0", 2]], "styleSheet": { "background": {}, "xaxis": { "show": false }, "yaxis": { "show": false }, "grid": {}, "types": [], "typeLabels": [], "primitives": [], "primitiveLabels": [], "textType": {}, "texts": [], "sliderType": {}, "sliders": [], "buttonType": {}, "buttons": [] }, "doc": [], "camera": { "offset": [0, 0], "scale": 50 } }]
     }
   }'
 ```
@@ -114,9 +130,17 @@ curl -X POST https://api.dajiaoai.com/api/render-svg \
   "success": true,
   "url": "https://dl.easeplay.vip/dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.svg",
   "filename": "4fa2bc.svg",
+  "objectKey": "dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.svg",
   "slideIndex": 1,
+  "viewBound": {
+    "left": -10,
+    "right": 10,
+    "bottom": -10,
+    "top": 10
+  },
   "width": 768,
   "height": 768,
+  "scale": 50,
   "mimeType": "image/svg+xml",
   "size": 18234
 }
@@ -131,12 +155,17 @@ curl -X POST https://api.dajiaoai.com/api/render-tikz \
   -H "x-request-id: render-tikz-demo-001" \
   -d '{
     "slideIndex": 1,
-    "size": { "width": 768, "height": 768 },
-    "camera": { "offset": { "x": 0, "y": 0 }, "scale": 1 },
+    "viewBound": {
+      "left": -10,
+      "right": 10,
+      "bottom": -10,
+      "top": 10
+    },
+    "scale": 50,
     "content": {
       "metadata": { "version": "11" },
       "messages": [],
-      "slides": [{ "definitions": [], "uvarMap": [], "styleSheet": {}, "doc": [] }]
+      "slides": [{ "definitions": [{ "kind": "primitive", "id": "A", "source": "Point(0, ?)", "label": "{{id}}" }, { "kind": "primitive", "id": "B", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "C", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "a", "source": "Segment(A, B)" }, { "kind": "primitive", "id": "b", "source": "Segment(B, C)" }, { "kind": "primitive", "id": "c", "source": "Segment(C, A)" }], "uvarMap": [["A.0", 3], ["B.0", -3], ["C.0", 2]], "styleSheet": { "background": {}, "xaxis": { "show": false }, "yaxis": { "show": false }, "grid": {}, "types": [], "typeLabels": [], "primitives": [], "primitiveLabels": [], "textType": {}, "texts": [], "sliderType": {}, "sliders": [], "buttonType": {}, "buttons": [] }, "doc": [], "camera": { "offset": [0, 0], "scale": 50 } }]
     }
   }'
 ```
@@ -148,9 +177,17 @@ curl -X POST https://api.dajiaoai.com/api/render-tikz \
   "success": true,
   "url": "https://dl.easeplay.vip/dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.tex",
   "filename": "4fa2bc.tex",
+  "objectKey": "dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.tex",
   "slideIndex": 1,
+  "viewBound": {
+    "left": -10,
+    "right": 10,
+    "bottom": -10,
+    "top": 10
+  },
   "width": 768,
   "height": 768,
+  "scale": 50,
   "mimeType": "text/plain",
   "size": 9631
 }

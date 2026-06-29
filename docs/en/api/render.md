@@ -29,26 +29,13 @@ Optionally provide:
 
 All three endpoints share the following JSON fields:
 
-| Field             | Type                | Required | Description                                                   |
-| ----------------- | ------------------- | -------- | ------------------------------------------------------------- |
-| `content`         | `FileContentLatest` | yes      | Project payload to render. See [Dino Geometry file protocol](/en/sdk/2/protocol). |
-| `slideIndex`      | `number`            | no       | Slide index to render, 1-based, defaults to `1`.              |
-| `size.width`      | `number`            | no       | Logical canvas width, positive integer, default `1024`.       |
-| `size.height`     | `number`            | no       | Logical canvas height, positive integer, default `1024`.      |
-| `camera.offset.x` | `number`            | no       | Override render camera center `x`.                            |
-| `camera.offset.y` | `number`            | no       | Override render camera center `y`.                            |
-| `camera.scale`    | `number`            | no       | Override render camera scale.                                 |
-
-`/api/render` additionally supports `pixelRatio` (default `1`); the other two endpoints do not.
-
-### Size limits
-
-For `/api/render`, the physical dimensions are calculated as follows and must not exceed `2048 x 2048`:
-
-```text
-physicalWidth  = round(width * pixelRatio)
-physicalHeight = round(height * pixelRatio)
-```
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `viewBound` | `object` | yes | Logical viewport bounds in the shape `{ left, right, bottom, top }`. Requires `left < right` and `bottom < top`. The output canvas size is calculated as `width = right - left` and `height = top - bottom`. |
+| `content` | `FileContentLatest` | yes | Project payload to render. See [Dino Geometry file protocol](/en/sdk/2/protocol). |
+| `slideIndex` | `number` | no | Slide index to render, 1-based, defaults to `1`. |
+| `scale` | `number` | no | Camera scale, in pixels per logical unit. Must be positive. If omitted, the target slide's current `camera.scale` is used. |
+| `template` | `object` | no | Render template. You can download template data from the [Dino Geometry templates](https://dajiaoai.com/master-templates) page. |
 
 ## Export PNG `POST /api/render`
 
@@ -59,13 +46,32 @@ curl -X POST https://api.dajiaoai.com/api/render \
   -H "x-request-id: render-demo-001" \
   -d '{
     "slideIndex": 1,
-    "size": { "width": 768, "height": 768 },
-    "pixelRatio": 2,
-    "camera": { "offset": { "x": 0, "y": 0 }, "scale": 1 },
+    "viewBound": {
+      "left": -10,
+      "right": 10,
+      "bottom": -10,
+      "top": 10
+    },
+    "scale": 50,
+    "template": {
+      "backgroundStyle": {
+        "background": { "color": "#ffffff" },
+        "grid": {},
+        "xaxis": {},
+        "yaxis": {}
+      },
+      "defaultStyle": {
+        "types": [["Point", { "pointSize": 1, "color": "#000000" }]],
+        "typeLabels": [],
+        "textType": {},
+        "sliderType": {},
+        "buttonType": {}
+      }
+    },
     "content": {
       "metadata": { "version": "11" },
       "messages": [],
-      "slides": [{ "definitions": [], "uvarMap": [], "styleSheet": {}, "doc": [] }]
+      "slides": [{ "definitions": [{ "kind": "primitive", "id": "A", "source": "Point(0, ?)", "label": "{{id}}" }, { "kind": "primitive", "id": "B", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "C", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "a", "source": "Segment(A, B)" }, { "kind": "primitive", "id": "b", "source": "Segment(B, C)" }, { "kind": "primitive", "id": "c", "source": "Segment(C, A)" }], "uvarMap": [["A.0", 3], ["B.0", -3], ["C.0", 2]], "styleSheet": { "background": {}, "xaxis": { "show": false }, "yaxis": { "show": false }, "grid": {}, "types": [], "typeLabels": [], "primitives": [], "primitiveLabels": [], "textType": {}, "texts": [], "sliderType": {}, "sliders": [], "buttonType": {}, "buttons": [] }, "doc": [], "camera": { "offset": [0, 0], "scale": 50 } }]
     }
   }'
 ```
@@ -77,12 +83,17 @@ Returns `200 OK`:
   "success": true,
   "url": "https://dl.easeplay.vip/dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.png",
   "filename": "4fa2bc.png",
+  "objectKey": "dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.png",
   "slideIndex": 1,
+  "viewBound": {
+    "left": -10,
+    "right": 10,
+    "bottom": -10,
+    "top": 10
+  },
   "width": 768,
   "height": 768,
-  "pixelRatio": 2,
-  "physicalWidth": 1536,
-  "physicalHeight": 1536,
+  "scale": 50,
   "mimeType": "image/png",
   "size": 24831
 }
@@ -97,12 +108,17 @@ curl -X POST https://api.dajiaoai.com/api/render-svg \
   -H "x-request-id: render-svg-demo-001" \
   -d '{
     "slideIndex": 1,
-    "size": { "width": 768, "height": 768 },
-    "camera": { "offset": { "x": 0, "y": 0 }, "scale": 1 },
+    "viewBound": {
+      "left": -10,
+      "right": 10,
+      "bottom": -10,
+      "top": 10
+    },
+    "scale": 50,
     "content": {
       "metadata": { "version": "11" },
       "messages": [],
-      "slides": [{ "definitions": [], "uvarMap": [], "styleSheet": {}, "doc": [] }]
+      "slides": [{ "definitions": [{ "kind": "primitive", "id": "A", "source": "Point(0, ?)", "label": "{{id}}" }, { "kind": "primitive", "id": "B", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "C", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "a", "source": "Segment(A, B)" }, { "kind": "primitive", "id": "b", "source": "Segment(B, C)" }, { "kind": "primitive", "id": "c", "source": "Segment(C, A)" }], "uvarMap": [["A.0", 3], ["B.0", -3], ["C.0", 2]], "styleSheet": { "background": {}, "xaxis": { "show": false }, "yaxis": { "show": false }, "grid": {}, "types": [], "typeLabels": [], "primitives": [], "primitiveLabels": [], "textType": {}, "texts": [], "sliderType": {}, "sliders": [], "buttonType": {}, "buttons": [] }, "doc": [], "camera": { "offset": [0, 0], "scale": 50 } }]
     }
   }'
 ```
@@ -114,9 +130,17 @@ Returns `200 OK`:
   "success": true,
   "url": "https://dl.easeplay.vip/dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.svg",
   "filename": "4fa2bc.svg",
+  "objectKey": "dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.svg",
   "slideIndex": 1,
+  "viewBound": {
+    "left": -10,
+    "right": 10,
+    "bottom": -10,
+    "top": 10
+  },
   "width": 768,
   "height": 768,
+  "scale": 50,
   "mimeType": "image/svg+xml",
   "size": 18234
 }
@@ -131,12 +155,17 @@ curl -X POST https://api.dajiaoai.com/api/render-tikz \
   -H "x-request-id: render-tikz-demo-001" \
   -d '{
     "slideIndex": 1,
-    "size": { "width": 768, "height": 768 },
-    "camera": { "offset": { "x": 0, "y": 0 }, "scale": 1 },
+    "viewBound": {
+      "left": -10,
+      "right": 10,
+      "bottom": -10,
+      "top": 10
+    },
+    "scale": 50,
     "content": {
       "metadata": { "version": "11" },
       "messages": [],
-      "slides": [{ "definitions": [], "uvarMap": [], "styleSheet": {}, "doc": [] }]
+      "slides": [{ "definitions": [{ "kind": "primitive", "id": "A", "source": "Point(0, ?)", "label": "{{id}}" }, { "kind": "primitive", "id": "B", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "C", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "a", "source": "Segment(A, B)" }, { "kind": "primitive", "id": "b", "source": "Segment(B, C)" }, { "kind": "primitive", "id": "c", "source": "Segment(C, A)" }], "uvarMap": [["A.0", 3], ["B.0", -3], ["C.0", 2]], "styleSheet": { "background": {}, "xaxis": { "show": false }, "yaxis": { "show": false }, "grid": {}, "types": [], "typeLabels": [], "primitives": [], "primitiveLabels": [], "textType": {}, "texts": [], "sliderType": {}, "sliders": [], "buttonType": {}, "buttons": [] }, "doc": [], "camera": { "offset": [0, 0], "scale": 50 } }]
     }
   }'
 ```
@@ -148,9 +177,17 @@ Returns `200 OK`:
   "success": true,
   "url": "https://dl.easeplay.vip/dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.tex",
   "filename": "4fa2bc.tex",
+  "objectKey": "dajiao-open/dev/mcp/customer-id/session-id/4fa2bc.tex",
   "slideIndex": 1,
+  "viewBound": {
+    "left": -10,
+    "right": 10,
+    "bottom": -10,
+    "top": 10
+  },
   "width": 768,
   "height": 768,
+  "scale": 50,
   "mimeType": "text/plain",
   "size": 9631
 }

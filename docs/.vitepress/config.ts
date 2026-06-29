@@ -107,6 +107,7 @@ export default defineConfig({
               { text: 'AI 接入', link: '/ai/' },
             ],
           },
+          { text: '公告', link: '/announcements/' },
           { text: '联系我们', link: '/CONTACT' },
           {
             text: '控制台',
@@ -161,6 +162,25 @@ export default defineConfig({
             },
           ],
           '/sdk/': createSdkSidebar(''),
+          '/announcements/': [
+            {
+              text: '公告中心',
+              items: [{ text: '全部公告', link: '/announcements/' }],
+            },
+            {
+              text: '2026 年',
+              items: [
+                {
+                  text: '渲染接口参数与智能生图母版能力更新',
+                  link: '/announcements/2026-06-29-render-agent-template-update',
+                },
+                {
+                  text: '内嵌编辑器 AI 绘图能力上线',
+                  link: '/announcements/2026-06-29-sdk-2-8-0-ai-drawing',
+                },
+              ],
+            },
+          ],
           '/CONTACT': [],
         },
       },
@@ -183,6 +203,7 @@ export default defineConfig({
               { text: 'AI Access', link: '/en/ai/' },
             ],
           },
+          { text: 'Updates', link: '/en/announcements/' },
           {
             text: 'Console',
             link: 'https://open.dajiaoai.com/console/dashboard',
@@ -243,6 +264,25 @@ export default defineConfig({
             },
           ],
           '/en/sdk/': createSdkSidebar('en/'),
+          '/en/announcements/': [
+            {
+              text: 'Updates',
+              items: [{ text: 'All Updates', link: '/en/announcements/' }],
+            },
+            {
+              text: '2026',
+              items: [
+                {
+                  text: 'Render API Parameters and Agent Template Support Updated',
+                  link: '/en/announcements/2026-06-29-render-agent-template-update',
+                },
+                {
+                  text: 'Embedded Editor AI Drawing Launch',
+                  link: '/en/announcements/2026-06-29-sdk-2-8-0-ai-drawing',
+                },
+              ],
+            },
+          ],
           '/en/CONTACT': [],
         },
       },

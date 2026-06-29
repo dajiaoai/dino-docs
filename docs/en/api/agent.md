@@ -33,6 +33,7 @@ See [Authentication](/en/api/auth) for auth and [API Billing](/en/api/pricing) f
 | --------- | ------ | -------- | ---------------------------------------------------------------------------------- |
 | `model`   | string | yes      | Model alias used by the agent. See [Models](/en/api/models). |
 | `content` | string | no       | User task description for drawing.                                                 |
+| `template` | string | no | Style template data. Pass the template JSON string. You can download template data from the [Dino Geometry templates](https://dajiaoai.com/master-templates) page. |
 | `images`  | file[] | no       | Image field. Use multiple `images` entries to upload up to 10 files.               |
 
 Notes: `model` is required. At least one of `content` or images is required. If only images are provided without `content`, a default prompt is applied automatically.
@@ -43,7 +44,8 @@ Notes: `model` is required. At least one of `content` or images is required. If 
 curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
   -F "model=dinogeo-1-pro" \
-  -F "content=Draw an equilateral triangle with side length 4 and add a draggable vertex A."
+  -F "content=Draw an equilateral triangle with side length 4 and add a draggable vertex A." \
+  -F "template=<./template.json"
 ```
 
 ```bash

@@ -33,6 +33,7 @@ description: 描述大角几何开放平台智能生图接口，支持异步任�
 | --------- | ------ | ---- | --------------------------------------------------------------------------------- |
 | `model`   | string | 是   | agent 使用的模型别名，详见[模型说明](/api/models)。 |
 | `content` | string | 否   | 用户要执行的绘图任务描述。                                                        |
+| `template` | string | 否 | 风格母版数据，传入母版 JSON 字符串。可在[大角几何母版](https://dajiaoai.com/master-templates)页面下载母版数据。 |
 | `images`  | file[] | 否   | 图片字段，字段名固定为 `images`，最多 10 张；通过重复传多个 `images` 表单项上传。 |
 
 说明：`model` 为必填字段。`content` 与图片至少需要提供一个。若只传图片而不传 `content`，服务会自动补默认提示。
@@ -43,7 +44,8 @@ description: 描述大角几何开放平台智能生图接口，支持异步任�
 curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
   -F "model=dinogeo-1-pro" \
-  -F "content=请画一个边长为 4 的正三角形，并给出一个可拖拽的顶点 A。"
+  -F "content=请画一个边长为 4 的正三角形，并给出一个可拖拽的顶点 A。" \
+  -F "template=<./template.json"
 ```
 
 ```bash

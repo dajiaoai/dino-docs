@@ -22,7 +22,7 @@ AI 对话是一个宿主托管的桥接流程：
 1. 用户在内嵌编辑器的 AI 对话面板中输入请求。
 2. 内嵌编辑器向 SDK 发送 `aiRequest`。
 3. 宿主页面监听 `editor.on('aiRequest', ...)`，把请求发给自己的后端。
-4. 宿主后端完成业务鉴权、额度校验后，将请求转发给大角几何后端。
+4. 宿主后端完成业务鉴权、额度校验后，调用大角几何内嵌模式 AI 生图 API。
 5. 宿主页面通过 `editor.ai.consumeStream()` 把大角几何后端返回的流式结果交给编辑器。
 6. 编辑器展示 AI 回复，并根据返回内容更新对话状态和几何内容。
 
@@ -85,7 +85,7 @@ editor.on('aiRequest', async ({ payload, signal }) => {
 });
 ```
 
-`payload` 是编辑器生成的 AI 请求上下文，接入方通常不需要理解或手动拼接其中的全部字段。推荐做法是：在 `aiRequest` 回调中把 `payload` 原样转发给您的宿主后端，宿主后端再原样转发给大角几何后端。模型选择、上下文解析和几何指令处理都由大角几何后端完成。
+`payload` 是编辑器生成的 AI 请求上下文，接入方通常不需要理解或手动拼接其中的全部字段。推荐做法是：在 `aiRequest` 回调中把 `payload` 发给您的宿主后端，宿主后端再原样转发给大角几何后端。模型选择、上下文解析和几何指令处理都由大角几何后端完成。
 
 只有在排查问题、记录审计日志或与大角几何后端联调时，才需要关注它的具体字段；普通接入场景请按原样转发。
 
@@ -95,16 +95,18 @@ editor.on('aiRequest', async ({ payload, signal }) => {
 
 1. 校验当前用户是否有权限使用该应用的 AI 能力。
 2. 校验当前应用的额度、套餐或业务侧使用规则。
-3. 将 `payload` 原样转发给大角几何后端，并把大角几何后端返回的响应透传给前端。
+3. 调用大角几何内嵌模式 AI 生图 API，并把大角几何后端返回的 SSE 响应透传给前端。
 
 前端示例中的 `/api/algeo-ai/chat` 是宿主自己的后端接口示例，不是浏览器直接请求大角几何后端：
 
 ```typescript
-// 宿主后端伪代码：实际地址、鉴权头和参数以大角几何开放平台提供的信息为准。
+const DAJIAOAI_AI_RUN_ENDPOINT =
+  'https://api.dajiaoai.com/api/v1/embedded/ai/run';
+
 app.post('/api/algeo-ai/chat', async (req, res) => {
   await assertUserCanUseAi(req.user);
 
-  const upstream = await fetch(process.env.DAJIAOAI_AI_CHAT_ENDPOINT!, {
+  const upstream = await fetch(DAJIAOAI_AI_RUN_ENDPOINT, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -119,7 +121,72 @@ app.post('/api/algeo-ai/chat', async (req, res) => {
 });
 ```
 
-## 4. 取消与错误处理
+## 4. 大角几何生图 API
+
+宿主后端实际调用的是大角几何开放平台的内嵌模式 AI 生图接口。这个接口返回标准 SSE 流，可以直接透传给前端，再交给 `editor.ai.consumeStream()`。
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| `POST` | `/api/v1/embedded/ai/run` | 创建一次 AI 绘图请求，并以 SSE 流式返回结果 |
+| `POST` | `/api/v1/embedded/ai/cancel` | 取消指定 run 的前端流式投递 |
+
+### 创建 run
+
+- Base URL：`https://api.dajiaoai.com`
+- 鉴权：`Authorization: Bearer <API_KEY>`
+- Content-Type：`application/json`
+- 请求体：直接使用 SDK `aiRequest` 事件中的 `payload`
+- 响应：`text/event-stream`
+
+宿主后端无需手动组装模型参数或消息结构，直接把前端传来的 `payload` 作为请求体转发即可：
+
+```typescript
+const upstream = await fetch('https://api.dajiaoai.com/api/v1/embedded/ai/run', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${process.env.DAJIAOAI_API_TOKEN}`,
+  },
+  body: JSON.stringify(payload),
+});
+```
+
+接口会先返回一个 `run.created` 事件，让客户端知道本次请求的 `run_id`：
+
+```text
+event: run.created
+data: {"run_id":"run_xxx"}
+```
+
+之后会持续返回 `response.*` 事件。接入方不需要自己解析这些事件来更新画板，只要把整个 `response.body` 交给 SDK：
+
+```typescript
+await editor.ai.consumeStream({
+  stream: response.body,
+  signal,
+});
+```
+
+### 取消 run
+
+当用户取消生成时，可以调用取消接口：
+
+```http
+POST https://api.dajiaoai.com/api/v1/embedded/ai/cancel
+Authorization: Bearer djo_xxx
+Content-Type: application/json
+```
+
+```json
+{
+  "run_id": "run_xxx",
+  "reason": "user_cancel"
+}
+```
+
+取消接口用于停止当前 SSE 投递。已经提交到大角几何后端的 AI 请求可能仍会继续产生 token 用量并结算，因此宿主侧不应展示“取消即不计费”，应以控制台或后端返回的最终用量为准。
+
+## 5. 取消与错误处理
 
 当用户取消请求、新请求覆盖旧请求，或 SDK 实例销毁时，推荐通过 `aiCancel` 事件感知取消状态：
 
@@ -165,7 +232,7 @@ AI 对话的实际模型调用由大角几何后端完成。建议宿主后端�
 - 大角几何服务端 API token 管理。
 - 风控、审计与日志记录。
 
-浏览器端只负责把 `payload` 发给宿主后端，不直接访问大角几何服务端 API token。宿主后端应把该 `payload` 作为请求主体继续转发给大角几何后端，无需在前端拆解协议字段。
+浏览器端只负责把 `payload` 发给宿主后端，不直接访问大角几何服务端 API token。宿主后端应将该 `payload` 继续转发给大角几何后端。
 
 ## 计费模式
 
@@ -175,9 +242,11 @@ SDK AI 对话本身是桥接能力：SDK 负责把编辑器中的 AI 请求交�
 
 | 计费环节                 | 说明                                                                 |
 | ------------------------ | -------------------------------------------------------------------- |
-| 大角几何画板内 AI 能力    | 按照实际 `usage × 模型价格` 扣费，可在控制台应用详情内查看每次调用消耗的点数 |
+| 大角几何画板内 AI 能力    | 按照实际 token `usage × 模型价格` 扣费，可在控制台应用详情内查看每次调用消耗的点数 |
 | 宿主业务额度              | 宿主可在自己的后端做用户额度、套餐、次数或风控限制，也可通过 SSE 返回的 `usage` + `model` 自行计算 |
 | 浏览器前端                | 不持有服务端计费凭证，也不直接访问大角几何后端                       |
+
+扣费按大角几何后端产生的实际 AI token 用量结算。`/api/v1/embedded/ai/run` 与其他开放平台 API 共用同一积分账户，不需要为内嵌模式单独充值。客户端主动取消或断开 SSE 连接，只表示停止当前流式投递，不一定会中断后端已经开始执行的 AI 请求；只要产生了 token 用量，就会按实际消耗扣费。
 
 建议在宿主后端记录每次 AI 请求的用户、应用、耗时、成功失败状态和大角几何后端返回的用量信息，便于做额度控制、账单核对和问题排查。
 
@@ -188,6 +257,6 @@ SDK AI 对话本身是桥接能力：SDK 负责把编辑器中的 AI 请求交�
 - 在 `ui` 中开启 `aiChatPanel`。
 - 监听 `aiRequest`。
 - 在宿主后端完成用户鉴权和额度校验。
-- 宿主后端将请求转发到大角几何后端。
+- 宿主后端调用 `/api/v1/embedded/ai/run`，并把 SSE 响应透传给前端。
 - 前端使用 `consumeStream` 处理大角几何后端经由宿主返回的流式结果。
 - 处理取消、超时和错误状态。
