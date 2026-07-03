@@ -89,7 +89,35 @@ editor.on('aiRequest', async ({ payload, signal }) => {
 
 You only need to inspect its fields when debugging, recording audit logs, or coordinating with the Dino-GSP backend. For normal integrations, forward it as-is.
 
-## 3. Host Backend Forwarding
+## 3. Set or Clear the AI Draft
+
+Starting from SDK `2.9.0`, the host page can write draft content into the AI Chat panel. A typical use case is: after the host identifies the current point, figure, or parsed image, it preloads a prompt and related image into the AI panel; the user can still edit the text, add or remove images, and then manually start the AI conversation.
+
+```typescript
+await editor.ai.setDraft({
+  text: 'Create a geometry problem based on this figure',
+  images: ['https://example.com/figure.png'],
+  openPanel: true,
+  focus: true,
+});
+```
+
+Field reference:
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `text` | `string` | Draft text in the AI Chat input |
+| `images` | `string[]` | Image URLs attached to the AI Chat draft |
+| `openPanel` | `boolean` | Whether to open the AI Chat panel automatically |
+| `focus` | `boolean` | Whether to focus the AI input after setting the draft |
+
+Clear the draft:
+
+```typescript
+await editor.ai.clearDraft();
+```
+
+## 4. Host Backend Forwarding
 
 The host backend does not need to implement model calls or streaming protocol details by itself. It usually does three things:
 
@@ -121,7 +149,7 @@ app.post('/api/algeo-ai/chat', async (req, res) => {
 });
 ```
 
-## 4. Dino-GSP AI Drawing API
+## 5. Dino-GSP AI Drawing API
 
 The host backend calls the Dino-GSP Open Platform embedded-mode AI drawing API. The API returns a standard SSE stream that can be passed back to the frontend and then into `editor.ai.consumeStream()`.
 
@@ -186,7 +214,7 @@ Content-Type: application/json
 
 The cancel endpoint stops the current SSE delivery. An AI request already submitted to the Dino-GSP backend may still produce token usage and be settled. Rely on the final usage shown by the console or backend records.
 
-## 5. Cancellation and Errors
+## 6. Cancellation and Errors
 
 When the user cancels, a newer request supersedes the active request, or the SDK instance is destroyed, use the `aiCancel` event to observe cancellation state:
 

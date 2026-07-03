@@ -76,6 +76,16 @@ Core API: send a REPL execution sequence to the canvas. Can be used for automate
 - **Example**: `presentation.repl('def A := Point(0,0)')`
 - **Full command reference**: [REPL Capabilities](/en/sdk/repl)
 
+### `mode.setMasterTemplate(template: string): Promise<Result>`
+
+Starting from `2.9.0`, presentation mode supports setting the master template style through `mode.setMasterTemplate`, which helps align canvas backgrounds, grids, and default object styles.
+
+```typescript
+await presentation.mode.setMasterTemplate(masterTemplateContent);
+```
+
+You can download master template data that can be passed directly to `setMasterTemplate` from the [Dino-GSP master template page](https://dajiaoai.com/master-templates).
+
 ### `destroy(): void`
 
 Destroy the current instance, remove DOM content, and release communication listeners.

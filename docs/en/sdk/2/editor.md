@@ -119,7 +119,7 @@ interface SlideIndexResult {
 
 > Available since **2.6.0**
 
-Export the specified slide(s) (or all slides) as images, returning an `ExportedSlideImage[]` array.
+Export the specified slide(s) (or all slides) as images or editable layout content, returning an `ExportedSlideImage[]` array.
 
 ```typescript
 editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>
@@ -130,7 +130,7 @@ editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSl
 | Parameter      | Type             | Default | Description                                                    |
 | -------------- | ---------------- | ------- | -------------------------------------------------------------- |
 | `slideIndices` | `number[]`       | -       | 1-based indices of slides to export; omit to export all slides |
-| `format`       | `'png' \| 'jpg'` | `'png'` | Image format                                                   |
+| `format`       | `'png' \| 'jpg' \| 'svg' \| 'latex'` | `'png'` | Export format; `latex` returns a standalone LaTeX/TikZ document |
 | `width`        | `number`         | -       | Output image width in pixels                                   |
 | `height`       | `number`         | -       | Output image height in pixels                                  |
 | `quality`      | `number`         | `0.92`  | Image quality (0–1, applies to `jpg` only)                     |
@@ -142,8 +142,8 @@ editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSl
 | Property | Type             | Description                    |
 | -------- | ---------------- | ------------------------------ |
 | `index`  | `number`         | Slide index (1-based)          |
-| `blob`   | `Blob`           | Image binary data              |
-| `format` | `'png' \| 'jpg'` | Actual export format           |
+| `blob`   | `Blob`           | Exported binary data           |
+| `format` | `'png' \| 'jpg' \| 'svg' \| 'latex'` | Actual export format |
 | `width`  | `number`         | Actual export width in pixels  |
 | `height` | `number`         | Actual export height in pixels |
 
@@ -174,10 +174,11 @@ await editor.history.clear();
 
 ### 4. Mode API (`editor.mode`)
 
-Dynamically adjust the UI.
+Dynamically adjust the UI and master template style.
 
 - `getUiConfig(): AlgeoEditorUiConfig`: Get the SDK-side cached UI configuration.
 - `setUiConfig(config: Partial<AlgeoEditorUiConfig>): Promise<void>`: Dynamically toggle UI element visibility at runtime.
+- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: Set the master template style. Supported since `2.9.0`.
 
 ```typescript
 const ui = editor.mode.getUiConfig();
@@ -186,7 +187,13 @@ await editor.mode.setUiConfig({
   slidePanel: false,
   aiChatPanel: true,
 });
+
+await editor.mode.setMasterTemplate(masterTemplateContent);
 ```
+
+`setMasterTemplate` forwards the `template` string to the iframe. The embedded editor applies it to the document slides; the SDK does not parse or modify the master template content.
+
+You can download master template data that can be passed directly to `setMasterTemplate` from the [Dino-GSP master template page](https://dajiaoai.com/master-templates).
 
 ### 5. AI API (`editor.ai`)
 
@@ -194,10 +201,21 @@ await editor.mode.setUiConfig({
 
 The AI API lets the host page pass the Dino-GSP backend stream, returned through the host backend, back to the embedded editor. It is usually used together with the `aiRequest` event.
 
+- `setDraft(draft: AiDraftPayloadV1): Promise<void>`: Set the AI Chat draft with `text`, `images`, `openPanel`, and `focus`. Supported since `2.9.0`.
+- `clearDraft(): Promise<void>`: Clear the AI Chat draft text and images. Supported since `2.9.0`.
 - `consumeStream(input: { stream: ReadableStream<Uint8Array>; signal?: AbortSignal }): Promise<void>`: Consume the streaming response returned by the Dino-GSP backend.
 - `pushStreamEvent(event: AiStreamEventV1): void`: Low-level event push API, mainly for SDK internals or integration debugging with the Dino-GSP backend. Normal integrations should prefer `consumeStream`.
 
 ```typescript
+await editor.ai.setDraft({
+  text: 'Create a geometry problem based on this figure',
+  images: ['https://example.com/figure.png'],
+  openPanel: true,
+  focus: true,
+});
+
+await editor.ai.clearDraft();
+
 editor.on('aiRequest', async ({ payload, signal }) => {
   const response = await fetch('/api/ai/chat', {
     method: 'POST',

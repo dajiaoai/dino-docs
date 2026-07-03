@@ -54,4 +54,4 @@ Embedded editor AI drawing is bridged by the SDK. Actual billing is based on AI 
 
 - [AI Chat in Editor](/en/sdk/2/ai-chat)
 - [Editor Mode](/en/sdk/2/editor)
-- [SDK 2.x Examples](/en/sdk/2/examples)
+- [SDK Examples](https://dajiaoai.github.io/algeo-sdk/)

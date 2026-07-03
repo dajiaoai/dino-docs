@@ -76,6 +76,16 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 - **示例**: `presentation.repl('P1(2,3); P2(-1,0); SEG(P1, P2);')`
 - **详细指令**: [查看 REPL 完整手册](/sdk/repl)
 
+### `mode.setMasterTemplate(template: string): Promise<Result>`
+
+从 `2.9.0` 起，演示模式支持通过 `mode.setMasterTemplate` 设置母版风格，用于统一画板背景、网格、默认图形样式等母版配置。
+
+```typescript
+await presentation.mode.setMasterTemplate(masterTemplateContent);
+```
+
+您可以在[大角母版页](https://dajiaoai.com/master-templates)下载可直接传入 `setMasterTemplate` 的母版数据。
+
 ### `destroy(): void`
 
 销毁当前实例，移除 DOM 内容并释放通信监听。

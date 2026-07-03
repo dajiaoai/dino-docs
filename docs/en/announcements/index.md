@@ -7,6 +7,10 @@ description: Product updates, capability releases, billing changes, maintenance 
 
 This page collects important Dino-GSP Open Platform updates, including new capabilities, capability changes, billing changes, maintenance notices, and usage notes.
 
+## July 2026
+
+- **New capability** · 2026-07-03 · [SDK 2.9.0 Updates Master Templates, AI Drafts, and Export Formats](./2026-07-03-sdk-2-9-0-master-template-ai-draft-export)
+
 ## June 2026
 
 - **Capability change** · 2026-06-29 · [Render API Parameters and Agent Template Support Updated](./2026-06-29-render-agent-template-update)

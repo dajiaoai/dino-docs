@@ -59,7 +59,7 @@ export function createSdkSidebar(
         },
         {
           text: isEnglish ? 'Examples' : '示例中心',
-          link: getStableV2Path(localePrefix, 'examples'),
+          link: 'https://dajiaoai.github.io/algeo-sdk/',
         },
         {
           text: isEnglish ? 'Protocol & Data Format' : '数据协议',

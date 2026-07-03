@@ -89,7 +89,35 @@ editor.on('aiRequest', async ({ payload, signal }) => {
 
 只有在排查问题、记录审计日志或与大角几何后端联调时，才需要关注它的具体字段；普通接入场景请按原样转发。
 
-## 3. 宿主后端转发
+## 3. 设置或清空 AI 草稿
+
+SDK `2.9.0` 起，宿主页面可以主动向 AI 对话框写入草稿内容。典型场景是：宿主解析到当前点位或图形后，自动把提示词和相关图片放入 AI 面板，用户可以继续编辑文本、增删图片，再手动发起 AI 对话。
+
+```typescript
+await editor.ai.setDraft({
+  text: '请根据这张图生成一道几何题',
+  images: ['https://example.com/figure.png'],
+  openPanel: true,
+  focus: true,
+});
+```
+
+字段说明：
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `text` | `string` | AI 对话框中的草稿文本 |
+| `images` | `string[]` | 附加到 AI 对话框的图片 URL 列表 |
+| `openPanel` | `boolean` | 是否自动打开 AI 对话面板 |
+| `focus` | `boolean` | 是否在设置草稿后聚焦到 AI 输入框 |
+
+清空草稿：
+
+```typescript
+await editor.ai.clearDraft();
+```
+
+## 4. 宿主后端转发
 
 宿主后端不需要自行实现 AI 模型调用或流式协议，通常只负责三件事：
 
@@ -121,7 +149,7 @@ app.post('/api/algeo-ai/chat', async (req, res) => {
 });
 ```
 
-## 4. 大角几何生图 API
+## 5. 大角几何生图 API
 
 宿主后端实际调用的是大角几何开放平台的内嵌模式 AI 生图接口。这个接口返回标准 SSE 流，可以直接透传给前端，再交给 `editor.ai.consumeStream()`。
 
@@ -186,7 +214,7 @@ Content-Type: application/json
 
 取消接口用于停止当前 SSE 投递。已经提交到大角几何后端的 AI 请求可能仍会继续产生 token 用量并结算，因此宿主侧不应展示“取消即不计费”，应以控制台或后端返回的最终用量为准。
 
-## 5. 取消与错误处理
+## 6. 取消与错误处理
 
 当用户取消请求、新请求覆盖旧请求，或 SDK 实例销毁时，推荐通过 `aiCancel` 事件感知取消状态：
 

@@ -171,6 +171,10 @@ export default defineConfig({
               text: '2026 年',
               items: [
                 {
+                  text: 'SDK 2.9.0 母版、AI 草稿与导出能力更新',
+                  link: '/announcements/2026-07-03-sdk-2-9-0-master-template-ai-draft-export',
+                },
+                {
                   text: '渲染接口参数与智能生图母版能力更新',
                   link: '/announcements/2026-06-29-render-agent-template-update',
                 },
@@ -272,6 +276,10 @@ export default defineConfig({
             {
               text: '2026',
               items: [
+                {
+                  text: 'SDK 2.9.0 Updates Master Templates, AI Drafts, and Export Formats',
+                  link: '/en/announcements/2026-07-03-sdk-2-9-0-master-template-ai-draft-export',
+                },
                 {
                   text: 'Render API Parameters and Agent Template Support Updated',
                   link: '/en/announcements/2026-06-29-render-agent-template-update',

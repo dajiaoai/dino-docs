@@ -54,4 +54,4 @@ description: SDK 2.8.0 起，内嵌编辑模式可开启 AI 对话面板，并�
 
 - [编辑器 AI 对话接入说明](/sdk/2/ai-chat)
 - [编辑模式文档](/sdk/2/editor)
-- [SDK 2.x 示例中心](/sdk/2/examples)
+- [SDK 示例中心](https://dajiaoai.github.io/algeo-sdk/)

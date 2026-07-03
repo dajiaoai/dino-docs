@@ -114,7 +114,7 @@ interface SlideIndexResult {
 
 > 从 **2.6.0** 起支持
 
-将指定画板（或全部画板）导出为图片，返回 `ExportedSlideImage[]` 数组。
+将指定画板（或全部画板）导出为图片或可编辑排版内容，返回 `ExportedSlideImage[]` 数组。
 
 ```typescript
 editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>
@@ -125,7 +125,7 @@ editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSl
 | 参数           | 类型             | 默认值  | 说明                                                |
 | -------------- | ---------------- | ------- | --------------------------------------------------- |
 | `slideIndices` | `number[]`       | -       | 要导出的画板索引数组（1-based）；不传则导出全部画板 |
-| `format`       | `'png' \| 'jpg'` | `'png'` | 图片格式                                            |
+| `format`       | `'png' \| 'jpg' \| 'svg' \| 'latex'` | `'png'` | 导出格式；`latex` 返回 standalone LaTeX/TikZ 文档 |
 | `width`        | `number`         | -       | 导出图片宽度（像素）                                |
 | `height`       | `number`         | -       | 导出图片高度（像素）                                |
 | `quality`      | `number`         | `0.92`  | 图片质量（0~1，仅 `jpg` 格式生效）                  |
@@ -137,8 +137,8 @@ editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSl
 | 属性     | 类型             | 说明                 |
 | -------- | ---------------- | -------------------- |
 | `index`  | `number`         | 画板索引（1-based）  |
-| `blob`   | `Blob`           | 图片二进制数据       |
-| `format` | `'png' \| 'jpg'` | 实际导出格式         |
+| `blob`   | `Blob`           | 导出内容二进制数据   |
+| `format` | `'png' \| 'jpg' \| 'svg' \| 'latex'` | 实际导出格式 |
 | `width`  | `number`         | 实际导出宽度（像素） |
 | `height` | `number`         | 实际导出高度（像素） |
 
@@ -169,10 +169,11 @@ await editor.history.clear();
 
 ### 4. 模式 API (`editor.mode`)
 
-动态调整 UI。
+动态调整 UI 与母版风格。
 
 - `getUiConfig(): AlgeoEditorUiConfig`: 获取 SDK 当前缓存的 UI 配置。
 - `setUiConfig(config: Partial<AlgeoEditorUiConfig>): Promise<void>`: 运行时动态切换 UI 元件的显隐。
+- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: 设置母版风格。从 `2.9.0` 起支持。
 
 ```typescript
 const ui = editor.mode.getUiConfig();
@@ -181,7 +182,12 @@ await editor.mode.setUiConfig({
   slidePanel: false,
   aiChatPanel: true,
 });
+
+await editor.mode.setMasterTemplate(masterTemplateContent);
 ```
+
+
+您可以在[大角母版页](https://dajiaoai.com/master-templates)下载可直接传入 `setMasterTemplate` 的母版数据。
 
 ### 5. AI API (`editor.ai`)
 
@@ -189,10 +195,21 @@ await editor.mode.setUiConfig({
 
 AI API 用于宿主页面把大角几何后端经由宿主后端返回的流式结果交给内嵌编辑器。它通常配合 `aiRequest` 事件使用。
 
+- `setDraft(draft: AiDraftPayloadV1): Promise<void>`: 设置 AI 对话框草稿，支持 `text`、`images`、`openPanel`、`focus`。从 `2.9.0` 起支持。
+- `clearDraft(): Promise<void>`: 清空 AI 对话框草稿文本与图片。从 `2.9.0` 起支持。
 - `consumeStream(input: { stream: ReadableStream<Uint8Array>; signal?: AbortSignal }): Promise<void>`: 消费大角几何后端返回的流式响应。
 - `pushStreamEvent(event: AiStreamEventV1): void`: 底层事件推送接口，主要用于 SDK 内部或与大角几何后端联调；普通接入请优先使用 `consumeStream`。
 
 ```typescript
+await editor.ai.setDraft({
+  text: '请根据这张图生成一道几何题',
+  images: ['https://example.com/figure.png'],
+  openPanel: true,
+  focus: true,
+});
+
+await editor.ai.clearDraft();
+
 editor.on('aiRequest', async ({ payload, signal }) => {
   const response = await fetch('/api/ai/chat', {
     method: 'POST',
@@ -346,4 +363,3 @@ editor.on('aiCancel', (event) => {
 | `user`       | 用户主动取消                 |
 | `superseded` | 新请求覆盖了当前请求         |
 | `destroyed`  | SDK 实例销毁导致请求被取消   |
-
