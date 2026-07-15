@@ -4,8 +4,11 @@ import './style.css';
 import HeroIllustration from './HeroIllustration.vue';
 import HeroInfo from './HeroInfo.vue';
 import CopyDocButton from './CopyDocButton.vue';
-
-const GA_ID = 'G-ZVQ5PXBPGG';
+import {
+  enableAutoPageTracking,
+  enableAutoErrorTracking,
+  enableAutoClickTracking,
+} from './sls/slsLogger';
 
 export default {
   extends: DefaultTheme,
@@ -15,18 +18,16 @@ export default {
       'home-hero-image': () => h(HeroIllustration),
       'aside-outline-before': () => h(CopyDocButton),
     }),
-  enhanceApp({ router }) {
+  enhanceApp() {
     if (typeof window === 'undefined') return;
-    router.onAfterRouteChange = (to) => {
-      const gtag = (
-        window as unknown as { gtag?: (...args: unknown[]) => void }
-      ).gtag;
-      if (typeof gtag === 'function') {
-        gtag('event', 'page_view', {
-          page_path: to,
-          page_title: document.title,
-        });
-      }
-    };
+
+    // 自动上报：页面访问/离开、全局错误、点击事件；生产构建才会真正发送。
+    // Google Analytics 4 的数据采集由 slsLogger 统一驱动。
+    enableAutoPageTracking();
+    enableAutoErrorTracking();
+    enableAutoClickTracking();
+
+    // 若站点后续能拿到登录态用户 ID，可在此调用：
+    // slsLogger.setUserId(/* userId */ '');
   },
 };
