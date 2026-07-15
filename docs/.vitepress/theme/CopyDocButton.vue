@@ -193,7 +193,13 @@ function getDocText(): string {
 async function copyDoc() {
   if (state.value === 'copying') return;
 
-  const markdown = await getMarkdownSource();
+  // Prefer the real markdown source injected into pageData by the
+  // vitepress-raw-markdown plugin. Fall back to an HTTP fetch (works in some
+  // dev setups) and finally to the rendered DOM text as a last resort.
+  const injectedMarkdown = (page.value as Record<string, unknown>).rawMarkdown;
+  const rawMarkdown =
+    typeof injectedMarkdown === 'string' ? injectedMarkdown.trim() : '';
+  const markdown = rawMarkdown || (await getMarkdownSource());
   const text = markdown || getDocText();
 
   if (!text) {

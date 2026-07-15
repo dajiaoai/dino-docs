@@ -1,9 +1,38 @@
+import path from 'node:path';
 import { defineConfig } from 'vitepress';
 import type { HeadConfig } from 'vitepress';
+import type { Plugin } from 'vite';
 import { createSdkSidebar } from './sdkVersions';
 
 const HOSTNAME = 'https://open.dajiaoai.com';
 const GA_ID = 'G-ZVQ5PXBPGG';
+
+/**
+ * Capture the raw markdown source of every page at transform time so the
+ * "Copy Doc" button can copy real markdown instead of rendered text.
+ * The map is populated by the Vite plugin below (which runs before VitePress
+ * turns .md into a Vue component) and then attached to pageData via
+ * transformPageData, making it available to the client through useData().
+ */
+const rawMarkdownMap = new Map<string, string>();
+const docsRoot = path.resolve(__dirname, '..');
+
+const slash = (p: string): string => p.replace(/\\/g, '/');
+
+function rawMarkdownPlugin(): Plugin {
+  return {
+    name: 'vitepress-raw-markdown',
+    enforce: 'pre',
+    transform(code, id) {
+      if (!id.endsWith('.md')) return null;
+      const cleanId = id.split('?')[0];
+      const relativePath = slash(path.relative(docsRoot, cleanId));
+      if (relativePath.startsWith('..')) return null;
+      rawMarkdownMap.set(relativePath, code);
+      return null;
+    },
+  };
+}
 
 function getCanonicalUrl(page: string): string {
   const path = page
@@ -48,6 +77,9 @@ export default defineConfig({
   description:
     '大角几何开放平台：SDK 接入嵌入式几何画板，规划中接口服务、AI 几何能力等',
   base: '/',
+  vite: {
+    plugins: [rawMarkdownPlugin()],
+  },
   lastUpdated: true,
   sitemap: {
     hostname: HOSTNAME,
@@ -91,6 +123,11 @@ export default defineConfig({
         JSON.stringify(jsonLd),
       ]);
     }
+
+    // Attach the captured raw markdown so the Copy Doc button can copy
+    // real markdown instead of the rendered (plain text) DOM content.
+    const rawMarkdown = rawMarkdownMap.get(pageData.relativePath) ?? '';
+    return { rawMarkdown } as unknown as Partial<typeof pageData>;
   },
   locales: {
     root: {
