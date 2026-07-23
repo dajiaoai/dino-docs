@@ -30,6 +30,7 @@ description: Billing details for Dino Geometry APIs, including intelligent image
 
 - The current exchange rate is `1` CNY = `10,000` points.
 - Purchasing a resource package unlocks further discounts — see the [console](https://open.dajiaoai.com/console) for details.
+- We recommend keeping the QPS for all Dino API calls at or below `10`. For high-concurrency use cases, please contact us for custom pricing.
 
 ## Top up
 
