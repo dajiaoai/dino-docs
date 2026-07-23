@@ -45,7 +45,7 @@ SDK 将编辑器的 API 进行了模块化拆分：
 
 ```typescript
 interface AlgeoEditorCreateOptions {
-  auth?: {
+  auth: {
     appId: string;
   };
   shareId?: string;
@@ -87,7 +87,8 @@ const content = await editor.document.getContent();
 - `remove(index: number): Promise<void>`: 删除指定画板。
 - `duplicate(index: number, targetIndex?: number): Promise<SlideIndexResult>`: 复制指定画板，可指定插入位置。
 - `reorder(fromIndex: number, toIndex: number): Promise<void>`: 调整画板顺序。
-- `exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>`: 导出画板图片。
+- `exportImage(options: ExportImageOptions): Promise<ExportedSlideImage[]>`: 导出画板图片。
+- `exportLatex(options?: ExportLatexOptions): Promise<ExportedLatex[]>`: 导出 LaTeX/TikZ 源码。
 
 ```typescript
 const total = editor.slides.getCount();
@@ -110,37 +111,65 @@ interface SlideIndexResult {
 
 `switchTo`、`remove`、`duplicate`、`reorder` 中的索引均为 **0-based**。`exportImage` 的 `slideIndices` 为 **1-based**，用于贴近导出场景中的页码表达。
 
-#### 2.1 `exportImage(options?)`
+#### 2.1 `exportImage(options)`
 
-> 从 **2.6.0** 起支持
+> 从 **2.10.0** 起支持
 
-将指定画板（或全部画板）导出为图片或可编辑排版内容，返回 `ExportedSlideImage[]` 数组。
+
+`slideIndices` 使用 1-based 索引，省略时导出全部画板。导出会读取文件中的
+`camera.scale`（缺省为 `50`），并支持三种互斥模式。
+
+所有模式的公共参数：
+
+| 参数           | 类型                        | 必填 | 默认值  | 说明                                           |
+| -------------- | --------------------------- | ---- | ------- | ---------------------------------------------- |
+| `mode`         | `'view' \| 'contain' \| 'size'` | 是   | -       | 导出尺寸计算模式                               |
+| `slideIndices` | `number[]`                  | 否   | 全部画板 | 要导出的画板索引，使用 1-based 索引            |
+| `format`       | `'png' \| 'jpg' \| 'svg'`   | 否   | `'png'` | 输出格式                                       |
+| `quality`      | `number`                    | 否   | `0.92`  | JPG 质量，范围为 `0～1`；仅对 `jpg` 格式生效 |
+
+各模式专属参数：
+
+| 模式      | 参数         | 类型                                                        | 必填 | 说明                                                                 |
+| --------- | ------------ | ----------------------------------------------------------- | ---- | -------------------------------------------------------------------- |
+| `view`    | `viewBounds` | `{ x: number; y: number; width: number; height: number }`   | 是   | 导出视野，位置和宽高均使用世界坐标                                   |
+| `view`    | `pixelRatio` | `number`                                                    | 否   | 输出像素倍率；输出尺寸为 `viewBounds × camera.scale × pixelRatio`    |
+| `contain` | `pixelRatio` | `number`                                                    | 否   | 输出像素倍率                                                         |
+| `contain` | `padding`    | `number \| { horizontal?: number; vertical?: number }`      | 否   | 每侧绝对留白，单位为最终输出像素                                     |
+| `size`    | `width`      | `number`                                                    | 是   | 最终输出宽度，单位为像素                                             |
+| `size`    | `height`     | `number`                                                    | 是   | 最终输出高度，单位为像素                                             |
+| `size`    | `minPadding` | `number \| { horizontal?: number; vertical?: number }`      | 否   | 每侧最小留白，单位为输出像素；SDK 自动计算缩放比例并居中内容          |
+
+`size` 模式不接收 `pixelRatio`。
 
 ```typescript
-editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>
+const images = await editor.slides.exportImage({
+  mode: 'size',
+  slideIndices: [1],
+  format: 'jpg',
+  width: 1200,
+  height: 900,
+  minPadding: { horizontal: 40, vertical: 32 },
+  quality: 0.92,
+});
 ```
 
-**`ExportSlideImageOptions`（可选参数）：**
+返回元素为 `{ index, blob, format, width, height }`，其中 `format` 为
+`'png' | 'jpg' | 'svg'`，`index` 为 1-based。`quality` 仅对 JPG 生效。
 
-| 参数           | 类型             | 默认值  | 说明                                                |
-| -------------- | ---------------- | ------- | --------------------------------------------------- |
-| `slideIndices` | `number[]`       | -       | 要导出的画板索引数组（1-based）；不传则导出全部画板 |
-| `format`       | `'png' \| 'jpg' \| 'svg' \| 'latex'` | `'png'` | 导出格式；`latex` 返回 standalone LaTeX/TikZ 文档 |
-| `width`        | `number`         | -       | 导出图片宽度（像素）                                |
-| `height`       | `number`         | -       | 导出图片高度（像素）                                |
-| `quality`      | `number`         | `0.92`  | 图片质量（0~1，仅 `jpg` 格式生效）                  |
-| `autoFit`      | `boolean`        | -       | 是否自动适应画板内容缩放                            |
-| `padding`      | `number`         | -       | 自动适应时的内边距（像素）                          |
+#### 2.2 `exportLatex(options?)`
 
-**`ExportedSlideImage`（返回数组元素）：**
+将指定画板导出为 LaTeX/TikZ 源码：
 
-| 属性     | 类型             | 说明                 |
-| -------- | ---------------- | -------------------- |
-| `index`  | `number`         | 画板索引（1-based）  |
-| `blob`   | `Blob`           | 导出内容二进制数据   |
-| `format` | `'png' \| 'jpg' \| 'svg' \| 'latex'` | 实际导出格式 |
-| `width`  | `number`         | 实际导出宽度（像素） |
-| `height` | `number`         | 实际导出高度（像素） |
+```typescript
+const items = await editor.slides.exportLatex({
+  slideIndices: [1, 3],
+  standalone: true,
+});
+```
+
+`standalone` 默认为 `true`，返回可独立编译的完整文档；设为 `false` 时只返回
+TikZ 片段。返回元素结构为 `{ index: number, code: string }`，索引为 1-based。
 
 ### 3. 历史 API (`editor.history`)
 
@@ -226,9 +255,11 @@ editor.on('aiRequest', async ({ payload, signal }) => {
 
 ### 6. 生命周期 API
 
+- `resize(): void`: 自 `2.10.0` 起支持。通知内嵌页重新测量容器并重绘画布。SDK 会在容器尺寸变化时自动调用；其它宿主布局变化后可手动调用。
 - `destroy(): Promise<void>`: 销毁 SDK 实例，移除 iframe、清理消息监听器，并取消未完成请求。
 
 ```typescript
+editor.resize();
 await editor.destroy();
 ```
 

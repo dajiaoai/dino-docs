@@ -70,10 +70,39 @@ const editor = await createEditor(document.getElementById('algeo-editor'), {
 });
 
 // Listen for save events
-editor.on('save', (event) => {
-  console.log('Content saved:', event.content);
+editor.on('save', async (event) => {
+  if (event.stage === 'request') {
+    await saveToYourBackend(event.content);
+    return { status: 'success' };
+  }
+
+  console.log('Save succeeded:', event.content);
 });
 ```
+
+The save event has `request` and `success` stages. The request-stage listener must return
+`{ status: 'success' }` or `{ status: 'error', message?: string }`. The embedded editor
+shows its success state and emits the success stage only after the host reports success.
+
+### Unified Entry Point and Custom Host
+
+Use `create` when the mode is selected dynamically or the embedded-page host must be customized:
+
+```javascript
+import { create } from '@dajiaoai/algeo-sdk';
+
+const editor = await create(container, {
+  mode: 'editor',
+  baseUrl: 'https://your-host.example',
+  editor: {
+    auth: { appId: 'YTVJDQZR' },
+    initialContent,
+  },
+});
+```
+
+The `createEditor` and `createPresentation` shortcuts do not expose `baseUrl`. With the
+unified entry point, place mode-specific options under `editor` or `presentation`.
 
 ## 4. Getting an appId
 

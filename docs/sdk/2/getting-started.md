@@ -70,10 +70,39 @@ const editor = await createEditor(document.getElementById('algeo-editor'), {
 });
 
 // 监听保存事件
-editor.on('save', (event) => {
-  console.log('保存内容:', event.content);
+editor.on('save', async (event) => {
+  if (event.stage === 'request') {
+    await saveToYourBackend(event.content);
+    return { status: 'success' };
+  }
+
+  console.log('保存成功:', event.content);
 });
 ```
+
+保存事件分为 `request` 与 `success` 两个阶段。`request` 阶段的监听器必须返回
+`{ status: 'success' }` 或 `{ status: 'error', message?: string }`。只有宿主返回成功后，
+内嵌编辑器才会展示成功状态并触发 `success` 阶段。
+
+### 统一入口与自定义地址
+
+需要按模式动态创建实例或自定义内嵌页地址时，使用统一入口 `create`：
+
+```javascript
+import { create } from '@dajiaoai/algeo-sdk';
+
+const editor = await create(container, {
+  mode: 'editor',
+  baseUrl: 'https://your-host.example',
+  editor: {
+    auth: { appId: 'YTVJDQZR' },
+    initialContent,
+  },
+});
+```
+
+`createEditor` 和 `createPresentation` 快捷入口不暴露 `baseUrl`。统一入口中，
+编辑模式配置放在 `editor`，演示模式配置放在 `presentation`。
 
 ## 4. 获取 appId
 

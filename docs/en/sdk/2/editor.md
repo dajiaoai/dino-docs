@@ -50,7 +50,7 @@ The SDK organizes the editor API into modules:
 
 ```typescript
 interface AlgeoEditorCreateOptions {
-  auth?: {
+  auth: {
     appId: string;
   };
   shareId?: string;
@@ -92,7 +92,8 @@ Manage multi-slide documents.
 - `remove(index: number): Promise<void>`: Delete the specified slide.
 - `duplicate(index: number, targetIndex?: number): Promise<SlideIndexResult>`: Duplicate the specified slide, optionally inserting it at a target position.
 - `reorder(fromIndex: number, toIndex: number): Promise<void>`: Reorder slides.
-- `exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>`: Export slides as images.
+- `exportImage(options: ExportImageOptions): Promise<ExportedSlideImage[]>`: Export slides as images.
+- `exportLatex(options?: ExportLatexOptions): Promise<ExportedLatex[]>`: Export LaTeX/TikZ source.
 
 ```typescript
 const total = editor.slides.getCount();
@@ -115,37 +116,62 @@ interface SlideIndexResult {
 
 `switchTo`, `remove`, `duplicate`, and `reorder` use **0-based** indices. `exportImage.slideIndices` uses **1-based** indices to match page-number semantics in export flows.
 
-#### 2.1 `exportImage(options?)`
+#### 2.1 `exportImage(options)`
 
-> Available since **2.6.0**
+`slideIndices` is 1-based; omit it to export every slide. Export reads `camera.scale`
+from the file (default `50`) and supports three mutually exclusive modes.
 
-Export the specified slide(s) (or all slides) as images or editable layout content, returning an `ExportedSlideImage[]` array.
+Parameters shared by all modes:
+
+| Parameter      | Type                              | Required | Default    | Description                                              |
+| -------------- | --------------------------------- | -------- | ---------- | -------------------------------------------------------- |
+| `mode`         | `'view' \| 'contain' \| 'size'`   | yes      | -          | Output-size calculation mode                             |
+| `slideIndices` | `number[]`                        | no       | all slides | 1-based indices of slides to export                      |
+| `format`       | `'png' \| 'jpg' \| 'svg'`         | no       | `'png'`    | Output format                                            |
+| `quality`      | `number`                          | no       | `0.92`     | JPG quality from `0` to `1`; applies only to `jpg`       |
+
+Mode-specific parameters:
+
+| Mode      | Parameter      | Type                                                        | Required | Description                                                               |
+| --------- | -------------- | ----------------------------------------------------------- | -------- | ------------------------------------------------------------------------- |
+| `view`    | `viewBounds`   | `{ x: number; y: number; width: number; height: number }`   | yes      | Export viewport; position and dimensions use world coordinates            |
+| `view`    | `pixelRatio`   | `number`                                                    | no       | Output pixel multiplier; size is `viewBounds × camera.scale × pixelRatio` |
+| `contain` | `pixelRatio`   | `number`                                                    | no       | Output pixel multiplier                                                   |
+| `contain` | `padding`      | `number \| { horizontal?: number; vertical?: number }`      | no       | Absolute padding on each side, in final output pixels                     |
+| `size`    | `width`        | `number`                                                    | yes      | Exact output width in pixels                                              |
+| `size`    | `height`       | `number`                                                    | yes      | Exact output height in pixels                                             |
+| `size`    | `minPadding`   | `number \| { horizontal?: number; vertical?: number }`      | no       | Minimum padding per side; the SDK scales and centers content automatically |
+
+The `size` mode does not accept `pixelRatio`.
 
 ```typescript
-editor.slides.exportImage(options?: ExportSlideImageOptions): Promise<ExportedSlideImage[]>
+const images = await editor.slides.exportImage({
+  mode: 'size',
+  slideIndices: [1],
+  format: 'jpg',
+  width: 1200,
+  height: 900,
+  minPadding: { horizontal: 40, vertical: 32 },
+  quality: 0.92,
+});
 ```
 
-**`ExportSlideImageOptions` (optional):**
+Each result is `{ index, blob, format, width, height }`; `format` is
+`'png' | 'jpg' | 'svg'` and `index` is 1-based. `quality` applies only to JPG.
 
-| Parameter      | Type             | Default | Description                                                    |
-| -------------- | ---------------- | ------- | -------------------------------------------------------------- |
-| `slideIndices` | `number[]`       | -       | 1-based indices of slides to export; omit to export all slides |
-| `format`       | `'png' \| 'jpg' \| 'svg' \| 'latex'` | `'png'` | Export format; `latex` returns a standalone LaTeX/TikZ document |
-| `width`        | `number`         | -       | Output image width in pixels                                   |
-| `height`       | `number`         | -       | Output image height in pixels                                  |
-| `quality`      | `number`         | `0.92`  | Image quality (0–1, applies to `jpg` only)                     |
-| `autoFit`      | `boolean`        | -       | Auto-fit output size to canvas content                         |
-| `padding`      | `number`         | -       | Padding in pixels when `autoFit` is enabled                    |
+#### 2.2 `exportLatex(options?)`
 
-**`ExportedSlideImage` (array item):**
+Export selected slides as LaTeX/TikZ source:
 
-| Property | Type             | Description                    |
-| -------- | ---------------- | ------------------------------ |
-| `index`  | `number`         | Slide index (1-based)          |
-| `blob`   | `Blob`           | Exported binary data           |
-| `format` | `'png' \| 'jpg' \| 'svg' \| 'latex'` | Actual export format |
-| `width`  | `number`         | Actual export width in pixels  |
-| `height` | `number`         | Actual export height in pixels |
+```typescript
+const items = await editor.slides.exportLatex({
+  slideIndices: [1, 3],
+  standalone: true,
+});
+```
+
+`standalone` defaults to `true` for a complete compilable document. Set it to `false`
+for a TikZ fragment. Each result is `{ index: number, code: string }`, with a 1-based index.
 
 ### 3. History API (`editor.history`)
 
@@ -232,9 +258,11 @@ editor.on('aiRequest', async ({ payload, signal }) => {
 
 ### 6. Lifecycle API
 
+- `resize(): void`: Supported since `2.10.0`. Ask the embedded page to remeasure and redraw. The SDK calls it automatically when the container size changes; call it manually after other host layout changes.
 - `destroy(): Promise<void>`: Destroy the SDK instance, remove the iframe, clean up message listeners, and cancel pending requests.
 
 ```typescript
+editor.resize();
 await editor.destroy();
 ```
 

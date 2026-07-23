@@ -21,9 +21,11 @@ REPL（Read-Eval-Print Loop）是大角几何画板的交互式命令接口，�
 ## 接入方式
 
 ```ts
-import { AlgeoSdk } from '@dajiaoai/algeo-sdk';
+import { createPresentation } from '@dajiaoai/algeo-sdk';
 
-const presentation = await AlgeoSdk.createPresentation(container, { appId });
+const presentation = await createPresentation(container, {
+  auth: { appId },
+});
 
 await presentation.loadShareById('33TA3484');
 const { output } = await presentation.repl('list');

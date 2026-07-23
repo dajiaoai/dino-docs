@@ -46,20 +46,24 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 
 ## API Reference
 
-### `loadShareById(id: string): Promise<Result>`
+After creation, the SDK checks the current page `hostname` against the Open Platform
+allowlist using `auth.appId`. If the check fails, the iframe still initializes and an
+instance is returned, but subsequent presentation APIs reject and log the method name.
+
+### `loadShareById(id: string): Promise<{ success: true }>`
 
 Load content by a Dino-GSP share ID.
 
 - **Parameter**: `id`: string (e.g. `'33TA3484'`)
-- **Returns**: Metadata indicating load success or failure.
+- **Returns**: `{ success: true }`
 
-### `loadFile(content: FileContentLatest): Promise<Result>`
+### `loadFile(content: FileContentLatest): Promise<{ success: true }>`
 
 Load structured JSON data conforming to the FileContentLatest protocol.
 
 - **Parameter**: `content`: see [Protocol Reference](./protocol)
 
-### `switchSlide(index: number): Promise<Result>`
+### `switchSlide(index: number): Promise<{ success: true }>`
 
 Jump to the slide at the specified index (0-based).
 
@@ -69,14 +73,20 @@ Jump to the slide at the specified index (0-based).
 
 Get the total number of slides in the current document.
 
-### `repl(command: string): Promise<Result>`
+### `repl(command: string): Promise<{ output: string }>`
 
 Core API: send a REPL execution sequence to the canvas. Can be used for automated drawing, parameter setting, and more.
 
 - **Example**: `presentation.repl('def A := Point(0,0)')`
 - **Full command reference**: [REPL Capabilities](/en/sdk/repl)
 
-### `mode.setMasterTemplate(template: string): Promise<Result>`
+### `mode`
+
+- `getUiConfig()`: Get the current UI configuration.
+- `setUiConfig(config)`: Update the UI configuration.
+- `setMasterTemplate(template)`: Set the master template style.
+
+#### `mode.setMasterTemplate(template: string)`
 
 Starting from `2.9.0`, presentation mode supports setting the master template style through `mode.setMasterTemplate`, which helps align canvas backgrounds, grids, and default object styles.
 
@@ -86,9 +96,17 @@ await presentation.mode.setMasterTemplate(masterTemplateContent);
 
 You can download master template data that can be passed directly to `setMasterTemplate` from the [Dino-GSP master template page](https://dajiaoai.com/master-templates).
 
-### `destroy(): void`
+### `resize(): void`
 
-Destroy the current instance, remove DOM content, and release communication listeners.
+Supported since `2.10.0`.
+
+Ask the embedded page to remeasure its container and redraw the canvas. The SDK calls
+this automatically when the container size changes; call
+`presentation.resize()` manually after other host layout changes when needed.
+
+### `destroy(): Promise<void>`
+
+Destroy the instance, remove the iframe and listeners, and reject all pending requests.
 
 ## Event Subscription
 

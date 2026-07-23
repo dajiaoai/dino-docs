@@ -10,10 +10,14 @@ REPL (Read-Eval-Print Loop) is the Dino-GSP canvas's **interactive command inter
 ## Integration
 
 ```javascript
-const sdk = await AlgeoSdk.create(container);
-const { output } = await sdk.repl('help');
-const { output } = await sdk.repl('list');
-const { output } = await sdk.repl('def A := Point(0,0)');
+import { createPresentation } from '@dajiaoai/algeo-sdk';
+
+const presentation = await createPresentation(container, {
+  auth: { appId },
+});
+
+await presentation.loadShareById('33TA3484');
+const { output } = await presentation.repl('help');
 ```
 
 Each call executes a **single** command. On error the promise rejects; see [Protocol Reference - Error Codes](../api/protocol#error-codes).
