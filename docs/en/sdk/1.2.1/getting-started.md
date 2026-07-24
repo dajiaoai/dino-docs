@@ -5,6 +5,17 @@ description: Installation, basic usage, configuration, and error handling for SD
 
 # SDK 1.2.1 Getting Started
 
+::: warning This version is no longer updated
+SDK 1.2.1 no longer receives feature updates or maintenance.
+:::
+
+## SDK 1.2.1 Documentation
+
+- [Getting Started](./getting-started): installation, basic usage, configuration, and error handling
+- [API Reference](./api): the `AlgeoSdk` class, methods, and events
+- [Protocol Reference](./protocol): communication protocol, status definitions, and error codes
+- [Examples](./examples): example source code and local preview instructions
+
 This guide explains how to embed the Dino-GSP geometry canvas in your web application via the SDK. It applies to teaching systems, online question banks, educational apps, and other scenarios that require geometry interactivity.
 
 <iframe
@@ -80,7 +91,5 @@ try {
 Common error codes: `EMBED_IFRAME_NOT_READY`, `EMBED_TIMEOUT`, `EMBED_LOAD_SHARE_FAILED`. See [Protocol Reference](./protocol) for the full list.
 
 ## More Examples
-
-[Embedded examples](https://dajiaoai.github.io/algeo-sdk/examples/): view basic embedding, SDK usage, slide switching, loadFile, REPL, and more online.
 
 The SDK package includes an `examples` directory with the source code. Run `npx serve .` in the `packages/algeo-sdk` directory to try them locally.

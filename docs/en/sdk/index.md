@@ -7,6 +7,10 @@ description: Browse Dino-GSP SDK documentation by version, capability, examples,
 
 Dino-GSP SDK is an embedded geometry interaction solution for developers. With the SDK, you can quickly integrate powerful geometry presentation, editing, and computation capabilities into your web applications, teaching systems, or AI assistants.
 
+::: tip Online Demo
+Visit the [Examples](https://dajiaoai.github.io/algeo-sdk/) to see the SDK in action and explore integration examples.
+:::
+
 ## Core Values
 
 - **Minimal integration**: Supports installation through `npm` — basic canvas embedding in as little as 10 minutes.

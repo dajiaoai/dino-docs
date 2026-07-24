@@ -2,7 +2,6 @@ import type { DefaultTheme } from 'vitepress';
 
 export const sdkVersionConfig = {
   latestV2: '2',
-  legacyV1: '1.2.1',
 } as const;
 
 type LocalePrefix = '' | 'en/';
@@ -13,10 +12,6 @@ function localizePath(localePrefix: LocalePrefix, path: string): string {
 
 function getStableV2Path(localePrefix: LocalePrefix, page: string): string {
   return localizePath(localePrefix, `sdk/${sdkVersionConfig.latestV2}/${page}`);
-}
-
-function getLegacyV1Path(localePrefix: LocalePrefix, page: string): string {
-  return localizePath(localePrefix, `sdk/${sdkVersionConfig.legacyV1}/${page}`);
 }
 
 export function createSdkSidebar(
@@ -68,23 +63,15 @@ export function createSdkSidebar(
       ],
     },
     {
-      text: `SDK ${sdkVersionConfig.legacyV1}`,
+      text: isEnglish ? 'Access & Licensing' : '接入与授权',
       items: [
         {
-          text: isEnglish ? 'Getting Started' : '快速开始',
-          link: getLegacyV1Path(localePrefix, 'getting-started'),
+          text: isEnglish ? 'Free Use' : '免费使用说明',
+          link: localizePath(localePrefix, 'sdk/FREE_USE'),
         },
         {
-          text: isEnglish ? 'API Reference' : 'API 参考',
-          link: getLegacyV1Path(localePrefix, 'api'),
-        },
-        {
-          text: isEnglish ? 'Protocol Reference' : '协议参考',
-          link: getLegacyV1Path(localePrefix, 'protocol'),
-        },
-        {
-          text: isEnglish ? 'Examples' : '示例索引',
-          link: getLegacyV1Path(localePrefix, 'examples'),
+          text: isEnglish ? 'Commercial License' : '商业许可说明',
+          link: localizePath(localePrefix, 'sdk/COMMERCIAL_LICENSE'),
         },
       ],
     },

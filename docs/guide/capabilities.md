@@ -13,18 +13,34 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 - 想知道某种能力适合哪里：看每个能力单元中的“适用场景”和“典型例子”。
 - 想从业务需求反推能力组合：再跳转到 <a href="./scenarios.html#scenario-mapping" target="_blank" rel="noreferrer">适用场景</a> 查看场景页中的推荐组合。
 
+## 先选接入方式
+
+如果你已经准备开始开发，不必逐个阅读全部能力单元。先根据“能力由谁调用”选择一条主路径：
+
+| 接入方式 | 最适合的目标 | 能力边界 | 费用口径 | 从这里开始 |
+| :--- | :--- | :--- | :--- | :--- |
+| **内嵌画板（SDK）** | 在自己的网页或系统中展示、编辑几何内容 | 有可见画板；可加载内容、监听事件、保存、导出，并与前端业务联动 | 通常需要付费授权；免费产品可申请非商用许可 | [SDK 2.x 快速开始](../sdk/2/getting-started) |
+| **MCP** | 让已有 AI 助手或 Agent 在对话和推理中实时作图 | AI 可创建、修改、查询图形，并导入/导出项目；不负责提供你产品中的前端画板 UI | 按调用量计费 | [MCP 接入](../ai/mcp) |
+| **HTTP API** | 在服务端批量生图、渲染或接入自动化内容流水线 | 无需打开画板；支持文字/图片生成 `.algeo`，以及 PNG、SVG、TikZ 渲染；不是实时画板交互接口 | 按调用量计费 | [API 接入](../api/) |
+
+### 一句话判断
+
+- **用户要在页面里看图、拖图或编辑**：选内嵌画板。
+- **AI 要在一次对话里边推理边作图**：选 MCP。
+- **程序化批量生成，人工继续调整编辑**：先用 API 生成 `.algeo`，再用内嵌画板加载。
+
 <a id="capability-summary"></a>
 
 ## 能力单元速览
 
-| 能力单元            | 解决什么问题                                          | 适合谁                              | 关联场景                                                                                                                                                                                                                                                                                                                                                |
-| :------------------ | :---------------------------------------------------- | :---------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 嵌入式演示画板      | 把动态几何图直接展示到你的页面里                      | 题库、课堂、课件平台                | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>、<a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>                                                                                                                                |
-| 嵌入式编辑画板      | 把可编辑的专业几何画板嵌入到你的业务系统中            | 教研平台、备课工具、内容生产后台    | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>、<a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>                                                                                                                                |
-| 几何协议与 JS SDK   | 用代码加载、控制、保存和导出画板状态                  | 有研发能力、需要深度集成的团队      | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">独立开发者与数学创新工具</a>                                                                                                                    |
-| AI Agent 几何交互   | 让 AI 或 Agent 在推理过程中实时作图、读状态、改图形   | AI Tutor、智能讲解、自动化解题产品  | <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI 智能辅导</a>                                                                                                                                                                                                                                                        |
-| 图片与结构化导出    | 把几何内容输出为图片、协议数据或后续可处理结果        | 内容生产、题库加工、结果落地链路    | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>                                                                                                                                 |
-| HTTP API 服务端接入 | 后端直接调用 AI 生图与渲染能力，实现端到端智能生成几何动图          | 后端团队、自动化内容流水线、AI 应用 | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>、<a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">独立开发者与数学创新工具</a> |
+| 能力单元            | 解决什么问题                                          | 适合谁                              | 接入文档 | 关联场景                                                                                                                                                                                                                                                                                                                                                |
+| :------------------ | :---------------------------------------------------- | :---------------------------------- | :--- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 嵌入式演示画板      | 把动态几何图直接展示到你的页面里                      | 题库、课堂、课件平台                | [快速开始](../sdk/2/getting-started#接入演示模式) | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>、<a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>                                                                                                                                |
+| 嵌入式编辑画板      | 把可编辑的专业几何画板嵌入到你的业务系统中            | 教研平台、备课工具、内容生产后台    | [快速开始](../sdk/2/getting-started#接入编辑模式) | <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>、<a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>                                                                                                                                |
+| 几何协议与 JS SDK   | 用代码加载、控制、保存和导出画板状态                  | 有研发能力、需要深度集成的团队      | [SDK 文档](../sdk/) | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">独立开发者与数学创新工具</a>                                                                                                                    |
+| AI Agent 几何交互   | 让 AI 或 Agent 在推理过程中实时作图、读状态、改图形   | AI Tutor、智能讲解、自动化解题产品  | [MCP 接入](../ai/mcp) | <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI 智能辅导</a>                                                                                                                                                                                                                                                        |
+| 图片与结构化导出    | 把几何内容输出为图片、协议数据或后续可处理结果        | 内容生产、题库加工、结果落地链路    | [SDK 文档](../sdk/) · [渲染 API](../api/render) | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>                                                                                                                                 |
+| HTTP API 服务端接入 | 后端直接调用 AI 生图与渲染能力，实现端到端智能生成几何动图          | 后端团队、自动化内容流水线、AI 应用 | [API 接入](../api/) | <a href="./scenarios.html#scenario-question-bank" target="_blank" rel="noreferrer">数字化题库与内容平台</a>、<a href="./scenarios.html#scenario-authoring-tools" target="_blank" rel="noreferrer">教案与课件生产工具</a>、<a href="./scenarios.html#scenario-independent-developers" target="_blank" rel="noreferrer">独立开发者与数学创新工具</a> |
 
 <a id="capability-embedded-presentation"></a>
 
@@ -113,7 +129,7 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 ## 4. AI Agent 几何交互
 
-这个能力单元面向 AI 原生产品。核心是让模型、Agent 或自动化流程可以在推理过程中直接调用几何能力。当前通过 <a href=”../ai/mcp” target=”_blank” rel=”noreferrer”>MCP 协议</a>接入，支持主流 AI 客户端（Claude Code、Cursor、VS Code、Codex 等）。
+这个能力单元面向 AI 原生产品。核心是让模型、Agent 或自动化流程可以在推理过程中直接调用几何能力。当前通过 <a href="../ai/mcp" target="_blank" rel="noreferrer">MCP 协议</a>接入，支持主流 AI 客户端（Claude Code、Cursor、VS Code、Codex 等）。
 
 **你会得到什么**
 
@@ -124,8 +140,8 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 **适用场景**
 
-- <a href=”./scenarios.html#scenario-ai-tutoring” target=”_blank” rel=”noreferrer”>AI 智能辅导</a>
-- <a href=”./scenarios.html#scenario-online-education” target=”_blank” rel=”noreferrer”>在线教育与智慧课堂</a>
+- <a href="./scenarios.html#scenario-ai-tutoring" target="_blank" rel="noreferrer">AI 智能辅导</a>
+- <a href="./scenarios.html#scenario-online-education" target="_blank" rel="noreferrer">在线教育与智慧课堂</a>
 
 **典型例子**
 
@@ -191,21 +207,6 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 - 内容平台批量处理已有几何项目，通过渲染接口统一导出 PNG 用于 PDF 报告或题目列表页。
 - 开发者将参考图（手绘草图或截图）上传给智能生图接口，AI 识别结构后返回可编辑的几何项目。
 
-**什么时候优先选它**
-
-- 你的内容生产发生在服务端或自动化流程中，不需要用户在浏览器中操作画板。
-- 你希望以"描述 → 几何图"或"图片 → 几何图"为输入形式，由 AI 完成建模。
-- 你的场景是批量处理或内容流水线，而不是单次交互式操作（后者适合嵌入式组件或 MCP）。
-
-**与其他能力单元的关系**
-
-| 对比维度     | HTTP API 服务端接入         | 图片与结构化导出（SDK）    | AI Agent 几何交互（MCP） |
-| :----------- | :-------------------------- | :------------------------- | :----------------------- |
-| 调用位置     | 你的服务端代码              | 用户的浏览器               | AI 客户端 / Agent 运行时 |
-| 输入         | 文字 / 图片 / 几何项目文件  | 当前画板状态               | 自然语言指令             |
-| 是否需要画板 | 不需要                      | 需要                       | 可选                     |
-| 典型用途     | 批量内容生产、自动化流水线  | 用户手动导出               | AI 推理过程中实时作图    |
-
 ## 常见组合方式
 
 ### 只做展示型接入
@@ -230,10 +231,5 @@ description: 按对外易理解的能力单元，查看大角几何开放平台�
 
 ### 需要后端批量生产或自动化处理几何内容
 
-- 推荐组合：HTTP API 服务端接入（智能生图 + 渲染导出）
-- 常见于：内容平台批量建图、题库自动化加工、无前端的服务端内容流水线
-
-### 需要 AI 生图并在前端展示
-
-- 推荐组合：HTTP API 服务端接入（智能生图）+ 嵌入式演示画板
-- 常见于：AI 生成几何内容后再交给用户交互查看的完整链路
+- 推荐组合：HTTP API 服务端接入（智能生图 + 渲染导出）+ SDK 编辑模式
+- 常见于：内容平台批量建图、题库自动化加工，以及批量生成后由人工继续修正、优化几何图形的内容生产流程

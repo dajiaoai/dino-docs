@@ -5,6 +5,17 @@ description: 基于 1.2.1 版本的安装、基础用法与错误处理说明
 
 # SDK 1.2.1 快速开始
 
+::: warning 当前版本已停止更新
+SDK 1.2.1 已停止功能更新与维护。
+:::
+
+## SDK 1.2.1 文档导航
+
+- [快速开始](./getting-started)：安装、基础用法、配置与错误处理
+- [API 参考](./api)：`AlgeoSdk` 类、方法与事件说明
+- [协议参考](./protocol)：通信协议、状态与错误码定义
+- [示例索引](./examples)：示例源码与本地预览方式
+
 本文档介绍如何通过 SDK 在您的 Web 应用中嵌入大角几何画板。适用于教学系统、在线题库、教辅 App 等需要几何交互能力的场景。
 
 <iframe
@@ -80,7 +91,5 @@ try {
 常见错误码：`IFRAME_NOT_READY`、`TIMEOUT`、`DESTROYED`、`BAD_REQUEST`。完整错误码见 [协议参考](./protocol)。
 
 ## 更多示例
-
-[嵌入示例](https://dajiaoai.github.io/algeo-sdk/examples/)：在线查看基础嵌入、SDK 方式、切换画板、loadFile、REPL 等案例。
 
 SDK 包内提供 `examples` 目录，包含上述示例源码。在 `packages/algeo-sdk` 目录下执行 `npx serve .` 可本地运行。

@@ -162,13 +162,6 @@ export default defineConfig({
                 { text: '适用场景', link: '/guide/scenarios' },
               ],
             },
-            {
-              text: '接入与授权',
-              items: [
-                { text: '免费使用说明', link: '/guide/FREE_USE' },
-                { text: '商业许可说明', link: '/guide/COMMERCIAL_LICENSE' },
-              ],
-            },
           ],
           '/ai/': [
             {
@@ -260,16 +253,6 @@ export default defineConfig({
                 { text: 'Overview', link: '/en/guide/' },
                 { text: 'Capabilities', link: '/en/guide/capabilities' },
                 { text: 'Scenarios', link: '/en/guide/scenarios' },
-              ],
-            },
-            {
-              text: 'Access & Licensing',
-              items: [
-                { text: 'Free Use', link: '/en/guide/FREE_USE' },
-                {
-                  text: 'Commercial License',
-                  link: '/en/guide/COMMERCIAL_LICENSE',
-                },
               ],
             },
           ],
