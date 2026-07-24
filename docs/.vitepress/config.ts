@@ -162,6 +162,27 @@ export default defineConfig({
                 { text: '适用场景', link: '/guide/scenarios' },
               ],
             },
+            {
+              text: '开始接入',
+              items: [
+                {
+                  text: 'SDK 内嵌画板',
+                  link: `${HOSTNAME}/sdk/`,
+                },
+                { text: 'AI / MCP', link: `${HOSTNAME}/ai/` },
+                { text: 'HTTP API', link: `${HOSTNAME}/api/` },
+              ],
+            },
+            {
+              text: '费用与支持',
+              items: [
+                {
+                  text: '授权与计费',
+                  link: '/guide/license-and-pricing',
+                },
+                { text: '联系我们', link: `${HOSTNAME}/CONTACT.html` },
+              ],
+            },
           ],
           '/ai/': [
             {
@@ -253,6 +274,30 @@ export default defineConfig({
                 { text: 'Overview', link: '/en/guide/' },
                 { text: 'Capabilities', link: '/en/guide/capabilities' },
                 { text: 'Scenarios', link: '/en/guide/scenarios' },
+              ],
+            },
+            {
+              text: 'Get Started',
+              items: [
+                {
+                  text: 'Embedded SDK',
+                  link: `${HOSTNAME}/en/sdk/`,
+                },
+                { text: 'AI / MCP', link: `${HOSTNAME}/en/ai/` },
+                { text: 'HTTP API', link: `${HOSTNAME}/en/api/` },
+              ],
+            },
+            {
+              text: 'Pricing & Support',
+              items: [
+                {
+                  text: 'Licensing & Pricing',
+                  link: '/en/guide/license-and-pricing',
+                },
+                {
+                  text: 'Contact Us',
+                  link: `${HOSTNAME}/en/CONTACT.html`,
+                },
               ],
             },
           ],
