@@ -36,13 +36,19 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
   auth: { appId: 'YTVJDQZR' },
   ui: {
     logo: true,
+    slidePanel: true,
+    pencilToolbar: true,
+    zoomControl: true,
   },
 });
 ```
 
-| Property  | Type      | Default | Description                                                  |
-| --------- | --------- | ------- | ------------------------------------------------------------ |
-| `ui.logo` | `boolean` | `true`  | Whether to show the logo watermark. Supported since `2.7.0`. |
+| Property             | Type      | Default | Description                                                   |
+| -------------------- | --------- | ------- | ------------------------------------------------------------- |
+| `ui.logo`            | `boolean` | `true`  | Whether to show the logo watermark. Supported since `2.7.0`.  |
+| `ui.slidePanel`      | `boolean` | `true`  | Whether to show the slide manager. Supported since `2.10.0`.  |
+| `ui.pencilToolbar`   | `boolean` | `true`  | Whether to show the pencil toolbar. Supported since `2.10.0`. |
+| `ui.zoomControl`     | `boolean` | `true`  | Whether to show the zoom controls. Supported since `2.10.0`.  |
 
 ## API Reference
 
@@ -85,6 +91,14 @@ Core API: send a REPL execution sequence to the canvas. Can be used for automate
 - `getUiConfig()`: Get the current UI configuration.
 - `setUiConfig(config)`: Update the UI configuration.
 - `setMasterTemplate(template)`: Set the master template style.
+
+```typescript
+await presentation.mode.setUiConfig({
+  slidePanel: false,
+  pencilToolbar: false,
+  zoomControl: false,
+});
+```
 
 #### `mode.setMasterTemplate(template: string)`
 

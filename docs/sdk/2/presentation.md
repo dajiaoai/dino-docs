@@ -36,13 +36,19 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
   auth: { appId: 'YTVJDQZR' },
   ui: {
     logo: true,
+    slidePanel: true,
+    pencilToolbar: true,
+    zoomControl: true,
   },
 });
 ```
 
-| 属性      | 类型      | 默认值 | 说明                                    |
-| --------- | --------- | ------ | --------------------------------------- |
-| `ui.logo` | `boolean` | `true` | 是否显示 logo 水印。从 `2.7.0` 起支持。 |
+| 属性               | 类型      | 默认值 | 说明                                     |
+| ------------------ | --------- | ------ | ---------------------------------------- |
+| `ui.logo`          | `boolean` | `true` | 是否显示 logo 水印。从 `2.7.0` 起支持。  |
+| `ui.slidePanel`    | `boolean` | `true` | 是否显示画板管理器。单个画板时不显示。从 `2.10.0` 起支持。 |
+| `ui.pencilToolbar` | `boolean` | `true` | 是否显示教具栏。从 `2.10.0` 起支持。     |
+| `ui.zoomControl`   | `boolean` | `true` | 是否显示放大缩小栏。从 `2.10.0` 起支持。 |
 
 ## API 参考
 
@@ -81,6 +87,14 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 - `getUiConfig()`：获取当前 UI 配置。
 - `setUiConfig(config)`：更新 UI 配置。
 - `setMasterTemplate(template)`：设置母版风格。
+
+```typescript
+await presentation.mode.setUiConfig({
+  slidePanel: false,
+  pencilToolbar: false,
+  zoomControl: false,
+});
+```
 
 #### `mode.setMasterTemplate(template: string)`
 
