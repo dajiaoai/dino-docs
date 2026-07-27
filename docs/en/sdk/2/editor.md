@@ -114,64 +114,11 @@ interface SlideIndexResult {
 }
 ```
 
-`switchTo`, `remove`, `duplicate`, and `reorder` use **0-based** indices. `exportImage.slideIndices` uses **1-based** indices to match page-number semantics in export flows.
+`switchTo`, `remove`, `duplicate`, and `reorder` use **0-based** indices.
+The export APIs use **1-based** `slideIndices` to match page-number semantics.
 
-#### 2.1 `exportImage(options)`
-
-`slideIndices` is 1-based; omit it to export every slide. Export reads `camera.scale`
-from the file (default `50`) and supports three mutually exclusive modes.
-
-Parameters shared by all modes:
-
-| Parameter      | Type                              | Required | Default    | Description                                              |
-| -------------- | --------------------------------- | -------- | ---------- | -------------------------------------------------------- |
-| `mode`         | `'view' \| 'contain' \| 'size'`   | yes      | -          | Output-size calculation mode                             |
-| `slideIndices` | `number[]`                        | no       | all slides | 1-based indices of slides to export                      |
-| `format`       | `'png' \| 'jpg' \| 'svg'`         | no       | `'png'`    | Output format                                            |
-| `quality`      | `number`                          | no       | `0.92`     | JPG quality from `0` to `1`; applies only to `jpg`       |
-
-Mode-specific parameters:
-
-| Mode      | Parameter      | Type                                                        | Required | Description                                                               |
-| --------- | -------------- | ----------------------------------------------------------- | -------- | ------------------------------------------------------------------------- |
-| `view`    | `viewBounds`   | `{ x: number; y: number; width: number; height: number }`   | yes      | Export viewport; position and dimensions use world coordinates            |
-| `view`    | `pixelRatio`   | `number`                                                    | no       | Output pixel multiplier; size is `viewBounds × camera.scale × pixelRatio` |
-| `contain` | `pixelRatio`   | `number`                                                    | no       | Output pixel multiplier                                                   |
-| `contain` | `padding`      | `number \| { horizontal?: number; vertical?: number }`      | no       | Absolute padding on each side, in final output pixels                     |
-| `size`    | `width`        | `number`                                                    | yes      | Exact output width in pixels                                              |
-| `size`    | `height`       | `number`                                                    | yes      | Exact output height in pixels                                             |
-| `size`    | `minPadding`   | `number \| { horizontal?: number; vertical?: number }`      | no       | Minimum padding per side; the SDK scales and centers content automatically |
-
-The `size` mode does not accept `pixelRatio`.
-
-```typescript
-const images = await editor.slides.exportImage({
-  mode: 'size',
-  slideIndices: [1],
-  format: 'jpg',
-  width: 1200,
-  height: 900,
-  minPadding: { horizontal: 40, vertical: 32 },
-  quality: 0.92,
-});
-```
-
-Each result is `{ index, blob, format, width, height }`; `format` is
-`'png' | 'jpg' | 'svg'` and `index` is 1-based. `quality` applies only to JPG.
-
-#### 2.2 `exportLatex(options?)`
-
-Export selected slides as LaTeX/TikZ source:
-
-```typescript
-const items = await editor.slides.exportLatex({
-  slideIndices: [1, 3],
-  standalone: true,
-});
-```
-
-`standalone` defaults to `true` for a complete compilable document. Set it to `false`
-for a TikZ fragment. Each result is `{ index: number, code: string }`, with a 1-based index.
+For a detailed comparison of all three image sizing modes, their parameters, and
+LaTeX export, see [Export Images in Editor Mode](./export-image).
 
 ### 3. History API (`editor.history`)
 

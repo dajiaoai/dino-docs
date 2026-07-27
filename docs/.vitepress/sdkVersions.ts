@@ -49,6 +49,12 @@ export function createSdkSidebar(
           link: getStableV2Path(localePrefix, 'editor'),
         },
         {
+          text: isEnglish
+            ? 'Export Images in Editor Mode'
+            : '编辑模式导出图片',
+          link: getStableV2Path(localePrefix, 'export-image'),
+        },
+        {
           text: isEnglish ? 'AI Chat in Editor' : '编辑器 AI 对话',
           link: getStableV2Path(localePrefix, 'ai-chat'),
         },

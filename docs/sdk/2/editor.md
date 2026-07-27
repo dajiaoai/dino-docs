@@ -109,67 +109,11 @@ interface SlideIndexResult {
 }
 ```
 
-`switchTo`、`remove`、`duplicate`、`reorder` 中的索引均为 **0-based**。`exportImage` 的 `slideIndices` 为 **1-based**，用于贴近导出场景中的页码表达。
+`switchTo`、`remove`、`duplicate`、`reorder` 中的索引均为 **0-based**。
+导出接口的 `slideIndices` 为 **1-based**，用于贴近导出场景中的页码表达。
 
-#### 2.1 `exportImage(options)`
-
-> 从 **2.10.0** 起支持
-
-
-`slideIndices` 使用 1-based 索引，省略时导出全部画板。导出会读取文件中的
-`camera.scale`（缺省为 `50`），并支持三种互斥模式。
-
-所有模式的公共参数：
-
-| 参数           | 类型                        | 必填 | 默认值  | 说明                                           |
-| -------------- | --------------------------- | ---- | ------- | ---------------------------------------------- |
-| `mode`         | `'view' \| 'contain' \| 'size'` | 是   | -       | 导出尺寸计算模式                               |
-| `slideIndices` | `number[]`                  | 否   | 全部画板 | 要导出的画板索引，使用 1-based 索引            |
-| `format`       | `'png' \| 'jpg' \| 'svg'`   | 否   | `'png'` | 输出格式                                       |
-| `quality`      | `number`                    | 否   | `0.92`  | JPG 质量，范围为 `0～1`；仅对 `jpg` 格式生效 |
-
-各模式专属参数：
-
-| 模式      | 参数         | 类型                                                        | 必填 | 说明                                                                 |
-| --------- | ------------ | ----------------------------------------------------------- | ---- | -------------------------------------------------------------------- |
-| `view`    | `viewBounds` | `{ x: number; y: number; width: number; height: number }`   | 是   | 导出视野，位置和宽高均使用世界坐标                                   |
-| `view`    | `pixelRatio` | `number`                                                    | 否   | 输出像素倍率；输出尺寸为 `viewBounds × camera.scale × pixelRatio`    |
-| `contain` | `pixelRatio` | `number`                                                    | 否   | 输出像素倍率                                                         |
-| `contain` | `padding`    | `number \| { horizontal?: number; vertical?: number }`      | 否   | 每侧绝对留白，单位为最终输出像素                                     |
-| `size`    | `width`      | `number`                                                    | 是   | 最终输出宽度，单位为像素                                             |
-| `size`    | `height`     | `number`                                                    | 是   | 最终输出高度，单位为像素                                             |
-| `size`    | `minPadding` | `number \| { horizontal?: number; vertical?: number }`      | 否   | 每侧最小留白，单位为输出像素；SDK 自动计算缩放比例并居中内容          |
-
-`size` 模式不接收 `pixelRatio`。
-
-```typescript
-const images = await editor.slides.exportImage({
-  mode: 'size',
-  slideIndices: [1],
-  format: 'jpg',
-  width: 1200,
-  height: 900,
-  minPadding: { horizontal: 40, vertical: 32 },
-  quality: 0.92,
-});
-```
-
-返回元素为 `{ index, blob, format, width, height }`，其中 `format` 为
-`'png' | 'jpg' | 'svg'`，`index` 为 1-based。`quality` 仅对 JPG 生效。
-
-#### 2.2 `exportLatex(options?)`
-
-将指定画板导出为 LaTeX/TikZ 源码：
-
-```typescript
-const items = await editor.slides.exportLatex({
-  slideIndices: [1, 3],
-  standalone: true,
-});
-```
-
-`standalone` 默认为 `true`，返回可独立编译的完整文档；设为 `false` 时只返回
-TikZ 片段。返回元素结构为 `{ index: number, code: string }`，索引为 1-based。
+图片导出的三种尺寸模式、全部参数和 LaTeX 导出方式，请参阅
+[编辑模式导出图片](./export-image)。
 
 ### 3. 历史 API (`editor.history`)
 
