@@ -19,6 +19,6 @@ description: 了解大角几何 MCP 当前的计费规则与不同工具调用�
 
 ## 如何充值
 
-当前兑换比例为 `1` 元 = `10000` 点。当前采用添加微信后手动充值的方式，如需充值，可扫码联系。
+登录[开放平台控制台](https://open.dajiaoai.com/console/dashboard)，在「充值订购」中选择直接充值或资源包，并使用微信支付。
 
-![微信充值二维码](https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/841edf50-screenshot-20260525-175003.png)
+完整的充值、点数使用及退款说明，请参阅[如何充值](../guide/recharge)。

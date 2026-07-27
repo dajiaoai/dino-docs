@@ -34,8 +34,6 @@ description: Billing details for Dino Geometry APIs, including intelligent image
 
 ## Top up
 
-New users can contact support to receive free trial points — just scan the code below.
+Sign in to the [Open Platform console](https://open.dajiaoai.com/console/dashboard), open **Top Up**, and choose either a direct top-up or a resource pack. Pay with WeChat Pay.
 
-Top-ups are currently handled manually via WeChat. Scan the QR code below to get in touch.
-
-![WeChat top-up QR code](https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/841edf50-screenshot-20260525-175003.png)
+For complete details about top-ups, point usage, and refunds, see [How to Top Up](../guide/recharge).

@@ -9,6 +9,8 @@ description: 大角几何开放平台的能力上新、计费调整、维护通�
 
 ## 2026 年 7 月
 
+- **能力上新** · 2026-07-27 · [控制台充值与订单管理上线](./2026-07-27-console-recharge-order-management)
+- **能力变更** · 2026-07-27 · [SDK 2.10.0 导出、自动重绘与演示模式更新](./2026-07-27-sdk-2-10-0-export-resize-presentation)
 - **能力上新** · 2026-07-03 · [SDK 2.9.0 母版、AI 草稿与导出能力更新](./2026-07-03-sdk-2-9-0-master-template-ai-draft-export)
 
 ## 2026 年 6 月

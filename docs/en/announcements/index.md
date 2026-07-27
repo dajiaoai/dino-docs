@@ -9,6 +9,8 @@ This page collects important Dino-GSP Open Platform updates, including new capab
 
 ## July 2026
 
+- **New capability** · 2026-07-27 · [Console Top-up and Order Management Now Available](./2026-07-27-console-recharge-order-management)
+- **Capability change** · 2026-07-27 · [SDK 2.10.0 Updates Export, Automatic Resize, and Presentation Mode](./2026-07-27-sdk-2-10-0-export-resize-presentation)
 - **New capability** · 2026-07-03 · [SDK 2.9.0 Updates Master Templates, AI Drafts, and Export Formats](./2026-07-03-sdk-2-9-0-master-template-ai-draft-export)
 
 ## June 2026
