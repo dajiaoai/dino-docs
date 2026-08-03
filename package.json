@@ -4,12 +4,18 @@
   "private": true,
   "type": "module",
   "description": "大角几何开放平台 - SDK、协议层、文档站",
+  "workspaces": [
+    "demos/*",
+    "packages/*"
+  ],
   "scripts": {
-    "build": "npm run docs:build",
+    "build": "npm run demos:build && npm run docs:build",
     "dev": "npm run docs:dev",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
-    "docs:preview": "vitepress preview docs"
+    "docs:preview": "vitepress preview docs",
+    "demos:build": "node scripts/build-demos.mjs",
+    "demo:question-bank": "npm run dev --workspace @dino-open/demo-question-bank"
   },
   "devDependencies": {
     "vitepress": "^1.6.0",

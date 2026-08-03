@@ -8,6 +8,8 @@ dist
 # VitePress
 docs/.vitepress/cache
 docs/.vitepress/dist
+docs/public/demos/
+demos/*/dist/
 
 # Environment
 .env
