@@ -38,6 +38,13 @@ import { SdkEditor, type SdkEditorHandle } from "./SdkEditor";
 import { exportBatchResults } from "./exportResults";
 import { CustomBatchImport } from "./CustomBatchImport";
 import { loadCustomBatches, saveCustomBatches } from "./customBatches";
+import type { ImportedBatchPackage } from "./importResults";
+import {
+  deleteGenerationRecords,
+  loadGenerationRecords,
+  replaceGenerationRecords,
+  saveGenerationRecord,
+} from "./resultStorage";
 import {
   defaultApiSettings,
   loadApiSettings,
@@ -103,13 +110,51 @@ export default function App() {
   }, [apiSettings]);
 
   useEffect(() => {
+    let active = true;
     revokeEditedImageUrls();
     requestAbortRef.current?.abort();
     requestAbortRef.current = null;
-    setRecords(createPendingRecords(batch.questions));
+    const pendingRecords = createPendingRecords(batch.questions);
+    setRecords(pendingRecords);
     setView("questions");
     cancelRef.current = true;
     setRunning(false);
+    void loadGenerationRecords(batch.id)
+      .then(({ records: cachedRecords, objectUrls }) => {
+        if (!active) {
+          objectUrls.forEach((url) => URL.revokeObjectURL(url));
+          return;
+        }
+        objectUrls.forEach((url) =>
+          editedImageUrlsRef.current.set(url, url),
+        );
+        const questionIds = new Set(
+          batch.questions.map((question) => question.id),
+        );
+        const usableCachedRecords = Object.fromEntries(
+          Object.entries(cachedRecords).filter(([questionId]) =>
+            questionIds.has(questionId),
+          ),
+        );
+        const restoredRecords = {
+          ...pendingRecords,
+          ...usableCachedRecords,
+        };
+        setRecords(restoredRecords);
+        if (
+          Object.values(restoredRecords).some(
+            (record) => record.status === "finished",
+          )
+        ) {
+          setView("results");
+        }
+      })
+      .catch((error) => {
+        console.warn("读取本地生成结果失败", error);
+      });
+    return () => {
+      active = false;
+    };
   }, [batch]);
 
   useEffect(() => () => revokeEditedImageUrls(), []);
@@ -131,11 +176,18 @@ export default function App() {
   const terminalCount = completed + failed;
   const progress = Math.round((terminalCount / batch.questions.length) * 100);
 
-  function updateRecord(questionId: string, update: Partial<GenerationRecord>) {
-    setRecords((current) => ({
-      ...current,
-      [questionId]: { ...current[questionId], questionId, ...update },
-    }));
+  function updateRecord(
+    questionId: string,
+    update: Partial<GenerationRecord>,
+    staticImage?: Blob,
+  ) {
+    setRecords((current) => {
+      const record = { ...current[questionId], questionId, ...update };
+      void saveGenerationRecord(batch.id, record, staticImage).catch((error) => {
+        console.warn("缓存生成结果失败", error);
+      });
+      return { ...current, [questionId]: record };
+    });
   }
 
   async function generateAll() {
@@ -147,6 +199,9 @@ export default function App() {
     setRunning(true);
     setView("questions");
     setRecords(createPendingRecords(batch.questions));
+    await deleteGenerationRecords(batch.id).catch((error) => {
+      console.warn("清理旧的本地生成结果失败", error);
+    });
 
     const outcomes = isCustomBatch
       ? await mapWithConcurrency(batch.questions, 3, (question) =>
@@ -180,6 +235,9 @@ export default function App() {
     setRunning(false);
     setView("questions");
     setRecords(createPendingRecords(batch.questions));
+    void deleteGenerationRecords(batch.id).catch((error) => {
+      console.warn("清理本地生成结果失败", error);
+    });
   }
 
   function openPreview(question: GeometryQuestion) {
@@ -212,7 +270,7 @@ export default function App() {
     const previousImageUrl = editedImageUrlsRef.current.get(questionId);
     if (previousImageUrl) URL.revokeObjectURL(previousImageUrl);
     editedImageUrlsRef.current.set(questionId, staticImageUrl);
-    updateRecord(questionId, { projectJson, staticImageUrl });
+    updateRecord(questionId, { projectJson, staticImageUrl }, image);
   }
 
   function revokeEditedImageUrls() {
@@ -227,7 +285,7 @@ export default function App() {
     try {
       const result = await exportBatchResults(batch, records);
       setExportNotice(
-        `已导出 ${result.exportedCount} 道题，包含 ${result.jsonCount} 个工程 JSON`,
+        `已导出 ${result.exportedCount} 道题，包含 ${result.jsonCount} 个工程 JSON 和 ${result.imageCount} 张结果图`,
       );
       window.setTimeout(() => setExportNotice(""), 3000);
     } finally {
@@ -235,12 +293,17 @@ export default function App() {
     }
   }
 
-  function importCustomBatch(importedBatch: QuestionBatch) {
+  async function importCustomBatch(imported: ImportedBatchPackage) {
+    await replaceGenerationRecords(
+      imported.batch.id,
+      imported.records,
+      imported.staticImages,
+    );
     setCustomBatches((current) => [
-      ...current.filter((item) => item.id !== importedBatch.id),
-      importedBatch,
+      ...current.filter((item) => item.id !== imported.batch.id),
+      imported.batch,
     ]);
-    setBatchId(importedBatch.id);
+    setBatchId(imported.batch.id);
     setImportOpen(false);
   }
 
@@ -252,6 +315,9 @@ export default function App() {
     setCustomBatches((current) =>
       current.filter((batchItem) => batchItem.id !== item.id),
     );
+    void deleteGenerationRecords(item.id).catch((error) => {
+      console.warn("删除本地生成结果失败", error);
+    });
     if (batchId === item.id) setBatchId(defaultBatches[0].id);
   }
 
@@ -676,7 +742,13 @@ export default function App() {
                   .map((question) => {
                     const record = records[question.id];
                     return (
-                      <article className="result-card" key={question.id}>
+                      <article
+                        className={`result-card${record.projectJson ? " is-editable" : ""}`}
+                        key={question.id}
+                        onClick={() => {
+                          if (record.projectJson) openPreview(question);
+                        }}
+                      >
                         <div className="canvas-wrap">
                           {record.staticImageUrl ? (
                             <>
@@ -704,7 +776,10 @@ export default function App() {
                           />
                           <button
                             type="button"
-                            onClick={() => openPreview(question)}
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              openPreview(question);
+                            }}
                             disabled={!record.projectJson}
                           >
                             大角 SDK 加载编辑画板 <ArrowRight size={14} />

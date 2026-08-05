@@ -7,12 +7,16 @@ import {
   X,
 } from 'lucide-react';
 import type { GeometryQuestion, QuestionBatch } from './data';
+import {
+  importQuestionBankZip,
+  type ImportedBatchPackage,
+} from './importResults';
 import { LatexText } from './LatexText';
 
 type CustomBatchImportProps = {
   existingBatchNames: string[];
   onClose: () => void;
-  onImport: (batch: QuestionBatch) => void;
+  onImport: (imported: ImportedBatchPackage) => void | Promise<void>;
 };
 
 type CsvRow = Record<string, string>;
@@ -34,68 +38,67 @@ export function CustomBatchImport({
 }: CustomBatchImportProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [fileName, setFileName] = useState('');
-  const [parsedBatch, setParsedBatch] = useState<QuestionBatch | null>(null);
+  const [parsedImport, setParsedImport] =
+    useState<ImportedBatchPackage | null>(null);
   const [error, setError] = useState('');
   const [dragging, setDragging] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function handleFile(file?: File) {
     setError('');
-    setParsedBatch(null);
+    setParsedImport(null);
     if (!file) return;
-    if (!file.name.toLowerCase().endsWith('.csv')) {
-      setError('请选择 CSV 文件。');
+    const isCsv = file.name.toLowerCase().endsWith('.csv');
+    const isZip = file.name.toLowerCase().endsWith('.zip');
+    if (!isCsv && !isZip) {
+      setError('请选择 CSV 文件或题库结果 ZIP。');
       return;
     }
-    if (file.size > 2 * 1024 * 1024) {
-      setError('CSV 文件不能超过 2 MB。');
+    const maximumSize = isZip ? 100 * 1024 * 1024 : 2 * 1024 * 1024;
+    if (file.size > maximumSize) {
+      setError(isZip ? 'ZIP 文件不能超过 100 MB。' : 'CSV 文件不能超过 2 MB。');
       return;
     }
 
+    setLoading(true);
     try {
-      const batchName = file.name.replace(/\.csv$/i, '').trim();
-      if (
-        existingBatchNames.some(
-          (name) => normalizeName(name) === normalizeName(batchName),
-        )
-      ) {
-        throw new Error(`已存在名为“${batchName}”的批次，请修改 CSV 文件名。`);
+      let parsed = isZip
+        ? await importQuestionBankZip(file)
+        : await importCsv(file);
+      const batchName = parsed.batch.name;
+      const nameExists = existingBatchNames.some(
+        (name) => normalizeName(name) === normalizeName(batchName),
+      );
+      if (nameExists) {
+        if (!isZip) {
+          throw new Error(`已存在名为“${batchName}”的批次，请修改 CSV 文件名。`);
+        }
+        parsed = {
+          ...parsed,
+          batch: {
+            ...parsed.batch,
+            name: uniqueImportedName(batchName, existingBatchNames),
+          },
+        };
       }
-      const text = await file.text();
-      const result = Papa.parse<CsvRow>(text.replace(/^\uFEFF/, ''), {
-        header: true,
-        skipEmptyLines: 'greedy',
-        transformHeader: (header) => header.trim(),
-      });
-      if (result.errors.length) {
-        throw new Error(`第 ${(result.errors[0].row ?? 0) + 2} 行格式有误。`);
-      }
-      const headers = result.meta.fields ?? [];
-      const missing = requiredHeaders.filter((header) => !headers.includes(header));
-      if (missing.length) {
-        throw new Error(`缺少字段：${missing.join('、')}`);
-      }
-      if (!result.data.length) throw new Error('CSV 中没有题目数据。');
-
-      const questions = result.data.map(toQuestion);
-      const codes = new Set(questions.map((question) => question.code));
-      if (codes.size !== questions.length) {
-        throw new Error('题目编号不能重复。');
-      }
-
-      const batch: QuestionBatch = {
-        id: `custom-${slugify(batchName) || 'batch'}-${Date.now()}`,
-        name: batchName,
-        questions,
-      };
       setFileName(file.name);
-      setParsedBatch(batch);
+      setParsedImport(parsed);
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : 'CSV 解析失败。');
+      setError(reason instanceof Error ? reason.message : '文件解析失败。');
+    } finally {
+      setLoading(false);
     }
   }
 
-  function confirmImport() {
-    if (parsedBatch) onImport(parsedBatch);
+  async function confirmImport() {
+    if (!parsedImport || loading) return;
+    setLoading(true);
+    try {
+      await onImport(parsedImport);
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : '保存导入批次失败。');
+      setLoading(false);
+    }
   }
 
   return (
@@ -111,7 +114,7 @@ export function CustomBatchImport({
           <div>
             <span className="sdk-chip">CUSTOM DATASET</span>
             <h2 id="import-title">添加自定义题库批次</h2>
-            <p>CSV 文件名将作为批次名称，填写题目后即可导入。</p>
+            <p>可导入纯题目 CSV，也可恢复其他人分享的完整结果 ZIP。</p>
           </div>
           <button className="modal-close" type="button" onClick={onClose} aria-label="关闭">
             <X size={20} />
@@ -134,7 +137,7 @@ export function CustomBatchImport({
             <span>02</span>
             <div>
               <strong>上传填写后的 CSV</strong>
-              <p>支持 UTF-8 编码，文件大小不超过 2 MB。</p>
+              <p>或上传本工作台导出的 ZIP，连同工程和结果图片一起恢复。</p>
             </div>
           </div>
 
@@ -154,38 +157,42 @@ export function CustomBatchImport({
             }}
           >
             <UploadCloud size={26} />
-            <strong>点击选择或拖入 CSV 文件</strong>
-            <small>每个文件导入为一个题库批次</small>
+            <strong>{loading ? '正在读取文件…' : '点击选择或拖入 CSV / ZIP 文件'}</strong>
+            <small>CSV 不超过 2 MB，ZIP 不超过 100 MB</small>
           </button>
           <input
             ref={inputRef}
             type="file"
-            accept=".csv,text/csv"
+            accept=".csv,.zip,text/csv,application/zip"
             hidden
             onChange={(event) => void handleFile(event.target.files?.[0])}
           />
 
           {error && <div className="import-error">{error}</div>}
-          {parsedBatch && (
+          {parsedImport && (
             <div className="import-preview">
               <div className="import-preview-heading">
                 <div>
                   <CheckCircle2 size={17} />
                   <span>
-                    <strong>{parsedBatch.name}</strong>
-                    <small>{fileName} · {parsedBatch.questions.length} 道题</small>
+                    <strong>{parsedImport.batch.name}</strong>
+                    <small>
+                      {fileName} · {parsedImport.batch.questions.length} 道题
+                      {parsedImport.resultCount > 0 &&
+                        ` · ${parsedImport.resultCount} 个已生成结果`}
+                    </small>
                   </span>
                 </div>
               </div>
               <div className="import-preview-list">
-                {parsedBatch.questions.slice(0, 3).map((question) => (
+                {parsedImport.batch.questions.slice(0, 3).map((question) => (
                   <div key={question.id}>
                     <code>{question.code}</code>
                     <LatexText value={question.questionText} />
                   </div>
                 ))}
-                {parsedBatch.questions.length > 3 && (
-                  <small>还有 {parsedBatch.questions.length - 3} 道题</small>
+                {parsedImport.batch.questions.length > 3 && (
+                  <small>还有 {parsedImport.batch.questions.length - 3} 道题</small>
                 )}
               </div>
             </div>
@@ -198,16 +205,48 @@ export function CustomBatchImport({
             <button
               className="primary-button"
               type="button"
-              disabled={!parsedBatch}
-              onClick={confirmImport}
+              disabled={!parsedImport || loading}
+              onClick={() => void confirmImport()}
             >
-              导入该批次
+              {loading ? '正在导入' : '导入该批次'}
             </button>
           </div>
         </footer>
       </section>
     </div>
   );
+}
+
+async function importCsv(file: File): Promise<ImportedBatchPackage> {
+  const batchName = file.name.replace(/\.csv$/i, '').trim();
+  const text = await file.text();
+  const result = Papa.parse<CsvRow>(text.replace(/^\uFEFF/, ''), {
+    header: true,
+    skipEmptyLines: 'greedy',
+    transformHeader: (header) => header.trim(),
+  });
+  if (result.errors.length) {
+    throw new Error(`第 ${(result.errors[0].row ?? 0) + 2} 行格式有误。`);
+  }
+  const headers = result.meta.fields ?? [];
+  const missing = requiredHeaders.filter((header) => !headers.includes(header));
+  if (missing.length) throw new Error(`缺少字段：${missing.join('、')}`);
+  if (!result.data.length) throw new Error('CSV 中没有题目数据。');
+
+  const questions = result.data.map(toQuestion);
+  const codes = new Set(questions.map((question) => question.code));
+  if (codes.size !== questions.length) throw new Error('题目编号不能重复。');
+
+  return {
+    batch: {
+      id: `custom-${slugify(batchName) || 'batch'}-${Date.now()}`,
+      name: batchName,
+      questions,
+    },
+    records: {},
+    staticImages: {},
+    resultCount: 0,
+  };
 }
 
 function toQuestion(row: CsvRow, index: number): GeometryQuestion {
@@ -249,6 +288,17 @@ function slugify(value: string) {
 
 function normalizeName(value: string) {
   return value.trim().toLocaleLowerCase('zh-CN');
+}
+
+function uniqueImportedName(name: string, existingNames: string[]) {
+  const normalizedNames = new Set(existingNames.map(normalizeName));
+  let suffix = 1;
+  let candidate = `${name}（导入）`;
+  while (normalizedNames.has(normalizeName(candidate))) {
+    suffix += 1;
+    candidate = `${name}（导入 ${suffix}）`;
+  }
+  return candidate;
 }
 
 function downloadSample() {
