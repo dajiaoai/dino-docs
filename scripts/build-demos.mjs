@@ -1,12 +1,38 @@
-import { execFile } from 'node:child_process';
+import { spawn } from 'node:child_process';
 import { cp, mkdir, readdir, readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
-import { promisify } from 'node:util';
 
-const execFileAsync = promisify(execFile);
 const root = path.resolve(import.meta.dirname, '..');
 const demosRoot = path.join(root, 'demos');
 const outputRoot = path.join(root, 'docs/public/demos');
+
+function runNpm(args) {
+  const npmExecPath = process.env.npm_execpath;
+  const command = npmExecPath
+    ? { executable: process.execPath, args: [npmExecPath, ...args] }
+    : {
+        executable: process.platform === 'win32' ? 'npm.cmd' : 'npm',
+        args,
+      };
+
+  return new Promise((resolve, reject) => {
+    const child = spawn(command.executable, command.args, {
+      cwd: root,
+      stdio: 'inherit',
+    });
+
+    child.once('error', reject);
+    child.once('close', (code, signal) => {
+      if (code === 0) {
+        resolve();
+        return;
+      }
+
+      const reason = signal ? `signal ${signal}` : `exit code ${code}`;
+      reject(new Error(`npm ${args.join(' ')} failed with ${reason}`));
+    });
+  });
+}
 
 await rm(outputRoot, { recursive: true, force: true });
 await mkdir(outputRoot, { recursive: true });
@@ -28,10 +54,7 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
   }
 
   console.log(`Building demo: ${metadata.id}`);
-  await execFileAsync('npm', ['run', 'build', '--workspace', metadata.package], {
-    cwd: root,
-    stdio: 'inherit',
-  });
+  await runNpm(['run', 'build', '--workspace', metadata.package]);
 
   await cp(path.join(demoRoot, 'dist'), path.join(outputRoot, metadata.id), {
     recursive: true,
