@@ -15,6 +15,18 @@ type CreateTaskResponse = {
 
 type ApiTaskStatus = "created" | "running" | "finished" | "error";
 
+type ViewBound = {
+  left: number;
+  right: number;
+  top: number;
+  bottom: number;
+};
+
+type SlideRenderOptions = {
+  viewBound: ViewBound;
+  scale: number;
+};
+
 type TaskDetailResponse = {
   success: boolean;
   task: {
@@ -23,6 +35,11 @@ type TaskDetailResponse = {
     artifactUrl?: string | null;
     error?: string | null;
     message?: string | null;
+    extra?: {
+      output?: {
+        slides?: Array<SlideRenderOptions & { slideIndex?: number }>;
+      };
+    };
   };
 };
 
@@ -105,6 +122,7 @@ export async function runGenerationTask(
         if (!task.artifactUrl) {
           throw new Error("任务已完成，但未返回 artifactUrl。");
         }
+        const renderOptions = getFirstSlideRenderOptions(task);
         onUpdate({
           status: "rendering",
           taskId: created.taskId,
@@ -126,6 +144,7 @@ export async function runGenerationTask(
           settings,
           projectJson,
           created.taskId,
+          renderOptions,
           signal,
         );
         onUpdate({
@@ -161,7 +180,7 @@ export async function runGenerationTask(
 async function downloadProject(url: string, signal: AbortSignal) {
   let response: Response;
   try {
-    response = await fetch(url, { mode: "cors", signal });
+    response = await fetch(resolveProjectDownloadUrl(url), { signal });
   } catch (error) {
     if (isAbortError(error)) throw error;
     throw new Error(
@@ -184,10 +203,20 @@ async function downloadProject(url: string, signal: AbortSignal) {
   return project;
 }
 
+function resolveProjectDownloadUrl(url: string) {
+  if (!import.meta.env.DEV) return url;
+
+  const parsed = new URL(url, window.location.href);
+  if (parsed.origin !== "https://dl.easeplay.vip") return url;
+
+  return `/dl-proxy${parsed.pathname}${parsed.search}`;
+}
+
 async function renderProject(
   settings: ApiSettings,
   project: FileContentLatest,
   taskId: string,
+  renderOptions: SlideRenderOptions,
   signal: AbortSignal,
 ) {
   const rendered = await requestJson<RenderResponse>(
@@ -201,13 +230,8 @@ async function renderProject(
       },
       body: JSON.stringify({
         slideIndex: 1,
-        viewBound: {
-          left: -10,
-          right: 10,
-          bottom: -10,
-          top: 10,
-        },
-        scale: 50,
+        viewBound: renderOptions.viewBound,
+        scale: renderOptions.scale,
         content: project,
       }),
       signal,
@@ -215,6 +239,34 @@ async function renderProject(
   );
   if (!rendered.url) throw new Error("渲染接口未返回 PNG 地址。");
   return rendered;
+}
+
+function getFirstSlideRenderOptions(
+  task: TaskDetailResponse["task"],
+): SlideRenderOptions {
+  const slide = task.extra?.output?.slides?.[0];
+  if (!slide) {
+    throw new Error("任务已完成，但未返回第一张图片的渲染参数。");
+  }
+
+  const { viewBound, scale } = slide;
+  const hasValidViewBound =
+    viewBound &&
+    [viewBound.left, viewBound.right, viewBound.top, viewBound.bottom].every(
+      Number.isFinite,
+    ) &&
+    viewBound.left < viewBound.right &&
+    viewBound.bottom < viewBound.top;
+
+  if (
+    !hasValidViewBound ||
+    !Number.isFinite(scale) ||
+    scale <= 0
+  ) {
+    throw new Error("任务返回的第一张图片渲染参数无效。");
+  }
+
+  return { viewBound, scale };
 }
 
 function isFileContent(value: unknown): value is FileContentLatest {

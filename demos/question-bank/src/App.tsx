@@ -7,7 +7,6 @@ import {
   ChevronDown,
   CircleAlert,
   CircleDot,
-  Copy,
   Database,
   Download,
   ExternalLink,
@@ -19,6 +18,7 @@ import {
   Play,
   Plus,
   RefreshCw,
+  Save,
   Settings2,
   Sparkles,
   Trash2,
@@ -34,7 +34,7 @@ import {
 } from "./data";
 import { demoConfig } from "./config";
 import { LatexText } from "./LatexText";
-import { SdkEditor } from "./SdkEditor";
+import { SdkEditor, type SdkEditorHandle } from "./SdkEditor";
 import { exportBatchResults } from "./exportResults";
 import { CustomBatchImport } from "./CustomBatchImport";
 import { loadCustomBatches, saveCustomBatches } from "./customBatches";
@@ -47,6 +47,7 @@ import {
 import { runGenerationTask } from "./apiAgent";
 
 type View = "questions" | "results";
+type PreviewSaveState = "idle" | "saving" | "saved" | "error";
 type PreviewData = {
   question: GeometryQuestion;
   record: GenerationRecord;
@@ -73,10 +74,8 @@ export default function App() {
   const [running, setRunning] = useState(false);
   const [view, setView] = useState<View>("questions");
   const [preview, setPreview] = useState<PreviewData | null>(null);
-  const [activePreviewTab, setActivePreviewTab] = useState<"canvas" | "json">(
-    "canvas",
-  );
-  const [copied, setCopied] = useState(false);
+  const [previewSaveState, setPreviewSaveState] =
+    useState<PreviewSaveState>("idle");
   const [exporting, setExporting] = useState(false);
   const [exportNotice, setExportNotice] = useState("");
   const [importOpen, setImportOpen] = useState(false);
@@ -84,6 +83,8 @@ export default function App() {
   const [apiConfigOpen, setApiConfigOpen] = useState(false);
   const cancelRef = useRef(false);
   const requestAbortRef = useRef<AbortController | null>(null);
+  const sdkEditorRef = useRef<SdkEditorHandle | null>(null);
+  const editedImageUrlsRef = useRef(new Map<string, string>());
   const batch =
     allBatches.find((item) => item.id === batchId) ?? defaultBatches[0];
   const isCustomBatch = customBatches.some((item) => item.id === batch.id);
@@ -102,6 +103,7 @@ export default function App() {
   }, [apiSettings]);
 
   useEffect(() => {
+    revokeEditedImageUrls();
     requestAbortRef.current?.abort();
     requestAbortRef.current = null;
     setRecords(createPendingRecords(batch.questions));
@@ -109,6 +111,8 @@ export default function App() {
     cancelRef.current = true;
     setRunning(false);
   }, [batch]);
+
+  useEffect(() => () => revokeEditedImageUrls(), []);
 
   const completed = useMemo(
     () =>
@@ -135,6 +139,7 @@ export default function App() {
   }
 
   async function generateAll() {
+    revokeEditedImageUrls();
     requestAbortRef.current?.abort();
     const requestController = new AbortController();
     requestAbortRef.current = requestController;
@@ -168,6 +173,7 @@ export default function App() {
   }
 
   function reset() {
+    revokeEditedImageUrls();
     cancelRef.current = true;
     requestAbortRef.current?.abort();
     requestAbortRef.current = null;
@@ -180,17 +186,38 @@ export default function App() {
     const record = records[question.id];
     if (!record?.projectJson) return;
     setPreview({ question, record });
-    setActivePreviewTab("canvas");
-    setCopied(false);
+    setPreviewSaveState("idle");
   }
 
-  async function copyProjectJson() {
-    if (!preview?.record.projectJson) return;
-    await navigator.clipboard.writeText(
-      JSON.stringify(preview.record.projectJson, null, 2),
-    );
-    setCopied(true);
-    window.setTimeout(() => setCopied(false), 1400);
+  async function savePreview() {
+    if (previewSaveState === "saving") return;
+    setPreviewSaveState("saving");
+    try {
+      const editor = sdkEditorRef.current;
+      if (!editor) throw new Error("SDK 编辑画板尚未就绪");
+      await editor.save();
+      setPreviewSaveState("saved");
+    } catch (error) {
+      console.error("保存 SDK 工程失败", error);
+      setPreviewSaveState("error");
+    }
+  }
+
+  function saveEditedResult(
+    questionId: string,
+    projectJson: NonNullable<GenerationRecord["projectJson"]>,
+    image: Blob,
+  ) {
+    const staticImageUrl = URL.createObjectURL(image);
+    const previousImageUrl = editedImageUrlsRef.current.get(questionId);
+    if (previousImageUrl) URL.revokeObjectURL(previousImageUrl);
+    editedImageUrlsRef.current.set(questionId, staticImageUrl);
+    updateRecord(questionId, { projectJson, staticImageUrl });
+  }
+
+  function revokeEditedImageUrls() {
+    editedImageUrlsRef.current.forEach((url) => URL.revokeObjectURL(url));
+    editedImageUrlsRef.current.clear();
   }
 
   async function downloadResults() {
@@ -694,7 +721,7 @@ export default function App() {
 
       {preview?.record.projectJson && (
         <div
-          className="modal-backdrop"
+          className="modal-backdrop preview-backdrop"
           role="presentation"
           onMouseDown={() => setPreview(null)}
         >
@@ -708,10 +735,8 @@ export default function App() {
             <header>
               <div>
                 <span className="sdk-chip">DINO SDK EDITOR</span>
-                <h2 id="preview-title">工程文件已加载</h2>
-                <p>
-                  {preview.question.code} · project.json → 大角 SDK 编辑画板
-                </p>
+                <h2 id="preview-title">题目图形编辑</h2>
+                <p>{preview.question.code} · 原始题目与大角 SDK 编辑画板</p>
               </div>
               <button
                 aria-label="关闭预览"
@@ -722,69 +747,73 @@ export default function App() {
               </button>
             </header>
             <div className="preview-body">
-              <aside>
-                <span>题目文本</span>
-                <p>
-                  <LatexText value={preview.question.questionText} />
-                </p>
-                <div className="preview-tags">
-                  {preview.question.knowledgePoints.map((tag) => (
-                    <span className="topic-tag" key={tag}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-                <div className="embed-card">
-                  <FileJson size={17} />
-                  <div>
-                    <strong>project.json 已加载</strong>
-                    <small>
-                      Protocol {preview.record.projectJson.metadata.version} ·
-                      支持继续编辑
-                    </small>
+              <section className="preview-source" aria-label="原始输入">
+                {preview.question.imageUrl && (
+                  <figure className="preview-source-image">
+                    <img
+                      src={preview.question.imageUrl}
+                      alt={`${preview.question.code} 原始题目配图`}
+                    />
+                  </figure>
+                )}
+                <div className="preview-source-copy">
+                  <span>原始题目</span>
+                  <LatexText
+                    className="preview-question-text"
+                    value={preview.question.questionText}
+                  />
+                  <div className="preview-knowledge">
+                    <strong>知识点</strong>
+                    <div className="preview-tags">
+                      {preview.question.knowledgePoints.map((tag) => (
+                        <span className="topic-tag" key={tag}>
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  <CheckCircle2 size={16} />
                 </div>
-              </aside>
+              </section>
               <div className="sdk-view">
                 <div className="sdk-toolbar">
-                  <div>
-                    <button
-                      className={activePreviewTab === "canvas" ? "active" : ""}
-                      onClick={() => setActivePreviewTab("canvas")}
-                      type="button"
+                  <strong>SDK 编辑画板</strong>
+                  <div className="sdk-toolbar-actions">
+                    <span
+                      className={`sdk-save-state is-${previewSaveState}`}
+                      aria-live="polite"
                     >
-                      SDK 编辑画板
-                    </button>
+                      {previewSaveState === "saving"
+                        ? "正在保存并导出图片"
+                        : previewSaveState === "saved"
+                          ? "工程和图片已更新"
+                          : previewSaveState === "error"
+                            ? "保存失败，请重试"
+                            : "SDK Loaded"}
+                    </span>
                     <button
-                      className={activePreviewTab === "json" ? "active" : ""}
-                      onClick={() => setActivePreviewTab("json")}
+                      className="sdk-save-button"
                       type="button"
+                      disabled={previewSaveState === "saving"}
+                      onClick={savePreview}
                     >
-                      工程文件 JSON
+                      {previewSaveState === "saving" ? (
+                        <LoaderCircle className="spin" size={14} />
+                      ) : (
+                        <Save size={14} />
+                      )}
+                      {previewSaveState === "saving" ? "保存中" : "保存"}
                     </button>
                   </div>
-                  <span>
-                    <span className="live-dot" /> SDK Loaded
-                  </span>
                 </div>
-                {activePreviewTab === "canvas" ? (
-                  <div className="interactive-stage">
-                    <SdkEditor project={preview.record.projectJson} />
-                  </div>
-                ) : (
-                  <div className="dsl-panel">
-                    <button onClick={copyProjectJson} type="button">
-                      {copied ? <Check size={15} /> : <Copy size={15} />}
-                      {copied ? "已复制" : "复制 JSON"}
-                    </button>
-                    <pre>
-                      <code>
-                        {JSON.stringify(preview.record.projectJson, null, 2)}
-                      </code>
-                    </pre>
-                  </div>
-                )}
+                <div className="interactive-stage">
+                  <SdkEditor
+                    ref={sdkEditorRef}
+                    project={preview.record.projectJson}
+                    onSave={(project, image) =>
+                      saveEditedResult(preview.question.id, project, image)
+                    }
+                  />
+                </div>
               </div>
             </div>
           </section>
