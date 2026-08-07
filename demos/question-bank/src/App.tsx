@@ -100,6 +100,7 @@ export default function App() {
       apiSettings.apiKey.trim() &&
       apiSettings.baseUrl.trim(),
   );
+  const needsApiConfig = isCustomBatch && !isApiConfigured;
 
   useEffect(() => {
     saveCustomBatches(customBatches);
@@ -601,21 +602,33 @@ export default function App() {
                   </button>
                 )}
                 <button
-                  className="primary-button"
-                  onClick={generateAll}
+                  className={`primary-button${needsApiConfig ? " needs-config" : ""}`}
+                  onClick={() => {
+                    if (needsApiConfig) {
+                      setApiConfigOpen(true);
+                      window.setTimeout(() => {
+                        document
+                          .getElementById("api-config-panel")
+                          ?.scrollIntoView({ behavior: "smooth", block: "center" });
+                      }, 0);
+                      return;
+                    }
+                    void generateAll();
+                  }}
                   type="button"
                   disabled={
                     running ||
-                    terminalCount === batch.questions.length ||
-                    (isCustomBatch && !isApiConfigured)
+                    terminalCount === batch.questions.length
                   }
-                  title={
-                    isCustomBatch && !isApiConfigured
-                      ? "请先填写完整的连接配置"
-                      : undefined
+                  aria-label={
+                    needsApiConfig ? "API 配置不完整，点击前往配置" : undefined
                   }
                 >
-                  {running ? (
+                  {needsApiConfig ? (
+                    <>
+                      <CircleAlert size={16} /> 请先配置 API
+                    </>
+                  ) : running ? (
                     <>
                       <LoaderCircle className="spin" size={16} /> 正在生成{" "}
                       {terminalCount}/{batch.questions.length}
