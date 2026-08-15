@@ -9,6 +9,10 @@ MCP（Model Context Protocol）让支持该协议的 AI 客户端直接调用大
 
 如果你的产品已经有 AI 助手、Agent 工作流或编程式工具调用需求，MCP 是当前接入 AI Agent 几何交互能力的标准方式。
 
+::: info 尺寸单位
+MCP 绘图中的字号、线宽等尺寸参数使用 px。如果目标是排版印刷，请先按[尺寸单位与换算](/reference/units)转换为 px。
+:::
+
 ## 服务信息
 
 - **MCP 服务地址**：`https://api.dajiaoai.com/mcp`

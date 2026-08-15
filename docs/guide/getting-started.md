@@ -77,7 +77,7 @@ try {
 }
 ```
 
-常见错误码：`IFRAME_NOT_READY`、`TIMEOUT`、`DESTROYED`、`BAD_REQUEST`。完整错误码见 [协议说明](../api/protocol#错误码)。
+常见错误码：`IFRAME_NOT_READY`、`TIMEOUT`、`DESTROYED`、`BAD_REQUEST`。你可以根据错误对象中的 `code`、`message` 和 `details` 定位问题。
 
 ## 更多示例
 

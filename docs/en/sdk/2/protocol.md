@@ -7,6 +7,10 @@ description: FileContentLatest data structure and integration guidance
 
 Dino-GSP SDK 2.x data protocol mainly refers to the file content protocol: a JSON-based domain-specific language (DSL) describing document metadata, multi-slide content, AI chat history, and geometry entities.
 
+::: info Size units
+Font sizes, line widths, and other dimensional parameters use px throughout the protocol. See [Size Units and Conversion](/en/reference/units) when preparing content for typesetting or print.
+:::
+
 ## File Content Structure
 
 A standard document JSON object (`FileContentLatest`) contains the following core fields:

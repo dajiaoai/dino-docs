@@ -37,7 +37,7 @@ const { output } = await presentation.repl('list');
 presentation.repl(command: string): Promise<{ output: string }>
 ```
 
-每次调用执行**单条**命令。错误时 reject，错误码见 [协议说明 - 错误码](../api/protocol#错误码)。
+每次调用执行**单条**命令。执行失败时 Promise 会 reject，你可以通过错误对象中的 `code` 和 `message` 定位问题。
 
 ## 命令分类
 

@@ -20,7 +20,7 @@ await presentation.loadShareById('33TA3484');
 const { output } = await presentation.repl('help');
 ```
 
-Each call executes a **single** command. On error the promise rejects; see [Protocol Reference - Error Codes](../api/protocol#error-codes).
+Each call executes a **single** command. If execution fails, the Promise rejects; use the error object's `code` and `message` to identify the problem.
 
 ## Command Categories
 

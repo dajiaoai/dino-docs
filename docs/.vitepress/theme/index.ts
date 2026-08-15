@@ -4,6 +4,7 @@ import './style.css';
 import HeroIllustration from './HeroIllustration.vue';
 import HeroInfo from './HeroInfo.vue';
 import CopyDocButton from './CopyDocButton.vue';
+import UnitConverter from './UnitConverter.vue';
 import {
   enableAutoPageTracking,
   enableAutoErrorTracking,
@@ -18,7 +19,9 @@ export default {
       'home-hero-image': () => h(HeroIllustration),
       'aside-outline-before': () => h(CopyDocButton),
     }),
-  enhanceApp() {
+  enhanceApp({ app }) {
+    app.component('UnitConverter', UnitConverter);
+
     if (typeof window === 'undefined') return;
 
     // 自动上报：页面访问/离开、全局错误、点击事件；生产构建才会真正发送。

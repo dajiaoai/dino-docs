@@ -9,6 +9,10 @@ description: Describe the Dino Geometry Open Platform HTTP render API that suppo
 
 The API accepts a project payload conforming to the [Dino Geometry file protocol](/en/sdk/2/protocol), renders a specified slide, and returns the exported file URL and metadata.
 
+::: info Size units
+`viewBound` uses logical canvas coordinates, `scale` is the number of pixels per logical unit, and the returned `width` and `height` are image pixel dimensions. Visual dimensions such as font sizes and line widths in project content use px. If your source specification uses pt, see [Size Units and Conversion](/en/reference/units).
+:::
+
 ## Overview
 
 | Description | Path | Method |

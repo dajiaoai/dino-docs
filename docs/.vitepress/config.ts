@@ -142,6 +142,7 @@ export default defineConfig({
               { text: 'SDK 接入', link: '/sdk/' },
               { text: 'API 接入', link: '/api/' },
               { text: 'AI 接入', link: '/ai/' },
+              { text: '通用规范', link: '/reference/' },
             ],
           },
           { text: '公告', link: '/announcements/' },
@@ -217,6 +218,15 @@ export default defineConfig({
             },
           ],
           '/sdk/': createSdkSidebar(''),
+          '/reference/': [
+            {
+              text: '通用规范',
+              items: [
+                { text: '概览', link: '/reference/' },
+                { text: '尺寸单位与换算', link: '/reference/units' },
+              ],
+            },
+          ],
           '/announcements/': [
             {
               text: '公告中心',
@@ -268,6 +278,7 @@ export default defineConfig({
               { text: 'SDK Access', link: '/en/sdk/' },
               { text: 'API Access', link: '/en/api/' },
               { text: 'AI Access', link: '/en/ai/' },
+              { text: 'Common Standards', link: '/en/reference/' },
             ],
           },
           { text: 'Updates', link: '/en/announcements/' },
@@ -349,6 +360,18 @@ export default defineConfig({
             },
           ],
           '/en/sdk/': createSdkSidebar('en/'),
+          '/en/reference/': [
+            {
+              text: 'Common Standards',
+              items: [
+                { text: 'Overview', link: '/en/reference/' },
+                {
+                  text: 'Size Units and Conversion',
+                  link: '/en/reference/units',
+                },
+              ],
+            },
+          ],
           '/en/announcements/': [
             {
               text: 'Updates',
