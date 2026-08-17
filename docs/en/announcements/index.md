@@ -7,6 +7,10 @@ description: Product updates, capability releases, billing changes, maintenance 
 
 This page collects important Dino-GSP Open Platform updates, including new capabilities, capability changes, billing changes, maintenance notices, and usage notes.
 
+## August 2026
+
+- **New capability** · 2026-08-17 · [SDK 2.11.0 Adds Image Libraries, Third-Party Images, and REPL Image Support](./2026-08-17-sdk-2-11-0-image-assets-repl)
+
 ## July 2026
 
 - **New capability** · 2026-07-27 · [Console Top-up and Order Management Now Available](./2026-07-27-console-recharge-order-management)

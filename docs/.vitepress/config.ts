@@ -236,6 +236,10 @@ export default defineConfig({
               text: '2026 年',
               items: [
                 {
+                  text: 'SDK 2.11.0 图片素材库、第三方图片与 REPL 能力更新',
+                  link: '/announcements/2026-08-17-sdk-2-11-0-image-assets-repl',
+                },
+                {
                   text: '控制台充值与订单管理上线',
                   link: '/announcements/2026-07-27-console-recharge-order-management',
                 },
@@ -380,6 +384,10 @@ export default defineConfig({
             {
               text: '2026',
               items: [
+                {
+                  text: 'SDK 2.11.0 Adds Image Libraries, Third-Party Images, and REPL Image Support',
+                  link: '/en/announcements/2026-08-17-sdk-2-11-0-image-assets-repl',
+                },
                 {
                   text: 'Console Top-up and Order Management Now Available',
                   link: '/en/announcements/2026-07-27-console-recharge-order-management',
