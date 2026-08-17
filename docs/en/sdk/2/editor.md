@@ -56,15 +56,17 @@ interface AlgeoEditorCreateOptions {
   shareId?: string;
   initialContent?: FileContentLatest;
   ui?: AlgeoEditorUiConfig;
+  resourceLibrary?: ResourceLibraryProvider;
 }
 ```
 
-| Option           | Type                  | Required | Description                                                  |
-| ---------------- | --------------------- | -------- | ------------------------------------------------------------ |
-| `auth.appId`     | `string`              | yes      | Open Platform application ID for editor-mode authorization   |
-| `shareId`        | `string`              | no       | Shared file ID to load during initialization                 |
-| `initialContent` | `FileContentLatest`   | no       | File content loaded after initialization                     |
-| `ui`             | `AlgeoEditorUiConfig` | no       | Editor UI visibility configuration                           |
+| Option            | Type                      | Required | Description                                                         |
+| ----------------- | ------------------------- | -------- | ------------------------------------------------------------------- |
+| `auth.appId`      | `string`                  | yes      | Open Platform application ID for editor-mode authorization          |
+| `shareId`         | `string`                  | no       | Shared file ID to load during initialization                        |
+| `initialContent`  | `FileContentLatest`       | no       | File content loaded after initialization                            |
+| `ui`              | `AlgeoEditorUiConfig`     | no       | Editor UI visibility configuration                                  |
+| `resourceLibrary` | `ResourceLibraryProvider` | no       | Host-provided read-only image library. Supported since `2.11.0`.     |
 
 ### 1. Document API (`editor.document`)
 
@@ -203,7 +205,28 @@ editor.on('aiRequest', async ({ payload, signal }) => {
 });
 ```
 
-### 6. Lifecycle API
+### 6. Image Library Protocol (`resourceLibrary`)
+
+> Supported since **2.11.0**. See [Insert Images from a Material Library](./image-material-library) for the full integration flow.
+
+`resourceLibrary` is a Provider passed when creating the editor. When the user opens the image library, searches, or changes pages, the SDK calls the host's `query` implementation. The embedded editor then displays the returned images and inserts the selected image into the slide.
+
+```typescript
+interface ResourceLibraryProvider {
+  query(
+    params: ResourceLibraryQuery,
+    context: { signal: AbortSignal },
+  ): Promise<ResourceLibraryResult>;
+}
+```
+
+- `params.page` starts at `1`, and `params.pageSize` has a maximum value of `100`.
+- `params.keyword` and `params.mediaTypes` are optional search filters.
+- `context.signal` cancels requests that are no longer needed. The host should pass it to asynchronous operations such as `fetch`.
+- Each returned item must have a unique `id`, a non-empty `name`, an `image/*` media type, and an absolute HTTP(S) image URL.
+- If `resourceLibrary` is not configured, the editor does not show the image library entry.
+
+### 7. Lifecycle API
 
 - `resize(): void`: Supported since `2.10.0`. Ask the embedded page to remeasure and redraw. The SDK calls it automatically when the container size changes; call it manually after other host layout changes.
 - `destroy(): Promise<void>`: Destroy the SDK instance, remove the iframe, clean up message listeners, and cancel pending requests.

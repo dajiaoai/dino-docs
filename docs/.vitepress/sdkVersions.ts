@@ -47,16 +47,24 @@ export function createSdkSidebar(
         {
           text: isEnglish ? 'Editor Mode' : '编辑模式',
           link: getStableV2Path(localePrefix, 'editor'),
-        },
-        {
-          text: isEnglish
-            ? 'Export Images in Editor Mode'
-            : '编辑模式导出图片',
-          link: getStableV2Path(localePrefix, 'export-image'),
-        },
-        {
-          text: isEnglish ? 'AI Chat in Editor' : '编辑器 AI 对话',
-          link: getStableV2Path(localePrefix, 'ai-chat'),
+          items: [
+            {
+              text: isEnglish
+                ? 'Export Images in Editor Mode'
+                : '编辑模式导出图片',
+              link: getStableV2Path(localePrefix, 'export-image'),
+            },
+            {
+              text: isEnglish
+                ? 'Insert Images from a Material Library'
+                : '画板插入图片素材',
+              link: getStableV2Path(localePrefix, 'image-material-library'),
+            },
+            {
+              text: isEnglish ? 'AI Chat in Editor' : '编辑器 AI 对话',
+              link: getStableV2Path(localePrefix, 'ai-chat'),
+            },
+          ],
         },
         {
           text: isEnglish ? 'Examples' : '示例中心',

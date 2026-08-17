@@ -51,15 +51,17 @@ interface AlgeoEditorCreateOptions {
   shareId?: string;
   initialContent?: FileContentLatest;
   ui?: AlgeoEditorUiConfig;
+  resourceLibrary?: ResourceLibraryProvider;
 }
 ```
 
-| 参数             | 类型                   | 必填 | 说明                                                   |
-| ---------------- | ---------------------- | ---- | ------------------------------------------------------ |
-| `auth.appId`     | `string`               | 是   | 开放平台应用 ID，用于编辑模式鉴权                      |
-| `shareId`        | `string`               | 否   | 初始化时加载的分享文件 ID                              |
-| `initialContent` | `FileContentLatest`    | 否   | 初始化后覆盖加载的文件内容，优先级高于空白编辑器状态   |
-| `ui`             | `AlgeoEditorUiConfig`  | 否   | 编辑器 UI 显隐配置                                     |
+| 参数              | 类型                      | 必填 | 说明                                                         |
+| ----------------- | ------------------------- | ---- | ------------------------------------------------------------ |
+| `auth.appId`      | `string`                  | 是   | 开放平台应用 ID，用于编辑模式鉴权                            |
+| `shareId`         | `string`                  | 否   | 初始化时加载的分享文件 ID                                    |
+| `initialContent`  | `FileContentLatest`       | 否   | 初始化后覆盖加载的文件内容，优先级高于空白编辑器状态         |
+| `ui`              | `AlgeoEditorUiConfig`     | 否   | 编辑器 UI 显隐配置                                           |
+| `resourceLibrary` | `ResourceLibraryProvider` | 否   | 宿主提供的只读图片素材库。从 `2.11.0` 起支持。               |
 
 ### 1. 文档 API (`editor.document`)
 
@@ -197,7 +199,28 @@ editor.on('aiRequest', async ({ payload, signal }) => {
 });
 ```
 
-### 6. 生命周期 API
+### 6. 图片素材库协议 (`resourceLibrary`)
+
+> 从 **2.11.0** 起支持。完整接入流程见 [画板插入图片素材](./image-material-library)。
+
+`resourceLibrary` 是创建编辑器时传入的 Provider。用户打开图片素材入口、搜索或翻页时，SDK 会调用宿主实现的 `query` 方法；宿主返回图片列表后，由内嵌编辑器负责展示和插入画板。
+
+```typescript
+interface ResourceLibraryProvider {
+  query(
+    params: ResourceLibraryQuery,
+    context: { signal: AbortSignal },
+  ): Promise<ResourceLibraryResult>;
+}
+```
+
+- `params.page` 从 `1` 开始，`params.pageSize` 最大为 `100`。
+- `params.keyword` 和 `params.mediaTypes` 是可选的搜索条件。
+- `context.signal` 用于取消已经失效的请求，宿主应将它传给 `fetch` 等异步操作。
+- 返回项必须包含唯一的 `id`、非空 `name`、`image/*` 类型和完整的 HTTP(S) 图片 URL。
+- 未配置 `resourceLibrary` 时，编辑器不会展示图片素材入口。
+
+### 7. 生命周期 API
 
 - `resize(): void`: 自 `2.10.0` 起支持。通知内嵌页重新测量容器并重绘画布。SDK 会在容器尺寸变化时自动调用；其它宿主布局变化后可手动调用。
 - `destroy(): Promise<void>`: 销毁 SDK 实例，移除 iframe、清理消息监听器，并取消未完成请求。
