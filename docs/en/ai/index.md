@@ -21,7 +21,8 @@ If you want AI to draw, export, or manipulate geometry as part of a tutoring, ex
 If you are getting started, read in this order:
 
 1. Start with [MCP Integration](./mcp) to understand authentication, client configuration, and available capabilities.
-2. Then review [MCP Billing](./mcp-billing) to confirm usage cost and top-up details.
+2. To keep AI-generated drawings visually consistent, continue with [Use Master Templates with MCP](./master-template).
+3. Then review [MCP Billing](./mcp-billing) to confirm usage cost and top-up details.
 
 ## Current integration modes
 

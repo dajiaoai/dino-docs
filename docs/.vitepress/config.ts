@@ -195,6 +195,7 @@ export default defineConfig({
               items: [
                 { text: '概览', link: '/ai/' },
                 { text: 'MCP 接入', link: '/ai/mcp' },
+                { text: '在 MCP 中使用母版', link: '/ai/master-template' },
                 { text: 'MCP 计费说明', link: '/ai/mcp-billing' },
               ],
             },
@@ -338,6 +339,10 @@ export default defineConfig({
               items: [
                 { text: 'Overview', link: '/en/ai/' },
                 { text: 'MCP Integration', link: '/en/ai/mcp' },
+                {
+                  text: 'Use Master Templates with MCP',
+                  link: '/en/ai/master-template',
+                },
                 { text: 'MCP Billing', link: '/en/ai/mcp-billing' },
               ],
             },

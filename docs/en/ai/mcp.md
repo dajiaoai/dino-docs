@@ -48,11 +48,14 @@ The currently exposed core capabilities include:
 | Tool             | Purpose                                                                                                  |
 | :--------------- | :------------------------------------------------------------------------------------------------------- |
 | `algeo_repl`     | Execute interactive geometry commands on the current canvas to create, update, or inspect objects        |
+| `load_template`  | Load a master template, apply it to selected or all existing canvases, or use it for canvases created later |
 | `export_image`   | Export the current project as a PNG image and return an accessible link that remains valid for 1 year    |
 | `export_project` | Export the current project as structured JSON and return an accessible link that remains valid for 1 day |
 | `import_project` | Import structured JSON project content into the project bound to the current MCP session                 |
 
 In most clients you do not need to memorize tool names. If tool calling is enabled, the model will choose the right tool from natural language requests.
+
+To keep backgrounds, grids, axes, and default object styles consistent, see [Use Master Templates with MCP](./master-template).
 
 ## Available tools
 

@@ -18,7 +18,8 @@ A standard document JSON object (`FileContentLatest`) contains the following cor
 ```typescript
 interface FileContentLatest {
   slides: SlideV2[];
-  messages: SeedChatMessage[];
+  messages: SeedChatMessage[][];
+  templateStyle?: SlideStyleSheetV2;
   metadata: {
     version: '11';
   };
@@ -46,7 +47,14 @@ interface SlideV2 {
 | `slides[].uvarMap`     | `[string, number][]` | Current value map for user variables (sliders, etc.), as `[name, value]` pairs         |
 | `slides[].styleSheet`  | `SlideStyleSheetV2`  | Canvas stylesheet including background, axes, grid, and per-object style config        |
 | `slides[].doc`         | `DocOp[]`            | Canvas rich-text content (Quill Delta Op format)                                       |
-| `messages`             | `SeedChatMessage[]`  | AI conversation history including user and assistant messages                          |
+| `messages`             | `SeedChatMessage[][]` | AI conversation history; the outer array represents conversations and each inner array contains messages |
+| `templateStyle`        | `SlideStyleSheetV2`  | Optional project master template with the same shape as `slides[].styleSheet`; it can provide the default visual style for new canvases |
+
+## Project master template
+
+`templateStyle` stores the project-level master template and contains only visual styles that can be reused across canvases. It is stored separately from each canvas stylesheet: `templateStyle` is the project master, while `slides[].styleSheet` is the style currently applied to that canvas.
+
+Normalization removes per-object-ID styles as well as axis and grid ranges, intervals, visibility, locking, and similar canvas state. For the complete MCP workflow, see [Use Master Templates with MCP](/en/ai/master-template).
 
 ## Integration Tips
 

@@ -13,7 +13,8 @@
 ```typescript
 interface FileContentLatest {
   slides: SlideV2[];
-  messages: SeedChatMessage[];
+  messages: SeedChatMessage[][];
+  templateStyle?: SlideStyleSheetV2;
   metadata: {
     version: '11';
   };
@@ -41,7 +42,14 @@ interface SlideV2 {
 | `slides[].uvarMap`     | `[string, number][]` | 用户变量（滑块等）的当前值映射，格式为 `[变量名, 值]` 对 |
 | `slides[].styleSheet`  | `SlideStyleSheetV2`  | 画板样式表，包含背景、坐标轴、网格及各对象的样式配置     |
 | `slides[].doc`         | `DocOp[]`            | 画板富文本内容（Quill Delta Op 格式）                    |
-| `messages`             | `SeedChatMessage[]`  | AI 对话历史记录，包含用户与助手的消息列表                |
+| `messages`             | `SeedChatMessage[][]` | AI 对话历史记录；外层数组表示多个会话，每个会话包含一组消息 |
+| `templateStyle`        | `SlideStyleSheetV2`  | 可选的项目母版样式，结构与 `slides[].styleSheet` 一致；新建画板时可作为默认视觉样式 |
+
+## 项目母版样式
+
+`templateStyle` 保存项目级母版，只包含适合跨画板复用的视觉样式。它与每个画板自身的 `styleSheet` 分开保存：`templateStyle` 表示项目母版，`slides[].styleSheet` 表示该画板当前实际使用的样式。
+
+母版规范化时会移除对象 ID 级样式，以及坐标轴和网格的范围、间隔、显示和锁定等画板状态。通过 MCP 加载和使用母版的完整流程见[在 MCP 中使用母版](/ai/master-template)。
 
 ## 进阶集成建议
 
