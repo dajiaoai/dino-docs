@@ -224,6 +224,10 @@ export default defineConfig({
               text: '通用规范',
               items: [
                 { text: '概览', link: '/reference/' },
+                {
+                  text: '大角工程文件数据协议',
+                  link: '/reference/algeo-file-protocol',
+                },
                 { text: '尺寸单位与换算', link: '/reference/units' },
               ],
             },
@@ -374,6 +378,10 @@ export default defineConfig({
               text: 'Common Standards',
               items: [
                 { text: 'Overview', link: '/en/reference/' },
+                {
+                  text: 'Project File Protocol',
+                  link: '/en/reference/algeo-file-protocol',
+                },
                 {
                   text: 'Size Units and Conversion',
                   link: '/en/reference/units',

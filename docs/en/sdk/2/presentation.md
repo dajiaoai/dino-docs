@@ -67,7 +67,7 @@ Load content by a Dino-GSP share ID.
 
 Load structured JSON data conforming to the FileContentLatest protocol.
 
-- **Parameter**: `content`: see [Protocol Reference](./protocol)
+- **Parameter**: `content`: see [Dino-GSP Project File Protocol](/en/reference/algeo-file-protocol)
 
 ### `switchSlide(index: number): Promise<{ success: true }>`
 

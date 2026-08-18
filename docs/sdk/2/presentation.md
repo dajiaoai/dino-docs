@@ -63,7 +63,7 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 
 加载符合 FileContentLatest 协议的结构化 JSON 数据。
 
-- **参数**: `content`: [DSL 协议详情](./protocol)
+- **参数**: `content`: [大角工程文件数据协议](/reference/algeo-file-protocol)
 
 ### `switchSlide(index: number): Promise<{ success: true }>`
 

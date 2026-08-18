@@ -7,7 +7,7 @@ description: 描述大角几何开放平台 HTTP 渲染接口，支持 PNG、SVG
 
 **Base URL：`https://api.dajiaoai.com`**
 
-接口接收一个符合[大角几何工程文件协议](/sdk/2/protocol)的项目内容，渲染指定画板并返回导出文件地址与元数据。
+接口接收一个符合[大角工程文件（.algeo）数据协议](/reference/algeo-file-protocol)的项目内容，渲染指定画板并返回导出文件地址与元数据。
 
 ::: info 尺寸单位
 `viewBound` 使用画板逻辑坐标，`scale` 表示每个逻辑单位对应的像素数，返回结果中的 `width` 和 `height` 表示图片像素尺寸。工程内字号、线宽等视觉尺寸使用 px；如果你手头的规范使用 pt，请查看[尺寸单位与换算](/reference/units)。
@@ -36,7 +36,7 @@ description: 描述大角几何开放平台 HTTP 渲染接口，支持 PNG、SVG
 | 字段 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |
 | `viewBound` | `object` | 是 | 逻辑视口边界，格式为 `{ left, right, bottom, top }`，要求 `left < right` 且 `bottom < top`。实际输出画布的像素尺寸按 `width = right - left`、`height = top - bottom` 计算。 |
-| `content` | `FileContentLatest` | 是 | 要渲染的项目内容，格式见[大角几何工程文件协议](/sdk/2/protocol)。 |
+| `content` | `FileContentLatest` | 是 | 要渲染的项目内容，格式见[大角工程文件（.algeo）数据协议](/reference/algeo-file-protocol)。 |
 | `slideIndex` | `number` | 否 | 要渲染的画板序号，从 `1` 开始，默认第 `1` 个画板。 |
 | `scale` | `number` | 否 | 相机缩放比例（每逻辑单位对应的像素数），正数。省略时使用目标画板当前 `camera.scale`。 |
 | `template` | `object` | 否 | 渲染母版，可在[大角几何母版](https://dajiaoai.com/master-templates)页面下载母版数据。 |
@@ -201,7 +201,7 @@ curl -X POST https://api.dajiaoai.com/api/render-tikz \
 
 | 状态码 | 原因 |
 | --- | --- |
-| `400` | 参数不通过，或 `content` 不符合[大角几何工程文件协议](/sdk/2/protocol) |
+| `400` | 参数不通过，或 `content` 不符合[大角工程文件（.algeo）数据协议](/reference/algeo-file-protocol) |
 | `401` | API Key 无效 |
 
 ## 计费说明

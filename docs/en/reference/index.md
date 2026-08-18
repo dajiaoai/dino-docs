@@ -9,4 +9,5 @@ This section contains standards shared by the Dino-GSP SDK, API, and MCP. Interp
 
 ## Standards
 
+- [Dino-GSP Project File (.algeo) Protocol](./algeo-file-protocol): versions, canvases, AI conversations, master templates, and metadata in a project file.
 - [Size Units and Conversion](./units): the px standard for font sizes, line widths, and other dimensions, including px/pt conversion.

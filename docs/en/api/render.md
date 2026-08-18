@@ -7,7 +7,7 @@ description: Describe the Dino Geometry Open Platform HTTP render API that suppo
 
 **Base URL: `https://api.dajiaoai.com`**
 
-The API accepts a project payload conforming to the [Dino Geometry file protocol](/en/sdk/2/protocol), renders a specified slide, and returns the exported file URL and metadata.
+The API accepts a project payload conforming to the [Dino-GSP project file protocol](/en/reference/algeo-file-protocol), renders a specified slide, and returns the exported file URL and metadata.
 
 ::: info Size units
 `viewBound` uses logical canvas coordinates, `scale` is the number of pixels per logical unit, and the returned `width` and `height` are image pixel dimensions. Visual dimensions such as font sizes and line widths in project content use px. If your source specification uses pt, see [Size Units and Conversion](/en/reference/units).
@@ -36,7 +36,7 @@ All three endpoints share the following JSON fields:
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |
 | `viewBound` | `object` | yes | Logical viewport bounds in the shape `{ left, right, bottom, top }`. Requires `left < right` and `bottom < top`. The output canvas size is calculated as `width = right - left` and `height = top - bottom`. |
-| `content` | `FileContentLatest` | yes | Project payload to render. See [Dino Geometry file protocol](/en/sdk/2/protocol). |
+| `content` | `FileContentLatest` | yes | Project payload to render. See the [Dino-GSP project file protocol](/en/reference/algeo-file-protocol). |
 | `slideIndex` | `number` | no | Slide index to render, 1-based, defaults to `1`. |
 | `scale` | `number` | no | Camera scale, in pixels per logical unit. Must be positive. If omitted, the target slide's current `camera.scale` is used. |
 | `template` | `object` | no | Render template. You can download template data from the [Dino Geometry templates](https://dajiaoai.com/master-templates) page. |
@@ -201,7 +201,7 @@ Returns `200 OK`:
 
 | Status | Cause |
 | --- | --- |
-| `400` | Invalid parameters or `content` does not conform to the [Dino Geometry file protocol](/en/sdk/2/protocol) |
+| `400` | Invalid parameters or `content` does not conform to the [Dino-GSP project file protocol](/en/reference/algeo-file-protocol) |
 | `401` | Invalid API key |
 
 ## Billing
