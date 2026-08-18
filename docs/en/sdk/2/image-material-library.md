@@ -7,6 +7,15 @@ description: Connect your own image library to the embedded editor through the r
 
 Starting with SDK `2.11.0`, integrators can connect their own image library to the embedded editor. Images remain stored, categorized, and authorized by the integrator. When a user browses, searches, or changes pages in the editor, the SDK calls the host-provided `resourceLibrary.query()`. The editor then displays the returned images and inserts the selected material into the slide.
 
+## Interactive Demo
+
+<iframe
+  src="https://dajiaoai.com/embed/present/YTVJDQZR/WJOKAUNE"
+  style="width: 100%; height: 480px; border: 1px solid var(--vp-c-divider); border-radius: 8px;"
+  allow="fullscreen"
+  title="Image Material Library Presentation Demo"
+></iframe>
+
 ::: tip Try It Online
 The example demonstrates the complete Provider configuration, paginated search, request cancellation, and protocol data structures.
 
