@@ -7,6 +7,8 @@ description: 通过 SDK 2.11.0 的 resourceLibrary Provider，把接入方自有
 
 SDK `2.11.0` 起，接入方可以把自己的图片素材库接入内嵌编辑器。图片仍由接入方存储、分类和鉴权；当用户在编辑器中浏览、搜索或翻页时，SDK 调用宿主提供的 `resourceLibrary.query()`，再由编辑器展示返回的图片并将用户选中的素材插入画板。
 
+![](https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/5a8936a4-2abe59cd52c2d2f6c2630de0cba69769.png)
+
 ## 交互演示
 
 <iframe
