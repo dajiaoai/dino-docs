@@ -153,7 +153,7 @@ Dynamically adjust the UI and master template style.
 
 - `getUiConfig(): AlgeoEditorUiConfig`: Get the SDK-side cached UI configuration.
 - `setUiConfig(config: Partial<AlgeoEditorUiConfig>): Promise<void>`: Dynamically toggle UI element visibility at runtime.
-- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: Set the master template style. Supported since `2.9.0`.
+- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: Set and persist the project's master template style. Supported since `2.9.0`.
 
 ```typescript
 const ui = editor.mode.getUiConfig();
@@ -165,9 +165,6 @@ await editor.mode.setUiConfig({
 
 await editor.mode.setMasterTemplate(masterTemplateContent);
 ```
-
-`setMasterTemplate` forwards the `template` string to the iframe. The embedded editor applies it to the document slides; the SDK does not parse or modify the master template content.
-
 You can download master template data that can be passed directly to `setMasterTemplate` from the [Dino-GSP master template page](https://dajiaoai.com/master-templates).
 
 ### 5. AI API (`editor.ai`)

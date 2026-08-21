@@ -90,7 +90,7 @@ Core API: send a REPL execution sequence to the canvas. Can be used for automate
 
 - `getUiConfig()`: Get the current UI configuration.
 - `setUiConfig(config)`: Update the UI configuration.
-- `setMasterTemplate(template)`: Set the master template style.
+- `setMasterTemplate(template)`: Apply the master template style to the currently loaded slides.
 
 ```typescript
 await presentation.mode.setUiConfig({
@@ -102,7 +102,7 @@ await presentation.mode.setUiConfig({
 
 #### `mode.setMasterTemplate(template: string)`
 
-Starting from `2.9.0`, presentation mode supports setting the master template style through `mode.setMasterTemplate`, which helps align canvas backgrounds, grids, and default object styles.
+Starting from `2.9.0`, presentation mode supports applying a master template through `mode.setMasterTemplate` to align canvas backgrounds, grids, axes, and default object styles across the currently loaded slides. 
 
 ```typescript
 await presentation.mode.setMasterTemplate(masterTemplateContent);

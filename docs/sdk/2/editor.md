@@ -148,7 +148,7 @@ await editor.history.clear();
 
 - `getUiConfig(): AlgeoEditorUiConfig`: 获取 SDK 当前缓存的 UI 配置。
 - `setUiConfig(config: Partial<AlgeoEditorUiConfig>): Promise<void>`: 运行时动态切换 UI 元件的显隐。
-- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: 设置母版风格。从 `2.9.0` 起支持。
+- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: 设置并固定工程母版风格。从 `2.9.0` 起支持。
 
 ```typescript
 const ui = editor.mode.getUiConfig();

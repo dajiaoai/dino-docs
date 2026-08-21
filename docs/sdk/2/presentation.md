@@ -86,7 +86,7 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 
 - `getUiConfig()`：获取当前 UI 配置。
 - `setUiConfig(config)`：更新 UI 配置。
-- `setMasterTemplate(template)`：设置母版风格。
+- `setMasterTemplate(template)`：将母版风格应用到当前加载的画板。
 
 ```typescript
 await presentation.mode.setUiConfig({
@@ -98,7 +98,7 @@ await presentation.mode.setUiConfig({
 
 #### `mode.setMasterTemplate(template: string)`
 
-从 `2.9.0` 起，演示模式支持通过 `mode.setMasterTemplate` 设置母版风格，用于统一画板背景、网格、默认图形样式等母版配置。
+从 `2.9.0` 起，演示模式支持通过 `mode.setMasterTemplate` 将母版风格应用到当前加载的画板，用于统一画板背景、网格、坐标轴和默认对象样式。
 
 ```typescript
 await presentation.mode.setMasterTemplate(masterTemplateContent);
