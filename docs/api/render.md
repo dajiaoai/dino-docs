@@ -39,7 +39,12 @@ description: 描述大角几何开放平台 HTTP 渲染接口，支持 PNG、SVG
 | `content` | `FileContentLatest` | 是 | 要渲染的项目内容，格式见[大角工程文件（.algeo）数据协议](/reference/algeo-file-protocol)。 |
 | `slideIndex` | `number` | 否 | 要渲染的画板序号，从 `1` 开始，默认第 `1` 个画板。 |
 | `scale` | `number` | 否 | 相机缩放比例（每逻辑单位对应的像素数），正数。省略时使用目标画板当前 `camera.scale`。 |
+| `pixelRatio` | `number` | 否，仅 `/api/render` | PNG 输出像素倍率，必须是正的有限数，默认 `1`。保持逻辑视口和相机缩放不变，将 PNG 的物理宽高按此倍率放大。SVG 和 TikZ 接口不接收此字段。 |
 | `template` | `object` | 否 | 渲染母版，可在[大角几何母版](https://dajiaoai.com/master-templates)页面下载母版数据。 |
+
+::: warning 立体几何（3D）限制
+三个渲染接口当前均不支持渲染 3D 画板。
+:::
 
 ## 导出 PNG `POST /api/render`
 
@@ -57,6 +62,7 @@ curl -X POST https://api.dajiaoai.com/api/render \
       "top": 10
     },
     "scale": 50,
+    "pixelRatio": 2,
     "template": {
       "backgroundStyle": {
         "background": { "color": "#ffffff" },
@@ -95,13 +101,22 @@ curl -X POST https://api.dajiaoai.com/api/render \
     "bottom": -10,
     "top": 10
   },
-  "width": 768,
-  "height": 768,
+  "width": 2000,
+  "height": 2000,
   "scale": 50,
   "mimeType": "image/png",
   "size": 24831
 }
 ```
+
+`pixelRatio` 只改变 PNG 的物理像素尺寸，不改变 `viewBound` 或相机 `scale`。最终尺寸会四舍五入为整数：
+
+```text
+width = round(logical canvas width × pixelRatio)
+height = round(logical canvas height × pixelRatio)
+```
+
+本例的视口宽高均为 `20` 个逻辑单位，`scale` 为 `50`，因此逻辑渲染尺寸为 `1000 × 1000`；当 `pixelRatio` 为 `2` 时，返回的 `width`、`height` 以及实际 PNG 尺寸均为 `2000 × 2000`。最终宽度和高度均不得超过 `2048` 像素。
 
 ## 导出 SVG `POST /api/render-svg`
 
@@ -203,6 +218,7 @@ curl -X POST https://api.dajiaoai.com/api/render-tikz \
 | --- | --- |
 | `400` | 参数不通过，或 `content` 不符合[大角工程文件（.algeo）数据协议](/reference/algeo-file-protocol) |
 | `401` | API Key 无效 |
+| `422` | `slideIndex` 指向的目标画板包含当前不支持的立体几何（3D）内容 |
 
 ## 计费说明
 

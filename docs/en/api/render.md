@@ -39,7 +39,12 @@ All three endpoints share the following JSON fields:
 | `content` | `FileContentLatest` | yes | Project payload to render. See the [Dino-GSP project file protocol](/en/reference/algeo-file-protocol). |
 | `slideIndex` | `number` | no | Slide index to render, 1-based, defaults to `1`. |
 | `scale` | `number` | no | Camera scale, in pixels per logical unit. Must be positive. If omitted, the target slide's current `camera.scale` is used. |
+| `pixelRatio` | `number` | no, `/api/render` only | PNG output pixel multiplier. It must be a positive finite number and defaults to `1`. It increases the physical PNG dimensions without changing the logical viewport or camera scale. The SVG and TikZ endpoints do not accept this field. |
 | `template` | `object` | no | Render template. You can download template data from the [Dino Geometry templates](https://dajiaoai.com/master-templates) page. |
+
+::: warning 3D geometry limitation
+The three rendering endpoints do not currently support rendering 3D slides. 
+:::
 
 ## Export PNG `POST /api/render`
 
@@ -57,6 +62,7 @@ curl -X POST https://api.dajiaoai.com/api/render \
       "top": 10
     },
     "scale": 50,
+    "pixelRatio": 2,
     "template": {
       "backgroundStyle": {
         "background": { "color": "#ffffff" },
@@ -95,13 +101,22 @@ Returns `200 OK`:
     "bottom": -10,
     "top": 10
   },
-  "width": 768,
-  "height": 768,
+  "width": 2000,
+  "height": 2000,
   "scale": 50,
   "mimeType": "image/png",
   "size": 24831
 }
 ```
+
+`pixelRatio` changes only the physical PNG dimensions; it does not change `viewBound` or the camera `scale`. Final dimensions are rounded to integers:
+
+```text
+width = round(logical canvas width × pixelRatio)
+height = round(logical canvas height × pixelRatio)
+```
+
+In this example, the viewport is `20 × 20` logical units and `scale` is `50`, so the logical render size is `1000 × 1000`. With `pixelRatio` set to `2`, the returned `width` and `height`, as well as the actual PNG dimensions, are `2000 × 2000`. Neither final dimension may exceed `2048` pixels.
 
 ## Export SVG `POST /api/render-svg`
 
@@ -203,6 +218,7 @@ Returns `200 OK`:
 | --- | --- |
 | `400` | Invalid parameters or `content` does not conform to the [Dino-GSP project file protocol](/en/reference/algeo-file-protocol) |
 | `401` | Invalid API key |
+| `422` | The target slide selected by `slideIndex` contains unsupported 3D content |
 
 ## Billing
 
