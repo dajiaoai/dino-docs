@@ -56,6 +56,7 @@ interface AlgeoEditorCreateOptions {
   shareId?: string;
   initialContent?: FileContentLatest;
   ui?: AlgeoEditorUiConfig;
+  fonts?: AlgeoFontConfig;
   resourceLibrary?: ResourceLibraryProvider;
 }
 ```
@@ -66,7 +67,10 @@ interface AlgeoEditorCreateOptions {
 | `shareId`         | `string`                  | no       | Shared file ID to load during initialization                        |
 | `initialContent`  | `FileContentLatest`       | no       | File content loaded after initialization                            |
 | `ui`              | `AlgeoEditorUiConfig`     | no       | Editor UI visibility configuration                                  |
+| `fonts`           | `AlgeoFontConfig`         | no       | Font resources, picker catalog, and default font. Supported since `2.12.0`. |
 | `resourceLibrary` | `ResourceLibraryProvider` | no       | Host-provided read-only image library. Supported since `2.11.0`.     |
+
+See [Custom Fonts](./fonts) for the type definitions, URL/base64 setup, and validation rules.
 
 ### 1. Document API (`editor.document`)
 
@@ -364,4 +368,3 @@ editor.on('aiCancel', (event) => {
 | `user`       | The user canceled the request            |
 | `superseded` | A newer request replaced the active one  |
 | `destroyed`  | The SDK instance was destroyed           |
-

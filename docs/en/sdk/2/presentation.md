@@ -29,6 +29,17 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 
 See [Getting Started: Getting an appId](./getting-started.html#_4-getting-an-appid) for how to get an `appId`.
 
+### Create Options (`AlgeoPresentationCreateOptions`)
+
+| Option       | Type                                | Required | Description                                                       |
+| ------------ | ----------------------------------- | -------- | ----------------------------------------------------------------- |
+| `auth.appId` | `string`                            | yes      | Open Platform application ID for presentation-mode authorization |
+| `shareId`    | `string`                            | no       | Shared file ID to load during initialization                     |
+| `ui`         | `AlgeoPresentationUiConfig`         | no       | Presentation UI visibility configuration                         |
+| `fonts`      | `AlgeoFontConfig`                   | no       | Font resources and default font. Supported since `2.12.0`.       |
+
+Editor and presentation modes use the same `fonts` protocol. See [Custom Fonts](./fonts).
+
 ### UI Configuration
 
 ```typescript

@@ -44,6 +44,7 @@ export function createSdkSidebar(
           text: isEnglish ? 'Presentation Mode' : '演示模式',
           link: getStableV2Path(localePrefix, 'presentation'),
         },
+
         {
           text: isEnglish ? 'Editor Mode' : '编辑模式',
           link: getStableV2Path(localePrefix, 'editor'),
@@ -64,6 +65,10 @@ export function createSdkSidebar(
               text: isEnglish ? 'AI Chat in Editor' : '编辑器 AI 对话',
               link: getStableV2Path(localePrefix, 'ai-chat'),
             },
+            {
+              text: isEnglish ? 'Custom Fonts' : '自定义字体',
+              link: getStableV2Path(localePrefix, 'fonts'),
+            },
           ],
         },
         {
@@ -72,6 +77,7 @@ export function createSdkSidebar(
         },
       ],
     },
+
     {
       text: isEnglish ? 'Access & Licensing' : '接入与授权',
       items: [

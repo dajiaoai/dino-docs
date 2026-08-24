@@ -29,6 +29,17 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 
 `appId` 获取方式详见[快速开始：获取 appId](./getting-started.html#_4-获取-appid)。
 
+### 创建参数 (`AlgeoPresentationCreateOptions`)
+
+| 参数         | 类型                                | 必填 | 说明                                                   |
+| ------------ | ----------------------------------- | ---- | ------------------------------------------------------ |
+| `auth.appId` | `string`                            | 是   | 开放平台应用 ID，用于演示模式鉴权                      |
+| `shareId`    | `string`                            | 否   | 初始化时加载的分享文件 ID                              |
+| `ui`         | `AlgeoPresentationUiConfig`         | 否   | 演示模式 UI 显隐配置                                   |
+| `fonts`      | `AlgeoFontConfig`                   | 否   | 字体资源及默认字体配置。从 `2.12.0` 起支持。           |
+
+编辑和演示模式使用同一套 `fonts` 协议，详见[自定义字体](./fonts)。
+
 ### UI 配置
 
 ```typescript
