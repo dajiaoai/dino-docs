@@ -26,6 +26,12 @@ The Dino Geometry Open Platform provides HTTP APIs for integrating AI geometry g
 
 **Model geometry from reference images**: Upload a hand-drawn sketch or screenshot and let the AI infer the geometric structure to produce an interactive project.
 
+## Sizes and fonts
+
+Visual dimensions such as font sizes and line widths use px in the API. For logical coordinates, scaling, and output-size rules, see [Size Units and Conversion](/en/reference/units) and the relevant endpoint documentation.
+
+See the [public font catalog](/en/reference/fonts) for fonts available to HTTP APIs.
+
 ## Authentication
 
 All endpoints require Bearer API Key authentication:

@@ -9,10 +9,6 @@ MCP (Model Context Protocol) allows AI clients that support the protocol to call
 
 If your product already includes an AI assistant, agent workflow, or tool-calling runtime, MCP is the standard way to expose Dino-GSP geometry interaction to that layer.
 
-::: info Size units
-Font sizes, line widths, and other dimensional parameters in MCP drawing use px. For typesetting or print, convert values to px using [Size Units and Conversion](/en/reference/units).
-:::
-
 ## Service information
 
 - **MCP endpoint**: `https://api.dajiaoai.com/mcp`
@@ -56,6 +52,12 @@ The currently exposed core capabilities include:
 In most clients you do not need to memorize tool names. If tool calling is enabled, the model will choose the right tool from natural language requests.
 
 To keep backgrounds, grids, axes, and default object styles consistent, see [Use Master Templates with MCP](./master-template).
+
+## Sizes and fonts
+
+Font sizes, line widths, and other dimensional parameters in MCP drawing use px. For typesetting or print, convert values to px using [Size Units and Conversion](/en/reference/units).
+
+See the [public font catalog](/en/reference/fonts) for fonts available to MCP.
 
 ## Available tools
 

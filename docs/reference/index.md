@@ -11,3 +11,4 @@ description: 大角几何 SDK、API 与 MCP 共同遵循的参数和数据规范
 
 - [大角工程文件（.algeo）数据协议](./algeo-file-protocol)：工程文件的版本、画板、AI 会话、母版和元数据结构。
 - [尺寸单位与换算](./units)：字号、线宽等尺寸参数的 px 标准，以及 px 与 pt 的换算方法。
+- [字体支持](./fonts)：公开支持的字体列表，以及 SDK、MCP 和 HTTP API 的自定义字体接入方式。

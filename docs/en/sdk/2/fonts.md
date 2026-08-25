@@ -7,6 +7,8 @@ description: Configure font resources, the font picker catalog, and the default 
 
 Starting with SDK `2.12.0`, both editor and presentation modes accept a `fonts` option when an instance is created. The SDK sends the font configuration after the iframe is ready and before other initialization operations.
 
+For the SDK Embedded Canvas, the integrator supplies custom fonts. See the [public font catalog](/en/reference/fonts) for fonts provided by default. To use a font outside that catalog with server-side MCP or HTTP APIs, [contact us](../../CONTACT) to enable support.
+
 Use a URL in most cases. If the font server cannot meet cross-origin requirements, you can pass either a plain base64 string or a complete data URL.
 
 ## Quick Setup
