@@ -9,6 +9,7 @@ This page collects important Dino-GSP Open Platform updates, including new capab
 
 ## August 2026
 
+- **New capability** · 2026-08-25 · [Custom Font Support for the SDK, MCP, and API](./2026-08-25-custom-font-support)
 - **New capability** · 2026-08-17 · [SDK 2.11.0 Adds Image Libraries, Third-Party Images, and REPL Image Support](./2026-08-17-sdk-2-11-0-image-assets-repl)
 
 ## July 2026

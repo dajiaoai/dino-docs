@@ -242,6 +242,10 @@ export default defineConfig({
               text: '2026 年',
               items: [
                 {
+                  text: 'SDK、MCP 与 API 自定义字体能力上线',
+                  link: '/announcements/2026-08-25-custom-font-support',
+                },
+                {
                   text: 'SDK 2.11.0 图片素材库、第三方图片与 REPL 能力更新',
                   link: '/announcements/2026-08-17-sdk-2-11-0-image-assets-repl',
                 },
@@ -399,6 +403,10 @@ export default defineConfig({
             {
               text: '2026',
               items: [
+                {
+                  text: 'Custom Font Support for the SDK, MCP, and API',
+                  link: '/en/announcements/2026-08-25-custom-font-support',
+                },
                 {
                   text: 'SDK 2.11.0 Adds Image Libraries, Third-Party Images, and REPL Image Support',
                   link: '/en/announcements/2026-08-17-sdk-2-11-0-image-assets-repl',
