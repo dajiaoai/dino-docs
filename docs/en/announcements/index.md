@@ -7,6 +7,10 @@ description: Product updates, capability releases, billing changes, maintenance 
 
 This page collects important Dino-GSP Open Platform updates, including new capabilities, capability changes, billing changes, maintenance notices, and usage notes.
 
+## September 2026
+
+- **Billing change** · 2026-08-27 · [Intelligent Image Generation API Pricing Update: Stronger Foundation Models, Lower Costs](./2026-09-01-api-pricing-reduction)
+
 ## August 2026
 
 - **New capability** · 2026-08-25 · [Custom Font Support for the SDK, MCP, and API](./2026-08-25-custom-font-support)

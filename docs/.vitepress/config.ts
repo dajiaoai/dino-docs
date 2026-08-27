@@ -242,6 +242,10 @@ export default defineConfig({
               text: '2026 年',
               items: [
                 {
+                  text: '智能生图 API 服务调价：更强底模，更低成本',
+                  link: '/announcements/2026-09-01-api-pricing-reduction',
+                },
+                {
                   text: 'SDK、MCP 与 API 自定义字体能力上线',
                   link: '/announcements/2026-08-25-custom-font-support',
                 },
@@ -403,6 +407,10 @@ export default defineConfig({
             {
               text: '2026',
               items: [
+                {
+                  text: 'Intelligent Image Generation API Pricing Update',
+                  link: '/en/announcements/2026-09-01-api-pricing-reduction',
+                },
                 {
                   text: 'Custom Font Support for the SDK, MCP, and API',
                   link: '/en/announcements/2026-08-25-custom-font-support',
