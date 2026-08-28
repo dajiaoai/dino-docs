@@ -155,11 +155,7 @@ onBeforeUnmount(() => window.removeEventListener('message', syncDemoHeight));
           </div>
         </div>
 
-        <div
-          class="home-demo__frame-wrap"
-          :class="{ 'has-demo': Boolean(demoSrc) }"
-          :style="demoSrc ? { height: `${demoHeight}px` } : undefined"
-        >
+        <div class="home-demo__frame-wrap">
           <iframe
             v-if="demoSrc"
             class="home-demo__frame"

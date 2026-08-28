@@ -319,12 +319,9 @@ body:has(.home-platform) .VPHome {
 
 .home-demo__frame-wrap {
   position: relative;
+  height: 800px;
   min-height: 580px;
   overflow: hidden;
-}
-
-.home-demo__frame-wrap.has-demo {
-  min-height: 800px;
 }
 
 .home-demo__frame {
