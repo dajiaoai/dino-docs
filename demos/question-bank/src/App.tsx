@@ -702,7 +702,6 @@ export default function App() {
               <div className="question-list">
                 <div className="list-header">
                   <span>题目文本</span>
-                  <span>知识点</span>
                   <span>状态</span>
                 </div>
                 {batch.questions.map((question) => {
@@ -732,13 +731,6 @@ export default function App() {
                             <LatexText value={question.questionText} />
                           </div>
                         </div>
-                      </div>
-                      <div className="tag-list">
-                        {question.knowledgePoints.map((tag) => (
-                          <span className="topic-tag" key={tag}>
-                            {tag}
-                          </span>
-                        ))}
                       </div>
                       <div className="status-wrap">
                         <span
