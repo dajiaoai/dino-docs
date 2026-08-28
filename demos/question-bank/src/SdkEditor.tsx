@@ -63,7 +63,7 @@ export const SdkEditor = forwardRef<SdkEditorHandle, SdkEditorProps>(
             initialContent: project,
             ui: {
               navbar: false,
-              slidePanel: false,
+              slidePanel: true,
               toolboxPanel: true,
               algebraPanel: true,
               docPanel: false,
