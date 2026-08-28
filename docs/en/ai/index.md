@@ -21,8 +21,9 @@ If you want AI to draw, export, or manipulate geometry as part of a tutoring, ex
 If you are getting started, read in this order:
 
 1. Start with [MCP Integration](./mcp) to understand authentication, client configuration, and available capabilities.
-2. To keep AI-generated drawings visually consistent, continue with [Use Master Templates with MCP](./master-template).
-3. Then review [MCP Billing](./mcp-billing) to confirm usage cost and top-up details.
+2. Continue with [Install the Dino-GSP Skill](./skill) so your agent can use the MCP tools more reliably.
+3. To keep AI-generated drawings visually consistent, continue with [Use Master Templates with MCP](./master-template).
+4. Then review [MCP Billing](./mcp-billing) to confirm usage cost and top-up details.
 
 ## Current integration modes
 
@@ -32,7 +33,7 @@ MCP is the currently available and most complete AI integration method. It fits 
 
 ### Skills
 
-Skills documentation is not available yet. It will be added later for workflow composition and packaged capability use cases.
+The Dino-GSP Skill gives agents MCP tool guidance, drawing rules, and common workflows. We recommend installing it through SkillHub, a third-party Skills community optimized for users in China. See [Install the Dino-GSP Skill](./skill) for details.
 
 ### CLI
 

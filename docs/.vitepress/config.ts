@@ -195,6 +195,7 @@ export default defineConfig({
               items: [
                 { text: '概览', link: '/ai/' },
                 { text: 'MCP 接入', link: '/ai/mcp' },
+                { text: '安装大角几何 Skill', link: '/ai/skill' },
                 { text: '在 MCP 中使用母版', link: '/ai/master-template' },
                 { text: 'MCP 计费说明', link: '/ai/mcp-billing' },
               ],
@@ -352,6 +353,10 @@ export default defineConfig({
               items: [
                 { text: 'Overview', link: '/en/ai/' },
                 { text: 'MCP Integration', link: '/en/ai/mcp' },
+                {
+                  text: 'Install the Dino-GSP Skill',
+                  link: '/en/ai/skill',
+                },
                 {
                   text: 'Use Master Templates with MCP',
                   link: '/en/ai/master-template',
