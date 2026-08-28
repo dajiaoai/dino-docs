@@ -5,26 +5,16 @@ import { useData } from 'vitepress';
 const { frontmatter, lang } = useData();
 const isEnglish = lang.value.startsWith('en');
 
-type ScenarioId = 'question-bank' | 'batch-generation' | 'style-transfer';
+type ScenarioId = 'question-bank' | 'batch-generation';
 
-const activeScenario = ref<ScenarioId>('question-bank');
+const activeScenario = ref<ScenarioId>('batch-generation');
 
 const scenarios = computed(() => {
   if (isEnglish) {
     return [
       {
-        id: 'question-bank' as const,
-        number: '01',
-        label: 'QUESTION BANK',
-        title: 'Make geometry content editable and interactive.',
-        description: 'Embed a professional geometry canvas into a question-bank or learning product. Learners can explore figures directly, while authors retain editable source files.',
-        tags: ['Embedded SDK', 'Interactive canvas', 'Editable source'],
-        input: 'Question content + geometry project',
-        output: 'Interactive figure in your product',
-      },
-      {
         id: 'batch-generation' as const,
-        number: '02',
+        number: '01',
         label: 'BATCH GENERATION',
         title: 'Generate geometry figures at content-production scale.',
         description: 'Use the Dino model to turn question text or reference images into editable geometry projects, then render them into deliverable assets in batches.',
@@ -33,32 +23,22 @@ const scenarios = computed(() => {
         output: 'Editable project + rendered assets',
       },
       {
-        id: 'style-transfer' as const,
-        number: '03',
-        label: 'STYLE TRANSFER',
-        title: 'Turn a draft into your required layout style.',
-        description: 'Start from a hand-drawn draft or reference figure, identify its geometric structure, and produce an editable diagram that follows your visual specification.',
-        tags: ['Reference image', 'Structured geometry', 'Style specification'],
-        input: 'Draft image + layout requirements',
-        output: 'Editable, consistently styled diagram',
+        id: 'question-bank' as const,
+        number: '02',
+        label: 'QUESTION BANK',
+        title: 'Make geometry content editable and interactive.',
+        description: 'Embed a professional geometry canvas into a question-bank or learning product. Learners can explore figures directly, while authors retain editable source files.',
+        tags: ['Embedded SDK', 'Interactive canvas', 'Editable source'],
+        input: 'Question content + geometry project',
+        output: 'Interactive figure in your product',
       },
     ];
   }
 
   return [
     {
-      id: 'question-bank' as const,
-      number: '01',
-      label: '题库管理',
-      title: '让几何图形可编辑、可交互。',
-      description: '将专业几何画板嵌入题库或学习产品。学生可以直接探索图形，内容团队仍保有可持续修改的原始工程文件。',
-      tags: ['嵌入式 SDK', '交互画板', '可编辑源文件'],
-      input: '题目内容 + 几何工程文件',
-      output: '产品内的交互式几何图',
-    },
-    {
       id: 'batch-generation' as const,
-      number: '02',
+      number: '01',
       label: '批量题图生成',
       title: '让几何题图进入规模化生产。',
       description: '借助大角模型，将题干或参考图转为可编辑的几何工程，再批量渲染为可以直接交付的图形素材。',
@@ -67,14 +47,14 @@ const scenarios = computed(() => {
       output: '可编辑工程 + 渲染素材',
     },
     {
-      id: 'style-transfer' as const,
-      number: '03',
-      label: '风格转绘',
-      title: '将草稿图转为指定的排版风格。',
-      description: '从手绘草稿或参考图出发，识别其中的几何结构，生成符合你的视觉规范、且可继续编辑的专业图形。',
-      tags: ['参考图片', '结构化几何', '样式规范'],
-      input: '草稿图片 + 排版要求',
-      output: '可编辑且风格统一的几何图',
+      id: 'question-bank' as const,
+      number: '02',
+      label: '题库管理',
+      title: '让几何图形可编辑、可交互。',
+      description: '将专业几何画板嵌入题库或学习产品。学生可以直接探索图形，内容团队仍保有可持续修改的原始工程文件。',
+      tags: ['嵌入式 SDK', '交互画板', '可编辑源文件'],
+      input: '题目内容 + 几何工程文件',
+      output: '产品内的交互式几何图',
     },
   ];
 });
