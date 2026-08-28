@@ -15,7 +15,8 @@
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
     "demos:build": "node scripts/build-demos.mjs",
-    "demo:question-bank": "npm run dev --workspace @dino-open/demo-question-bank"
+    "demo:question-bank": "npm run dev --workspace @dino-open/demo-question-bank",
+    "demo:smart-classroom": "npm run dev --workspace @dino-open/demo-smart-classroom"
   },
   "devDependencies": {
     "vitepress": "^1.6.0",

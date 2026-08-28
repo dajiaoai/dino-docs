@@ -1,0 +1,10 @@
+{
+  "id": "smart-classroom",
+  "package": "@dino-open/demo-smart-classroom",
+  "title": "在线教育与智慧课堂",
+  "titleEn": "Smart Classroom",
+  "description": "在教师后台编辑动态几何题目，并同步预览学生端 iPad 互动课堂。",
+  "category": "solution",
+  "order": 20,
+  "enabled": true
+}
