@@ -1,43 +1,37 @@
 ---
 title: AI Access
-description: Entry point for AI-native integration methods such as MCP, Skills, and CLI
+description: Use MCP to give AI agents Dino-GSP geometry capabilities, with guidance for authorization, Skills, templates, and billing
 ---
 
 # AI Access
 
-AI Access is designed for products and teams that already work with large models, agents, copilots, or automated workflows. The goal is not to embed the geometry canvas into your front end, but to let AI call Dino-GSP capabilities directly during conversations, reasoning flows, and automated execution.
-
-If you want AI to draw, export, or manipulate geometry as part of a tutoring, explanation, or automation flow, this is the primary entry point.
+This section is for products and teams that already use large models, agents, copilots, or automated workflows. With MCP, AI can create, modify, inspect, and export geometry during conversations, reasoning, and automated execution.
 
 ## Best-fit scenarios
 
 - AI tutors or explanation assistants that draw while reasoning
 - Agent workflows that generate geometry, export images, or export project files automatically
-- Integrations for AI clients such as VS Code, Cursor, Claude Code, Codex, and WorkBuddy
-- Products that want geometry as part of an AI toolchain rather than a traditional front-end SDK flow
+- Geometry tools in remote-MCP clients such as Codex, Claude Code, Cursor, VS Code, and WorkBuddy
 
-## Recommended reading path
+## Recommended integration path
 
-If you are getting started, read in this order:
+For a first integration, complete these steps in order:
 
-1. Start with [MCP Integration](./mcp) to understand authentication, client configuration, and available capabilities.
-2. To keep AI-generated drawings visually consistent, continue with [Use Master Templates with MCP](./master-template).
-3. Then review [MCP Billing](./mcp-billing) to confirm usage cost and top-up details.
+1. [Authorize and connect MCP](./mcp/). Create an application in the Open Platform, obtain an API key, and configure it as a Bearer token in your AI client.
+2. Confirm that MCP is connected in your client and that the Dino-GSP tools are available. You can then ask AI to draw, inspect, or export geometry.
+3. Optionally [install the Dino-GSP Skill](./skill/). It adds tool guidance, drawing rules, and common workflows so agents handle complex tasks more reliably.
+4. When you need consistent backgrounds, axes, and object styles, use [MCP master templates](./mcp/master-template).
+5. Before launching or estimating usage, review [MCP Billing](./mcp/billing).
 
-## Current integration modes
+::: tip
+MCP is the required integration that gives AI geometry operations. The Skill is an optional knowledge package installed after MCP is authorized and connected; it does not provide authorization or replace the MCP service.
+:::
 
-### MCP
+## Documentation guide
 
-MCP is the currently available and most complete AI integration method. It fits clients and agent runtimes that support remote MCP, exposing Dino-GSP capabilities as callable tools through a standard protocol.
-
-### Skills
-
-Skills documentation is not available yet. It will be added later for workflow composition and packaged capability use cases.
-
-### CLI
-
-CLI documentation is not available yet. It will be added later for command-line and automation-oriented access patterns.
-
-## How it differs from SDK Access
-
-AI Access focuses on letting models or agents call geometry capabilities directly. SDK Access focuses on letting your own front end or application control canvas lifecycle, events, and data flow. If your main goal is “make geometry usable by AI,” start here. If your main goal is “embed the canvas into my product UI,” start with <a href="/en/sdk/" target="_blank" rel="noreferrer">SDK Access</a>.
+| Document | Read it when | It answers |
+| --- | --- | --- |
+| [MCP Integration](./mcp/) | Your first integration | How to authorize, configure a client, and verify tools are available |
+| [Install the Dino-GSP Skill](./skill/) | MCP is ready; recommended | How to give an agent more reliable drawing rules and tool guidance |
+| [Use Master Templates with MCP](./mcp/master-template) | You need a consistent visual style | How to apply templates to existing or future canvases |
+| [MCP Billing](./mcp/billing) | Before launch or cost evaluation | How tool calls are charged and how to top up |

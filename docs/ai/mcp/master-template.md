@@ -13,7 +13,7 @@ description: 通过 MCP 将母版应用到指定画板、全部画板或后续�
 
 ## 使用前准备
 
-1. 按照 [MCP 接入](./mcp)完成服务连接。
+1. 按照 [MCP 接入](./)完成服务连接。
 2. 在[大角几何母版](https://dajiaoai.com/master-templates)页面选择并下载母版 JSON。
 
 ## 快速开始
@@ -85,4 +85,4 @@ description: 通过 MCP 将母版应用到指定画板、全部画板或后续�
 
 ### 使用母版如何计费？
 
-成功调用一次 `load_template` 属于基础工具调用。详情见 [MCP 计费说明](./mcp-billing)。
+成功调用一次 `load_template` 属于基础工具调用。详情见 [MCP 计费说明](./billing)。

@@ -21,4 +21,4 @@ description: Understand the current billing rules for Dino-GSP MCP and how diffe
 
 Sign in to the [Open Platform console](https://open.dajiaoai.com/console/dashboard), open **Top Up**, and choose either a direct top-up or a resource pack. Pay with WeChat Pay.
 
-For complete details about top-ups, point usage, and refunds, see [How to Top Up](../guide/recharge).
+For complete details about top-ups, point usage, and refunds, see [How to Top Up](../../guide/recharge).

@@ -194,9 +194,20 @@ export default defineConfig({
               text: 'AI 接入',
               items: [
                 { text: '概览', link: '/ai/' },
-                { text: 'MCP 接入', link: '/ai/mcp' },
-                { text: '在 MCP 中使用母版', link: '/ai/master-template' },
-                { text: 'MCP 计费说明', link: '/ai/mcp-billing' },
+              ],
+            },
+            {
+              text: 'MCP',
+              items: [
+                { text: 'MCP 接入', link: '/ai/mcp/' },
+                { text: '在 MCP 中使用母版', link: '/ai/mcp/master-template' },
+                { text: 'MCP 计费说明', link: '/ai/mcp/billing' },
+              ],
+            },
+            {
+              text: 'Agent Skill',
+              items: [
+                { text: '安装大角几何 Skill', link: '/ai/skill/' },
               ],
             },
           ],
@@ -351,12 +362,26 @@ export default defineConfig({
               text: 'AI Access',
               items: [
                 { text: 'Overview', link: '/en/ai/' },
-                { text: 'MCP Integration', link: '/en/ai/mcp' },
+              ],
+            },
+            {
+              text: 'MCP',
+              items: [
+                { text: 'MCP Integration', link: '/en/ai/mcp/' },
                 {
                   text: 'Use Master Templates with MCP',
-                  link: '/en/ai/master-template',
+                  link: '/en/ai/mcp/master-template',
                 },
-                { text: 'MCP Billing', link: '/en/ai/mcp-billing' },
+                { text: 'MCP Billing', link: '/en/ai/mcp/billing' },
+              ],
+            },
+            {
+              text: 'Agent Skill',
+              items: [
+                {
+                  text: 'Install the Dino-GSP Skill',
+                  link: '/en/ai/skill/',
+                },
               ],
             },
           ],

@@ -94,6 +94,6 @@ For predictable output, use keys from the [public font catalog](/en/reference/fo
 
 - [Font Support](/en/reference/fonts)
 - [SDK Custom Fonts](/en/sdk/2/fonts)
-- [MCP Integration](/en/ai/mcp)
+- [MCP Integration](/en/ai/mcp/)
 - [Agent API](/en/api/agent)
 - [Render API](/en/api/render)

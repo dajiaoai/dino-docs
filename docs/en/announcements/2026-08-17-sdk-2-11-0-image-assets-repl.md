@@ -73,6 +73,6 @@ help Image
 
 - [Insert Images from a Material Library](/en/sdk/2/image-material-library)
 - [Editor Mode](/en/sdk/2/editor)
-- [MCP Integration](/en/ai/mcp)
+- [MCP Integration](/en/ai/mcp/)
 - [Intelligent Image Generation API](/en/api/agent)
 - [REPL Capabilities](/en/sdk/repl)

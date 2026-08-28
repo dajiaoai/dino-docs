@@ -14,7 +14,7 @@ description: 了解大角几何开放平台 SDK、MCP 与 HTTP API 的授权和�
 
 ## MCP
 
-- [MCP 计费说明](../ai/mcp-billing)：了解 MCP 服务的计费方式、用量查询与余额说明。
+- [MCP 计费说明](../ai/mcp/billing)：了解 MCP 服务的计费方式、用量查询与余额说明。
 
 ## HTTP API
 

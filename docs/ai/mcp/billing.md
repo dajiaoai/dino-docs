@@ -21,4 +21,4 @@ description: 了解大角几何 MCP 当前的计费规则与不同工具调用�
 
 登录[开放平台控制台](https://open.dajiaoai.com/console/dashboard)，在「充值订购」中选择直接充值或资源包，并使用微信支付。
 
-完整的充值、点数使用及退款说明，请参阅[如何充值](../guide/recharge)。
+完整的充值、点数使用及退款说明，请参阅[如何充值](../../guide/recharge)。
