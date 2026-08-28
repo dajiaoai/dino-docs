@@ -22,6 +22,7 @@ description: 从业务场景理解大角几何开放平台适合怎样的接入�
 | 在线教育与智慧课堂       | 让抽象几何知识在教学页面中动态呈现         | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">嵌入式演示画板</a>、<a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">嵌入式编辑画板</a>、<a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>                                                                                                                                                       |
 | 数字化题库与内容平台     | 降低题图生产成本，增强题目交互性           | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">嵌入式演示画板</a>、<a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>、<a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>                                                 |
 | AI 智能辅导              | 让模型边推理边作图，输出更生动的几何讲解   | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>、<a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>、<a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>                                                                                                                                                                    |
+| 企业级内容生产 AI Agent | 将教案、配图、课件与几何内容串联成自动化生产流程 | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>、<a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>、<a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a> |
 | 教案与课件生产工具       | 让教研团队在自己的系统中生产几何内容       | <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">嵌入式编辑画板</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>、<a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>                                                                                                                                                                       |
 | 独立开发者与数学创新工具 | 直接复用成熟几何基础设施，聚焦自身创新逻辑 | <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>、<a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>、<a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>                                                                                                                                                                       |
 
@@ -129,9 +130,55 @@ description: 从业务场景理解大角几何开放平台适合怎样的接入�
 - 智能答疑系统根据学生在画板上的拖动结果，判断其是否真正理解了几何关系。
 - 内容平台在后台预生成大量讲解配图：调用智能生图接口将每道例题的解题步骤转换为几何项目，再渲染为图片附在解析中。
 
+<a id="scenario-enterprise-ai-agent"></a>
+
+## 4. 企业级内容生产 AI Agent
+
+这个场景面向希望建设自有 AI 能力的企业。企业可以将大模型、内部知识库、审核规范与大角几何开放能力组合起来，实现从需求理解到内容交付的完整生产 Agent，而不必从零开发专业几何引擎。
+
+**场景示意**
+
+![企业级内容生产 AI Agent 场景示意图](/enterprise-content-agent.png)
+
+**你可能在做什么产品**
+
+- 企业内容生产 Agent
+- 智能教研与备课平台
+- 教育内容生产中台
+- 教材、教辅和课件自动化生产系统
+
+**Agent 可以完成什么**
+
+- 根据课程标准、教学目标和企业知识库生成教案及教学活动设计。
+- 为知识点、例题和教学环节生成所需图片与视觉素材。
+- 自动规划课件结构，生成页面内容并组装成可交付课件。
+- 识别内容中的几何绘图需求，调用大角几何生成可编辑、可交互的专业图形。
+
+**推荐能力单元**
+
+- <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent 几何交互</a>
+- <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">几何协议与 JS SDK</a>
+- <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">图片与结构化导出</a>
+- <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API 服务端接入</a>
+
+**为什么适合**
+
+- 企业保留 Agent 编排、知识库、模型选择和业务规则的自主权，大角几何提供其中专业的几何内容能力。
+- 教案、图片、课件和几何图不再是彼此割裂的生产环节，可以由 Agent 根据上下文统一规划和调用。
+- 几何结果既能直接渲染为图片，也能保留结构化数据，方便人工复核、二次编辑和跨终端交付。
+- 可在关键节点加入人工审核与企业规范校验，兼顾自动化效率和内容质量。
+
+**典型工作流**
+
+1. 教研人员输入年级、知识点、课时目标和内容要求。
+2. 企业 Agent 检索内部知识库，生成教案框架、讲解文本和课件大纲。
+3. Agent 分析各页面的素材需求，分别调用图片生成、课件制作和大角几何能力。
+4. 大角几何根据自然语言或参考图生成结构化几何内容，并输出预览图或可交互项目。
+5. Agent 汇总全部内容、执行企业规范检查，再交由教研人员审核和发布。
+
 <a id="scenario-authoring-tools"></a>
 
-## 4. 教案与课件生产工具
+## 5. 教案与课件生产工具
 
 这个场景面向的是内容生产者。重点在于提升制作效率、减少重复劳动，并让内容在系统之间更容易流转。
 
@@ -162,7 +209,7 @@ description: 从业务场景理解大角几何开放平台适合怎样的接入�
 
 <a id="scenario-independent-developers"></a>
 
-## 5. 独立开发者与数学创新工具
+## 6. 独立开发者与数学创新工具
 
 如果你的产品创新点不在“重新造一个几何引擎”，而在新的交互方式、分析逻辑或学科应用，那么更适合直接复用现成能力单元。
 
