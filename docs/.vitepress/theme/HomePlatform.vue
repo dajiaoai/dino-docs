@@ -84,9 +84,17 @@ const currentScenario = computed(() =>
 );
 
 const demoSrc = computed(() =>
-  activeScenario.value === 'batch-generation'
-    ? '/demos/question-bank/?embed=workspace'
-    : '',
+  activeScenario.value === 'question-bank'
+    ? '/demos/smart-classroom/'
+    : activeScenario.value === 'batch-generation'
+      ? '/demos/question-bank/?embed=workspace'
+      : '',
+);
+
+const demoHref = computed(() =>
+  activeScenario.value === 'question-bank'
+    ? '/demos/smart-classroom/'
+    : '/demos/question-bank/',
 );
 
 const demoHeight = ref(640);
@@ -148,7 +156,7 @@ onBeforeUnmount(() => window.removeEventListener('message', syncDemoHeight));
           <a
             v-if="demoSrc"
             class="home-demo__full-link"
-            href="/demos/question-bank/"
+            :href="demoHref"
             target="_blank"
             rel="noreferrer"
           >
@@ -172,7 +180,6 @@ onBeforeUnmount(() => window.removeEventListener('message', syncDemoHeight));
           :class="{ 'has-demo': Boolean(demoSrc) }"
           :style="demoSrc ? { height: `${demoHeight}px` } : undefined"
         >
-          <!-- Replace src with the deployed scenario demo URL when it is available. -->
           <iframe
             v-if="demoSrc"
             class="home-demo__frame"
