@@ -14,7 +14,7 @@ MCP（Model Context Protocol）让支持该协议的 AI 客户端直接调用大
 - **MCP 服务地址**：`https://api.dajiaoai.com/mcp`
 - **认证方式**：Bearer Token
 - **请求头**：`Authorization: Bearer YOUR_TOKEN_HERE`
-- **计费说明**：[查看 MCP 计费说明](./mcp-billing)
+- **计费说明**：[查看 MCP 计费说明](./billing)
 
 ## MCP 认证
 

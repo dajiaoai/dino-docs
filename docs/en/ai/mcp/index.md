@@ -14,7 +14,7 @@ If your product already includes an AI assistant, agent workflow, or tool-callin
 - **MCP endpoint**: `https://api.dajiaoai.com/mcp`
 - **Authentication**: Bearer Token
 - **Header**: `Authorization: Bearer YOUR_TOKEN_HERE`
-- **Billing**: [View MCP billing details](./mcp-billing)
+- **Billing**: [View MCP billing details](./billing)
 
 ## MCP authentication
 

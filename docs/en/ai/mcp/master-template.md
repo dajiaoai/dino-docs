@@ -9,7 +9,7 @@ A master template gives a project a consistent visual style, including the canva
 
 ## Before you start
 
-1. Connect the service as described in [MCP Integration](./mcp).
+1. Connect the service as described in [MCP Integration](./).
 2. Choose and download a master template JSON file from [Dino-GSP Master Templates](https://dajiaoai.com/master-templates).
 
 ## Quick start
@@ -82,4 +82,4 @@ A master template defines type defaults. If an existing object has a per-object 
 
 ### How is template use billed?
 
-Each successful `load_template` call is billed as a basic tool call. See [MCP Billing](./mcp-billing) for details.
+Each successful `load_template` call is billed as a basic tool call. See [MCP Billing](./billing) for details.

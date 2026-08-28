@@ -94,6 +94,6 @@ curl -X POST https://api.dajiaoai.com/api/agent/run \
 
 - [字体支持通用规范](/reference/fonts)
 - [SDK 自定义字体](/sdk/2/fonts)
-- [MCP 接入](/ai/mcp)
+- [MCP 接入](/ai/mcp/)
 - [智能生图 API](/api/agent)
 - [渲染 API](/api/render)

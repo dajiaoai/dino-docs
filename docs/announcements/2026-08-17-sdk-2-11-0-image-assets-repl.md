@@ -73,6 +73,6 @@ help Image
 
 - [画板插入图片素材](/sdk/2/image-material-library)
 - [编辑模式文档](/sdk/2/editor)
-- [MCP 接入](/ai/mcp)
+- [MCP 接入](/ai/mcp/)
 - [智能生图 API](/api/agent)
 - [REPL 能力](/sdk/repl)

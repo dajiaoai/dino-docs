@@ -14,7 +14,7 @@ Dino-GSP Open Platform uses different licensing and pricing models depending on 
 
 ## MCP
 
-- [MCP Billing](../ai/mcp-billing): Learn about MCP pricing, usage tracking, and account balance.
+- [MCP Billing](../ai/mcp/billing): Learn about MCP pricing, usage tracking, and account balance.
 
 ## HTTP API
 
