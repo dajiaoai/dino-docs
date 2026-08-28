@@ -6,6 +6,7 @@ import HeroInfo from './HeroInfo.vue';
 import CopyDocButton from './CopyDocButton.vue';
 import UnitConverter from './UnitConverter.vue';
 import CommunityQrCard from './CommunityQrCard.vue';
+import HomePlatform from './HomePlatform.vue';
 import {
   enableAutoPageTracking,
   enableAutoErrorTracking,
@@ -20,6 +21,7 @@ export default {
       'home-hero-image': () => h(HeroIllustration),
       'aside-outline-before': () => h(CopyDocButton),
       'layout-bottom': () => h(CommunityQrCard),
+      'home-features-after': () => h(HomePlatform),
     }),
   enhanceApp({ app }) {
     app.component('UnitConverter', UnitConverter);

@@ -24,6 +24,14 @@ button { color: inherit; }
 a { color: inherit; text-decoration: none; }
 
 .app-shell { min-height: 100vh; }
+.app-shell.is-embedded { min-height: 100vh; }
+.is-embedded .topbar,
+.is-embedded .hero,
+.is-embedded .api-config-panel,
+.is-embedded .pipeline,
+.is-embedded footer { display: none; }
+.is-embedded main { width: 100%; min-height: 100vh; margin: 0; padding: 0; }
+.is-embedded .workspace { min-height: 100vh; border: 0; border-radius: 0; box-shadow: none; }
 .topbar {
   height: 64px; padding: 0 3.2vw; display: flex; align-items: center;
   justify-content: space-between; background: rgba(255,255,255,.9);
@@ -150,7 +158,7 @@ main { width: min(1440px, 94vw); margin: 0 auto; padding: 42px 0 24px; }
 .progress-track { height: 5px; margin-top: 7px; overflow: hidden; border-radius: 99px; background: #dfe7e1; }
 .progress-track span { display: block; height: 100%; border-radius: inherit; background: var(--green); transition: width .35s ease; }
 .export-notice { padding: 9px 22px; color: #2d6e56; background: #eaf5ef; border-bottom: 1px solid #d7e9df; font-size: 10px; }
-.list-header, .question-row { display: grid; grid-template-columns: minmax(420px, 1fr) 230px 105px; gap: 16px; align-items: center; }
+.list-header, .question-row { display: grid; grid-template-columns: minmax(420px, 1fr) 105px; gap: 16px; align-items: center; }
 .list-header { padding: 10px 24px; color: #929c96; background: #fafbfa; border-bottom: 1px solid #edf0ee; font-size: 9px; text-transform: uppercase; letter-spacing: .06em; }
 .question-row { min-height: 75px; padding: 12px 24px; border-bottom: 1px solid #edf0ee; transition: background .2s; }
 .question-row:hover { background: #fbfcfb; }
@@ -163,6 +171,7 @@ main { width: min(1440px, 94vw); margin: 0 auto; padding: 42px 0 24px; }
   overflow-wrap: anywhere;
 }
 .latex-token { color: #1d342a; }
+.katex { font-size: 1em; }
 .question-thumbnail { width: 120px; height: auto; flex: 0 0 120px; display: grid; place-items: center; border: 1px solid #dde5e0; border-radius: 7px; background: #f8faf8; }
 .question-thumbnail img { width: 100%; height: auto; display: block; object-fit: contain; }
 .tag-list, .preview-tags { display: flex; flex-wrap: wrap; gap: 5px; }

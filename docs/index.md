@@ -6,7 +6,7 @@ description: 面向开发者与合作伙伴的几何开放平台，涵盖嵌入�
 hero:
   name: '大角几何'
   text: '开放平台'
-  tagline: 将几何绘图与理解能力嵌入你的产品，组件化、API 化、Agent 化。
+  tagline: 提供嵌入式画板、服务端 API 与 AI Agent 工具链，覆盖内容生产、交互展示与自动化生成。
   image:
     src: /home_title.png
     alt: 大角几何

@@ -114,6 +114,410 @@ html.dark body {
   background: transparent;
 }
 
+/* ─── 首页 Demo 与 Footer ───────────────────────────── */
+.home-platform {
+  width: 100%;
+}
+
+/* VitePress reserves a bottom margin for a homepage without a footer.
+   This homepage renders its own footer, so the reserve would otherwise
+   create a blank scrollable area after it. */
+body:has(.home-platform) .VPHome {
+  margin-bottom: 0;
+}
+
+.home-demo {
+  width: 85vw;
+  margin: 72px auto 112px;
+}
+
+.home-demo__intro {
+  max-width: 620px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.home-demo__intro h2 {
+  margin: 0;
+  color: var(--vp-c-text-1);
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+.home-demo__intro p {
+  margin: 14px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.home-demo__tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.home-demo__tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.home-demo__tab {
+  display: inline-flex;
+  flex: 1 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 18px;
+  border: 1px solid rgba(1, 184, 139, 0.16);
+  border-radius: 10px;
+  color: var(--vp-c-text-2);
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.home-demo__tab span {
+  color: var(--vp-c-text-3);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+}
+
+.home-demo__tab:hover,
+.home-demo__tab.is-active {
+  border-color: rgba(1, 184, 139, 0.52);
+  color: var(--vp-c-text-1);
+  background: rgba(1, 184, 139, 0.1);
+}
+
+.home-demo__tab.is-active span {
+  color: var(--vp-c-brand-1);
+}
+
+.home-demo__workspace {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid rgba(1, 184, 139, 0.26);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 20px 54px rgba(30, 55, 49, 0.1);
+}
+
+.home-demo__case {
+  display: flex;
+  flex-direction: column;
+  padding: 36px 42px 30px;
+  border-bottom: 1px solid rgba(1, 184, 139, 0.16);
+}
+
+.home-demo__case > p:first-child {
+  margin: 0;
+  color: var(--vp-c-brand-1);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.home-demo__case h3 {
+  margin: 14px 0 0;
+  color: var(--vp-c-text-1);
+  font-size: 28px;
+  letter-spacing: -0.035em;
+  line-height: 1.28;
+}
+
+.home-demo__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 22px;
+}
+
+.home-demo__tags span {
+  padding: 5px 8px;
+  border-radius: 5px;
+  color: var(--vp-c-text-2);
+  background: var(--vp-c-default-soft);
+  font-size: 12px;
+  line-height: 1.2;
+}
+
+.home-demo__description {
+  margin: 24px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.home-demo__full-link {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 7px;
+  margin-top: 20px;
+  color: var(--vp-c-brand-1);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.home-demo__full-link:hover {
+  color: var(--vp-c-brand-2);
+}
+
+.home-demo__full-link span {
+  font-size: 15px;
+  transition: transform 0.2s ease;
+}
+
+.home-demo__full-link:hover span {
+  transform: translate(2px, -2px);
+}
+
+.home-demo__flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  max-width: 640px;
+  margin-top: 28px;
+  padding-top: 0;
+}
+
+.home-demo__flow div {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.home-demo__flow span {
+  color: var(--vp-c-text-3);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.home-demo__flow strong {
+  color: var(--vp-c-text-1);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.home-demo__flow i {
+  color: var(--vp-c-brand-1);
+  font-size: 18px;
+  font-style: normal;
+}
+
+.home-demo__frame-wrap {
+  position: relative;
+  height: 800px;
+  min-height: 580px;
+  overflow: hidden;
+}
+
+.home-demo__frame {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  min-height: 580px;
+  border: 0;
+  background: transparent;
+}
+
+.home-demo__placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 2;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--vp-c-text-3);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.home-demo__badge {
+  padding: 4px 8px;
+  border: 1px solid rgba(1, 184, 139, 0.34);
+  border-radius: 999px;
+  color: var(--vp-c-brand-1);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.home-footer {
+  border-top: 1px solid rgba(1, 184, 139, 0.16);
+  background: rgba(255, 255, 255, 0.48);
+}
+
+.home-footer__inner,
+.home-footer__bottom {
+  width: min(1120px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.home-footer__inner {
+  display: flex;
+  justify-content: space-between;
+  gap: 60px;
+  padding: 56px 0 48px;
+}
+
+.home-footer__brand {
+  max-width: 290px;
+}
+
+.home-footer__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--vp-c-text-1);
+  font-size: 15px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.home-footer__logo img {
+  display: block;
+}
+
+.home-footer__brand > p {
+  margin: 14px 0 0;
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.home-footer__links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(112px, 1fr));
+  gap: 48px;
+}
+
+.home-footer__links > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.home-footer__links p {
+  margin: 0 0 4px;
+  color: var(--vp-c-text-1);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.home-footer__links a,
+.home-footer__bottom {
+  color: var(--vp-c-text-2);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.home-footer__links a:hover,
+.home-footer__bottom a:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.home-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0 24px;
+  border-top: 1px solid rgba(1, 184, 139, 0.12);
+  color: var(--vp-c-text-3);
+}
+
+.home-footer__registrations {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+html.dark .home-demo__frame-wrap,
+html.dark .home-demo__workspace,
+html.dark .home-footer {
+  background: rgba(22, 22, 24, 0.38);
+}
+
+@media (max-width: 720px) {
+  .home-demo,
+  .home-footer__inner,
+  .home-footer__bottom {
+    width: min(100% - 32px, 1120px);
+  }
+
+  .home-demo {
+    margin: 56px auto 72px;
+  }
+
+  .home-demo__frame-wrap,
+  .home-demo__frame {
+    min-height: 430px;
+  }
+
+  .home-demo__workspace {
+    min-height: auto;
+  }
+
+  .home-demo__case {
+    padding: 30px 24px;
+  }
+
+  .home-demo__case h3 {
+    font-size: 24px;
+  }
+
+  .home-demo__description {
+    margin-top: 18px;
+  }
+
+  .home-demo__flow {
+    margin-top: 24px;
+    padding-top: 0;
+  }
+
+  .home-demo__placeholder {
+    flex-direction: column;
+  }
+
+  .home-footer__inner {
+    flex-direction: column;
+    gap: 34px;
+    padding: 40px 0 32px;
+  }
+
+  .home-footer__links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+  }
+
+  .home-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .home-footer__registrations {
+    justify-content: flex-start;
+  }
+}
+
 /* ─── 导航栏：毛玻璃 ─────────────────────────────────── */
 .VPNav {
   position: relative;

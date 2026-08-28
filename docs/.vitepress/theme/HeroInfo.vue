@@ -18,8 +18,8 @@ const isEn = lang.value.startsWith('en');
 const nameText = isEn ? 'Dino-GSP' : '大角几何';
 const textText = isEn ? 'Open Platform' : '开放平台';
 const fullTagline = isEn
-  ? 'Embed geometry drawing and understanding into your product — componentized, API-ready, and Agent-powered.'
-  : '将几何绘图与理解能力嵌入你的产品，组件化、API 化、Agent 化。';
+  ? 'Embedded canvas, server-side APIs, and AI Agent tooling for content creation, interactive experiences, and automation.'
+  : '提供嵌入式画板、服务端 API 与 AI Agent 工具链，覆盖内容生产、交互展示与自动化生成。';
 
 // SSR: pre-render full text so bots and initial paint see content.
 // After hydration, reset and replay typewriter.

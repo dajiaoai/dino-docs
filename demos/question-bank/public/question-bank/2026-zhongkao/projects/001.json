@@ -1,0 +1,323 @@
+{
+  "messages": [],
+  "slides": [
+    {
+      "definitions": [
+        {
+          "kind": "primitive",
+          "id": "B",
+          "source": "Point(?, 0)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "A",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "a",
+          "source": "Segment(B, A)"
+        },
+        {
+          "kind": "primitive",
+          "id": "b",
+          "source": "PerpLine(a, A)"
+        },
+        {
+          "kind": "primitive",
+          "id": "C",
+          "source": "Intersect(b, xAxis, 1)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "c",
+          "source": "Segment(A, C)"
+        },
+        {
+          "kind": "primitive",
+          "id": "F",
+          "source": "Midpoint(B, C)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "d",
+          "source": "Segment(B, C)"
+        },
+        {
+          "kind": "primitive",
+          "id": "f",
+          "source": "Segment(A, F)"
+        },
+        {
+          "kind": "primitive",
+          "id": "g",
+          "source": "PerpLine(f, C)"
+        },
+        {
+          "kind": "primitive",
+          "id": "D",
+          "source": "Intersect(g, a, 1)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "h",
+          "source": "Segment(C, D)"
+        },
+        {
+          "kind": "primitive",
+          "id": "E",
+          "source": "Intersect(h, f, 1)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "i",
+          "source": "Segment(E, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "j",
+          "source": "Angle(A, E, C)"
+        },
+        {
+          "kind": "primitive",
+          "id": "k",
+          "source": "Angle(C, A, B)"
+        }
+      ],
+      "uvarMap": [
+        [
+          "A.0",
+          1.6287994384765625
+        ],
+        [
+          "A.1",
+          2.5760009765625
+        ],
+        [
+          "B.0",
+          -3.1204010009765626
+        ]
+      ],
+      "styleSheet": {
+        "background": {
+          "color": "#ffffff"
+        },
+        "xaxis": {
+          "show": false
+        },
+        "yaxis": {
+          "show": false
+        },
+        "xaxis3d": {},
+        "yaxis3d": {},
+        "zaxis3d": {},
+        "workingPlane": {},
+        "grid": {
+          "show": false
+        },
+        "types": [
+          [
+            "Point",
+            {
+              "pointSize": 1,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Segment",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Line",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Ray",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Circle",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Ellipse",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Arc",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Angle",
+            {
+              "color": "#000000",
+              "regionOpacity": 0,
+              "angleSize": 15
+            }
+          ],
+          [
+            "Polygon",
+            {
+              "color": "#000000",
+              "lineWidth": 2,
+              "lineDash": "solid",
+              "lineOpacity": 100,
+              "regionOpacity": 0
+            }
+          ],
+          [
+            "Curve",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Tick",
+            {
+              "color": "#000000"
+            }
+          ],
+          [
+            "Dimension",
+            {
+              "color": "#000000"
+            }
+          ]
+        ],
+        "typeLabels": [],
+        "primitives": [
+          [
+            "b",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "g",
+            {
+              "hidden": true
+            }
+          ]
+        ],
+        "primitiveLabels": [
+          [
+            "B",
+            {
+              "offsetX": -18.68011474609375,
+              "offsetY": 16.119964599609432,
+              "anchorPoint": [
+                -3.1204010009765626,
+                0
+              ]
+            }
+          ],
+          [
+            "A",
+            {
+              "offsetX": -0.119964599609375,
+              "offsetY": -5.640045166015625,
+              "anchorPoint": [
+                1.6287994384765625,
+                2.5760009765625
+              ]
+            }
+          ],
+          [
+            "F",
+            {
+              "offsetX": -7.79998779296875,
+              "offsetY": 23.160095214843807,
+              "anchorPoint": [
+                -0.19678240217011767,
+                0
+              ]
+            }
+          ],
+          [
+            "D",
+            {
+              "offsetX": -17.39990234375,
+              "offsetY": -4.35992431640625,
+              "anchorPoint": [
+                0.23155770992676272,
+                1.8181268663569887
+              ]
+            }
+          ],
+          [
+            "E",
+            {
+              "offsetX": -10.360015869140625,
+              "offsetY": -11.399993896484375,
+              "anchorPoint": [
+                0.8668144632283759,
+                1.4048206550505422
+              ]
+            }
+          ],
+          [
+            "C",
+            {
+              "offsetX": 0.52001953125,
+              "offsetY": 16.760009765625057,
+              "anchorPoint": [
+                3.0260411670263623,
+                0
+              ]
+            }
+          ]
+        ],
+        "typeLabels3d": [],
+        "primitiveLabels3d": [],
+        "textType": {},
+        "texts": [],
+        "sliderType": {},
+        "sliders": [],
+        "buttonType": {},
+        "buttons": [],
+        "types3d": [],
+        "primitives3d": [],
+        "imageType": {},
+        "images": [],
+        "elementLayers": []
+      },
+      "doc": [],
+      "camera": {
+        "kind": "2d",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 50
+      }
+    }
+  ],
+  "metadata": {
+    "version": "11"
+  }
+}
