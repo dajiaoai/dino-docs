@@ -27,6 +27,22 @@ const commands = [
       '--strictPort',
     ],
   },
+  {
+    name: 'smart-classroom demo',
+    command: npm,
+    args: [
+      'run',
+      'dev',
+      '--workspace',
+      '@dino-open/demo-smart-classroom',
+      '--',
+      '--host',
+      '127.0.0.1',
+      '--port',
+      '5175',
+      '--strictPort',
+    ],
+  },
 ];
 
 const children = commands.map(({ name, command, args }) => {
