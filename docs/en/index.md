@@ -6,7 +6,7 @@ description: Open platform for developers and partners covering embedded SDK, AP
 hero:
   name: 'Dino-GSP'
   text: 'Open Platform'
-  tagline: Embed geometry drawing and understanding into your product — componentized, API-ready, and Agent-powered.
+  tagline: Embedded canvas, server-side APIs, and AI Agent tooling for content creation, interactive experiences, and automation.
   image:
     src: /home_title.png
     alt: Dino-GSP

@@ -71,6 +71,9 @@ const statusLabel: Record<GenerationStatus, string> = {
 };
 
 export default function App() {
+  const isEmbeddedWorkspace =
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("embed") === "workspace";
   const [customBatches, setCustomBatches] = useState(loadCustomBatches);
   const allBatches = useMemo(
     () => [...defaultBatches, ...customBatches],
@@ -333,8 +336,33 @@ export default function App() {
     setApiSettings({ ...defaultApiSettings });
   }
 
+  useEffect(() => {
+    if (!isEmbeddedWorkspace) return;
+
+    const reportHeight = () => {
+      const height = Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight,
+      );
+      window.parent.postMessage(
+        { source: "dino-question-bank", type: "resize", height },
+        window.location.origin,
+      );
+    };
+
+    // The host keeps this initial height. Do not resize the surrounding
+    // homepage when users switch tabs or create more generated results.
+    const frame = window.requestAnimationFrame(() =>
+      window.requestAnimationFrame(reportHeight),
+    );
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [isEmbeddedWorkspace]);
+
   return (
-    <div className="app-shell">
+    <div className={`app-shell${isEmbeddedWorkspace ? " is-embedded" : ""}`}>
       <header className="topbar">
         <a className="brand" href="/" aria-label="返回大角几何开放平台">
           <span className="brand-mark">

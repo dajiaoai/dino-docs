@@ -79,6 +79,17 @@ export default defineConfig({
   base: '/',
   vite: {
     plugins: [rawMarkdownPlugin()],
+    server: {
+      proxy: {
+        // `npm run dev` runs each demo on a loopback-only Vite server. Keep
+        // the browser on the VitePress origin while retaining demo HMR.
+        '/demos/question-bank': {
+          target: 'http://127.0.0.1:5174',
+          changeOrigin: true,
+          ws: true,
+        },
+      },
+    },
   },
   lastUpdated: true,
   sitemap: {

@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "build": "npm run demos:build && npm run docs:build",
-    "dev": "npm run docs:dev",
+    "dev": "node scripts/dev.mjs",
     "docs:dev": "vitepress dev docs",
     "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview docs",
