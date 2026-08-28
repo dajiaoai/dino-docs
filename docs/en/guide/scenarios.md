@@ -22,6 +22,7 @@ If you prefer to start from “what kind of product am I building?”, this page
 | Online Education and Smart Classrooms            | Make abstract geometry dynamic inside teaching flows                 | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">Embedded Presentation Canvas</a>, <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">Embedded Editor Canvas</a>, <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent Geometry Interaction</a>                                                                                                                                                                      |
 | Digital Question Banks and Content Platforms     | Lower figure production cost and improve exercise interactivity      | <a href="./capabilities.html#capability-embedded-presentation" target="_blank" rel="noreferrer">Embedded Presentation Canvas</a>, <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>, <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>, <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API Server-side Integration</a>                                                   |
 | AI Tutoring                                      | Let models reason with geometry and deliver more vivid explanations  | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent Geometry Interaction</a>, <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>, <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API Server-side Integration</a>                                                                                                                                                                                  |
+| Enterprise Content Production AI Agent           | Connect lesson plans, visuals, courseware, and geometry in one automated production workflow | <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent Geometry Interaction</a>, <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>, <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>, <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API Server-side Integration</a> |
 | Lesson Plan and Courseware Authoring Tools       | Let curriculum teams produce geometry directly in their own systems  | <a href="./capabilities.html#capability-embedded-editor" target="_blank" rel="noreferrer">Embedded Editor Canvas</a>, <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>, <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API Server-side Integration</a>                                                                                                                                                                                         |
 | Independent Developers and Math Innovation Tools | Reuse mature geometry infrastructure and focus on product innovation | <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>, <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>, <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API Server-side Integration</a>                                                                                                                                                                                      |
 
@@ -116,9 +117,55 @@ The key in this scenario is giving AI real geometry-operating ability. If a mode
 - An intelligent tutoring system inspects how a student manipulates the figure and judges whether the student truly understood the relationship.
 - A content platform pre-generates explanation diagrams at scale: the Agent API converts each example problem's solution steps into a geometry project, which is then rendered as an image and attached to the explanation.
 
+<a id="scenario-enterprise-ai-agent"></a>
+
+## 4. Enterprise Content Production AI Agent
+
+This scenario is for enterprises building their own AI capabilities. Organizations can combine large language models, internal knowledge bases, review policies, and Dino-GSP's open capabilities into a complete production Agent—from understanding a request to delivering finished content—without developing a professional geometry engine from scratch.
+
+**Scenario illustration**
+
+![Enterprise Content Production AI Agent scenario](/enterprise-content-agent.png)
+
+**You may be building**
+
+- Enterprise content production Agents
+- AI-powered curriculum and lesson-planning platforms
+- Educational content production hubs
+- Automated textbook, workbook, and courseware production systems
+
+**What the Agent can do**
+
+- Generate lesson plans and classroom activities from curriculum standards, learning objectives, and enterprise knowledge bases.
+- Produce images and visual assets for concepts, examples, and teaching activities.
+- Plan courseware structure, generate slide content, and assemble deliverable presentations.
+- Detect geometry-drawing requirements and call Dino-GSP to create editable, interactive, professional figures.
+
+**Recommended capability units**
+
+- <a href="./capabilities.html#capability-ai-agent" target="_blank" rel="noreferrer">AI Agent Geometry Interaction</a>
+- <a href="./capabilities.html#capability-sdk-protocol" target="_blank" rel="noreferrer">Geometry Protocol and JS SDK</a>
+- <a href="./capabilities.html#capability-export" target="_blank" rel="noreferrer">Image and Structured Export</a>
+- <a href="./capabilities.html#capability-api" target="_blank" rel="noreferrer">HTTP API Server-side Integration</a>
+
+**Why it fits**
+
+- The enterprise retains control of Agent orchestration, knowledge bases, model selection, and business rules, while Dino-GSP supplies the specialized geometry capabilities.
+- Lesson plans, images, courseware, and geometry figures become parts of one context-aware workflow instead of disconnected production steps.
+- Geometry results can be rendered directly as images while retaining structured data for human review, further editing, and delivery across devices.
+- Human approval and enterprise policy checks can be inserted at critical stages to balance automation efficiency with content quality.
+
+**Typical workflow**
+
+1. A curriculum specialist provides the grade, topic, lesson objectives, and content requirements.
+2. The enterprise Agent retrieves internal knowledge and generates the lesson structure, explanations, and courseware outline.
+3. The Agent analyzes asset requirements for each section and invokes image generation, courseware production, and Dino-GSP capabilities as needed.
+4. Dino-GSP generates structured geometry from natural language or a reference image, then outputs a preview image or interactive project.
+5. The Agent assembles the content, runs enterprise policy checks, and sends it to curriculum specialists for approval and publishing.
+
 <a id="scenario-authoring-tools"></a>
 
-## 4. Lesson Plan and Courseware Authoring Tools
+## 5. Lesson Plan and Courseware Authoring Tools
 
 This scenario serves content producers. The emphasis is production efficiency, lower repetitive effort, and easier geometry reuse across systems.
 
@@ -149,7 +196,7 @@ This scenario serves content producers. The emphasis is production efficiency, l
 
 <a id="scenario-independent-developers"></a>
 
-## 5. Independent Developers and Math Innovation Tools
+## 6. Independent Developers and Math Innovation Tools
 
 If your innovation is a new interaction, analysis method, or subject-specific application, it is usually better to reuse the underlying geometry infrastructure directly.
 

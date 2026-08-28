@@ -5,6 +5,8 @@ description: Connect Dino-GSP MCP to VS Code, Cursor, Claude Code, Codex, and Wo
 
 # MCP Integration
 
+![](https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/d9b18b1d-963f1ae84847f3f476204685.png)
+
 MCP (Model Context Protocol) allows AI clients that support the protocol to call Dino-GSP capabilities directly, so geometry operations, export, and project I/O can happen inside an AI conversation.
 
 If your product already includes an AI assistant, agent workflow, or tool-calling runtime, MCP is the standard way to expose Dino-GSP geometry interaction to that layer.

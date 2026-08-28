@@ -5,6 +5,9 @@ description: 通过 Bearer Token 将大角几何 MCP 服务接入 VS Code、Curs
 
 # MCP 接入
 
+![](https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/4e5ea184-a267133f360101754945f6d0.png)
+
+
 MCP（Model Context Protocol）让支持该协议的 AI 客户端直接调用大角几何开放能力，在对话中完成作图、导出与项目读写等操作。
 
 如果你的产品已经有 AI 助手、Agent 工作流或编程式工具调用需求，MCP 是当前接入 AI Agent 几何交互能力的标准方式。
