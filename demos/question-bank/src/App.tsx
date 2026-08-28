@@ -972,10 +972,52 @@ async function runExampleGeneration(
     update(question.id, { status: "running" });
     await delay(demoConfig.requestDelay);
     if (isCancelled()) break;
-    update(question.id, { status: "finished" });
-    outcomes.push(true);
+    try {
+      const result = await loadExampleResult(question);
+      update(question.id, { status: "finished", ...result });
+      outcomes.push(true);
+    } catch (error) {
+      update(question.id, {
+        status: "error",
+        errorMessage:
+          error instanceof Error ? error.message : "读取本地示例资源失败。",
+      });
+      outcomes.push(false);
+    }
   }
   return outcomes;
+}
+
+async function loadExampleResult(question: GeometryQuestion) {
+  if (!question.exampleProjectUrl || !question.exampleResultImageUrl) {
+    return {};
+  }
+
+  const response = await fetch(question.exampleProjectUrl);
+  if (!response.ok) {
+    throw new Error(
+      `缺少示例工程：${question.code}.json。请放入 public/question-bank/2026-zhongkao/projects/。`,
+    );
+  }
+  const contentType = response.headers.get("content-type") ?? "";
+  if (contentType.includes("text/html")) {
+    throw new Error(
+      `示例工程 ${question.code}.json 返回了 HTML，请检查资源路径或部署文件。`,
+    );
+  }
+  const projectText = await response.text();
+  if (/^\s*<!doctype html|^\s*<html/i.test(projectText)) {
+    throw new Error(
+      `示例工程 ${question.code}.json 返回了 HTML，请检查资源路径或部署文件。`,
+    );
+  }
+  let projectJson: NonNullable<GenerationRecord["projectJson"]>;
+  try {
+    projectJson = JSON.parse(projectText);
+  } catch {
+    throw new Error(`示例工程 ${question.code}.json 不是有效 JSON。`);
+  }
+  return { projectJson, staticImageUrl: question.exampleResultImageUrl };
 }
 
 async function mapWithConcurrency<Item, Result>(

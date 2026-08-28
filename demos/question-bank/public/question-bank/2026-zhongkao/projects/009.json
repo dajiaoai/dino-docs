@@ -1,0 +1,1271 @@
+{
+  "messages": [],
+  "slides": [
+    {
+      "definitions": [
+        {
+          "kind": "primitive",
+          "id": "A",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "B",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "C",
+          "source": "Point(PerpLine(Line(A, B), B), ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "a",
+          "source": "Parallelogram(A, B, C)"
+        },
+        {
+          "kind": "primitive",
+          "id": "b",
+          "source": "a.edge(1)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "c",
+          "source": "a.edge(2)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "d",
+          "source": "a.edge(3)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "f_1",
+          "source": "a.edge(4)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "D",
+          "source": "a.vertex(4)",
+          "label": "{{id}}",
+          "parent": "a"
+        },
+        {
+          "kind": "primitive",
+          "id": "E",
+          "source": "Point(f_1, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "g",
+          "source": "Segment(E, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "F",
+          "source": "Reflect(A, g)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "h",
+          "source": "Segment(E, F)"
+        },
+        {
+          "kind": "primitive",
+          "id": "i",
+          "source": "Segment(F, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "M",
+          "source": "Intersect(g.toLine, PerpLine(g, F), 1)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "f",
+          "source": "Segment(F, M)"
+        },
+        {
+          "kind": "primitive",
+          "id": "N",
+          "source": "Intersect(c.toLine, PerpLine(c, F), 1)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "j",
+          "source": "Segment(F, N)"
+        },
+        {
+          "kind": "primitive",
+          "id": "k",
+          "source": "Angle(F, M, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "l",
+          "source": "Angle(F, N, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "m",
+          "source": "f_1.splitBefore(E)"
+        },
+        {
+          "kind": "primitive",
+          "id": "n",
+          "source": "f_1.splitAfter(E)"
+        }
+      ],
+      "uvarMap": [
+        [
+          "A.0",
+          -2
+        ],
+        [
+          "A.1",
+          -2
+        ],
+        [
+          "B.0",
+          2
+        ],
+        [
+          "B.1",
+          -2
+        ],
+        [
+          "C.0",
+          1
+        ],
+        [
+          "E.0",
+          0.6625751747165324
+        ]
+      ],
+      "styleSheet": {
+        "background": {
+          "color": "#ffffff"
+        },
+        "xaxis": {
+          "show": false
+        },
+        "yaxis": {
+          "show": false
+        },
+        "xaxis3d": {},
+        "yaxis3d": {},
+        "zaxis3d": {},
+        "workingPlane": {},
+        "grid": {
+          "show": false
+        },
+        "types": [
+          [
+            "Point",
+            {
+              "pointSize": 1,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Segment",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Line",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Ray",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Circle",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Ellipse",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Arc",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Angle",
+            {
+              "color": "#000000",
+              "regionOpacity": 0,
+              "angleSize": 15
+            }
+          ],
+          [
+            "Polygon",
+            {
+              "color": "#000000",
+              "lineWidth": 2,
+              "lineDash": "solid",
+              "lineOpacity": 100,
+              "regionOpacity": 0
+            }
+          ],
+          [
+            "Curve",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Tick",
+            {
+              "color": "#000000"
+            }
+          ],
+          [
+            "Dimension",
+            {
+              "color": "#000000"
+            }
+          ]
+        ],
+        "typeLabels": [],
+        "primitives": [
+          [
+            "a",
+            {
+              "regionOpacity": 0
+            }
+          ],
+          [
+            "l",
+            {
+              "angleSize": 15
+            }
+          ],
+          [
+            "f_1",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "m",
+            {}
+          ],
+          [
+            "n",
+            {
+              "lineDash": "dashed"
+            }
+          ],
+          [
+            "b",
+            {
+              "lineDash": "dashed"
+            }
+          ]
+        ],
+        "primitiveLabels": [
+          [
+            "F",
+            {
+              "hidden": false,
+              "followDirection": false,
+              "mode": "latex",
+              "font": "KaTeX_Math",
+              "fontSize": 16,
+              "offsetX": -4.037506103515625,
+              "offsetY": -6.803131103515625,
+              "align": "left",
+              "precision": 2,
+              "fillOpacity": 100,
+              "strokeOpacity": 100,
+              "anchorPoint": [
+                -1.1822600944727952,
+                0.42347285751790453
+              ]
+            }
+          ],
+          [
+            "E",
+            {
+              "offsetX": -19.42498779296875,
+              "offsetY": 5.86248779296875,
+              "anchorPoint": [
+                -2,
+                -0.6503006988661295
+              ]
+            }
+          ],
+          [
+            "M",
+            {
+              "offsetX": -4.975006103515625,
+              "offsetY": 18.390625,
+              "anchorPoint": [
+                -1.5911300472363976,
+                -0.7882635712410477
+              ]
+            }
+          ],
+          [
+            "A",
+            {
+              "offsetX": -18.284332275390625,
+              "offsetY": 11.625,
+              "anchorPoint": [
+                -2,
+                -2
+              ]
+            }
+          ],
+          [
+            "B",
+            {
+              "offsetX": 1.90625,
+              "offsetY": 9.706268310546875,
+              "anchorPoint": [
+                2,
+                -2
+              ]
+            }
+          ],
+          [
+            "D",
+            {
+              "offsetX": -18.912506103515625,
+              "offsetY": -3.53125,
+              "anchorPoint": [
+                -2,
+                2
+              ]
+            }
+          ],
+          [
+            "C",
+            {
+              "offsetX": 0.609375,
+              "offsetY": -1.9125137329101562,
+              "anchorPoint": [
+                2,
+                2
+              ]
+            }
+          ],
+          [
+            "N",
+            {
+              "offsetX": 4.79998779296875,
+              "offsetY": 5.774993896484375,
+              "anchorPoint": [
+                2,
+                0.42347285751790453
+              ]
+            }
+          ]
+        ],
+        "typeLabels3d": [],
+        "primitiveLabels3d": [],
+        "textType": {},
+        "texts": [],
+        "sliderType": {},
+        "sliders": [],
+        "buttonType": {},
+        "buttons": [],
+        "types3d": [],
+        "primitives3d": [],
+        "imageType": {},
+        "images": [],
+        "elementLayers": []
+      },
+      "doc": [],
+      "camera": {
+        "kind": "2d",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 50
+      }
+    },
+    {
+      "definitions": [
+        {
+          "kind": "primitive",
+          "id": "A",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "B",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "C",
+          "source": "Point(PerpLine(Line(A, B), B), ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "a",
+          "source": "Parallelogram(A, B, C)"
+        },
+        {
+          "kind": "primitive",
+          "id": "b",
+          "source": "a.edge(1)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "c",
+          "source": "a.edge(2)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "d",
+          "source": "a.edge(3)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "f_1",
+          "source": "a.edge(4)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "D",
+          "source": "a.vertex(4)",
+          "label": "{{id}}",
+          "parent": "a"
+        },
+        {
+          "kind": "primitive",
+          "id": "E",
+          "source": "Point(f_1, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "g",
+          "source": "Segment(E, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "F",
+          "source": "Reflect(A, g)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "h",
+          "source": "Segment(E, F)"
+        },
+        {
+          "kind": "primitive",
+          "id": "i",
+          "source": "Segment(F, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "M",
+          "source": "Intersect(g.toLine, PerpLine(g, F), 1)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "f",
+          "source": "Segment(F, M)"
+        },
+        {
+          "kind": "primitive",
+          "id": "N",
+          "source": "Intersect(c.toLine, PerpLine(c, F), 1)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "j",
+          "source": "Segment(F, N)"
+        },
+        {
+          "kind": "primitive",
+          "id": "k",
+          "source": "Angle(F, M, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "l",
+          "source": "Angle(F, N, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "m",
+          "source": "f_1.splitBefore(E)"
+        },
+        {
+          "kind": "primitive",
+          "id": "n",
+          "source": "f_1.splitAfter(E)"
+        }
+      ],
+      "uvarMap": [
+        [
+          "A.0",
+          -2
+        ],
+        [
+          "A.1",
+          -2
+        ],
+        [
+          "B.0",
+          2
+        ],
+        [
+          "B.1",
+          -2
+        ],
+        [
+          "C.0",
+          1
+        ],
+        [
+          "E.0",
+          0.5
+        ]
+      ],
+      "styleSheet": {
+        "background": {
+          "color": "#ffffff"
+        },
+        "xaxis": {
+          "show": false
+        },
+        "yaxis": {
+          "show": false
+        },
+        "xaxis3d": {},
+        "yaxis3d": {},
+        "zaxis3d": {},
+        "workingPlane": {},
+        "grid": {
+          "show": false
+        },
+        "types": [
+          [
+            "Point",
+            {
+              "pointSize": 1,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Segment",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Line",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Ray",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Circle",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Ellipse",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Arc",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Angle",
+            {
+              "color": "#000000",
+              "regionOpacity": 0,
+              "angleSize": 15
+            }
+          ],
+          [
+            "Polygon",
+            {
+              "color": "#000000",
+              "lineWidth": 2,
+              "lineDash": "solid",
+              "lineOpacity": 100,
+              "regionOpacity": 0
+            }
+          ],
+          [
+            "Curve",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Tick",
+            {
+              "color": "#000000"
+            }
+          ],
+          [
+            "Dimension",
+            {
+              "color": "#000000"
+            }
+          ]
+        ],
+        "typeLabels": [],
+        "primitives": [
+          [
+            "a",
+            {
+              "regionOpacity": 0
+            }
+          ],
+          [
+            "l",
+            {
+              "angleSize": 15
+            }
+          ],
+          [
+            "f_1",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "m",
+            {}
+          ],
+          [
+            "n",
+            {
+              "lineDash": "dashed"
+            }
+          ],
+          [
+            "b",
+            {
+              "lineDash": "dashed"
+            }
+          ]
+        ],
+        "primitiveLabels": [
+          [
+            "F",
+            {
+              "hidden": false,
+              "followDirection": false,
+              "mode": "latex",
+              "font": "KaTeX_Math",
+              "fontSize": 16,
+              "offsetX": -4.037506103515625,
+              "offsetY": -6.803131103515625,
+              "align": "left",
+              "precision": 2,
+              "fillOpacity": 100,
+              "strokeOpacity": 100,
+              "anchorPoint": [
+                -1.1822600944727952,
+                0.42347285751790453
+              ]
+            }
+          ],
+          [
+            "E",
+            {
+              "offsetX": -19.42498779296875,
+              "offsetY": 5.86248779296875,
+              "anchorPoint": [
+                -2,
+                -0.6503006988661295
+              ]
+            }
+          ],
+          [
+            "M",
+            {
+              "offsetX": -4.975006103515625,
+              "offsetY": 18.390625,
+              "anchorPoint": [
+                -1.5911300472363976,
+                -0.7882635712410477
+              ]
+            }
+          ],
+          [
+            "A",
+            {
+              "offsetX": -18.284332275390625,
+              "offsetY": 11.625,
+              "anchorPoint": [
+                -2,
+                -2
+              ]
+            }
+          ],
+          [
+            "B",
+            {
+              "offsetX": 1.90625,
+              "offsetY": 9.706268310546875,
+              "anchorPoint": [
+                2,
+                -2
+              ]
+            }
+          ],
+          [
+            "D",
+            {
+              "offsetX": -18.912506103515625,
+              "offsetY": -3.53125,
+              "anchorPoint": [
+                -2,
+                2
+              ]
+            }
+          ],
+          [
+            "C",
+            {
+              "offsetX": 0.609375,
+              "offsetY": -1.9125137329101562,
+              "anchorPoint": [
+                2,
+                2
+              ]
+            }
+          ],
+          [
+            "N",
+            {
+              "offsetX": 4.79998779296875,
+              "offsetY": 5.774993896484375,
+              "anchorPoint": [
+                2,
+                0.42347285751790453
+              ]
+            }
+          ]
+        ],
+        "typeLabels3d": [],
+        "primitiveLabels3d": [],
+        "textType": {},
+        "texts": [],
+        "sliderType": {},
+        "sliders": [],
+        "buttonType": {},
+        "buttons": [],
+        "types3d": [],
+        "primitives3d": [],
+        "imageType": {},
+        "images": [],
+        "elementLayers": []
+      },
+      "doc": [],
+      "camera": {
+        "kind": "2d",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 50
+      }
+    },
+    {
+      "definitions": [
+        {
+          "kind": "primitive",
+          "id": "A",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "B",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "C",
+          "source": "Point(PerpLine(Line(A, B), B), ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "a",
+          "source": "Parallelogram(A, B, C)"
+        },
+        {
+          "kind": "primitive",
+          "id": "b",
+          "source": "a.edge(1)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "c",
+          "source": "a.edge(2)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "d",
+          "source": "a.edge(3)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "f_1",
+          "source": "a.edge(4)",
+          "parent": "a",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "D",
+          "source": "a.vertex(4)",
+          "label": "{{id}}",
+          "parent": "a"
+        },
+        {
+          "kind": "primitive",
+          "id": "E",
+          "source": "Point(f_1, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "g",
+          "source": "Segment(E, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "F",
+          "source": "Reflect(A, g)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "h",
+          "source": "Segment(E, F)"
+        },
+        {
+          "kind": "primitive",
+          "id": "i",
+          "source": "Segment(F, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "M",
+          "source": "Intersect(g.toLine, PerpLine(g, F), 1)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "f",
+          "source": "Segment(F, M)"
+        },
+        {
+          "kind": "primitive",
+          "id": "N",
+          "source": "Intersect(c.toLine, PerpLine(c, F), 1)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "j",
+          "source": "Segment(F, N)"
+        },
+        {
+          "kind": "primitive",
+          "id": "k",
+          "source": "Angle(F, M, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "l",
+          "source": "Angle(F, N, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "m",
+          "source": "f_1.splitBefore(E)"
+        },
+        {
+          "kind": "primitive",
+          "id": "n",
+          "source": "f_1.splitAfter(E)"
+        }
+      ],
+      "uvarMap": [
+        [
+          "A.0",
+          -2
+        ],
+        [
+          "A.1",
+          -2
+        ],
+        [
+          "B.0",
+          2
+        ],
+        [
+          "B.1",
+          -2
+        ],
+        [
+          "C.0",
+          1
+        ],
+        [
+          "E.0",
+          0.5837968444824219
+        ]
+      ],
+      "styleSheet": {
+        "background": {
+          "color": "#ffffff"
+        },
+        "xaxis": {
+          "show": false
+        },
+        "yaxis": {
+          "show": false
+        },
+        "xaxis3d": {},
+        "yaxis3d": {},
+        "zaxis3d": {},
+        "workingPlane": {},
+        "grid": {
+          "show": false
+        },
+        "types": [
+          [
+            "Point",
+            {
+              "pointSize": 1,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Segment",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Line",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Ray",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Circle",
+            {
+              "color": "#000000",
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "Ellipse",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Arc",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Angle",
+            {
+              "color": "#000000",
+              "regionOpacity": 0,
+              "angleSize": 15
+            }
+          ],
+          [
+            "Polygon",
+            {
+              "color": "#000000",
+              "lineWidth": 2,
+              "lineDash": "solid",
+              "lineOpacity": 100,
+              "regionOpacity": 0
+            }
+          ],
+          [
+            "Curve",
+            {
+              "lineOpacity": 100,
+              "color": "#000000"
+            }
+          ],
+          [
+            "Tick",
+            {
+              "color": "#000000"
+            }
+          ],
+          [
+            "Dimension",
+            {
+              "color": "#000000"
+            }
+          ]
+        ],
+        "typeLabels": [],
+        "primitives": [
+          [
+            "a",
+            {
+              "regionOpacity": 0
+            }
+          ],
+          [
+            "l",
+            {
+              "angleSize": 15
+            }
+          ],
+          [
+            "f_1",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "m",
+            {}
+          ],
+          [
+            "n",
+            {
+              "lineDash": "dashed"
+            }
+          ],
+          [
+            "b",
+            {
+              "lineDash": "dashed"
+            }
+          ]
+        ],
+        "primitiveLabels": [
+          [
+            "F",
+            {
+              "hidden": false,
+              "followDirection": false,
+              "mode": "latex",
+              "font": "KaTeX_Math",
+              "fontSize": 16,
+              "offsetX": -4.037506103515625,
+              "offsetY": -6.803131103515625,
+              "align": "left",
+              "precision": 2,
+              "fillOpacity": 100,
+              "strokeOpacity": 100,
+              "anchorPoint": [
+                -1.1822600944727952,
+                0.42347285751790453
+              ]
+            }
+          ],
+          [
+            "E",
+            {
+              "offsetX": -19.42498779296875,
+              "offsetY": 5.86248779296875,
+              "anchorPoint": [
+                -2,
+                -0.6503006988661295
+              ]
+            }
+          ],
+          [
+            "M",
+            {
+              "offsetX": -4.975006103515625,
+              "offsetY": 18.390625,
+              "anchorPoint": [
+                -1.5911300472363976,
+                -0.7882635712410477
+              ]
+            }
+          ],
+          [
+            "A",
+            {
+              "offsetX": -18.284332275390625,
+              "offsetY": 11.625,
+              "anchorPoint": [
+                -2,
+                -2
+              ]
+            }
+          ],
+          [
+            "B",
+            {
+              "offsetX": 1.90625,
+              "offsetY": 9.706268310546875,
+              "anchorPoint": [
+                2,
+                -2
+              ]
+            }
+          ],
+          [
+            "D",
+            {
+              "offsetX": -18.912506103515625,
+              "offsetY": -3.53125,
+              "anchorPoint": [
+                -2,
+                2
+              ]
+            }
+          ],
+          [
+            "C",
+            {
+              "offsetX": 0.609375,
+              "offsetY": -1.9125137329101562,
+              "anchorPoint": [
+                2,
+                2
+              ]
+            }
+          ],
+          [
+            "N",
+            {
+              "offsetX": 4.79998779296875,
+              "offsetY": 5.774993896484375,
+              "anchorPoint": [
+                2,
+                0.42347285751790453
+              ]
+            }
+          ]
+        ],
+        "typeLabels3d": [],
+        "primitiveLabels3d": [],
+        "textType": {},
+        "texts": [],
+        "sliderType": {},
+        "sliders": [],
+        "buttonType": {},
+        "buttons": [],
+        "types3d": [],
+        "primitives3d": [],
+        "imageType": {},
+        "images": [],
+        "elementLayers": []
+      },
+      "doc": [],
+      "camera": {
+        "kind": "2d",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 50
+      }
+    }
+  ],
+  "metadata": {
+    "version": "11"
+  }
+}
