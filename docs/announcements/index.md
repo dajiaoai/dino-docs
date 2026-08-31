@@ -7,6 +7,11 @@ description: 大角几何开放平台的能力上新、计费调整、维护通�
 
 这里汇总大角几何开放平台的重要更新，包括能力上新、能力变更、计费调整、维护通知与使用说明。
 
+
+<img src="https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/e053acbf-img_v3_02153_96d66899-cd2d-46b5-a49b-ea2cfaacde4g_MIDDLE_WEBP.webp" alt="大角开放平台公众号二维码" style="width: 260px; height: auto; border-radius: 8px;" />
+
+
+
 ## 2026 年 9 月
 
 - **计费调整** · 2026-08-27 · [智能生图 API 服务调价：更强底模，更低成本](./2026-09-01-api-pricing-reduction)
