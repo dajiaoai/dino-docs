@@ -10,7 +10,7 @@ import {
   type EmbeddedEditor,
   type FileContentLatest,
 } from '@dajiaoai/algeo-sdk';
-import { LoaderCircle, TriangleAlert } from 'lucide-react';
+import { LoaderCircle } from 'lucide-react';
 import { demoConfig } from './config';
 
 type SdkEditorProps = {
@@ -30,8 +30,7 @@ export const SdkEditor = forwardRef<SdkEditorHandle, SdkEditorProps>(
     const hostRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<EmbeddedEditor | null>(null);
     const onSaveRef = useRef(onSave);
-    const [state, setState] =
-      useState<'loading' | 'ready' | 'error'>('loading');
+    const [state, setState] = useState<'loading' | 'ready'>('loading');
 
     useImperativeHandle(
       ref,
@@ -57,45 +56,40 @@ export const SdkEditor = forwardRef<SdkEditorHandle, SdkEditorProps>(
       async function mountEditor() {
         if (!hostRef.current) return;
         setState('loading');
-        try {
-          const editor = await createEditor(hostRef.current, {
-            auth: { appId: demoConfig.sdkAppId },
-            initialContent: project,
-            ui: {
-              navbar: false,
-              slidePanel: true,
-              toolboxPanel: true,
-              algebraPanel: true,
-              docPanel: false,
-              helpEntry: false,
-              aiChatPanel: false,
-            },
-          });
-          unsubscribeSave = editor.on('save', async (event) => {
-            if (event.stage !== 'request') return;
+        const editor = await createEditor(hostRef.current, {
+          auth: { appId: demoConfig.sdkAppId },
+          initialContent: project,
+          ui: {
+            navbar: false,
+            slidePanel: true,
+            toolboxPanel: true,
+            algebraPanel: true,
+            docPanel: false,
+            helpEntry: false,
+            aiChatPanel: false,
+          },
+        });
+        unsubscribeSave = editor.on('save', async (event) => {
+          if (event.stage !== 'request') return;
 
-            try {
-              await exportAndSave(editor, event.content, onSaveRef.current);
-              return { status: 'success' };
-            } catch (error) {
-              console.error('大角 SDK 保存或图片导出失败', error);
-              return {
-                status: 'error',
-                message: '保存或图片导出失败，请重试',
-              };
-            }
-          });
-          if (disposed) {
-            unsubscribeSave();
-            await editor.destroy();
-            return;
+          try {
+            await exportAndSave(editor, event.content, onSaveRef.current);
+            return { status: 'success' };
+          } catch (error) {
+            console.error('大角 SDK 保存或图片导出失败', error);
+            return {
+              status: 'error',
+              message: '保存或图片导出失败，请重试',
+            };
           }
-          editorRef.current = editor;
-          setState('ready');
-        } catch (error) {
-          console.error('大角 SDK 初始化失败', error);
-          if (!disposed) setState('error');
+        });
+        if (disposed) {
+          unsubscribeSave();
+          await editor.destroy();
+          return;
         }
+        editorRef.current = editor;
+        setState('ready');
       }
 
       void mountEditor();
@@ -115,12 +109,6 @@ export const SdkEditor = forwardRef<SdkEditorHandle, SdkEditorProps>(
           <div className="sdk-editor-state">
             <LoaderCircle className="spin" size={20} />
             正在加载大角 SDK 编辑画板
-          </div>
-        )}
-        {state === 'error' && (
-          <div className="sdk-editor-state is-error">
-            <TriangleAlert size={20} />
-            SDK 加载失败，请检查网络和 Demo App ID 配置
           </div>
         )}
       </div>

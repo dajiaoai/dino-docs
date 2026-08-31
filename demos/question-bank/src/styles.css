@@ -241,7 +241,6 @@ footer span { display: flex; align-items: center; gap: 5px; }
 .sdk-editor-shell, .sdk-editor-host { position: absolute; inset: 0; }
 .sdk-editor-host iframe { width: 100%; height: 100%; border: 0; }
 .sdk-editor-state { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 8px; color: #65746c; background: #fbfcfb; font-size: 10px; }
-.sdk-editor-state.is-error { color: #a15f52; }
 .drag-tip { position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%); padding: 6px 10px; color: #5c6a63; background: rgba(255,255,255,.92); border: 1px solid #e0e6e2; border-radius: 99px; font-size: 9px; white-space: nowrap; box-shadow: 0 3px 10px rgba(31,50,41,.06); pointer-events: none; }
 .import-backdrop { z-index: 30; }
 .import-modal { width: min(760px, 94vw); max-height: 92vh; overflow: auto; background: #fff; border-radius: 16px; box-shadow: 0 30px 90px rgba(8,20,14,.28); animation: rise .24s ease; }
