@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useData } from 'vitepress';
 
 const { frontmatter, lang } = useData();
@@ -77,23 +77,6 @@ const demoHref = computed(() =>
     : '/demos/question-bank/',
 );
 
-const demoHeight = ref(640);
-
-function syncDemoHeight(event: MessageEvent) {
-  if (
-    event.origin !== window.location.origin ||
-    event.data?.source !== 'dino-question-bank' ||
-    event.data?.type !== 'resize' ||
-    typeof event.data.height !== 'number'
-  ) {
-    return;
-  }
-
-  demoHeight.value = Math.max(400, Math.ceil(event.data.height));
-}
-
-onMounted(() => window.addEventListener('message', syncDemoHeight));
-onBeforeUnmount(() => window.removeEventListener('message', syncDemoHeight));
 </script>
 
 <template>
