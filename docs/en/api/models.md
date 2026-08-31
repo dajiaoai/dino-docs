@@ -26,7 +26,7 @@ The following data comes from Dino Geometry's internal evaluation set, covering 
 
 | Metric | `dinogeo-1` | `dinogeo-1-pro` |
 | --- | --- | --- |
-| Standard geometry first-pass rate | 92% | 97% |
-| Complex / integrated problem first-pass rate | 74% | 89% |
-| Image-reference reconstruction accuracy | 81% | 93% |
-| Average generation latency | 41.64 s | 51.64 s |
+| Standard geometry first-pass rate | 95% | 97% |
+| Complex / integrated problem first-pass rate | 79% | 89% |
+| Image-reference reconstruction accuracy | 83% | 93% |
+| Average generation latency | 30.26 s | 51.64 s |

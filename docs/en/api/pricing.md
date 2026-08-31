@@ -11,8 +11,8 @@ description: Billing details for Dino Geometry APIs, including intelligent image
 
 | Model | List Price | Discount | Current Price | Points Charged |
 | --- | --- | --- | --- | --- |
-| `dinogeo-1` | ¥1.5 / call | 25% off | ¥1.1 / call | 11,000 pts / call |
-| `dinogeo-1-pro` | ¥2.2 / call | 25% off | ¥1.6 / call | 16,000 pts / call |
+| `dinogeo-1` | ¥0.6 / call | 25% off | ¥0.45 / call | 4,500 pts / call |
+| `dinogeo-1-pro` | ¥0.8 / call | 25% off | ¥0.60 / call | 6,000 pts / call |
 
 - Charges apply only on successful execution.
 
