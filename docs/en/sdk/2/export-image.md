@@ -1,6 +1,6 @@
 ---
 title: Export Images in Editor Mode
-description: Export PNG, JPG, or SVG from the SDK editor mode using a viewport, content bounds, or an exact output size, and export LaTeX/TikZ source.
+description: Export images from the SDK editor mode using a viewport, content bounds, or an exact output size, and export LaTeX/TikZ source.
 ---
 
 # Export Images in Editor Mode
@@ -11,8 +11,8 @@ Switch between `view`, `contain`, and `size`, adjust parameters in real time, an
 **[Open the slide image export example →](https://dajiaoai.github.io/algeo-sdk/examples/12-export-slide-image.html)**
 :::
 
-Editor mode exports PNG, JPG, or SVG images through
-`editor.slides.exportImage(options)`. Starting with **2.10.0**, image export uses
+Editor mode exports images through `editor.slides.exportImage(options)`. 2D slides support PNG, JPG, and SVG; 3D slides support PNG and JPG only.
+Starting with **2.10.0**, image export uses
 three mutually exclusive modes: `view`, `contain`, and `size`.
 
 To export LaTeX/TikZ source, do not use `exportImage()`. Call
@@ -22,8 +22,8 @@ To export LaTeX/TikZ source, do not use `exportImage()`. Call
 
 | Goal | Mode | What determines the output size |
 | --- | --- | --- |
-| Export an exact world-coordinate viewport | `view` | `viewBounds`, camera `scale`, and `pixelRatio` |
-| Include all visible content without fixing the final size | `contain` | Visual content bounds, file camera `scale`, `pixelRatio`, and `padding` |
+| Export an exact world-coordinate viewport | `view` | `viewBounds` for 2D; `viewCamera3d` for 3D |
+| Include all visible content without fixing the final size | `contain` | Content bounds, padding on both sides, and the scaling factor |
 | Produce an image with exact pixel dimensions | `size` | The specified `width` and `height` |
 
 - Use `view` when you know the world-coordinate region to capture.
@@ -42,21 +42,27 @@ All three modes accept these shared parameters:
 | --- | --- | --- | --- | --- |
 | `mode` | `'view' \| 'contain' \| 'size'` | yes | - | Output-size calculation mode |
 | `slideIndices` | `number[]` | no | all slides | 1-based indices of slides to export |
-| `format` | `'png' \| 'jpg' \| 'svg'` | no | `'png'` | Image format |
+| `format` | `'png' \| 'jpg' \| 'svg'` | no | `'png'` | Image format; 3D slides support only `'png'` and `'jpg'` |
 | `quality` | `number` | no | `0.92` | JPG quality from `0` to `1`; applies only to JPG |
 
 ## view: export a specific viewport
 
-The `view` mode treats `viewBounds` as the world-coordinate region to export.
-The camera is centered on that region. Output dimensions are calculated from
-the region's world dimensions, camera scale, and pixel ratio.
+The `view` mode selects parameters by slide type: use `viewBounds` for 2D and
+`viewCamera3d` for 3D. A request may provide both parameters to export a mixed
+batch of 2D and 3D slides; the SDK selects the applicable parameter for each slide.
+
+- A 2D slide requires `viewBounds`.
+- A 3D slide requires `viewCamera3d`.
 
 ### Mode-specific parameters
 
 | Parameter | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `viewBounds` | `ExportViewBounds` | yes | - | World-coordinate region to export |
+| `viewBounds` | `ExportViewBounds` | yes, for 2D | - | World-coordinate region to export from a 2D slide |
+| `viewCamera3d` | `ExportViewCamera3D` | yes, for 3D | - | Export camera and viewport for a 3D slide |
 | `pixelRatio` | `number` | no | `1` | Output pixel multiplier; must be greater than `0` |
+
+### 2D: `viewBounds`
 
 Fields in `ExportViewBounds`:
 
@@ -68,8 +74,11 @@ Fields in `ExportViewBounds`:
 | `height` | `number` | yes | - | Height in world units; must be greater than `0` |
 | `scale` | `number` | no | slide `camera.scale` | Pixels per world unit; must be greater than `0` |
 
-When `viewBounds.scale` is omitted, the SDK uses the target slide's
-`camera.scale` from the file. If the file does not provide it, the SDK uses `50`.
+In 2D, `scale` is the **number of logical pixels per world unit**. With the same
+`viewBounds`, increasing `scale` proportionally increases the exported image
+dimensions and the pixel size of its content, but does not change the visible
+world-coordinate region. For example, a viewport width of `10` with `scale: 50`
+has a logical output width of `500px`.
 
 Output dimensions are calculated as follows:
 
@@ -96,12 +105,51 @@ const images = await editor.slides.exportImage({
 
 This example produces a `1000 × 1000` pixel image.
 
+### 3D: `viewCamera3d`
+
+Fields in `ExportViewCamera3D`:
+
+| Field | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `width` | `number` | yes | - | Export viewport width in world units; must be greater than `0` |
+| `height` | `number` | yes | - | Export viewport height in world units; must be greater than `0` |
+| `offset` | `[number, number, number]` | no | slide `camera3d.offset` | Camera-center world coordinates |
+| `yaw` | `number` | no | slide `camera3d.yaw` | Horizontal rotation angle in radians |
+| `pitch` | `number` | no | slide `camera3d.pitch` | Pitch angle in radians |
+| `scale` | `number` | no | slide `camera3d.scale` | 3D camera scale; larger values zoom in and reduce the visible world range |
+
+Any omitted camera field is read from the target slide file.
+
+In 3D, `scale` controls **camera distance and visible range**, not the number of
+pixels per world unit. A larger value moves the camera closer and shows a smaller
+world range; a smaller value moves it farther away and shows a larger range. It
+changes the composition. To increase export sharpness, keep `scale` unchanged and
+increase `pixelRatio`.
+
+```typescript
+const images = await editor.slides.exportImage({
+  mode: 'view',
+  slideIndices: [2],
+  format: 'png',
+  viewCamera3d: {
+    width: 12,
+    height: 8,
+    // These fields are optional and fall back to the slide camera when omitted.
+    offset: [0, 0, 0],
+    yaw: Math.PI / 4,
+    pitch: Math.PI / 6,
+  },
+  pixelRatio: 2,
+});
+```
+
 ## contain: include all content
 
 The `contain` mode calculates the visual bounding box of the slide content and
-centers the output viewport on it. Visual extensions such as point radii and
-label text are included so content is not clipped. Final image dimensions vary
-with the content.
+centers the output viewport on it. For 2D, visual extensions such as point radii
+and label text are included. For 3D, the complete projected extent of visible 3D
+primitives is used, including finite primitives outside the current viewport.
+Final image dimensions vary with the content.
 
 If the slide has no calculable content bounds—for example, it contains only
 coordinate axes—the original file camera viewport is preserved.
@@ -119,14 +167,14 @@ is an object:
 - `horizontal` applies to both the left and right sides.
 - `vertical` applies to both the top and bottom sides.
 
-Output dimensions are calculated as follows:
+For 2D, output dimensions are calculated as follows:
 
 ```text
 output width = content bounds width × camera.scale × pixelRatio + 2 × horizontal
 output height = content bounds height × camera.scale × pixelRatio + 2 × vertical
 ```
 
-`camera.scale` comes from the target slide file and defaults to `50` when absent.
+For 2D, `camera.scale` comes from the target slide file and defaults to `50` when absent. For 3D, the slide's `camera3d` view and scale are retained, the projected content bounds determine the canvas, and `pixelRatio` affects only final resolution.
 
 ```typescript
 const images = await editor.slides.exportImage({
@@ -144,11 +192,6 @@ const images = await editor.slides.exportImage({
 ## size: export exact dimensions
 
 The `size` mode guarantees that the final image is exactly `width × height`.
-After subtracting `minPadding` from the available output area, the SDK
-automatically calculates a scale that fits the visual content bounds and
-centers the content.
-
-The `size` mode does not accept `pixelRatio`.
 
 ### Mode-specific parameters
 
@@ -223,7 +266,7 @@ previewImage.addEventListener('load', () => URL.revokeObjectURL(url), {
 
 ## Export LaTeX/TikZ
 
-LaTeX/TikZ is text source, not an image format. Do not pass `format: 'latex'` to
+LaTeX/TikZ is text source, not an image format, and currently supports 2D slides only. Do not pass `format: 'latex'` to
 `exportImage()`. Use:
 
 ```typescript
