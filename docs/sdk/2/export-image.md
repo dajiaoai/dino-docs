@@ -1,6 +1,6 @@
 ---
 title: 编辑模式导出图片
-description: 使用 SDK 编辑模式按指定视野、内容包围盒或固定尺寸导出 PNG、JPG、SVG，以及导出 LaTeX/TikZ。
+description: 使用 SDK 编辑模式按指定视野、内容包围盒或固定尺寸导出图片，以及导出 LaTeX/TikZ。
 ---
 
 # 编辑模式导出图片
@@ -11,7 +11,8 @@ description: 使用 SDK 编辑模式按指定视野、内容包围盒或固定�
 **[打开画板图片导出示例 →](https://dajiaoai.github.io/algeo-sdk/examples/12-export-slide-image.html)**
 :::
 
-编辑模式通过 `editor.slides.exportImage(options)` 导出 PNG、JPG 或 SVG 图片。
+编辑模式通过 `editor.slides.exportImage(options)` 导出图片。2D 画板支持 PNG、JPG、SVG；
+3D 画板仅支持 PNG、JPG。
 从 **2.10.0** 起，图片导出使用 `view`、`contain`、`size` 三种互斥模式。
 
 如果需要 LaTeX/TikZ 源码，不要使用 `exportImage()`，请调用
@@ -21,8 +22,8 @@ description: 使用 SDK 编辑模式按指定视野、内容包围盒或固定�
 
 | 需求 | 模式 | 输出尺寸由什么决定 |
 | --- | --- | --- |
-| 精确导出一块世界坐标视野 | `view` | `viewBounds`、相机 `scale` 与 `pixelRatio` |
-| 完整包住画板内容，不限定最终宽高 | `contain` | 内容可视包围盒、文件相机 `scale`、`pixelRatio` 与 `padding` |
+| 精确导出一块世界坐标视野 | `view` | 2D 使用 `viewBounds`；3D 使用 `viewCamera3d` |
+| 完整包住画板内容，不限定最终宽高 | `contain` | 内容包围盒、两侧边距与放大/缩小倍率 |
 | 得到严格指定宽高的图片 | `size` | 指定的 `width` 和 `height` |
 
 - 已知要截取的世界坐标范围时，使用 `view`。
@@ -41,20 +42,26 @@ const images = await editor.slides.exportImage(options);
 | --- | --- | --- | --- | --- |
 | `mode` | `'view' \| 'contain' \| 'size'` | 是 | - | 尺寸计算模式 |
 | `slideIndices` | `number[]` | 否 | 全部画板 | 要导出的画板，使用 1-based 索引 |
-| `format` | `'png' \| 'jpg' \| 'svg'` | 否 | `'png'` | 图片格式 |
+| `format` | `'png' \| 'jpg' \| 'svg'` | 否 | `'png'` | 图片格式；3D 画板仅支持 `'png'`、`'jpg'` |
 | `quality` | `number` | 否 | `0.92` | JPG 质量，范围为 `0～1`，仅对 JPG 生效 |
 
 ## view：按指定视野导出
 
-`view` 模式将 `viewBounds` 作为要导出的世界坐标区域。相机中心会对准该区域中心，
-输出宽高根据区域的世界坐标尺寸、相机缩放比例和像素倍率计算。
+`view` 模式按画板类型选择相应参数：2D 使用 `viewBounds`，3D 使用 `viewCamera3d`。
+一个请求可以同时提供两者，便于批量导出混合 2D/3D 画板；SDK 会对每张画板自动读取适用参数。
+
+- 目标为 2D 画板但未提供 `viewBounds` 时会报错。
+- 目标为 3D 画板但未提供 `viewCamera3d` 时会报错。
 
 ### 专属参数
 
 | 参数 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
-| `viewBounds` | `ExportViewBounds` | 是 | - | 要导出的世界坐标区域 |
+| `viewBounds` | `ExportViewBounds` | 2D 时是 | - | 2D 画板要导出的世界坐标区域 |
+| `viewCamera3d` | `ExportViewCamera3D` | 3D 时是 | - | 3D 画板的导出相机与视野 |
 | `pixelRatio` | `number` | 否 | `1` | 输出像素倍率，必须大于 `0` |
+
+### 2D：`viewBounds`
 
 `ExportViewBounds` 的字段：
 
@@ -66,10 +73,11 @@ const images = await editor.slides.exportImage(options);
 | `height` | `number` | 是 | - | 世界坐标高度，必须大于 `0` |
 | `scale` | `number` | 否 | 画板 `camera.scale` | 每个世界坐标单位对应的像素数，必须大于 `0` |
 
-省略 `viewBounds.scale` 时，SDK 使用目标画板文件中的 `camera.scale`；如果文件中也
-没有该值，则使用 `50`。
+2D 中，`scale` 表示 **每个世界坐标单位对应多少逻辑像素**。在 `viewBounds` 不变时，
+增大 `scale` 会按相同比例增大导出图片的宽高和图形像素尺寸，但不会改变所见的世界坐标范围；
+例如视野宽度为 `10`、`scale` 为 `50` 时，逻辑输出宽度为 `500px`。
 
-输出尺寸计算如下：
+2D 输出尺寸计算如下：
 
 ```text
 输出宽度 = viewBounds.width × scale × pixelRatio
@@ -94,10 +102,47 @@ const images = await editor.slides.exportImage({
 
 以上示例输出 `1000 × 1000` 像素的图片。
 
+### 3D：`viewCamera3d`
+
+`ExportViewCamera3D` 的字段：
+
+| 字段 | 类型 | 必填 | 默认值 | 说明 |
+| --- | --- | --- | --- | --- |
+| `width` | `number` | 是 | - | 导出视野宽度，世界坐标，必须大于 `0` |
+| `height` | `number` | 是 | - | 导出视野高度，世界坐标，必须大于 `0` |
+| `offset` | `[number, number, number]` | 否 | 画板 `camera3d.offset` | 相机中心的世界坐标 |
+| `yaw` | `number` | 否 | 画板 `camera3d.yaw` | 水平旋转角，单位为弧度 |
+| `pitch` | `number` | 否 | 画板 `camera3d.pitch` | 俯仰角，单位为弧度 |
+| `scale` | `number` | 否 | 画板 `camera3d.scale` | 3D 相机缩放；值越大，视野越近、可见世界范围越小 |
+
+未提供的相机字段均从目标画板文件读取。
+
+3D 中，`scale` 表示 **相机的镜头远近/可见范围**，不是“每世界单位的像素数”。值越大，
+相机越接近内容、可见世界范围越小；值越小则相机拉远、可见范围越大。它会改变画面构图。
+如只需提高导出清晰度，请保持 `scale` 不变并增大 `pixelRatio`。
+
+```typescript
+const images = await editor.slides.exportImage({
+  mode: 'view',
+  slideIndices: [2],
+  format: 'png',
+  viewCamera3d: {
+    width: 12,
+    height: 8,
+    // 以下字段可选；留空时读取画板文件中的相机配置。
+    offset: [0, 0, 0],
+    yaw: Math.PI / 4,
+    pitch: Math.PI / 6,
+  },
+  pixelRatio: 2,
+});
+```
+
 ## contain：完整包住内容
 
-`contain` 模式计算画板内容的可视包围盒，并让输出视野以内容为中心。它会考虑圆点、
-标签文本等视觉外扩，避免内容被裁切。最终图片尺寸随内容变化。
+`contain` 模式计算画板内容的可视包围盒，并让输出视野以内容为中心。2D 会考虑圆点、
+标签文本等视觉外扩；3D 会计算可见 3D 图元的完整投影范围（包括当前视口外的有限图元），
+避免内容被裁切。最终图片尺寸随内容变化。
 
 如果画板没有可计算的内容包围盒，例如只有坐标轴，则完整保留文件相机的原始视口。
 
@@ -113,14 +158,15 @@ const images = await editor.slides.exportImage({
 - `horizontal` 同时应用于左侧和右侧。
 - `vertical` 同时应用于顶部和底部。
 
-输出尺寸计算如下：
+2D 输出尺寸计算如下：
 
 ```text
 输出宽度 = 内容包围盒宽度 × camera.scale × pixelRatio + 2 × horizontal
 输出高度 = 内容包围盒高度 × camera.scale × pixelRatio + 2 × vertical
 ```
 
-`camera.scale` 来自目标画板文件；文件中未提供时使用 `50`。
+2D 的 `camera.scale` 来自目标画板文件；文件中未提供时使用 `50`。3D 则沿用画板的
+`camera3d` 视角和缩放，并以投影包围盒决定画幅；`pixelRatio` 只影响最终分辨率。
 
 ```typescript
 const images = await editor.slides.exportImage({
@@ -137,10 +183,7 @@ const images = await editor.slides.exportImage({
 
 ## size：按固定尺寸导出
 
-`size` 模式保证最终图片严格等于指定的 `width × height`。SDK 从输出区域中扣除
-`minPadding` 后，根据内容可视包围盒自动计算缩放比例，使内容完整放入可用区域并居中。
-
-`size` 模式不接收 `pixelRatio`。
+`size` 模式保证最终图片严格等于指定的 `width × height`。
 
 ### 专属参数
 
@@ -213,7 +256,7 @@ previewImage.addEventListener('load', () => URL.revokeObjectURL(url), {
 
 ## 导出 LaTeX/TikZ
 
-LaTeX/TikZ 是文本源码，不属于图片格式。不要向 `exportImage()` 传入
+LaTeX/TikZ 是文本源码，不属于图片格式，且目前仅支持 2D 画板。不要向 `exportImage()` 传入
 `format: 'latex'`，应使用：
 
 ```typescript
