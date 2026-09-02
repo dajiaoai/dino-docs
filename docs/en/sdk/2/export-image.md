@@ -18,11 +18,15 @@ three mutually exclusive modes: `view`, `contain`, and `size`.
 To export LaTeX/TikZ source, do not use `exportImage()`. Call
 [`editor.slides.exportLatex()`](#export-latextikz) instead.
 
+::: warning Deprecated legacy parameter
+The pre-**2.13.0** `viewBounds: { x, y, width, height }` parameter is deprecated. Upgrade to SDK **2.13.0 or later** and migrate to `viewBound: { left, top, right, bottom }`. The legacy parameter remains only for existing integrations.
+:::
+
 ## Choosing a mode
 
 | Goal | Mode | What determines the output size |
 | --- | --- | --- |
-| Export an exact world-coordinate viewport | `view` | `viewBounds` for 2D; `viewCamera3d` for 3D |
+| Export a specific view | `view` | World-coordinate `viewBound` for 2D; camera and output dimensions in `viewCamera3d` for 3D |
 | Include all visible content without fixing the final size | `contain` | Content bounds, padding on both sides, and the scaling factor |
 | Produce an image with exact pixel dimensions | `size` | The specified `width` and `height` |
 
@@ -47,35 +51,35 @@ All three modes accept these shared parameters:
 
 ## view: export a specific viewport
 
-The `view` mode selects parameters by slide type: use `viewBounds` for 2D and
+The `view` mode selects parameters by slide type: use `viewBound` for 2D and
 `viewCamera3d` for 3D. A request may provide both parameters to export a mixed
 batch of 2D and 3D slides; the SDK selects the applicable parameter for each slide.
 
-- A 2D slide requires `viewBounds`.
+- A 2D slide requires `viewBound`.
 - A 3D slide requires `viewCamera3d`.
 
 ### Mode-specific parameters
 
 | Parameter | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `viewBounds` | `ExportViewBounds` | yes, for 2D | - | World-coordinate region to export from a 2D slide |
+| `viewBound` | `ExportViewBound` | yes, for 2D | - | World-coordinate region to export from a 2D slide |
 | `viewCamera3d` | `ExportViewCamera3D` | yes, for 3D | - | Export camera and viewport for a 3D slide |
 | `pixelRatio` | `number` | no | `1` | Output pixel multiplier; must be greater than `0` |
 
-### 2D: `viewBounds`
+### 2D: `viewBound`
 
-Fields in `ExportViewBounds`:
+Fields in `ExportViewBound`:
 
 | Field | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `x` | `number` | yes | - | World-coordinate X of the viewport's top-left corner |
-| `y` | `number` | yes | - | World-coordinate Y of the viewport's top-left corner |
-| `width` | `number` | yes | - | Width in world units; must be greater than `0` |
-| `height` | `number` | yes | - | Height in world units; must be greater than `0` |
+| `left` | `number` | yes | - | World-coordinate left boundary |
+| `top` | `number` | yes | - | World-coordinate top boundary |
+| `right` | `number` | yes | - | World-coordinate right boundary; must be greater than `left` |
+| `bottom` | `number` | yes | - | World-coordinate bottom boundary; must be greater than `top` |
 | `scale` | `number` | no | slide `camera.scale` | Pixels per world unit; must be greater than `0` |
 
 In 2D, `scale` is the **number of logical pixels per world unit**. With the same
-`viewBounds`, increasing `scale` proportionally increases the exported image
+`viewBound`, increasing `scale` proportionally increases the exported image
 dimensions and the pixel size of its content, but does not change the visible
 world-coordinate region. For example, a viewport width of `10` with `scale: 50`
 has a logical output width of `500px`.
@@ -83,8 +87,8 @@ has a logical output width of `500px`.
 Output dimensions are calculated as follows:
 
 ```text
-output width = viewBounds.width × scale × pixelRatio
-output height = viewBounds.height × scale × pixelRatio
+output width = (viewBound.right - viewBound.left) × scale × pixelRatio
+output height = (viewBound.bottom - viewBound.top) × scale × pixelRatio
 ```
 
 ```typescript
@@ -92,11 +96,11 @@ const images = await editor.slides.exportImage({
   mode: 'view',
   slideIndices: [1],
   format: 'png',
-  viewBounds: {
-    x: -5,
-    y: -5,
-    width: 10,
-    height: 10,
+  viewBound: {
+    left: -5,
+    top: -5,
+    right: 5,
+    bottom: 5,
     scale: 50,
   },
   pixelRatio: 2,
@@ -111,8 +115,8 @@ Fields in `ExportViewCamera3D`:
 
 | Field | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
-| `width` | `number` | yes | - | Export viewport width in world units; must be greater than `0` |
-| `height` | `number` | yes | - | Export viewport height in world units; must be greater than `0` |
+| `width` | `number` | no | `1024` | Logical output width (px); must be a positive integer |
+| `height` | `number` | no | `1024` | Logical output height (px); must be a positive integer |
 | `offset` | `[number, number, number]` | no | slide `camera3d.offset` | Camera-center world coordinates |
 | `yaw` | `number` | no | slide `camera3d.yaw` | Horizontal rotation angle in radians |
 | `pitch` | `number` | no | slide `camera3d.pitch` | Pitch angle in radians |
@@ -132,8 +136,8 @@ const images = await editor.slides.exportImage({
   slideIndices: [2],
   format: 'png',
   viewCamera3d: {
-    width: 12,
-    height: 8,
+    width: 1200,
+    height: 800,
     // These fields are optional and fall back to the slide camera when omitted.
     offset: [0, 0, 0],
     yaw: Math.PI / 4,

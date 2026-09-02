@@ -18,11 +18,15 @@ description: 使用 SDK 编辑模式按指定视野、内容包围盒或固定�
 如果需要 LaTeX/TikZ 源码，不要使用 `exportImage()`，请调用
 [`editor.slides.exportLatex()`](#导出-latex-tikz)。
 
+::: warning 旧版参数已废弃
+**2.13.0 前**使用的 `viewBounds: { x, y, width, height }` 已废弃。建议升级到 SDK **2.13.0 或更高版本**，并迁移为 `viewBound: { left, top, right, bottom }`。旧参数目前仅为兼容已有集成而保留。
+:::
+
 ## 三种模式如何选择
 
 | 需求 | 模式 | 输出尺寸由什么决定 |
 | --- | --- | --- |
-| 精确导出一块世界坐标视野 | `view` | 2D 使用 `viewBounds`；3D 使用 `viewCamera3d` |
+| 精确导出指定视图 | `view` | 2D 使用世界坐标 `viewBound`；3D 使用相机与输出尺寸 `viewCamera3d` |
 | 完整包住画板内容，不限定最终宽高 | `contain` | 内容包围盒、两侧边距与放大/缩小倍率 |
 | 得到严格指定宽高的图片 | `size` | 指定的 `width` 和 `height` |
 
@@ -47,41 +51,41 @@ const images = await editor.slides.exportImage(options);
 
 ## view：按指定视野导出
 
-`view` 模式按画板类型选择相应参数：2D 使用 `viewBounds`，3D 使用 `viewCamera3d`。
+`view` 模式按画板类型选择相应参数：2D 使用 `viewBound`，3D 使用 `viewCamera3d`。
 一个请求可以同时提供两者，便于批量导出混合 2D/3D 画板；SDK 会对每张画板自动读取适用参数。
 
-- 目标为 2D 画板但未提供 `viewBounds` 时会报错。
+- 目标为 2D 画板但未提供 `viewBound` 时会报错。
 - 目标为 3D 画板但未提供 `viewCamera3d` 时会报错。
 
 ### 专属参数
 
 | 参数 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
-| `viewBounds` | `ExportViewBounds` | 2D 时是 | - | 2D 画板要导出的世界坐标区域 |
+| `viewBound` | `ExportViewBound` | 2D 时是 | - | 2D 画板要导出的世界坐标区域 |
 | `viewCamera3d` | `ExportViewCamera3D` | 3D 时是 | - | 3D 画板的导出相机与视野 |
 | `pixelRatio` | `number` | 否 | `1` | 输出像素倍率，必须大于 `0` |
 
-### 2D：`viewBounds`
+### 2D：`viewBound`
 
-`ExportViewBounds` 的字段：
+`ExportViewBound` 的字段：
 
 | 字段 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
-| `x` | `number` | 是 | - | 视野左上角的世界坐标 X |
-| `y` | `number` | 是 | - | 视野左上角的世界坐标 Y |
-| `width` | `number` | 是 | - | 世界坐标宽度，必须大于 `0` |
-| `height` | `number` | 是 | - | 世界坐标高度，必须大于 `0` |
+| `left` | `number` | 是 | - | 视野左边界的世界坐标 |
+| `top` | `number` | 是 | - | 视野上边界的世界坐标 |
+| `right` | `number` | 是 | - | 视野右边界的世界坐标，必须大于 `left` |
+| `bottom` | `number` | 是 | - | 视野下边界的世界坐标，必须大于 `top` |
 | `scale` | `number` | 否 | 画板 `camera.scale` | 每个世界坐标单位对应的像素数，必须大于 `0` |
 
-2D 中，`scale` 表示 **每个世界坐标单位对应多少逻辑像素**。在 `viewBounds` 不变时，
+2D 中，`scale` 表示 **每个世界坐标单位对应多少逻辑像素**。在 `viewBound` 不变时，
 增大 `scale` 会按相同比例增大导出图片的宽高和图形像素尺寸，但不会改变所见的世界坐标范围；
 例如视野宽度为 `10`、`scale` 为 `50` 时，逻辑输出宽度为 `500px`。
 
 2D 输出尺寸计算如下：
 
 ```text
-输出宽度 = viewBounds.width × scale × pixelRatio
-输出高度 = viewBounds.height × scale × pixelRatio
+输出宽度 = (viewBound.right - viewBound.left) × scale × pixelRatio
+输出高度 = (viewBound.bottom - viewBound.top) × scale × pixelRatio
 ```
 
 ```typescript
@@ -89,11 +93,11 @@ const images = await editor.slides.exportImage({
   mode: 'view',
   slideIndices: [1],
   format: 'png',
-  viewBounds: {
-    x: -5,
-    y: -5,
-    width: 10,
-    height: 10,
+  viewBound: {
+    left: -5,
+    top: -5,
+    right: 5,
+    bottom: 5,
     scale: 50,
   },
   pixelRatio: 2,
@@ -108,8 +112,8 @@ const images = await editor.slides.exportImage({
 
 | 字段 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
-| `width` | `number` | 是 | - | 导出视野宽度，世界坐标，必须大于 `0` |
-| `height` | `number` | 是 | - | 导出视野高度，世界坐标，必须大于 `0` |
+| `width` | `number` | 否 | `1024` | 逻辑输出宽度（px），必须为正整数 |
+| `height` | `number` | 否 | `1024` | 逻辑输出高度（px），必须为正整数 |
 | `offset` | `[number, number, number]` | 否 | 画板 `camera3d.offset` | 相机中心的世界坐标 |
 | `yaw` | `number` | 否 | 画板 `camera3d.yaw` | 水平旋转角，单位为弧度 |
 | `pitch` | `number` | 否 | 画板 `camera3d.pitch` | 俯仰角，单位为弧度 |
@@ -127,8 +131,8 @@ const images = await editor.slides.exportImage({
   slideIndices: [2],
   format: 'png',
   viewCamera3d: {
-    width: 12,
-    height: 8,
+    width: 1200,
+    height: 800,
     // 以下字段可选；留空时读取画板文件中的相机配置。
     offset: [0, 0, 0],
     yaw: Math.PI / 4,
