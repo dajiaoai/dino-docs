@@ -9,11 +9,11 @@ description: Understand the current billing rules for Dino-GSP MCP and how diffe
 
 ## Billing rules
 
-| Capability | List Price | Discount | Current Price | Points Charged |
-| --- | --- | --- | --- | --- |
-| Basic tool calls | ¥0.05 / 100 calls | 40% off | ¥0.03 / 100 calls | 3 pts / call |
-| Image generation | ¥5.0 / 100 calls | 40% off | ¥3.0 / 100 calls | 300 pts / call |
-| LaTeX generation | ¥3.0 / 100 calls | 40% off | ¥1.8 / 100 calls | 180 pts / call |
+| Capability | Current Price | Points Charged |
+| --- | --- | --- |
+| Basic calls | ¥0.03 / 100 calls | 3 pts / call |
+| Image export | ¥3 / 100 calls | 300 pts / call |
+| Project-data export | ¥3 / 100 calls | 300 pts / call |
 
 - Charged per successful call.
 

@@ -41,15 +41,17 @@ Make sure the following are ready:
 
 ## MCP capabilities
 
-The currently exposed core capabilities include:
+The following tools are available:
 
-| Tool             | Purpose                                                                                                  |
-| :--------------- | :------------------------------------------------------------------------------------------------------- |
-| `algeo_repl`     | Execute interactive geometry commands on the current canvas to create, update, or inspect objects        |
-| `load_template`  | Load a master template, apply it to selected or all existing canvases, or use it for canvases created later |
-| `export_image`   | Export the current project as a PNG image and return an accessible link that remains valid for 1 year    |
-| `export_project` | Export the current project as structured JSON and return an accessible link that remains valid for 1 day |
-| `import_project` | Import structured JSON project content into the project bound to the current MCP session                 |
+| Tool | Purpose |
+| :-- | :-- |
+| `create_session` | Create an isolated project session and return its `sessionId`. Every other tool requires this `sessionId` to preserve continuity while editing the canvas. |
+| `repl` | Execute Dino Algeo REPL commands in sequence within the current project session to create or modify definitions, set styles, manage labels and slides, and return a result for each command. |
+| `import` | Replace the current project session with structured project JSON or an HTTPS URL returning JSON, then return the number of loaded slides. |
+| `load_template` | Load a master template from inline JSON or an HTTPS URL, apply it to selected slides or all existing slides, or set it as the default for newly created slides. |
+| `export_image` | Render the selected or current slide as a PNG image and return a one-year access link. |
+| `export_image_3d` | Render the selected or current 3D slide as a PNG image and return a one-year access link. |
+| `export` | Export the current project session as a structured `.algeo` JSON file and return a one-day download link. |
 
 In most clients you do not need to memorize tool names. If tool calling is enabled, the model will choose the right tool from natural language requests.
 
