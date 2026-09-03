@@ -248,15 +248,27 @@ export default defineConfig({
           '/sdk/': createSdkSidebar(''),
           '/reference/': [
             {
+              text: '参考',
+              items: [{ text: '概览', link: '/reference/' }],
+            },
+            {
               text: '通用规范',
               items: [
-                { text: '概览', link: '/reference/' },
                 {
                   text: '大角工程文件数据协议',
                   link: '/reference/algeo-file-protocol',
                 },
                 { text: '尺寸单位与换算', link: '/reference/units' },
                 { text: '字体支持', link: '/reference/fonts' },
+              ],
+            },
+            {
+              text: '教程',
+              items: [
+                {
+                  text: '多环节图片导出尺寸一致性',
+                  link: '/reference/consistent-image-export',
+                },
               ],
             },
           ],
@@ -429,9 +441,12 @@ export default defineConfig({
           '/en/sdk/': createSdkSidebar('en/'),
           '/en/reference/': [
             {
+              text: 'Reference',
+              items: [{ text: 'Overview', link: '/en/reference/' }],
+            },
+            {
               text: 'Common Standards',
               items: [
-                { text: 'Overview', link: '/en/reference/' },
                 {
                   text: 'Project File Protocol',
                   link: '/en/reference/algeo-file-protocol',
@@ -441,6 +456,15 @@ export default defineConfig({
                   link: '/en/reference/units',
                 },
                 { text: 'Font Support', link: '/en/reference/fonts' },
+              ],
+            },
+            {
+              text: 'Tutorials',
+              items: [
+                {
+                  text: 'Consistent Image Export Across Workflows',
+                  link: '/en/reference/consistent-image-export',
+                },
               ],
             },
           ],

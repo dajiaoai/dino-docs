@@ -75,7 +75,7 @@ Fields in `ExportViewBound`:
 | `left` | `number` | yes | - | World-coordinate left boundary |
 | `top` | `number` | yes | - | World-coordinate top boundary |
 | `right` | `number` | yes | - | World-coordinate right boundary; must be greater than `left` |
-| `bottom` | `number` | yes | - | World-coordinate bottom boundary; must be greater than `top` |
+| `bottom` | `number` | yes | - | World-coordinate bottom boundary; must be less than `top` |
 | `scale` | `number` | no | slide `camera.scale` | Pixels per world unit; must be greater than `0` |
 
 In 2D, `scale` is the **number of logical pixels per world unit**. With the same
@@ -88,7 +88,7 @@ Output dimensions are calculated as follows:
 
 ```text
 output width = (viewBound.right - viewBound.left) × scale × pixelRatio
-output height = (viewBound.bottom - viewBound.top) × scale × pixelRatio
+output height = (viewBound.top - viewBound.bottom) × scale × pixelRatio
 ```
 
 ```typescript
@@ -98,9 +98,9 @@ const images = await editor.slides.exportImage({
   format: 'png',
   viewBound: {
     left: -5,
-    top: -5,
+    top: 5,
     right: 5,
-    bottom: 5,
+    bottom: -5,
     scale: 50,
   },
   pixelRatio: 2,

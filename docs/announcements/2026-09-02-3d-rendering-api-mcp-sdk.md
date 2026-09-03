@@ -48,13 +48,13 @@ SDK 2.13.0 同时优化了 2D 精确视野导出参数。推荐使用边界表�
 ```ts
 viewBound: {
   left: -5,
-  top: -5,
+  top: 5,
   right: 5,
-  bottom: 5,
+  bottom: -5,
 }
 ```
 
-此前的 `viewBounds: { x, y, width, height }` 已废弃，但仍保留兼容支持。建议升级 SDK 后逐步迁移至 `viewBound`。
+`viewBound` 要求 `left < right` 且 `bottom < top`。此前的 `viewBounds: { x, y, width, height }` 已废弃，但仍保留兼容支持。建议升级 SDK 后逐步迁移至 `viewBound`。
 
 ## 适用场景
 

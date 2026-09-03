@@ -74,7 +74,7 @@ const images = await editor.slides.exportImage(options);
 | `left` | `number` | 是 | - | 视野左边界的世界坐标 |
 | `top` | `number` | 是 | - | 视野上边界的世界坐标 |
 | `right` | `number` | 是 | - | 视野右边界的世界坐标，必须大于 `left` |
-| `bottom` | `number` | 是 | - | 视野下边界的世界坐标，必须大于 `top` |
+| `bottom` | `number` | 是 | - | 视野下边界的世界坐标，必须小于 `top` |
 | `scale` | `number` | 否 | 画板 `camera.scale` | 每个世界坐标单位对应的像素数，必须大于 `0` |
 
 2D 中，`scale` 表示 **每个世界坐标单位对应多少逻辑像素**。在 `viewBound` 不变时，
@@ -85,7 +85,7 @@ const images = await editor.slides.exportImage(options);
 
 ```text
 输出宽度 = (viewBound.right - viewBound.left) × scale × pixelRatio
-输出高度 = (viewBound.bottom - viewBound.top) × scale × pixelRatio
+输出高度 = (viewBound.top - viewBound.bottom) × scale × pixelRatio
 ```
 
 ```typescript
@@ -95,9 +95,9 @@ const images = await editor.slides.exportImage({
   format: 'png',
   viewBound: {
     left: -5,
-    top: -5,
+    top: 5,
     right: 5,
-    bottom: 5,
+    bottom: -5,
     scale: 50,
   },
   pixelRatio: 2,
