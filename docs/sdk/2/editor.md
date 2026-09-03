@@ -88,6 +88,7 @@ const content = await editor.document.getContent();
 - `getCount(): number`: 获取总页数。
 - `getCurrentIndex(): number`: 获取当前所在页码。
 - `getViewBounds(index?: number): Promise<ExportViewBound | null>`: 获取指定画板的有限画布导出视野；省略 `index` 时读取当前画板。无限画布返回 `null`。自 SDK `2.14.0` 起支持。
+- `setViewBounds(options: SetViewBoundsOptions): Promise<void>`: 设置指定画板的有限画布边界；省略 `options.index` 时设置当前画板。自 SDK `2.14.0` 起支持。
 - `switchTo(index: number): Promise<void>`: 切换到指定页。
 - `add(): Promise<SlideIndexResult>`: 在末尾添加新画板。
 - `addAt(index: number): Promise<SlideIndexResult>`: 在指定位置插入新画板。

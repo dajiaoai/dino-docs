@@ -93,6 +93,7 @@ Manage multi-slide documents.
 - `getCount(): number`: Get the total slide count.
 - `getCurrentIndex(): number`: Get the current slide index.
 - `getViewBounds(index?: number): Promise<ExportViewBound | null>`: Get the finite canvas export viewport for a specified slide; omitting `index` reads the current slide. Returns `null` for an infinite canvas. Available since SDK `2.14.0`.
+- `setViewBounds(options: SetViewBoundsOptions): Promise<void>`: Set finite canvas bounds for a specified slide; omitting `options.index` uses the current slide. Available since SDK `2.14.0`.
 - `switchTo(index: number): Promise<void>`: Switch to the specified slide.
 - `add(): Promise<SlideIndexResult>`: Add a new slide at the end.
 - `addAt(index: number): Promise<SlideIndexResult>`: Insert a new slide at the specified position.
