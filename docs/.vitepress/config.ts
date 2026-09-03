@@ -269,6 +269,10 @@ export default defineConfig({
               text: '2026 年',
               items: [
                 {
+                  text: 'MCP 与 SDK 支持立体几何图片渲染',
+                  link: '/announcements/2026-09-02-3d-rendering-api-mcp-sdk',
+                },
+                {
                   text: '智能生图 API 服务调价：更强底模，更低成本',
                   link: '/announcements/2026-09-01-api-pricing-reduction',
                 },
