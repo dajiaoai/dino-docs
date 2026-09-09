@@ -20,11 +20,11 @@ description: Billing details for Dino Geometry APIs, including intelligent image
 
 | Format | List Price | Discount | Current Price | Points Charged |
 | --- | --- | --- | --- | --- |
-| PNG | ¥5.0 / 100 calls | 25% off | ¥3.75 / 100 calls | 375 pts / call |
+| PNG (2D/3D) | ¥5.0 / 100 calls | 25% off | ¥3.75 / 100 calls | 375 pts / call |
 | SVG | ¥5.0 / 100 calls | 25% off | ¥3.75 / 100 calls | 375 pts / call |
 | TikZ | ¥3.0 / 100 calls | 25% off | ¥2.25 / 100 calls | 225 pts / call |
 
-- Charged per successful export.
+- PNG endpoints `/api/render` and `/api/render/v2` share the `PNG` pricing item, including 2D and 3D output.
 
 ## Billing notes
 
