@@ -12,9 +12,9 @@ description: API 接入概览，包含渲染接口和 Agent 异步任务接口�
 | 能力 | 适用场景 | 接口 |
 | --- | --- | --- |
 | **智能生图** | 输入文字或图片，生成可交互的几何图形 | [`POST /api/agent/run`](/api/agent) |
-| **渲染为图片** | 将已有几何项目导出为 PNG | [`POST /api/render/v2`](/api/render#render-v2) |
-| **渲染为 SVG** | 将已有几何项目导出为矢量图 | [`POST /api/render-svg`](/api/render) |
-| **渲染为 TikZ** | 将已有几何项目导出为 LaTeX 源文件 | [`POST /api/render-tikz`](/api/render) |
+| **渲染为图片** | 将已有几何项目导出为 PNG | [`POST /api/render/v2`](/api/render-v2) |
+| **渲染为 SVG** | 将已有几何项目导出为矢量图 | [`POST /api/render-svg`](/api/render-svg) |
+| **渲染为 TikZ** | 将已有几何项目导出为 LaTeX 源文件 | [`POST /api/render-tikz`](/api/render-tikz) |
 
 ## 能做什么
 

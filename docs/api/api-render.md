@@ -8,7 +8,7 @@ description: 旧版 PNG 渲染接口参数、请求示例及迁移到 /api/rende
 **Base URL：`https://api.dajiaoai.com`**
 
 ::: warning 推荐迁移到新版本
-`POST /api/render` 保留用于兼容已有接入，仅支持 2D PNG。新接入请使用 [`POST /api/render/v2`](./render#render-v2)，已有调用建议在更新时迁移。
+`POST /api/render` 保留用于兼容已有接入，仅支持 2D PNG。新接入请使用 [`POST /api/render/v2`](./render-v2)，已有调用建议在更新时迁移。
 :::
 
 ## 迁移到 v2
@@ -32,7 +32,7 @@ description: 旧版 PNG 渲染接口参数、请求示例及迁移到 /api/rende
 
 ## 旧版请求参数
 
-旧版接口的 `Authorization`、`Content-Type`、`x-request-id` 请求头，以及 `content`、`slideIndex`、`template` 字段与[新版 PNG 接口](./render#render-v2)一致，此外还接收：
+旧版接口的 `Authorization`、`Content-Type`、`x-request-id` 请求头，以及 `content`、`slideIndex`、`template` 字段与[新版 PNG 接口](./render-v2)一致，此外还接收：
 
 | 字段 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- |

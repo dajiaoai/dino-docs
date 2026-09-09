@@ -12,9 +12,9 @@ The Dino Geometry Open Platform provides HTTP APIs for integrating AI geometry g
 | Capability | Use case | Endpoint |
 | --- | --- | --- |
 | **Intelligent Image Generation** | Generate interactive geometry from text or image input | [`POST /api/agent/run`](/en/api/agent) |
-| **Render to PNG** | Export an existing geometry project as a PNG image | [`POST /api/render/v2`](/en/api/render#render-v2) |
-| **Render to SVG** | Export an existing geometry project as a vector image | [`POST /api/render-svg`](/en/api/render) |
-| **Render to TikZ** | Export an existing geometry project as a LaTeX source file | [`POST /api/render-tikz`](/en/api/render) |
+| **Render to PNG** | Export an existing geometry project as a PNG image | [`POST /api/render/v2`](/en/api/render-v2) |
+| **Render to SVG** | Export an existing geometry project as a vector image | [`POST /api/render-svg`](/en/api/render-svg) |
+| **Render to TikZ** | Export an existing geometry project as a LaTeX source file | [`POST /api/render-tikz`](/en/api/render-tikz) |
 
 ## What you can build
 

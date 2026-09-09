@@ -8,7 +8,7 @@ description: Legacy PNG render endpoint parameters, examples, and migration to /
 **Base URL: `https://api.dajiaoai.com`**
 
 ::: warning Use the new endpoint
-`POST /api/render` remains available for existing integrations and supports only 2D PNG. Use [`POST /api/render/v2`](./render#render-v2) for new integrations and migrate existing calls when updating them.
+`POST /api/render` remains available for existing integrations and supports only 2D PNG. Use [`POST /api/render/v2`](./render-v2) for new integrations and migrate existing calls when updating them.
 :::
 
 ## Migrate to v2
@@ -32,7 +32,7 @@ This is a view-parameter fragment; include the required `content` in the request
 
 ## Legacy request parameters
 
-The legacy endpoint uses the same `Authorization`, `Content-Type`, and `x-request-id` headers, and the same `content`, `slideIndex`, and `template` fields as [the PNG v2 endpoint](./render#render-v2). It also accepts:
+The legacy endpoint uses the same `Authorization`, `Content-Type`, and `x-request-id` headers, and the same `content`, `slideIndex`, and `template` fields as [the PNG v2 endpoint](./render-v2). It also accepts:
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { decodeMarkdownSource } from '../markdownSource';
 import { useData } from 'vitepress';
 import { computed, onBeforeUnmount, ref } from 'vue';
 
@@ -196,9 +197,9 @@ async function copyDoc() {
   // Prefer the real markdown source injected into pageData by the
   // vitepress-raw-markdown plugin. Fall back to an HTTP fetch (works in some
   // dev setups) and finally to the rendered DOM text as a last resort.
-  const injectedMarkdown = (page.value as Record<string, unknown>).rawMarkdown;
+  const injectedMarkdown = (page.value as Record<string, unknown>).rawMarkdownEncoded;
   const rawMarkdown =
-    typeof injectedMarkdown === 'string' ? injectedMarkdown.trim() : '';
+    decodeMarkdownSource(injectedMarkdown).trim();
   const markdown = rawMarkdown || (await getMarkdownSource());
   const text = markdown || getDocText();
 

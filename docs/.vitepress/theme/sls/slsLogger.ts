@@ -586,7 +586,8 @@ export function enableAutoClickTracking() {
     (event) => {
       try {
         const target = event.target as Element;
-        if (!target) return;
+        // 可编辑的 API 请求区域包含凭据，不采集其输入值或响应内容。
+        if (!target || target.closest('[data-no-track]')) return;
 
         const elementText = getElementText(target);
         const elementSelector = getElementSelector(target);

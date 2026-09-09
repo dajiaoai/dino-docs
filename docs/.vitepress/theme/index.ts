@@ -5,6 +5,7 @@ import HeroIllustration from './HeroIllustration.vue';
 import HeroInfo from './HeroInfo.vue';
 import CopyDocButton from './CopyDocButton.vue';
 import UnitConverter from './UnitConverter.vue';
+import RenderPlayground from './RenderPlayground.vue';
 import CommunityQrCard from './CommunityQrCard.vue';
 import HomePlatform from './HomePlatform.vue';
 import {
@@ -25,6 +26,7 @@ export default {
     }),
   enhanceApp({ app }) {
     app.component('UnitConverter', UnitConverter);
+    app.component('RenderPlayground', RenderPlayground);
 
     if (typeof window === 'undefined') return;
 

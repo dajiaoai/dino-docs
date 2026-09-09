@@ -3,6 +3,7 @@ import { defineConfig } from 'vitepress';
 import type { HeadConfig } from 'vitepress';
 import type { Plugin } from 'vite';
 import { createSdkSidebar } from './sdkVersions';
+import { encodeMarkdownSource } from './markdownSource';
 
 const HOSTNAME = 'https://open.dajiaoai.com';
 const GA_ID = 'G-ZVQ5PXBPGG';
@@ -140,10 +141,11 @@ export default defineConfig({
       ]);
     }
 
-    // Attach the captured raw markdown so the Copy Doc button can copy
+    // Encode the captured markdown so embedded script tags remain inert.
+    // The Copy Doc button decodes it to copy
     // real markdown instead of the rendered (plain text) DOM content.
     const rawMarkdown = rawMarkdownMap.get(pageData.relativePath) ?? '';
-    return { rawMarkdown } as unknown as Partial<typeof pageData>;
+    return { rawMarkdownEncoded: encodeMarkdownSource(rawMarkdown) } as unknown as Partial<typeof pageData>;
   },
   locales: {
     root: {
@@ -240,7 +242,17 @@ export default defineConfig({
               text: '接口参考',
               items: [
                 { text: '智能生图服务', link: '/api/agent' },
-                { text: '渲染服务', link: '/api/render' },
+                {
+                  text: '渲染服务',
+                  collapsed: false,
+                  items: [
+                    { text: '概览', link: '/api/render' },
+                    { text: '导出 PNG', link: '/api/render-v2' },
+                    { text: '导出 SVG', link: '/api/render-svg' },
+                    { text: '导出 TikZ', link: '/api/render-tikz' },
+                    { text: '旧版 PNG 与迁移', link: '/api/api-render' },
+                  ],
+                },
                 { text: '模型说明', link: '/api/models' },
               ],
             },
@@ -433,7 +445,17 @@ export default defineConfig({
                   text: 'Intelligent Image Generation',
                   link: '/en/api/agent',
                 },
-                { text: 'Render API', link: '/en/api/render' },
+                {
+                  text: 'Render API',
+                  collapsed: false,
+                  items: [
+                    { text: 'Overview', link: '/en/api/render' },
+                    { text: 'Export PNG', link: '/en/api/render-v2' },
+                    { text: 'Export SVG', link: '/en/api/render-svg' },
+                    { text: 'Export TikZ', link: '/en/api/render-tikz' },
+                    { text: 'Legacy PNG & Migration', link: '/en/api/api-render' },
+                  ],
+                },
                 { text: 'Models', link: '/en/api/models' },
               ],
             },
