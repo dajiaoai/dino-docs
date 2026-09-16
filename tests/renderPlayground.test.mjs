@@ -65,3 +65,30 @@ test('numeric inputs produced by Vue preserve zero and accept edited dimensions'
   assert.deepEqual(body.view3D, { yaw: 0, obliqueScaleRatio: 0, width: 1280 });
   assert.throws(() => buildRequest(config({ mode: '3d', view3D: { width: 0 } })));
 });
+
+test('legacy requests use /api/render with viewBound and top-level output options', () => {
+  const request = buildRequest(config({ legacy: true, mode: '2d', slideIndex: 2, template: '{}', view2D: { left: 0, right: 10, bottom: -10, top: 10, scale: 50, pixelRatio: 2 } }));
+  assert.equal(request.url, 'https://api.dajiaoai.com/api/render');
+  assert.deepEqual(JSON.parse(request.body), {
+    content: { slides: [] }, slideIndex: 2, template: {},
+    viewBound: { left: 0, right: 10, bottom: -10, top: 10 }, scale: 50, pixelRatio: 2,
+  });
+  assert.equal(request.headers.Authorization, 'Bearer test-key');
+});
+
+test('legacy saved camera allows independent scale and pixelRatio overrides', () => {
+  assert.deepEqual(JSON.parse(buildRequest(config({ legacy: true })).body), { content: { slides: [] } });
+  for (const key of ['scale', 'pixelRatio']) {
+    assert.deepEqual(JSON.parse(buildRequest(config({ legacy: true, view2D: { [key]: '2' } })).body), { content: { slides: [] }, [key]: 2 });
+    for (const value of [0, -1, 'Infinity', 'abc']) {
+      assert.throws(() => buildRequest(config({ legacy: true, view2D: { [key]: value } })));
+    }
+  }
+});
+
+test('legacy rejects 3D and incomplete or inverted explicit bounds', () => {
+  for (const overrides of [
+    { mode: '3d' }, { mode: '2d', view2D: {} },
+    { mode: '2d', view2D: { left: 10, right: 0, bottom: -10, top: 10 } },
+  ]) assert.throws(() => buildRequest(config({ legacy: true, ...overrides })));
+});

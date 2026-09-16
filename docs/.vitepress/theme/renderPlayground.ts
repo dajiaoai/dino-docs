@@ -17,6 +17,7 @@ export const fields3D = [
   { key: 'pixelRatio', help: '输出设备像素比，正数；默认 1，物理宽高 = 逻辑宽高 × 此值。', placeholder: '1' },
 ];
 export interface PlaygroundInput {
+  legacy?: boolean;
   baseUrl: string;
   authorization: string;
   requestId: string;
@@ -46,6 +47,19 @@ export function buildBody(input: PlaygroundInput) {
   const body: Record<string, unknown> = { content: jsonObject(input.content, 'content') };
   if (String(input.slideIndex).trim()) body.slideIndex = numeric(input.slideIndex, 'slideIndex', true, true);
   if (input.template.trim()) body.template = jsonObject(input.template, 'template');
+  if (input.legacy) {
+    if (input.mode === '3d') throw new Error('旧版 PNG 接口仅支持 2D。');
+    if (input.mode === '2d') {
+      const bounds = Object.fromEntries(fields2D.slice(0, 4).map(({ key }) => [key, numeric(input.view2D[key] ?? '', `viewBound.${key}`)]));
+      if (!(bounds.left < bounds.right) || !(bounds.bottom < bounds.top)) throw new Error('viewBound 必须满足 left < right 且 bottom < top。');
+      body.viewBound = bounds;
+    }
+    for (const key of ['scale', 'pixelRatio']) {
+      const value = input.view2D[key] ?? '';
+      if (String(value).trim()) body[key] = numeric(value, key, true);
+    }
+    return body;
+  }
   if (input.mode !== 'auto') {
     const is2D = input.mode === '2d';
     const name = is2D ? 'view2D' : 'view3D';
@@ -84,7 +98,7 @@ export function buildRequest(input: PlaygroundInput) {
   if (input.authorization.trim()) headers.Authorization = input.authorization.trim();
   if (input.requestId.trim()) headers['x-request-id'] = input.requestId.trim();
   if (Object.values(headers).some(value => /[\r\n]/.test(value))) throw new Error('请求头不能包含换行。');
-  return { url: `${base.href.replace(/\/$/, '')}/api/render/v2`, headers, body: JSON.stringify(buildBody(input), null, 2) };
+  return { url: `${base.href.replace(/\/$/, '')}/api/render${input.legacy ? '' : '/v2'}`, headers, body: JSON.stringify(buildBody(input), null, 2) };
 }
 export function toCurl(request: ReturnType<typeof buildRequest>) {
   const quote = (s: string) => `'${s.replace(/'/g, `'"'"'`)}'`;

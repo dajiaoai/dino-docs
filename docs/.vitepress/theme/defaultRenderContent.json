@@ -1,0 +1,257 @@
+{
+  "messages": [],
+  "slides": [
+    {
+      "definitions": [
+        {
+          "kind": "primitive",
+          "id": "A",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "B",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "a",
+          "source": "Segment(A, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "C",
+          "source": "a.midpoint",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "b",
+          "source": "Arc(C, A, B)"
+        },
+        {
+          "kind": "primitive",
+          "id": "D",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "E",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "F",
+          "source": "Point(?, ?)",
+          "label": "{{id}}"
+        },
+        {
+          "kind": "primitive",
+          "id": "c",
+          "source": "Polygon([D, E, F])"
+        },
+        {
+          "kind": "primitive",
+          "id": "d",
+          "source": "c.edge(1)",
+          "parent": "c",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "f",
+          "source": "c.edge(2)",
+          "parent": "c",
+          "inheritStyle": true
+        },
+        {
+          "kind": "primitive",
+          "id": "g",
+          "source": "c.edge(3)",
+          "parent": "c",
+          "inheritStyle": true
+        }
+      ],
+      "uvarMap": [
+        [
+          "A.0",
+          -1.7920001220703128
+        ],
+        [
+          "A.1",
+          3.54400146484375
+        ],
+        [
+          "B.0",
+          -2.24
+        ],
+        [
+          "B.1",
+          -1.3679992675781252
+        ],
+        [
+          "D.0",
+          1.9999999999999996
+        ],
+        [
+          "D.1",
+          3.680001220703125
+        ],
+        [
+          "E.0",
+          -0.5040002441406255
+        ],
+        [
+          "E.1",
+          0.8240002441406249
+        ],
+        [
+          "F.0",
+          2.336002197265625
+        ],
+        [
+          "F.1",
+          -1.4959985351562501
+        ]
+      ],
+      "styleSheet": {
+        "background": {},
+        "xaxis": {},
+        "yaxis": {},
+        "xaxis3d": {},
+        "yaxis3d": {},
+        "zaxis3d": {},
+        "workingPlane": {},
+        "grid": {},
+        "types": [],
+        "typeLabels": [],
+        "primitives": [
+          [
+            "c",
+            {
+              "color": "#9C27B0",
+              "regionOpacity": 0,
+              "lineWidth": 16,
+              "lineOpacity": 100
+            }
+          ],
+          [
+            "b",
+            {
+              "lineOpacity": 100,
+              "color": "#388E3C",
+              "lineWidth": 16,
+              "regionOpacity": 0
+            }
+          ],
+          [
+            "a",
+            {
+              "lineOpacity": 100,
+              "color": "#388E3C",
+              "lineWidth": 16,
+              "regionOpacity": 0
+            }
+          ],
+          [
+            "D",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "E",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "F",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "B",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "C",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "A",
+            {
+              "hidden": true
+            }
+          ],
+          [
+            "d",
+            {
+              "regionOpacity": 0,
+              "lineOpacity": 100,
+              "lineWidth": 16
+            }
+          ],
+          [
+            "f",
+            {
+              "regionOpacity": 0,
+              "lineOpacity": 100,
+              "lineWidth": 16
+            }
+          ],
+          [
+            "g",
+            {
+              "regionOpacity": 0,
+              "lineOpacity": 100,
+              "lineWidth": 16
+            }
+          ]
+        ],
+        "primitiveLabels": [],
+        "typeLabels3d": [],
+        "primitiveLabels3d": [],
+        "textType": {},
+        "texts": [],
+        "sliderType": {},
+        "sliders": [],
+        "buttonType": {},
+        "buttons": [],
+        "types3d": [],
+        "primitives3d": [],
+        "imageType": {},
+        "images": [],
+        "elementLayers": []
+      },
+      "doc": [],
+      "camera": {
+        "kind": "2d",
+        "offset": [
+          0,
+          0
+        ],
+        "scale": 50
+      },
+      "viewBounds": {
+        "minX": -4.261999206542969,
+        "maxX": 4.4740014648437505,
+        "minY": -3.112000732421876,
+        "maxY": 5.175999755859376,
+        "scale": 50
+      }
+    }
+  ],
+  "metadata": {
+    "version": "11"
+  }
+}

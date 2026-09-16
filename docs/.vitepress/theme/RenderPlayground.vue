@@ -1,9 +1,17 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue';
-import { DEFAULT_PLAYGROUND_ENVIRONMENT, loadPlaygroundEnvironment, savePlaygroundEnvironment, resetPlaygroundEnvironment } from './playgroundEnvironment';
+import { DEFAULT_PLAYGROUND_ENVIRONMENT, loadPlaygroundEnvironment, savePlaygroundEnvironment } from './playgroundEnvironment';
 import { buildRequest, fields2D, fields3D, toCurl, type PlaygroundInput } from './renderPlayground';
+import defaultRenderContent from './defaultRenderContent.json';
 
+const defaultContent = JSON.stringify(defaultRenderContent, null, 2);
+const hasValue = (value: unknown) => value !== undefined && value !== null && String(value).length > 0;
+
+const props = defineProps<{ legacy?: boolean }>();
+const endpoint = computed(() => props.legacy ? '/api/render' : '/api/render/v2');
+const viewFields = computed(() => props.legacy ? fields2D.slice(0, 4) : fields2D);
 const dialog = ref<HTMLDialogElement>();
+const fullscreen = ref(false);
 const trigger = ref<HTMLButtonElement>();
 const responseSection = ref<HTMLElement>();
 const tab = ref('form');
@@ -17,7 +25,7 @@ const error = ref('');
 const response = ref<{ status: number; statusText: string; body: string; headers: string; elapsed: number }>();
 const input = reactive<PlaygroundInput>({
   ...DEFAULT_PLAYGROUND_ENVIRONMENT, requestId: '',
-  content: '', template: '', slideIndex: '', mode: 'auto',
+  content: defaultContent, template: '', slideIndex: '', mode: 'auto',
   view2D: { left: '-10', right: '10', bottom: '-10', top: '10', scale: '', pixelRatio: '' },
   view3D: {}, offset: '', projection: '',
 });
@@ -34,31 +42,23 @@ watch(() => [input.baseUrl, input.authorization], () => {
     ? 'Base URL 和 Authorization 已保存到当前浏览器，供本站 Playground 共用。'
     : '当前浏览器无法保存本地配置，本次仍可正常使用。';
 }, { flush: 'sync' });
-function resetEnvironment() {
-  restoreEnvironment({ ...DEFAULT_PLAYGROUND_ENVIRONMENT });
-  cacheMessage.value = resetPlaygroundEnvironment()
-    ? '已清除本地环境缓存，Base URL 和 Authorization 已恢复默认值。'
-    : '已恢复默认值，但当前浏览器无法清除本地缓存。';
-}
 const preview = computed(() => {
-  try { const request = buildRequest(input); return { request, curl: toCurl(request), error: '' }; }
+  try { const request = buildRequest({ ...input, legacy: props.legacy }); return { request, curl: toCurl(request), error: '' }; }
   catch (e) { return { request: undefined, curl: '', error: (e as Error).message }; }
 });
 let controller: AbortController | undefined;
-let previousOverflow = '';
 let isOpen = false;
 function open() {
+  if (isOpen) return;
   restoreEnvironment(loadPlaygroundEnvironment());
-  previousOverflow = document.body.style.overflow;
-  document.body.style.overflow = 'hidden';
   isOpen = true;
-  dialog.value?.showModal();
+  dialog.value?.show();
 }
 function closed() {
   if (!isOpen) return;
   isOpen = false;
+  fullscreen.value = false;
   controller?.abort();
-  document.body.style.overflow = previousOverflow;
   nextTick(() => trigger.value?.focus());
 }
 function close() { dialog.value?.close(); }
@@ -121,7 +121,7 @@ async function send() {
     error.value = timedOut ? '请求超过 120 秒，已停止等待。' : controller.signal.aborted ? '已取消请求。' : '无法读取响应。请检查环境地址、网络连接及服务的 CORS 配置，也可复制 cURL 在终端调用。';
   } finally { clearTimeout(timeout); busy.value = false; controller = undefined; }
 }
-onBeforeUnmount(() => { controller?.abort(); if (isOpen) document.body.style.overflow = previousOverflow; });
+onBeforeUnmount(() => { controller?.abort(); });
 </script>
 
 <template>
@@ -133,11 +133,21 @@ onBeforeUnmount(() => { controller?.abort(); if (isOpen) document.body.style.ove
       <span>体验</span>
       <svg class="trigger-arrow" aria-hidden="true" viewBox="0 0 20 20" width="18" height="18" fill="none"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
     </button>
-    <dialog ref="dialog" class="playground" aria-labelledby="playground-title" @close="closed" @click="($event.target === dialog) && close()">
+    <dialog ref="dialog" class="playground" :class="{ 'is-fullscreen': fullscreen }" aria-modal="false" aria-labelledby="playground-title" @close="closed" @keydown.esc.stop="fullscreen ? fullscreen = false : close()">
       <div class="panel">
         <header class="panel-header">
-          <div><span class="eyebrow">API PLAYGROUND</span><h2 id="playground-title">导出 PNG</h2><p><b>POST</b> /api/render/v2</p></div>
-          <button class="close" type="button" aria-label="关闭 Playground" autofocus @click="close">×</button>
+          <div><span class="eyebrow">API PLAYGROUND</span><h2 id="playground-title">{{ legacy ? '旧版 PNG 接口' : '导出 PNG' }}</h2><p><b>POST</b> {{ endpoint }}</p></div>
+          <div class="panel-actions">
+            <button class="fullscreen-toggle" type="button" :aria-label="fullscreen ? '退出全屏' : '全屏'" :title="fullscreen ? '退出全屏' : '全屏'" :aria-pressed="fullscreen" @click="fullscreen = !fullscreen">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path v-if="fullscreen" d="M4 9h5V4m6 0v5h5M4 15h5v5m6 0v-5h5" />
+                <path v-else d="M9 4H4v5m11-5h5v5M4 15v5h5m6 0h5v-5" />
+              </svg>
+            </button>
+            <button class="close" type="button" aria-label="关闭 Playground" autofocus @click="close">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+            </button>
+          </div>
         </header>
         <div class="tabs" aria-label="请求视图">
           <button type="button" :aria-pressed="tab === 'form'" @click="tab = 'form'">请求配置</button>
@@ -145,29 +155,32 @@ onBeforeUnmount(() => { controller?.abort(); if (isOpen) document.body.style.ove
         </div>
         <div class="panel-content">
           <div v-show="tab === 'form'">
-            <fieldset><legend class="environment-heading">环境配置<button type="button" @click="resetEnvironment">重置</button></legend>
+            <fieldset><legend>环境配置</legend>
               <p class="hint" role="status">{{ cacheMessage }}</p>
-              <label><span class="field-name">Base URL</span><input v-model="input.baseUrl" type="url" spellcheck="false" /><small>服务地址，请求路径固定为 /api/render/v2。</small></label>
+              <label><span class="field-name">Base URL</span><button v-if="hasValue(input.baseUrl)" class="field-reset" type="button" aria-label="重置 baseUrl" @click.prevent="input.baseUrl = ''">重置</button><input v-model="input.baseUrl" type="url" spellcheck="false" /><small>服务地址，请求路径固定为 {{ endpoint }}。</small></label>
             </fieldset>
             <fieldset><legend>请求头配置</legend>
-              <label><span class="field-name">Authorization</span> <em class="required">必填</em><input v-model="input.authorization" type="password" placeholder="Bearer djo_xxx" autocomplete="off" spellcheck="false" /><small>Bearer API Key，格式为 Bearer &lt;API_KEY&gt;。<a href="/api/auth.html" target="_blank" rel="noopener noreferrer">如何鉴权？</a></small></label>
+              <label><span class="field-name">Authorization</span> <em class="required">必填</em><button v-if="hasValue(input.authorization)" class="field-reset" type="button" aria-label="重置 authorization" @click.prevent="input.authorization = ''">重置</button><input v-model="input.authorization" type="password" placeholder="Bearer djo_xxx" autocomplete="off" spellcheck="false" /><small>Bearer API Key，格式为 Bearer &lt;API_KEY&gt;。<a href="/api/auth.html" target="_blank" rel="noopener noreferrer">如何鉴权？</a></small></label>
               <label>Content-Type<input value="application/json" readonly /><small>接口固定接收 application/json。</small></label>
-              <label><span class="field-name">x-request-id</span> <em>可选</em><input v-model="input.requestId" placeholder="留空自动生成 UUID" /><small>业务请求标识，省略时由服务生成。</small></label>
+              <label><span class="field-name">x-request-id</span> <em>可选</em><button v-if="hasValue(input.requestId)" class="field-reset" type="button" aria-label="重置 requestId" @click.prevent="input.requestId = ''">重置</button><input v-model="input.requestId" placeholder="留空自动生成 UUID" /><small>业务请求标识，省略时由服务生成。</small></label>
             </fieldset>
             <fieldset><legend>请求体配置</legend>
-              <label><span class="field-name">content</span> <em><span class="required">必填</span> · FileContentLatest</em><small>完整项目内容，对应文档中的 content。粘贴 JSON 或导入 .algeo 文件。</small><textarea v-model="input.content" rows="8" placeholder="粘贴完整项目 JSON" spellcheck="false" /></label>
+              <label><span class="field-name">content</span> <em><span class="required">必填</span> · FileContentLatest</em><span class="content-actions"><button class="field-reset" type="button" title="恢复默认项目 content" @click.prevent="input.content = defaultContent">重置</button><button v-if="hasValue(input.content)" class="field-reset" type="button" aria-label="清空 content" @click.prevent="input.content = ''">清空</button></span><small>完整项目内容，对应文档中的 content。粘贴 JSON 或导入 .algeo 文件。</small><textarea v-model="input.content" rows="8" placeholder="粘贴完整项目 JSON" spellcheck="false" /></label>
               <label class="file-label">导入项目<input type="file" accept=".algeo,.json,application/json" @change="importContent" /></label>
-              <label><span class="field-name">slideIndex</span> <em>可选 · number</em><input v-model="input.slideIndex" type="number" min="1" step="1" placeholder="1" /><small>从 1 开始的画板序号，留空使用默认值 1。</small></label>
-              <label><span class="field-name">template</span> <em>可选 · object</em><textarea v-model="input.template" rows="3" placeholder="留空沿用目标画板样式" spellcheck="false" /><small>渲染母版 JSON 对象，可从大角几何母版页面下载。</small></label>
-              <label><span class="field-name">视图模式</span><select v-model="input.mode"><option value="auto">自动 · 使用画板保存的相机</option><option value="2d">view2D · 指定 2D 视口</option><option value="3d">view3D · 指定 3D 相机</option></select><small>view2D 与 view3D 互斥；自动模式不发送这两个字段。</small></label>
+              <label><span class="field-name">slideIndex</span> <em>可选 · number</em><button v-if="hasValue(input.slideIndex)" class="field-reset" type="button" aria-label="重置 slideIndex" @click.prevent="input.slideIndex = ''">重置</button><input v-model="input.slideIndex" type="number" min="1" step="1" placeholder="1" /><small>从 1 开始的画板序号，留空使用默认值 1。</small></label>
+              <label><span class="field-name">template</span> <em>可选 · object</em><button v-if="hasValue(input.template)" class="field-reset" type="button" aria-label="重置 template" @click.prevent="input.template = ''">重置</button><textarea v-model="input.template" rows="3" placeholder="留空沿用目标画板样式" spellcheck="false" /><small>渲染母版 JSON 对象，可从大角几何母版页面下载。</small></label>
+              <label><span class="field-name">视图模式</span><button v-if="input.mode !== 'auto'" class="field-reset" type="button" aria-label="重置视图模式" @click.prevent="input.mode = 'auto'">重置</button><select v-model="input.mode"><option value="auto">自动 · 使用画板保存的相机</option><option value="2d">{{ legacy ? 'viewBound' : 'view2D' }} · 指定 2D 视口</option><option v-if="!legacy" value="3d">view3D · 指定 3D 相机</option></select><small>{{ legacy ? '仅支持 2D PNG；自动模式省略 viewBound，使用画板保存的视口。' : 'view2D 与 view3D 互斥；自动模式不发送这两个字段。' }}</small></label>
               <div v-if="input.mode === '2d'" class="fields">
-                <label v-for="field in fields2D" :key="field.key"><span class="field-name">view2D.{{ field.key }}</span><input v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></label>
+                <label v-for="field in viewFields" :key="field.key"><span class="field-name">{{ legacy ? 'viewBound' : 'view2D' }}.{{ field.key }}</span><button v-if="hasValue(input.view2D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view2D[field.key] = ''">重置</button><input v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></label>
               </div>
-              <template v-if="input.mode === '3d'">
+              <div v-if="legacy" class="fields">
+                <label v-for="field in fields2D.slice(4)" :key="field.key"><span class="field-name">{{ field.key }}</span> <em>可选 · number</em><button v-if="hasValue(input.view2D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view2D[field.key] = ''">重置</button><input v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></label>
+              </div>
+              <template v-if="!legacy && input.mode === '3d'">
                 <p class="hint">强制 3D 渲染。目标画板需为 3D 画板；所有相机属性均可选。</p>
-                <label><span class="field-name">view3D.offset</span><input v-model="input.offset" placeholder="[0, 0, 0]" /><small>相机中心，[x, y, z] 数组；留空沿用画板。</small></label>
-                <label><span class="field-name">view3D.projection</span><select v-model="input.projection"><option value="">沿用画板</option><option value="orthographic">orthographic · 正交投影</option><option value="perspective">perspective · 透视投影</option><option value="oblique">oblique · 斜投影</option></select><small>投影模式，留空沿用目标画板保存值。</small></label>
-                <div class="fields"><label v-for="field in fields3D" :key="field.key"><span class="field-name">view3D.{{ field.key }}</span><input v-model="input.view3D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></label></div>
+                <label><span class="field-name">view3D.offset</span><button v-if="hasValue(input.offset)" class="field-reset" type="button" aria-label="重置 offset" @click.prevent="input.offset = ''">重置</button><input v-model="input.offset" placeholder="[0, 0, 0]" /><small>相机中心，[x, y, z] 数组；留空沿用画板。</small></label>
+                <label><span class="field-name">view3D.projection</span><button v-if="hasValue(input.projection)" class="field-reset" type="button" aria-label="重置 projection" @click.prevent="input.projection = ''">重置</button><select v-model="input.projection"><option value="">沿用画板</option><option value="orthographic">orthographic · 正交投影</option><option value="perspective">perspective · 透视投影</option><option value="oblique">oblique · 斜投影</option></select><small>投影模式，留空沿用目标画板保存值。</small></label>
+                <div class="fields"><label v-for="field in fields3D" :key="field.key"><span class="field-name">view3D.{{ field.key }}</span><button v-if="hasValue(input.view3D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view3D[field.key] = ''">重置</button><input v-model="input.view3D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></label></div>
               </template>
             </fieldset>
           </div>
@@ -195,7 +208,7 @@ onBeforeUnmount(() => { controller?.abort(); if (isOpen) document.body.style.ove
             <p v-else-if="!busy && !error" class="empty">发送请求后，在这里查看 HTTP 状态码和响应内容。</p>
           </section>
         </div>
-        <footer><span>POST /api/render/v2</span><button v-if="busy" type="button" @click="controller?.abort()">取消</button><button class="launch" type="button" :disabled="busy" @click="send">{{ busy ? '发送中…' : '发送请求' }}</button></footer>
+        <footer><span>POST {{ endpoint }}</span><button v-if="busy" type="button" @click="controller?.abort()">取消</button><button class="launch" type="button" :disabled="busy" @click="send">{{ busy ? '发送中…' : '发送请求' }}</button></footer>
       </div>
     </dialog>
   </div>
@@ -206,12 +219,12 @@ onBeforeUnmount(() => { controller?.abort(); if (isOpen) document.body.style.ove
 .playground-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  min-height: 46px;
-  margin: 8px 0 16px;
-  padding: 8px 16px 8px 10px;
+  gap: 8px;
+  min-height: 36px;
+  margin: 20px 0 16px;
+  padding: 6px 12px 6px 8px;
   border: 1px solid rgb(255 255 255 / 18%);
-  border-radius: 12px;
+  border-radius: 8px;
   background: linear-gradient(135deg, #008c6c, #006c58);
   color: #fff;
   box-shadow: 0 3px 8px rgb(0 108 88 / 16%), inset 0 1px 0 rgb(255 255 255 / 12%);
@@ -221,15 +234,17 @@ onBeforeUnmount(() => { controller?.abort(); if (isOpen) document.body.style.ove
   cursor: pointer;
   transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
 }
-.trigger-icon { display: grid; place-items: center; width: 28px; height: 28px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 8px; background: rgb(255 255 255 / 12%); }
-.trigger-arrow { margin-left: 8px; opacity: .75; transition: transform .18s ease, opacity .18s ease; }
+.trigger-icon { display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 6px; background: rgb(255 255 255 / 12%); }
+.trigger-icon svg, .trigger-arrow { width: 16px; height: 16px; }
+.trigger-arrow { margin-left: 4px; opacity: .75; transition: transform .18s ease, opacity .18s ease; }
 @media (hover: hover) {
   .playground-trigger:hover { transform: translateY(-1px); filter: brightness(1.08); box-shadow: 0 6px 16px rgb(0 108 88 / 24%), inset 0 1px 0 rgb(255 255 255 / 16%); }
   .playground-trigger:hover .trigger-arrow { transform: translateX(2px); opacity: 1; }
 }
 .playground-trigger:active { transform: translateY(0); filter: brightness(.96); box-shadow: 0 1px 4px rgb(0 108 88 / 16%); }
 .playground { position: fixed; inset: 0 0 0 auto; width: min(680px, 100vw); max-width: 100vw; height: 100dvh; max-height: 100dvh; margin: 0; padding: 0; border: 0; border-left: 1px solid var(--vp-c-divider); background: var(--vp-c-bg); color: var(--vp-c-text-1); box-shadow: -12px 0 48px #0002; font-size: 14px; line-height: 1.6; }
-.playground::backdrop { background: #0005; }
+.playground { z-index: 100; }
+.playground.is-fullscreen { width: 100vw; border-left: 0; }
 .playground[open] { animation: slide-in .2s ease-out; }
 .panel { display: flex; flex-direction: column; height: 100%; }
 .panel-header { display: flex; justify-content: space-between; align-items: flex-start; padding: 24px 28px 16px; }
@@ -238,16 +253,23 @@ onBeforeUnmount(() => { controller?.abort(); if (isOpen) document.body.style.ove
 .playground h3 { margin: 0; font-size: 16px; }
 .panel-header p { margin: 0; font-family: var(--vp-font-family-mono); }
 .panel-header b { color: var(--vp-c-brand-1); margin-right: 8px; }
-.close { font-size: 28px; width: 40px; height: 40px; border-radius: 8px; cursor: pointer; }
+.close, .fullscreen-toggle { display: grid; place-items: center; width: 40px; height: 40px; padding: 0; line-height: 1; border-radius: 50%; cursor: pointer; }
+.panel-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+.panel-actions svg { display: block; }
+.panel-actions button { color: var(--vp-c-text-2); transition: background-color .15s ease; }
+.panel-actions button:hover { background: rgba(128, 128, 128, .12); }
+@media (prefers-reduced-motion: reduce) { .panel-actions button { transition: none; } }
 .tabs { display: flex; gap: 20px; padding: 0 28px; border-bottom: 1px solid var(--vp-c-divider); }
 .tabs button { padding: 10px 0; border-bottom: 2px solid transparent; color: var(--vp-c-text-2); cursor: pointer; }
 .tabs button[aria-pressed="true"] { color: var(--vp-c-brand-1); border-color: var(--vp-c-brand-1); }
 .panel-content { flex: 1; overflow-y: auto; overscroll-behavior: contain; padding: 24px 28px; }
 fieldset { min-width: 0; margin: 0 0 24px; padding: 0; border: 0; }
 legend { width: 100%; font-size: 16px; font-weight: 600; margin-bottom: 16px; border-bottom: 1px solid var(--vp-c-divider); padding-bottom: 10px; }
-.environment-heading { display: flex; justify-content: space-between; align-items: center; }
-.environment-heading button { font-size: 13px; font-weight: 400; color: var(--vp-c-brand-1); cursor: pointer; }
 .field-name { color: #2563eb; }
+.field-reset { float: right; padding: 0 4px; color: var(--vp-c-text-2); font-size: 12px; font-weight: 400; cursor: pointer; border-radius: 4px; }
+.field-reset:hover { color: var(--vp-c-brand-1); background: var(--vp-c-bg-soft); }
+.content-actions { float: right; display: inline-flex; gap: 8px; }
+.content-actions .field-reset { float: none; }
 :global(.dark) .field-name { color: #60a5fa; }
 label { display: block; font-weight: 500; margin-bottom: 16px; }
 em { margin-left: 6px; font-style: normal; font-size: 12px; font-weight: 400; color: var(--vp-c-text-3); }
