@@ -5,9 +5,9 @@ description: HTTP API for exporting TikZ, including request parameters, examples
 
 # Export TikZ
 
-`POST /api/render-tikz`
+**Base URL:** `https://api.dajiaoai.com`
 
-**Base URL: `https://api.dajiaoai.com`**
+**Endpoint:** `POST /api/render-tikz`
 
 The API accepts a project payload conforming to the [Dino-GSP project file protocol](/en/reference/algeo-file-protocol), renders a specified slide, and returns the exported file URL and metadata.
 

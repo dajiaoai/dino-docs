@@ -3,9 +3,11 @@ title: Legacy PNG API
 description: Legacy PNG render endpoint parameters, examples, and migration to /api/render/v2.
 ---
 
-# Legacy PNG endpoint `POST /api/render` {#render-legacy}
+# Legacy PNG endpoint {#render-legacy}
 
-**Base URL: `https://api.dajiaoai.com`**
+**Base URL:** `https://api.dajiaoai.com`
+
+**Endpoint:** `POST /api/render`
 
 ::: warning Use the new endpoint
 `POST /api/render` remains available for existing integrations and supports only 2D PNG. Use [`POST /api/render/v2`](./render-v2) for new integrations and migrate existing calls when updating them.

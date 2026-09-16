@@ -5,7 +5,7 @@ description: 描述大角几何开放平台智能生图接口，支持异步任�
 
 # 智能生图接口
 
-**Base URL：`https://api.dajiaoai.com`**
+**Base URL：** `https://api.dajiaoai.com`
 
 本文档描述大角几何开放平台 Agent 任务接口。
 

@@ -5,7 +5,7 @@ description: Describe the Dino Geometry Open Platform HTTP render API that suppo
 
 # Render API
 
-**Base URL: `https://api.dajiaoai.com`**
+**Base URL:** `https://api.dajiaoai.com`
 
 The API accepts a project payload conforming to the [Dino-GSP project file protocol](/en/reference/algeo-file-protocol), renders a specified slide, and returns the exported file URL and metadata.
 

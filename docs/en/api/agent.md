@@ -5,7 +5,7 @@ description: Describe Dino Geometry open platform intelligent image generation A
 
 # Intelligent Image Generation Service
 
-**Base URL: `https://api.dajiaoai.com`**
+**Base URL:** `https://api.dajiaoai.com`
 
 This document describes the Agent task API provided by the Dino Geometry Open Platform.
 

@@ -3,9 +3,11 @@ title: 旧版 PNG 接口
 description: 旧版 PNG 渲染接口参数、请求示例及迁移到 /api/render/v2 的说明。
 ---
 
-# 旧版 PNG 接口 `POST /api/render` {#render-legacy}
+# 旧版 PNG 接口 {#render-legacy}
 
-**Base URL：`https://api.dajiaoai.com`**
+**Base URL：** `https://api.dajiaoai.com`
+
+**接口地址：** `POST /api/render`
 
 ::: warning 推荐迁移到新版本
 `POST /api/render` 保留用于兼容已有接入，仅支持 2D PNG。新接入请使用 [`POST /api/render/v2`](./render-v2)，已有调用建议在更新时迁移。

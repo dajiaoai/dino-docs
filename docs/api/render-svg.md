@@ -5,9 +5,9 @@ description: SVG 导出接口的请求参数、调用示例和响应说明。
 
 # 导出 SVG
 
-`POST /api/render-svg`
+**Base URL：** `https://api.dajiaoai.com`
 
-**Base URL：`https://api.dajiaoai.com`**
+**接口地址：** `POST /api/render-svg`
 
 接口接收一个符合[大角工程文件（.algeo）数据协议](/reference/algeo-file-protocol)的项目内容，渲染指定画板并返回导出文件地址与元数据。
 

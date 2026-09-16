@@ -5,7 +5,7 @@ description: 描述大角几何开放平台 HTTP 渲染接口，支持 PNG、SVG
 
 # 渲染接口
 
-**Base URL：`https://api.dajiaoai.com`**
+**Base URL：** `https://api.dajiaoai.com`
 
 接口接收一个符合[大角工程文件（.algeo）数据协议](/reference/algeo-file-protocol)的项目内容，渲染指定画板并返回导出文件地址与元数据。
 
