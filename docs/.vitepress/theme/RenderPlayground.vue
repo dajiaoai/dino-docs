@@ -157,7 +157,7 @@ onBeforeUnmount(() => { controller?.abort(); });
           <div v-show="tab === 'form'">
             <fieldset><legend>环境配置</legend>
               <p class="hint" role="status">{{ cacheMessage }}</p>
-              <label><span class="field-name">Base URL</span><button v-if="hasValue(input.baseUrl)" class="field-reset" type="button" aria-label="重置 baseUrl" @click.prevent="input.baseUrl = ''">重置</button><input v-model="input.baseUrl" type="url" spellcheck="false" /><small>服务地址，请求路径固定为 {{ endpoint }}。</small></label>
+              <label><span class="field-name">Base URL</span><button v-if="hasValue(input.baseUrl)" class="field-reset" type="button" aria-label="重置 baseUrl" @click.prevent="input.baseUrl = DEFAULT_PLAYGROUND_ENVIRONMENT.baseUrl">重置</button><input v-model="input.baseUrl" type="url" spellcheck="false" /><small>服务地址，请求路径固定为 {{ endpoint }}。</small></label>
             </fieldset>
             <fieldset><legend>请求头配置</legend>
               <label><span class="field-name">Authorization</span> <em class="required">必填</em><button v-if="hasValue(input.authorization)" class="field-reset" type="button" aria-label="重置 authorization" @click.prevent="input.authorization = ''">重置</button><input v-model="input.authorization" type="password" placeholder="Bearer djo_xxx" autocomplete="off" spellcheck="false" /><small>Bearer API Key，格式为 Bearer &lt;API_KEY&gt;。<a href="/api/auth.html" target="_blank" rel="noopener noreferrer">如何鉴权？</a></small></label>
