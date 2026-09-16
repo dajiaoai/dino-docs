@@ -293,6 +293,10 @@ export default defineConfig({
               text: '2026 年',
               items: [
                 {
+                  text: 'API 支持立体几何渲染',
+                  link: '/announcements/2026-09-16-3d-rendering-api',
+                },
+                {
                   text: 'MCP 与 SDK 支持立体几何图片渲染',
                   link: '/announcements/2026-09-02-3d-rendering-api-mcp-sdk',
                 },
@@ -498,6 +502,10 @@ export default defineConfig({
             {
               text: '2026',
               items: [
+                {
+                  text: 'API Support for 3D Geometry Rendering',
+                  link: '/en/announcements/2026-09-16-3d-rendering-api',
+                },
                 {
                   text: 'Intelligent Image Generation API Pricing Update',
                   link: '/en/announcements/2026-09-01-api-pricing-reduction',

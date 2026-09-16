@@ -9,6 +9,7 @@ This page collects important Dino-GSP Open Platform updates, including new capab
 
 ## September 2026
 
+- **New capability** · 2026-09-16 · [API Support for 3D Geometry Rendering](./2026-09-16-3d-rendering-api)
 - **Billing change** · 2026-08-27 · [Intelligent Image Generation API Pricing Update: Stronger Foundation Models, Lower Costs](./2026-09-01-api-pricing-reduction)
 
 ## August 2026
