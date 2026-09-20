@@ -5,7 +5,7 @@ description: PNG 导出接口的请求参数、调用示例和响应说明。
 
 # 导出 PNG
 
-<RenderPlayground />
+<RenderPlayground variant="png-v2" />
 
 **Base URL：** `https://api.dajiaoai.com`
 

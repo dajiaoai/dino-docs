@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue';
 import { DEFAULT_PLAYGROUND_ENVIRONMENT, loadPlaygroundEnvironment, savePlaygroundEnvironment } from './playgroundEnvironment';
-import { buildRequest, fields2D, fields3D, toCurl, type PlaygroundInput } from './renderPlayground';
+import { buildRequest, toCurl, type PlaygroundInput } from './renderPlayground';
+import { getRenderPlaygroundConfig, type RenderPlaygroundVariant } from './renderPlaygroundConfig';
 import defaultRenderContent from './defaultRenderContent.json';
 
 const defaultContent = JSON.stringify(defaultRenderContent, null, 2);
 const hasValue = (value: unknown) => value !== undefined && value !== null && String(value).length > 0;
 
-const props = defineProps<{ legacy?: boolean }>();
-const endpoint = computed(() => props.legacy ? '/api/render' : '/api/render/v2');
-const fieldId = (name: string) => `render-${props.legacy ? 'legacy' : 'v2'}-${name}`;
-const viewFields = computed(() => props.legacy ? fields2D.slice(0, 4) : fields2D);
+const props = withDefaults(defineProps<{ variant?: RenderPlaygroundVariant }>(), { variant: 'png-v2' });
+const playground = computed(() => getRenderPlaygroundConfig(props.variant));
+const supports3D = computed(() => playground.value.modes.includes('3d'));
+const view3DFields = computed(() => playground.value.view3D?.fields ?? []);
+const viewModeHint = computed(() => supports3D.value
+  ? 'view2D 与 view3D 互斥；自动模式不发送这两个字段。'
+  : `仅支持 2D ${playground.value.outputLabel}；自动模式省略 ${playground.value.view2D.requestKey}，使用画板保存的视口。`);
+const fieldId = (name: string) => `render-${props.variant}-${name}`;
 const dialog = ref<HTMLDialogElement>();
 const fullscreen = ref(false);
 const trigger = ref<HTMLButtonElement>();
@@ -44,7 +49,7 @@ watch(() => [input.baseUrl, input.authorization], () => {
     : '当前浏览器无法保存本地配置，本次仍可正常使用。';
 }, { flush: 'sync' });
 const preview = computed(() => {
-  try { const request = buildRequest({ ...input, legacy: props.legacy }); return { request, curl: toCurl(request), error: '' }; }
+  try { const request = buildRequest({ ...input, variant: props.variant }); return { request, curl: toCurl(request), error: '' }; }
   catch (e) { return { request: undefined, curl: '', error: (e as Error).message }; }
 });
 let controller: AbortController | undefined;
@@ -137,7 +142,7 @@ onBeforeUnmount(() => { controller?.abort(); });
     <dialog ref="dialog" class="playground" :class="{ 'is-fullscreen': fullscreen }" aria-modal="false" aria-labelledby="playground-title" @close="closed" @keydown.esc.stop="fullscreen ? fullscreen = false : close()">
       <div class="panel">
         <header class="panel-header">
-          <div><span class="eyebrow">API PLAYGROUND</span><h2 id="playground-title">{{ legacy ? '旧版 PNG 接口' : '导出 PNG' }}</h2><p><b>POST</b> {{ endpoint }}</p></div>
+          <div><span class="eyebrow">API PLAYGROUND</span><h2 id="playground-title">{{ playground.title }}</h2><p><b>POST</b> {{ playground.endpoint }}</p></div>
           <div class="panel-actions">
             <button class="fullscreen-toggle" type="button" :aria-label="fullscreen ? '退出全屏' : '全屏'" :title="fullscreen ? '退出全屏' : '全屏'" :aria-pressed="fullscreen" @click="fullscreen = !fullscreen">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -158,7 +163,7 @@ onBeforeUnmount(() => { controller?.abort(); });
           <div v-show="tab === 'form'">
             <fieldset><legend>环境配置</legend>
               <p class="hint" role="status">{{ cacheMessage }}</p>
-              <div class="field-control"><label class="field-name" :for="fieldId('baseUrl')">Base URL</label><button v-if="hasValue(input.baseUrl)" class="field-reset" type="button" aria-label="重置 baseUrl" @click.prevent="input.baseUrl = DEFAULT_PLAYGROUND_ENVIRONMENT.baseUrl">重置</button><input :id="fieldId('baseUrl')" v-model="input.baseUrl" type="url" spellcheck="false" /><small>服务地址，请求路径固定为 {{ endpoint }}。</small></div>
+              <div class="field-control"><label class="field-name" :for="fieldId('baseUrl')">Base URL</label><button v-if="hasValue(input.baseUrl)" class="field-reset" type="button" aria-label="重置 baseUrl" @click.prevent="input.baseUrl = DEFAULT_PLAYGROUND_ENVIRONMENT.baseUrl">重置</button><input :id="fieldId('baseUrl')" v-model="input.baseUrl" type="url" spellcheck="false" /><small>服务地址，请求路径固定为 {{ playground.endpoint }}。</small></div>
             </fieldset>
             <fieldset><legend>请求头配置</legend>
               <div class="field-control"><label class="field-name" :for="fieldId('authorization')">Authorization</label> <em class="required">必填</em><button v-if="hasValue(input.authorization)" class="field-reset" type="button" aria-label="重置 authorization" @click.prevent="input.authorization = ''">重置</button><input :id="fieldId('authorization')" v-model="input.authorization" type="password" placeholder="Bearer djo_xxx" autocomplete="off" spellcheck="false" /><small>Bearer API Key，格式为 Bearer &lt;API_KEY&gt;。<a href="/api/auth.html" target="_blank" rel="noopener noreferrer">如何鉴权？</a></small></div>
@@ -170,19 +175,19 @@ onBeforeUnmount(() => { controller?.abort(); });
               <label class="file-label">导入项目<input type="file" accept=".algeo,.json,application/json" @change="importContent" /></label>
               <div class="field-control"><label class="field-name" :for="fieldId('slideIndex')">slideIndex</label> <em>可选 · number</em><button v-if="hasValue(input.slideIndex)" class="field-reset" type="button" aria-label="重置 slideIndex" @click.prevent="input.slideIndex = ''">重置</button><input :id="fieldId('slideIndex')" v-model="input.slideIndex" type="number" min="1" step="1" placeholder="1" /><small>从 1 开始的画板序号，留空使用默认值 1。</small></div>
               <div class="field-control"><label class="field-name" :for="fieldId('template')">template</label> <em>可选 · object</em><button v-if="hasValue(input.template)" class="field-reset" type="button" aria-label="重置 template" @click.prevent="input.template = ''">重置</button><textarea :id="fieldId('template')" v-model="input.template" rows="3" placeholder="留空沿用目标画板样式" spellcheck="false" /><small>渲染母版 JSON 对象，可从大角几何母版页面下载。</small></div>
-              <label class="checkbox-field"><input v-model="input.transparent" type="checkbox" /><span><span class="field-name">transparent</span> <em>可选 · boolean</em><small>开启后跳过背景色填充，导出带 Alpha 通道的 PNG；网格、坐标轴和其他内容不受影响。</small></span></label>
-              <div class="field-control"><label class="field-name" :for="fieldId('mode')">视图模式</label><button v-if="input.mode !== 'auto'" class="field-reset" type="button" aria-label="重置视图模式" @click.prevent="input.mode = 'auto'">重置</button><select :id="fieldId('mode')" v-model="input.mode"><option value="auto">自动 · 使用画板保存的相机</option><option value="2d">{{ legacy ? 'viewBound' : 'view2D' }} · 指定 2D 视口</option><option v-if="!legacy" value="3d">view3D · 指定 3D 相机</option></select><small>{{ legacy ? '仅支持 2D PNG；自动模式省略 viewBound，使用画板保存的视口。' : 'view2D 与 view3D 互斥；自动模式不发送这两个字段。' }}</small></div>
+              <label class="checkbox-field"><input v-model="input.transparent" type="checkbox" /><span><span class="field-name">transparent</span> <em>可选 · boolean</em><small>是否跳过背景色填充。</small></span></label>
+              <div class="field-control"><label class="field-name" :for="fieldId('mode')">视图模式</label><button v-if="input.mode !== 'auto'" class="field-reset" type="button" aria-label="重置视图模式" @click.prevent="input.mode = 'auto'">重置</button><select :id="fieldId('mode')" v-model="input.mode"><option value="auto">自动 · 使用画板保存的相机</option><option value="2d">{{ playground.view2D.requestKey }} · 指定 2D 视口</option><option v-if="supports3D" value="3d">view3D · 指定 3D 相机</option></select><small>{{ viewModeHint }}</small></div>
               <div v-if="input.mode === '2d'" class="fields">
-                <div class="field-control" v-for="field in viewFields" :key="field.key"><label class="field-name" :for="fieldId('view2D.' + field.key)">{{ legacy ? 'viewBound' : 'view2D' }}.{{ field.key }}</label><button v-if="hasValue(input.view2D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view2D[field.key] = ''">重置</button><input :id="fieldId('view2D.' + field.key)" v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div>
+                <div class="field-control" v-for="field in playground.view2D.fields" :key="field.key"><label class="field-name" :for="fieldId('view2D.' + field.key)">{{ playground.view2D.requestKey }}.{{ field.key }}</label><button v-if="hasValue(input.view2D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view2D[field.key] = ''">重置</button><input :id="fieldId('view2D.' + field.key)" v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div>
               </div>
-              <div v-if="legacy" class="fields">
-                <div class="field-control" v-for="field in fields2D.slice(4)" :key="field.key"><label class="field-name" :for="fieldId('view2D.' + field.key)">{{ field.key }}</label> <em>可选 · number</em><button v-if="hasValue(input.view2D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view2D[field.key] = ''">重置</button><input :id="fieldId('view2D.' + field.key)" v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div>
+              <div v-if="playground.view2D.topLevelFields.length" class="fields">
+                <div class="field-control" v-for="field in playground.view2D.topLevelFields" :key="field.key"><label class="field-name" :for="fieldId('view2D.' + field.key)">{{ field.key }}</label> <em>可选 · number</em><button v-if="hasValue(input.view2D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view2D[field.key] = ''">重置</button><input :id="fieldId('view2D.' + field.key)" v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div>
               </div>
-              <template v-if="!legacy && input.mode === '3d'">
+              <template v-if="playground.view3D && input.mode === '3d'">
                 <p class="hint">强制 3D 渲染。目标画板需为 3D 画板；所有相机属性均可选。</p>
                 <div class="field-control"><label class="field-name" :for="fieldId('offset')">view3D.offset</label><button v-if="hasValue(input.offset)" class="field-reset" type="button" aria-label="重置 offset" @click.prevent="input.offset = ''">重置</button><input :id="fieldId('offset')" v-model="input.offset" placeholder="[0, 0, 0]" /><small>相机中心，[x, y, z] 数组；留空沿用画板。</small></div>
                 <div class="field-control"><label class="field-name" :for="fieldId('projection')">view3D.projection</label><button v-if="hasValue(input.projection)" class="field-reset" type="button" aria-label="重置 projection" @click.prevent="input.projection = ''">重置</button><select :id="fieldId('projection')" v-model="input.projection"><option value="">沿用画板</option><option value="orthographic">orthographic · 正交投影</option><option value="perspective">perspective · 透视投影</option><option value="oblique">oblique · 斜投影</option></select><small>投影模式，留空沿用目标画板保存值。</small></div>
-                <div class="fields"><div class="field-control" v-for="field in fields3D" :key="field.key"><label class="field-name" :for="fieldId('view3D.' + field.key)">view3D.{{ field.key }}</label><button v-if="hasValue(input.view3D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view3D[field.key] = ''">重置</button><input :id="fieldId('view3D.' + field.key)" v-model="input.view3D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div></div>
+                <div class="fields"><div class="field-control" v-for="field in view3DFields" :key="field.key"><label class="field-name" :for="fieldId('view3D.' + field.key)">view3D.{{ field.key }}</label><button v-if="hasValue(input.view3D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view3D[field.key] = ''">重置</button><input :id="fieldId('view3D.' + field.key)" v-model="input.view3D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div></div>
               </template>
             </fieldset>
           </div>
@@ -200,7 +205,7 @@ onBeforeUnmount(() => { controller?.abort(); });
               <div class="tabs"><button v-if="imageUrl" type="button" :aria-pressed="responseTab === 'image'" @click="responseTab = 'image'">图片</button><button type="button" :aria-pressed="responseTab === 'body'" @click="responseTab = 'body'">响应正文</button><button type="button" :aria-pressed="responseTab === 'headers'" @click="responseTab = 'headers'">响应头</button></div>
               <div v-if="responseTab === 'image' && imageUrl" class="response-image">
                 <div v-if="!imageFailed" class="image-frame">
-                  <img :src="imageUrl" alt="PNG 渲染结果" referrerpolicy="no-referrer" @error="imageFailed = true" />
+                  <img :src="imageUrl" :alt="`${playground.outputLabel} 渲染结果`" referrerpolicy="no-referrer" @error="imageFailed = true" />
                   <span v-if="imageSize" class="image-size">{{ imageSize }}</span>
                 </div>
                 <p v-else class="hint" role="status">图片加载失败，请切换到响应正文查看返回地址。</p>
@@ -210,7 +215,7 @@ onBeforeUnmount(() => { controller?.abort(); });
             <p v-else-if="!busy && !error" class="empty">发送请求后，在这里查看 HTTP 状态码和响应内容。</p>
           </section>
         </div>
-        <footer><span>POST {{ endpoint }}</span><button v-if="busy" type="button" @click="controller?.abort()">取消</button><button class="launch" type="button" :disabled="busy" @click="send">{{ busy ? '发送中…' : '发送请求' }}</button></footer>
+        <footer><span>POST {{ playground.endpoint }}</span><button v-if="busy" type="button" @click="controller?.abort()">取消</button><button class="launch" type="button" :disabled="busy" @click="send">{{ busy ? '发送中…' : '发送请求' }}</button></footer>
       </div>
     </dialog>
   </div>

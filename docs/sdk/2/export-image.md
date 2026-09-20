@@ -57,7 +57,8 @@ interface ExportImageBaseOptions {
 | `slideIndices` | `number[]` | 否 | 全部画板 | 要导出的画板，使用 1-based 索引 |
 | `format` | `'png' \| 'jpg' \| 'svg'` | 否 | `'png'` | 图片格式；3D 画板仅支持 `'png'`、`'jpg'` |
 | `quality` | `number` | 否 | `0.92` | JPG 质量，范围为 `0～1`，仅对 JPG 生效 |
-| `transparent` | `boolean` | 否 | `false` | 是否跳过背景色填充；从 `2.13.1` 开始支持，仅 PNG、SVG 支持 |
+| `transparent` | `boolean` | 否 | `false` | 是否跳过背景色填充；从 `2.14.0` 开始支持，仅 PNG、SVG 支持 |
+
 
 ## view：按指定视野导出
 

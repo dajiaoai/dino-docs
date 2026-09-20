@@ -4,8 +4,13 @@ import { spawnSync } from 'node:child_process';
 import { test } from 'node:test';
 import ts from 'typescript';
 
+const compilerOptions = { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 };
+const configSource = readFileSync(new URL('../docs/.vitepress/theme/renderPlaygroundConfig.ts', import.meta.url), 'utf8');
+const configJs = ts.transpileModule(configSource, { compilerOptions }).outputText;
+const configUrl = `data:text/javascript;base64,${Buffer.from(configJs).toString('base64')}`;
 const source = readFileSync(new URL('../docs/.vitepress/theme/renderPlayground.ts', import.meta.url), 'utf8');
-const js = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 } }).outputText;
+const js = ts.transpileModule(source, { compilerOptions }).outputText
+  .replace(/from ['"]\.\/renderPlaygroundConfig['"];/, `from '${configUrl}';`);
 const { buildRequest, toCurl } = await import(`data:text/javascript;base64,${Buffer.from(js).toString('base64')}`);
 const config = (overrides = {}) => ({
   baseUrl: 'https://api.dajiaoai.com/', authorization: 'Bearer test-key', requestId: '',
@@ -20,11 +25,14 @@ test('automatic camera omits optional values and uses the documented endpoint an
   assert.deepEqual(JSON.parse(request.body), { content: { slides: [] } });
   assert.deepEqual(request.headers, { 'Content-Type': 'application/json', Authorization: 'Bearer test-key' });
 });
-test('transparent is a top-level option for both v2 and legacy PNG requests', () => {
+test('transparent is a top-level option for v2 PNG, legacy PNG, and SVG requests', () => {
   assert.deepEqual(JSON.parse(buildRequest(config({ transparent: true })).body), {
     content: { slides: [] }, transparent: true,
   });
-  assert.deepEqual(JSON.parse(buildRequest(config({ legacy: true, transparent: true })).body), {
+  assert.deepEqual(JSON.parse(buildRequest(config({ variant: 'png-legacy', transparent: true })).body), {
+    content: { slides: [] }, transparent: true,
+  });
+  assert.deepEqual(JSON.parse(buildRequest(config({ variant: 'svg', transparent: true })).body), {
     content: { slides: [] }, transparent: true,
   });
 });
@@ -75,7 +83,7 @@ test('numeric inputs produced by Vue preserve zero and accept edited dimensions'
 });
 
 test('legacy requests use /api/render with viewBound and top-level output options', () => {
-  const request = buildRequest(config({ legacy: true, mode: '2d', slideIndex: 2, template: '{}', view2D: { left: 0, right: 10, bottom: -10, top: 10, scale: 50, pixelRatio: 2 } }));
+  const request = buildRequest(config({ variant: 'png-legacy', mode: '2d', slideIndex: 2, template: '{}', view2D: { left: 0, right: 10, bottom: -10, top: 10, scale: 50, pixelRatio: 2 } }));
   assert.equal(request.url, 'https://api.dajiaoai.com/api/render');
   assert.deepEqual(JSON.parse(request.body), {
     content: { slides: [] }, slideIndex: 2, template: {},
@@ -85,18 +93,31 @@ test('legacy requests use /api/render with viewBound and top-level output option
 });
 
 test('legacy saved camera allows independent scale and pixelRatio overrides', () => {
-  assert.deepEqual(JSON.parse(buildRequest(config({ legacy: true })).body), { content: { slides: [] } });
+  assert.deepEqual(JSON.parse(buildRequest(config({ variant: 'png-legacy' })).body), { content: { slides: [] } });
   for (const key of ['scale', 'pixelRatio']) {
-    assert.deepEqual(JSON.parse(buildRequest(config({ legacy: true, view2D: { [key]: '2' } })).body), { content: { slides: [] }, [key]: 2 });
+    assert.deepEqual(JSON.parse(buildRequest(config({ variant: 'png-legacy', view2D: { [key]: '2' } })).body), { content: { slides: [] }, [key]: 2 });
     for (const value of [0, -1, 'Infinity', 'abc']) {
-      assert.throws(() => buildRequest(config({ legacy: true, view2D: { [key]: value } })));
+      assert.throws(() => buildRequest(config({ variant: 'png-legacy', view2D: { [key]: value } })));
     }
   }
+});
+
+test('SVG requests use /api/render-svg with top-level viewBound and scale but no pixelRatio', () => {
+  const request = buildRequest(config({
+    variant: 'svg', mode: '2d', slideIndex: 2, template: '{}',
+    view2D: { left: 0, right: 10, bottom: -10, top: 10, scale: 50, pixelRatio: 2 },
+  }));
+  assert.equal(request.url, 'https://api.dajiaoai.com/api/render-svg');
+  assert.deepEqual(JSON.parse(request.body), {
+    content: { slides: [] }, slideIndex: 2, template: {},
+    viewBound: { left: 0, right: 10, bottom: -10, top: 10 }, scale: 50,
+  });
+  assert.throws(() => buildRequest(config({ variant: 'svg', mode: '3d' })));
 });
 
 test('legacy rejects 3D and incomplete or inverted explicit bounds', () => {
   for (const overrides of [
     { mode: '3d' }, { mode: '2d', view2D: {} },
     { mode: '2d', view2D: { left: 10, right: 0, bottom: -10, top: 10 } },
-  ]) assert.throws(() => buildRequest(config({ legacy: true, ...overrides })));
+  ]) assert.throws(() => buildRequest(config({ variant: 'png-legacy', ...overrides })));
 });

@@ -5,6 +5,8 @@ description: SVG 导出接口的请求参数、调用示例和响应说明。
 
 # 导出 SVG
 
+<RenderPlayground variant="svg" />
+
 **Base URL：** `https://api.dajiaoai.com`
 
 **接口地址：** `POST /api/render-svg`

@@ -5,7 +5,7 @@ description: 旧版 PNG 渲染接口参数、请求示例及迁移到 /api/rende
 
 # 旧版 PNG 接口 {#render-legacy}
 
-<RenderPlayground legacy />
+<RenderPlayground variant="png-legacy" />
 
 **Base URL：** `https://api.dajiaoai.com`
 
