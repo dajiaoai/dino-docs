@@ -1,27 +1,19 @@
 ---
 title: 大角工程文件（.algeo）数据协议
-description: 大角工程文件的 JSON 数据结构、版本、画板和母版说明
+description: 大角工程文件的 JSON 数据结构、画板和母版说明
 ---
 
 # 大角工程文件（`.algeo`）数据协议
 
 大角工程文件用于保存可继续编辑和交互的几何项目。
 
-本文描述最新的 V11 协议。
-
-## 文件与版本
+## 文件格式
 
 | 项目 | 当前规范 |
 | --- | --- |
 | 文件扩展名 | `.algeo` 或 `.json` |
 | 内容格式 | UTF-8 JSON |
 | MIME 类型 | `application/vnd.dino-algeo.project+json` |
-| 最新协议版本 | 字符串 `"11"` |
-| 版本字段 | `metadata.version` |
-
-::: warning
-`metadata.version` 必须是字符串。不要通过手动修改版本号迁移旧文件，应先使用支持旧版本的大角几何编辑器或 SDK 加载，再重新导出。
-:::
 
 ## 顶层结构
 
@@ -30,10 +22,7 @@ interface FileContentLatest {
   slides: SlideV2[];
   messages: SeedChatMessage[][];
   templateStyle?: SlideStyleSheetV2;
-  metadata: {
-    version: '11';
-    shareOptions?: ShareOptions;
-  };
+  metadata: ProjectMetadata;
 }
 ```
 
@@ -42,7 +31,7 @@ interface FileContentLatest {
 | `slides` | `SlideV2[]` | 是 | 项目中的画板列表，数组顺序就是画板顺序。 |
 | `messages` | `SeedChatMessage[][]` | 是 | AI 会话列表。外层数组表示多个会话，内层数组表示一个会话中的消息。没有会话时传 `[]`。 |
 | `templateStyle` | `SlideStyleSheetV2` | 否 | 项目母版样式，结构与画板的 `styleSheet` 一致。 |
-| `metadata` | object | 是 | 文件版本和分享选项。 |
+| `metadata` | `ProjectMetadata` | 是 | 项目元数据和分享选项。 |
 
 ## 画板 `SlideV2`
 
@@ -77,9 +66,8 @@ interface SlideV2 {
 ## 读写建议
 
 - 保存时保留完整对象，不要只保存 `slides[].definitions`；变量值、样式、文档、相机、会话和母版都属于工程内容。
-- 用 `JSON.stringify(content, null, 2)` 可以生成便于审阅的 `.algeo` 或 `.json` 文件；读取后应先解析 JSON，再校验协议版本和必要字段。
+- 用 `JSON.stringify(content, null, 2)` 可以生成便于审阅的 `.algeo` 或 `.json` 文件；读取后应先解析 JSON，再校验必要字段。
 - 不要手动生成复杂几何 DSL。优先通过 SDK 获取完整内容，或通过 REPL、MCP 和 Agent API 生成项目。
-- 收到未知版本时不要猜测字段含义，应升级接入组件或使用兼容该版本的编辑器转换。
 
 ## 在不同接入方式中使用
 

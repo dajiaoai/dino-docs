@@ -45,42 +45,41 @@ The legacy endpoint uses the same `Authorization`, `Content-Type`, and `x-reques
 
 ## Legacy request and response example
 
+Save the complete project exported by the main app or SDK as `project.algeo`. The following example uses `jq` to place the project data in the request's `content` field.
+
 ```bash
-curl -X POST https://api.dajiaoai.com/api/render \
-  -H "Authorization: Bearer djo_xxx" \
-  -H "Content-Type: application/json" \
-  -H "x-request-id: render-demo-001" \
-  -d '{
-    "slideIndex": 1,
-    "viewBound": {
-      "left": -10,
-      "right": 10,
-      "bottom": -10,
-      "top": 10
+jq '{
+  content: .,
+  slideIndex: 1,
+  viewBound: {
+    left: -10,
+    right: 10,
+    bottom: -10,
+    top: 10
+  },
+  scale: 50,
+  pixelRatio: 2,
+  template: {
+    backgroundStyle: {
+      background: { color: "#ffffff" },
+      grid: {},
+      xaxis: {},
+      yaxis: {}
     },
-    "scale": 50,
-    "pixelRatio": 2,
-    "template": {
-      "backgroundStyle": {
-        "background": { "color": "#ffffff" },
-        "grid": {},
-        "xaxis": {},
-        "yaxis": {}
-      },
-      "defaultStyle": {
-        "types": [["Point", { "pointSize": 1, "color": "#000000" }]],
-        "typeLabels": [],
-        "textType": {},
-        "sliderType": {},
-        "buttonType": {}
-      }
-    },
-    "content": {
-      "metadata": { "version": "11" },
-      "messages": [],
-      "slides": [{ "definitions": [{ "kind": "primitive", "id": "A", "source": "Point(0, ?)", "label": "{{id}}" }, { "kind": "primitive", "id": "B", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "C", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "a", "source": "Segment(A, B)" }, { "kind": "primitive", "id": "b", "source": "Segment(B, C)" }, { "kind": "primitive", "id": "c", "source": "Segment(C, A)" }], "uvarMap": [["A.0", 3], ["B.0", -3], ["C.0", 2]], "styleSheet": { "background": {}, "xaxis": { "show": false }, "yaxis": { "show": false }, "grid": {}, "types": [], "typeLabels": [], "primitives": [], "primitiveLabels": [], "textType": {}, "texts": [], "sliderType": {}, "sliders": [], "buttonType": {}, "buttons": [] }, "doc": [], "camera": { "offset": [0, 0], "scale": 50 } }]
+    defaultStyle: {
+      types: [["Point", { pointSize: 1, color: "#000000" }]],
+      typeLabels: [],
+      textType: {},
+      sliderType: {},
+      buttonType: {}
     }
-  }'
+  }
+}' project.algeo | \
+  curl -X POST https://api.dajiaoai.com/api/render \
+    -H "Authorization: Bearer djo_xxx" \
+    -H "Content-Type: application/json" \
+    -H "x-request-id: render-demo-001" \
+    --data-binary @-
 ```
 
 Returns `200 OK`:

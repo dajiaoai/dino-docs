@@ -40,26 +40,25 @@ Exports 2D SVG. The endpoint does not accept `pixelRatio`.
 
 ## Request example
 
+Save the complete project exported by the main app or SDK as `project.algeo`. The following example uses `jq` to place the project data in the request's `content` field.
+
 ```bash
-curl -X POST https://api.dajiaoai.com/api/render-svg \
-  -H "Authorization: Bearer djo_xxx" \
-  -H "Content-Type: application/json" \
-  -H "x-request-id: render-svg-demo-001" \
-  -d '{
-    "slideIndex": 1,
-    "viewBound": {
-      "left": -10,
-      "right": 10,
-      "bottom": -10,
-      "top": 10
-    },
-    "scale": 50,
-    "content": {
-      "metadata": { "version": "11" },
-      "messages": [],
-      "slides": [{ "definitions": [{ "kind": "primitive", "id": "A", "source": "Point(0, ?)", "label": "{{id}}" }, { "kind": "primitive", "id": "B", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "C", "source": "Point(?, 0)", "label": "{{id}}" }, { "kind": "primitive", "id": "a", "source": "Segment(A, B)" }, { "kind": "primitive", "id": "b", "source": "Segment(B, C)" }, { "kind": "primitive", "id": "c", "source": "Segment(C, A)" }], "uvarMap": [["A.0", 3], ["B.0", -3], ["C.0", 2]], "styleSheet": { "background": {}, "xaxis": { "show": false }, "yaxis": { "show": false }, "grid": {}, "types": [], "typeLabels": [], "primitives": [], "primitiveLabels": [], "textType": {}, "texts": [], "sliderType": {}, "sliders": [], "buttonType": {}, "buttons": [] }, "doc": [], "camera": { "offset": [0, 0], "scale": 50 } }]
-    }
-  }'
+jq '{
+  content: .,
+  slideIndex: 1,
+  viewBound: {
+    left: -10,
+    right: 10,
+    bottom: -10,
+    top: 10
+  },
+  scale: 50
+}' project.algeo | \
+  curl -X POST https://api.dajiaoai.com/api/render-svg \
+    -H "Authorization: Bearer djo_xxx" \
+    -H "Content-Type: application/json" \
+    -H "x-request-id: render-svg-demo-001" \
+    --data-binary @-
 ```
 
 ## Success response

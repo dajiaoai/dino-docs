@@ -1,27 +1,19 @@
 ---
 title: Dino-GSP Project File (.algeo) Protocol
-description: JSON structure, versions, canvases, and master templates in a Dino-GSP project file
+description: JSON structure, canvases, and master templates in a Dino-GSP project file
 ---
 
 # Dino-GSP Project File (`.algeo`) Protocol
 
 A Dino-GSP project file stores an editable, interactive geometry project.
 
-This page describes the latest V11 protocol.
-
-## File and version
+## File format
 
 | Item | Current standard |
 | --- | --- |
 | Extension | `.algeo` or `.json` |
 | Content | UTF-8 JSON |
 | MIME type | `application/vnd.dino-algeo.project+json` |
-| Latest protocol version | String `"11"` |
-| Version field | `metadata.version` |
-
-::: warning
-`metadata.version` must be a string. Do not migrate an old file by changing this value manually. Load it with a compatible Dino-GSP editor or SDK and export it again.
-:::
 
 ## Top-level structure
 
@@ -30,10 +22,7 @@ interface FileContentLatest {
   slides: SlideV2[];
   messages: SeedChatMessage[][];
   templateStyle?: SlideStyleSheetV2;
-  metadata: {
-    version: '11';
-    shareOptions?: ShareOptions;
-  };
+  metadata: ProjectMetadata;
 }
 ```
 
@@ -42,7 +31,7 @@ interface FileContentLatest {
 | `slides` | `SlideV2[]` | Yes | Ordered list of canvases in the project. |
 | `messages` | `SeedChatMessage[][]` | Yes | AI conversations. The outer array contains conversations; each inner array contains its messages. Use `[]` when there are none. |
 | `templateStyle` | `SlideStyleSheetV2` | No | Project master template with the same shape as a canvas `styleSheet`. |
-| `metadata` | object | Yes | File version and sharing options. |
+| `metadata` | `ProjectMetadata` | Yes | Project metadata and sharing options. |
 
 ## Canvas `SlideV2`
 
@@ -77,9 +66,8 @@ A project master should contain reusable visual styles only. Axis or grid ranges
 ## Reading and writing guidance
 
 - Store the complete object, not only `slides[].definitions`; variable values, styles, rich text, cameras, conversations, and the master template are all project content.
-- `JSON.stringify(content, null, 2)` produces an inspectable `.algeo` or `.json` file. Parse JSON first when reading, then validate the protocol version and required fields.
+- `JSON.stringify(content, null, 2)` produces an inspectable `.algeo` or `.json` file. Parse JSON first when reading, then validate the required fields.
 - Do not manually generate complex geometry DSL. Prefer complete content returned by the SDK, or generate projects through REPL, MCP, or the Agent API.
-- Do not guess the meaning of fields in an unknown version. Upgrade the integration component or convert the file with a compatible editor.
 
 ## Use in each integration
 
