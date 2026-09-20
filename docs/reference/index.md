@@ -15,4 +15,5 @@ description: 大角几何 SDK、API 与 MCP 共同遵循的参数和数据规范
 
 ## 教程
 
+- [如何使用风格母版](./master-template)：下载母版，并在 MCP、SDK、智能生图和渲染 API 中复用统一样式。
 - [多环节图片导出尺寸一致性](./consistent-image-export)：在 SDK、MCP 等导出链路中统一精确裁剪窗口，稳定控制构图和像素尺寸。

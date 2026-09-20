@@ -278,6 +278,10 @@ export default defineConfig({
               text: '教程',
               items: [
                 {
+                  text: '如何使用风格母版',
+                  link: '/reference/master-template',
+                },
+                {
                   text: '多环节图片导出尺寸一致性',
                   link: '/reference/consistent-image-export',
                 },
@@ -487,6 +491,10 @@ export default defineConfig({
             {
               text: 'Tutorials',
               items: [
+                {
+                  text: 'How to Use Style Master Templates',
+                  link: '/en/reference/master-template',
+                },
                 {
                   text: 'Consistent Image Export Across Workflows',
                   link: '/en/reference/consistent-image-export',

@@ -15,4 +15,5 @@ This section contains standards shared by the Dino-GSP SDK, API, and MCP. Interp
 
 ## Tutorials
 
+- [How to Use Style Master Templates](./master-template): download a template and reuse consistent styles across MCP, the SDK, AI figure generation, and rendering APIs.
 - [Consistent Image Export Across Workflows](./consistent-image-export): use the same precise crop window across SDK, MCP, and other export workflows to keep composition and pixel dimensions stable.
