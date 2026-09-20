@@ -40,6 +40,7 @@ All numeric parameters must be finite.
 | `content` | `FileContentLatest` | yes | Complete project to render; no default. See the [project file protocol](/en/reference/algeo-file-protocol). |
 | `slideIndex` | `number` | no | Target slide index, a positive integer starting at `1`; defaults to `1`. |
 | `template` | `object` | no | Render template; if omitted, uses the target slide's existing styles. [Download template data](https://dajiaoai.com/master-templates). |
+| `transparent` | `boolean` | no | Whether to skip the background-color fill. |
 | `view2D` | `object` | no | Overrides the 2D viewport. See [2D viewport parameters](#view2d). |
 | `view3D` | `object` | no | Forces 3D rendering and overrides camera parameters. See [3D view parameters](#view3d). |
 

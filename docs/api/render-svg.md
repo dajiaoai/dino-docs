@@ -34,6 +34,7 @@ description: SVG 导出接口的请求参数、调用示例和响应说明。
 | `content` | `FileContentLatest` | 是 | 要渲染的完整项目内容，无默认值，格式见[大角工程文件（.algeo）数据协议](/reference/algeo-file-protocol)。 |
 | `slideIndex` | `number` | 否 | 目标画板序号，为从 `1` 开始的正整数，默认 `1`。 |
 | `template` | `object` | 否 | 渲染母版，省略时沿用目标画板现有样式。可在[大角几何母版](https://dajiaoai.com/master-templates)页面下载母版数据。 |
+| `transparent` | `boolean` | 否 | 是否跳过背景色填充。 |
 | `viewBound` | `{`<br>`  left: number;`<br>`  right: number;`<br>`  bottom: number;`<br>`  top: number;`<br>`}` | 否 | 逻辑视口边界，传入对象时四个属性均必填，且需为有限数值；要求 `left < right` 且 `bottom < top`。省略时使用目标画板保存的相机视口。 |
 | `scale` | `number` | 否 | 相机缩放比例（每逻辑单位对应的像素数），正数。省略时使用目标画板当前 `camera.scale`。 |
 

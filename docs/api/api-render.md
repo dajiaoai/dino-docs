@@ -43,6 +43,7 @@ description: 旧版 PNG 渲染接口参数、请求示例及迁移到 /api/rende
 | `viewBound` | `object` | 否 | 逻辑视口边界，格式为 `{ left, right, bottom, top }`，要求 `left < right` 且 `bottom < top`。省略时使用目标画板当前 camera。 |
 | `scale` | `number` | 否 | 相机缩放比例（每逻辑单位对应的像素数），正数。省略时使用目标画板当前 `camera.scale`。 |
 | `pixelRatio` | `number` | 否，仅 `/api/render` | PNG 输出像素倍率，必须是正的有限数，默认 `1`。保持逻辑视口和相机缩放不变，将 PNG 的物理宽高按此倍率放大。SVG 和 TikZ 接口不接收此字段。 |
+| `transparent` | `boolean` | 否 | 是否跳过背景色填充。 |
 
 ## 旧版请求与响应示例
 

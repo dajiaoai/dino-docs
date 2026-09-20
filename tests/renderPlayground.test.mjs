@@ -20,6 +20,14 @@ test('automatic camera omits optional values and uses the documented endpoint an
   assert.deepEqual(JSON.parse(request.body), { content: { slides: [] } });
   assert.deepEqual(request.headers, { 'Content-Type': 'application/json', Authorization: 'Bearer test-key' });
 });
+test('transparent is a top-level option for both v2 and legacy PNG requests', () => {
+  assert.deepEqual(JSON.parse(buildRequest(config({ transparent: true })).body), {
+    content: { slides: [] }, transparent: true,
+  });
+  assert.deepEqual(JSON.parse(buildRequest(config({ legacy: true, transparent: true })).body), {
+    content: { slides: [] }, transparent: true,
+  });
+});
 test('2D and 3D modes include only the selected view, preserving zero and optional values', () => {
   const two = JSON.parse(buildRequest(config({ mode: '2d', slideIndex: '2', template: '{}', view3D: { width: '720' } })).body);
   assert.deepEqual(two.view2D, { left: -10, right: 10, bottom: -10, top: 10 });

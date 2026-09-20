@@ -34,6 +34,7 @@ Exports 2D SVG. The endpoint does not accept `pixelRatio`.
 | `content` | `FileContentLatest` | yes | Complete project to render; no default. See the [Dino-GSP project file protocol](/en/reference/algeo-file-protocol). |
 | `slideIndex` | `number` | no | Target slide index, a positive integer starting at `1`; defaults to `1`. |
 | `template` | `object` | no | Render template; if omitted, uses the target slide's existing styles. Download data from the [templates page](https://dajiaoai.com/master-templates). |
+| `transparent` | `boolean` | no | Whether to skip the background-color fill. |
 | `viewBound` | `{`<br>`  left: number;`<br>`  right: number;`<br>`  bottom: number;`<br>`  top: number;`<br>`}` | no | Logical viewport bounds; all four properties are required when the object is provided and must be finite numbers. Requires `left < right` and `bottom < top`. If omitted, uses the target slide’s saved camera viewport. |
 | `scale` | `number` | no | Camera scale, in pixels per logical unit. Must be positive. If omitted, the target slide's current `camera.scale` is used. |
 

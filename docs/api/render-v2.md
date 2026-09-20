@@ -42,6 +42,7 @@ description: PNG 导出接口的请求参数、调用示例和响应说明。
 | `content` | `FileContentLatest` | 是 | 要渲染的完整项目内容，无默认值。格式见[工程文件数据协议](/reference/algeo-file-protocol)。 |
 | `slideIndex` | `number` | 否 | 目标画板序号，从 `1` 开始的正整数，默认 `1`。 |
 | `template` | `object` | 否 | 渲染母版，省略时沿用目标画板现有样式。可[下载母版数据](https://dajiaoai.com/master-templates)。 |
+| `transparent` | `boolean` | 否 | 是否跳过背景色填充。 |
 | `view2D` | `object` | 否 | 指定 2D 视口，详见 [2D 视口参数](#view2d)。 |
 | `view3D` | `object` | 否 | 强制使用 3D 渲染并覆盖相机参数，详见 [3D 视图参数](#view3d)。 |
 

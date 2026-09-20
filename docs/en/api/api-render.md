@@ -41,6 +41,7 @@ The legacy endpoint uses the same `Authorization`, `Content-Type`, and `x-reques
 | `viewBound` | `object` | no | Logical viewport bounds in the shape `{ left, right, bottom, top }`. Requires `left < right` and `bottom < top`. If omitted, the target slide's current camera is used. |
 | `scale` | `number` | no | Camera scale, in pixels per logical unit. Must be positive. If omitted, the target slide's current `camera.scale` is used. |
 | `pixelRatio` | `number` | no, `/api/render` only | PNG output pixel multiplier. It must be a positive finite number and defaults to `1`. It increases the physical PNG dimensions without changing the logical viewport or camera scale. The SVG and TikZ endpoints do not accept this field. |
+| `transparent` | `boolean` | no | Whether to skip the background-color fill. |
 
 ## Legacy request and response example
 

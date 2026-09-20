@@ -24,6 +24,7 @@ export interface PlaygroundInput {
   content: string;
   template: string;
   slideIndex: string | number;
+  transparent?: boolean;
   mode: 'auto' | '2d' | '3d';
   view2D: Record<string, string | number>;
   view3D: Record<string, string | number>;
@@ -47,6 +48,7 @@ export function buildBody(input: PlaygroundInput) {
   const body: Record<string, unknown> = { content: jsonObject(input.content, 'content') };
   if (String(input.slideIndex).trim()) body.slideIndex = numeric(input.slideIndex, 'slideIndex', true, true);
   if (input.template.trim()) body.template = jsonObject(input.template, 'template');
+  if (input.transparent) body.transparent = true;
   if (input.legacy) {
     if (input.mode === '3d') throw new Error('旧版 PNG 接口仅支持 2D。');
     if (input.mode === '2d') {

@@ -26,7 +26,7 @@ const error = ref('');
 const response = ref<{ status: number; statusText: string; body: string; headers: string; elapsed: number }>();
 const input = reactive<PlaygroundInput>({
   ...DEFAULT_PLAYGROUND_ENVIRONMENT, requestId: '',
-  content: defaultContent, template: '', slideIndex: '', mode: 'auto',
+  content: defaultContent, template: '', slideIndex: '', transparent: false, mode: 'auto',
   view2D: { left: '-10', right: '10', bottom: '-10', top: '10', scale: '', pixelRatio: '' },
   view3D: {}, offset: '', projection: '',
 });
@@ -170,6 +170,7 @@ onBeforeUnmount(() => { controller?.abort(); });
               <label class="file-label">导入项目<input type="file" accept=".algeo,.json,application/json" @change="importContent" /></label>
               <div class="field-control"><label class="field-name" :for="fieldId('slideIndex')">slideIndex</label> <em>可选 · number</em><button v-if="hasValue(input.slideIndex)" class="field-reset" type="button" aria-label="重置 slideIndex" @click.prevent="input.slideIndex = ''">重置</button><input :id="fieldId('slideIndex')" v-model="input.slideIndex" type="number" min="1" step="1" placeholder="1" /><small>从 1 开始的画板序号，留空使用默认值 1。</small></div>
               <div class="field-control"><label class="field-name" :for="fieldId('template')">template</label> <em>可选 · object</em><button v-if="hasValue(input.template)" class="field-reset" type="button" aria-label="重置 template" @click.prevent="input.template = ''">重置</button><textarea :id="fieldId('template')" v-model="input.template" rows="3" placeholder="留空沿用目标画板样式" spellcheck="false" /><small>渲染母版 JSON 对象，可从大角几何母版页面下载。</small></div>
+              <label class="checkbox-field"><input v-model="input.transparent" type="checkbox" /><span><span class="field-name">transparent</span> <em>可选 · boolean</em><small>开启后跳过背景色填充，导出带 Alpha 通道的 PNG；网格、坐标轴和其他内容不受影响。</small></span></label>
               <div class="field-control"><label class="field-name" :for="fieldId('mode')">视图模式</label><button v-if="input.mode !== 'auto'" class="field-reset" type="button" aria-label="重置视图模式" @click.prevent="input.mode = 'auto'">重置</button><select :id="fieldId('mode')" v-model="input.mode"><option value="auto">自动 · 使用画板保存的相机</option><option value="2d">{{ legacy ? 'viewBound' : 'view2D' }} · 指定 2D 视口</option><option v-if="!legacy" value="3d">view3D · 指定 3D 相机</option></select><small>{{ legacy ? '仅支持 2D PNG；自动模式省略 viewBound，使用画板保存的视口。' : 'view2D 与 view3D 互斥；自动模式不发送这两个字段。' }}</small></div>
               <div v-if="input.mode === '2d'" class="fields">
                 <div class="field-control" v-for="field in viewFields" :key="field.key"><label class="field-name" :for="fieldId('view2D.' + field.key)">{{ legacy ? 'viewBound' : 'view2D' }}.{{ field.key }}</label><button v-if="hasValue(input.view2D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view2D[field.key] = ''">重置</button><input :id="fieldId('view2D.' + field.key)" v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div>
@@ -277,6 +278,9 @@ label, .field-control { display: block; font-weight: 500; margin-bottom: 16px; }
 em { margin-left: 6px; font-style: normal; font-size: 12px; font-weight: 400; color: var(--vp-c-text-3); }
 small, .hint { display: block; color: var(--vp-c-text-2); font-size: 12px; font-weight: 400; line-height: 1.7; margin: 6px 0; }
 input, textarea, select { display: block; box-sizing: border-box; width: 100%; margin-top: 7px; padding: 9px 12px; border: 1px solid var(--vp-c-divider); border-radius: 6px; background: var(--vp-c-bg-alt); color: var(--vp-c-text-1); font: inherit; }
+.checkbox-field { display: flex; align-items: flex-start; gap: 10px; }
+.checkbox-field input { flex: 0 0 auto; width: 16px; height: 16px; margin: 4px 0 0; padding: 0; }
+.checkbox-field small { margin-bottom: 0; }
 textarea { resize: vertical; font-family: var(--vp-font-family-mono); font-size: 12px; }
 input[readonly] { color: var(--vp-c-text-3); }
 .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }

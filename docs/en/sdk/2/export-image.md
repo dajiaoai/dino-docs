@@ -42,12 +42,22 @@ const images = await editor.slides.exportImage(options);
 
 All three modes accept these shared parameters:
 
+```typescript
+interface ExportImageBaseOptions {
+  slideIndices?: number[];
+  format?: 'png' | 'jpg' | 'svg';
+  quality?: number;
+  transparent?: boolean;
+}
+```
+
 | Parameter | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
 | `mode` | `'view' \| 'contain' \| 'size'` | yes | - | Output-size calculation mode |
 | `slideIndices` | `number[]` | no | all slides | 1-based indices of slides to export |
 | `format` | `'png' \| 'jpg' \| 'svg'` | no | `'png'` | Image format; 3D slides support only `'png'` and `'jpg'` |
 | `quality` | `number` | no | `0.92` | JPG quality from `0` to `1`; applies only to JPG |
+| `transparent` | `boolean` | no | `false` | Whether to skip the background-color fill; supported since `2.13.1` and available only for PNG and SVG |
 
 ## view: export a specific viewport
 
