@@ -297,6 +297,10 @@ export default defineConfig({
               text: '2026 年',
               items: [
                 {
+                  text: '支持透明图片导出',
+                  link: '/announcements/2026-09-20-transparent-image-export',
+                },
+                {
                   text: 'API 支持立体几何渲染',
                   link: '/announcements/2026-09-16-3d-rendering-api',
                 },
@@ -510,6 +514,10 @@ export default defineConfig({
             {
               text: '2026',
               items: [
+                {
+                  text: 'Transparent Image Export Now Supported',
+                  link: '/en/announcements/2026-09-20-transparent-image-export',
+                },
                 {
                   text: 'API Support for 3D Geometry Rendering',
                   link: '/en/announcements/2026-09-16-3d-rendering-api',
