@@ -1,6 +1,5 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 import { createEditor, createPresentation, type EmbeddedEditor, type EmbeddedPresentation } from '@dajiaoai/algeo-sdk';
-import { LoaderCircle } from 'lucide-react';
 
 const appId = 'HLVENKRV';
 const shareId = 'ZJ0DQ999';
@@ -11,14 +10,12 @@ export type SmartBoardHandle = { exportCover: () => Promise<Blob> };
 export const SmartBoard = forwardRef<SmartBoardHandle, BoardProps>(function SmartBoard({ mode, content, onContentChange }, ref) {
   const hostRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<EmbeddedEditor | null>(null);
-  const [status, setStatus] = useState<'loading' | 'ready'>('loading');
 
   useEffect(() => {
     let alive = true;
     let instance: EmbeddedEditor | EmbeddedPresentation | null = null;
     async function mount() {
       if (!hostRef.current) return;
-      setStatus('loading');
       if (mode === 'editor') {
         const editor = await createEditor(hostRef.current, { auth: { appId }, shareId, ui: { navbar: false, slidePanel: false, toolboxPanel: true, docPanel: false, helpEntry: false, aiChatPanel: false } });
         editor.on('contentChange', event => onContentChange?.(event.content as BoardContent));
@@ -30,7 +27,6 @@ export const SmartBoard = forwardRef<SmartBoardHandle, BoardProps>(function Smar
         instance = presentation;
       }
       if (!alive) { await instance.destroy(); return; }
-      setStatus('ready');
     }
     void mount();
     return () => { alive = false; if (instance) void instance.destroy(); editorRef.current = null; };
@@ -46,5 +42,5 @@ export const SmartBoard = forwardRef<SmartBoardHandle, BoardProps>(function Smar
     },
   }), []);
 
-  return <div className="sdk-board"><div className="sdk-host" ref={hostRef} />{status !== 'ready' && <div className="sdk-state"><LoaderCircle className="spin" size={18} />正在加载大角几何画板…</div>}</div>;
+  return <div className="sdk-board"><div className="sdk-host" ref={hostRef} /></div>;
 });

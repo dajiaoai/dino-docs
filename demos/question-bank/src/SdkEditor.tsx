@@ -3,14 +3,12 @@ import {
   useEffect,
   useImperativeHandle,
   useRef,
-  useState,
 } from 'react';
 import {
   createEditor,
   type EmbeddedEditor,
   type FileContentLatest,
 } from '@dajiaoai/algeo-sdk';
-import { LoaderCircle } from 'lucide-react';
 import { demoConfig } from './config';
 
 type SdkEditorProps = {
@@ -30,7 +28,6 @@ export const SdkEditor = forwardRef<SdkEditorHandle, SdkEditorProps>(
     const hostRef = useRef<HTMLDivElement>(null);
     const editorRef = useRef<EmbeddedEditor | null>(null);
     const onSaveRef = useRef(onSave);
-    const [state, setState] = useState<'loading' | 'ready'>('loading');
 
     useImperativeHandle(
       ref,
@@ -55,7 +52,6 @@ export const SdkEditor = forwardRef<SdkEditorHandle, SdkEditorProps>(
 
       async function mountEditor() {
         if (!hostRef.current) return;
-        setState('loading');
         const editor = await createEditor(hostRef.current, {
           auth: { appId: demoConfig.sdkAppId },
           initialContent: project,
@@ -89,7 +85,6 @@ export const SdkEditor = forwardRef<SdkEditorHandle, SdkEditorProps>(
           return;
         }
         editorRef.current = editor;
-        setState('ready');
       }
 
       void mountEditor();
@@ -105,12 +100,6 @@ export const SdkEditor = forwardRef<SdkEditorHandle, SdkEditorProps>(
     return (
       <div className="sdk-editor-shell">
         <div ref={hostRef} className="sdk-editor-host" />
-        {state === 'loading' && (
-          <div className="sdk-editor-state">
-            <LoaderCircle className="spin" size={20} />
-            正在加载大角 SDK 编辑画板
-          </div>
-        )}
       </div>
     );
   },
