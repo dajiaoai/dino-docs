@@ -5,15 +5,15 @@ description: Understand the current billing rules for Dino-GSP MCP and how diffe
 
 # MCP Billing
 
-> **All capabilities are currently at 60% off.** The points shown below reflect the actual charge today.
+> **All capabilities are currently 40% off.** The points shown below reflect the actual charge today.
 
 ## Billing rules
 
-| Capability | Current Price | Points Charged |
-| --- | --- | --- |
-| Basic calls | ¥0.03 / 100 calls | 3 pts / call |
-| Image export | ¥3 / 100 calls | 300 pts / call |
-| Project-data export | ¥3 / 100 calls | 300 pts / call |
+| Capability | Standard Price | Current Discount | Current Price | Points Charged |
+| --- | --- | --- | --- | --- |
+| Basic calls | ¥0.05 / 100 calls | 40% off | ¥0.03 / 100 calls | 3 pts / call |
+| Image export | ¥5 / 100 calls | 40% off | ¥3 / 100 calls | 300 pts / call |
+| Project-data export | ¥5 / 100 calls | 40% off | ¥3 / 100 calls | 300 pts / call |
 
 - Charged per successful call.
 
