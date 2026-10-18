@@ -30,7 +30,7 @@ const editor: EmbeddedEditor = await createEditor(container, {
 | 属性              | 类型      | 默认值 | 说明                                            |
 | ----------------- | --------- | ------ | ----------------------------------------------- |
 | `ui.navbar`       | `boolean` | `true` | 是否显示顶部导航栏（包含保存按钮、文件信息等）  |
-| `ui.slidePanel`   | `boolean` | `true` | 是否显示画板缩略图面板                          |
+| `ui.slidePanel`   | `boolean` | `true` | 是否显示画板管理器。单个画板时默认不显示。                          |
 | `ui.toolboxPanel` | `boolean` | `true` | 是否显示绘图工具栏                              |
 | `ui.algebraPanel` | `boolean` | `true` | 是否显示代数面板                                |
 | `ui.docPanel`     | `boolean` | `true` | 是否显示文档面板                                |
@@ -50,6 +50,7 @@ interface AlgeoEditorCreateOptions {
   };
   shareId?: string;
   initialContent?: FileContentLatest;
+  initialMode?: '2d' | '3d';
   ui?: AlgeoEditorUiConfig;
   fonts?: AlgeoFontConfig;
   resourceLibrary?: ResourceLibraryProvider;
@@ -60,10 +61,13 @@ interface AlgeoEditorCreateOptions {
 | ----------------- | ------------------------- | ---- | ------------------------------------------------------------ |
 | `auth.appId`      | `string`                  | 是   | 开放平台应用 ID，用于编辑模式鉴权                            |
 | `shareId`         | `string`                  | 否   | 初始化时加载的分享文件 ID                                    |
-| `initialContent`  | `FileContentLatest`       | 否   | 初始化后覆盖加载的文件内容，优先级高于空白编辑器状态         |
+| `initialContent`  | `FileContentLatest`       | 否   | 初始文件内容，优先级高于 `shareId`                            |
+| `initialMode`      | `'2d' \| '3d'`         | 否   | 空白画板模式，默认 `'2d'`。从 `2.15.0` 起支持。                                   |
 | `ui`              | `AlgeoEditorUiConfig`     | 否   | 编辑器 UI 显隐配置                                           |
 | `fonts`           | `AlgeoFontConfig`         | 否   | 字体资源、字体选择器列表及默认字体。从 `2.12.0` 起支持。     |
 | `resourceLibrary` | `ResourceLibraryProvider` | 否   | 宿主提供的只读图片素材库。从 `2.11.0` 起支持。               |
+
+初始化优先级：`initialContent` > `shareId` > 指定 `initialMode` 的空画板。提供 `initialContent` 时不会请求分享文件；加载已有内容时，以内容中保存的画板模式为准。
 
 `fonts` 的类型定义、URL/base64 接入方式和校验规则见[自定义字体](./fonts)。
 

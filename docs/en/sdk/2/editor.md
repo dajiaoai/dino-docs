@@ -35,7 +35,7 @@ Use `ui` to control visibility of editor panels.
 | Property          | Type      | Default | Description                                                                  |
 | ----------------- | --------- | ------- | ---------------------------------------------------------------------------- |
 | `ui.navbar`       | `boolean` | `true`  | Whether to show the top navigation bar (including Save button and file info) |
-| `ui.slidePanel`   | `boolean` | `true`  | Whether to show the slide thumbnail panel                                    |
+| `ui.slidePanel`   | `boolean` | `true`  | Whether to show the slide manager. Hidden by default when there is only one slide.                                    |
 | `ui.toolboxPanel` | `boolean` | `true`  | Whether to show the drawing toolbox                                          |
 | `ui.algebraPanel` | `boolean` | `true`  | Whether to show the algebra panel                                            |
 | `ui.docPanel`     | `boolean` | `true`  | Whether to show the document panel                                           |
@@ -55,6 +55,7 @@ interface AlgeoEditorCreateOptions {
   };
   shareId?: string;
   initialContent?: FileContentLatest;
+  initialMode?: '2d' | '3d';
   ui?: AlgeoEditorUiConfig;
   fonts?: AlgeoFontConfig;
   resourceLibrary?: ResourceLibraryProvider;
@@ -65,10 +66,13 @@ interface AlgeoEditorCreateOptions {
 | ----------------- | ------------------------- | -------- | ------------------------------------------------------------------- |
 | `auth.appId`      | `string`                  | yes      | Open Platform application ID for editor-mode authorization          |
 | `shareId`         | `string`                  | no       | Shared file ID to load during initialization                        |
-| `initialContent`  | `FileContentLatest`       | no       | File content loaded after initialization                            |
+| `initialContent`  | `FileContentLatest`       | no       | Initial file content; takes precedence over `shareId`                |
+| `initialMode`      | `'2d' \| '3d'`         | no       | Blank board mode; defaults to `'2d'`. Supported since `2.15.0`.                                |
 | `ui`              | `AlgeoEditorUiConfig`     | no       | Editor UI visibility configuration                                  |
 | `fonts`           | `AlgeoFontConfig`         | no       | Font resources, picker catalog, and default font. Supported since `2.12.0`. |
 | `resourceLibrary` | `ResourceLibraryProvider` | no       | Host-provided read-only image library. Supported since `2.11.0`.     |
+
+Initialization priority: `initialContent` > `shareId` > a blank board in the specified `initialMode`. When `initialContent` is provided, the shared file is not requested. When loading existing content, the board modes stored in that content are preserved.
 
 See [Custom Fonts](./fonts) for the type definitions, URL/base64 setup, and validation rules.
 
