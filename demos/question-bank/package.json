@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dajiaoai/algeo-sdk": "^2.10.0",
+    "@dajiaoai/algeo-sdk": "^2.14.1",
     "jszip": "^3.10.1",
     "katex": "^0.16.11",
     "lucide-react": "^0.468.0",

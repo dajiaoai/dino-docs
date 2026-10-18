@@ -1,4 +1,5 @@
 import { h } from 'vue';
+import { useData } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
 import './style.css';
 import HeroIllustration from './HeroIllustration.vue';
@@ -7,6 +8,7 @@ import CopyDocButton from './CopyDocButton.vue';
 import UnitConverter from './UnitConverter.vue';
 import RenderPlayground from './RenderPlayground.vue';
 import AgentPlayground from './AgentPlayground.vue';
+import ProjectViewer from './ProjectViewer.vue';
 import CommunityQrCard from './CommunityQrCard.vue';
 import HomePlatform from './HomePlatform.vue';
 import {
@@ -17,18 +19,21 @@ import {
 
 export default {
   extends: DefaultTheme,
-  Layout: () =>
-    h(DefaultTheme.Layout, null, {
+  Layout: () => {
+    const { frontmatter } = useData();
+    return h(DefaultTheme.Layout, null, {
       'home-hero-info': () => h(HeroInfo),
       'home-hero-image': () => h(HeroIllustration),
       'aside-outline-before': () => h(CopyDocButton),
-      'layout-bottom': () => h(CommunityQrCard),
+      'layout-bottom': () => frontmatter.value.communityWidget === false ? null : h(CommunityQrCard),
       'home-features-after': () => h(HomePlatform),
-    }),
+    });
+  },
   enhanceApp({ app }) {
     app.component('UnitConverter', UnitConverter);
     app.component('RenderPlayground', RenderPlayground);
     app.component('AgentPlayground', AgentPlayground);
+    app.component('ProjectViewer', ProjectViewer);
 
     if (typeof window === 'undefined') return;
 

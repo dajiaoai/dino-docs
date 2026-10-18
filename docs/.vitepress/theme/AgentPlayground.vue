@@ -16,6 +16,10 @@ import {
   type AgentPlaygroundInput,
 } from './agentPlayground';
 
+function viewerLink(url: string) {
+  return `/viewer?${new URLSearchParams({ url, mode: 'presentation' })}`;
+}
+
 const props = withDefaults(defineProps<{ variant?: 'create' | 'tasks' | 'detail' }>(), { variant: 'create' });
 const isCreate = computed(() => props.variant === 'create');
 const queryVariant = computed(() => props.variant === 'detail' || input.taskId.trim() ? 'detail' : 'tasks');
@@ -339,7 +343,7 @@ onBeforeUnmount(() => {
               <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
               <div><strong>{{ progressTitle }}</strong><span>{{ isCreate ? (taskId ? '正在自动查询生成进度，任务完成后会在此显示结果。' : '正在提交绘图任务，请稍候。') : '正在获取最新任务数据，请稍候。' }}</span></div>
             </div>
-            <p v-if="artifactUrl" class="artifact"><a :href="artifactUrl" target="_blank" rel="noopener noreferrer">打开生成的 .algeo 工程</a></p>
+            <p v-if="artifactUrl" class="artifact"><a :href="viewerLink(artifactUrl)" target="_blank" rel="noopener noreferrer">查看生成的工程 ↗</a> · <a :href="artifactUrl" target="_blank" rel="noopener noreferrer">下载 .algeo</a></p>
             <p v-if="error" class="error" role="alert">{{ error }}</p>
             <template v-if="response"><div class="tabs"><button type="button" :aria-pressed="responseTab === 'body'" @click="responseTab = 'body'">响应正文</button><button type="button" :aria-pressed="responseTab === 'headers'" @click="responseTab = 'headers'">响应头</button></div><pre><code>{{ responseTab === 'body' ? response.body : response.headers || '（无可读取的响应头）' }}</code></pre></template>
             <p v-else-if="!busy && !error" class="empty">{{ isCreate ? '提交任务后，在这里查看创建响应、轮询状态和最终结果。' : '发送查询后，在这里查看 HTTP 状态码和响应内容。' }}</p>
