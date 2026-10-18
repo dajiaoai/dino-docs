@@ -236,6 +236,22 @@ editor.resize();
 await editor.destroy();
 ```
 
+### 8. REPL API (`editor.repl`)
+
+> 从 **2.15.0** 起支持。
+
+`repl(command: string): Promise<ReplResult>`：执行 REPL 指令，返回 `{ output: string }`。修改支持撤销与重做。
+
+```typescript
+const { output } = await editor.repl('def A := Point(0,0)');
+console.log(output);
+await editor.history.undo();
+```
+
+调用不触发 `contentChange` / `slideChange` 事件；读取最新内容请用 `editor.document.getContent()`。执行失败时，已完成的修改不会自动回滚。
+
+使用 `editor.repl('help')` 查看命令帮助，完整指令见 [REPL 能力](../repl)。
+
 ## 事件监听
 
 使用 `editor.on(event, listener)` 订阅事件，返回值为取消订阅函数；也可以使用 `editor.off(event, listener)` 手动取消。

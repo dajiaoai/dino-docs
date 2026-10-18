@@ -22,6 +22,24 @@ const { output } = await presentation.repl('help');
 
 Each call executes a **single** command. If execution fails, the Promise rejects; use the error object's `code` and `message` to identify the problem.
 
+
+Editor mode also supports `repl()`:
+
+```ts
+import { createEditor } from '@dajiaoai/algeo-sdk';
+
+const editor = await createEditor(container, { auth: { appId } });
+const { output } = await editor.repl('def A := Point(0,0)');
+await editor.history.undo();
+await editor.history.redo();
+```
+
+- Returns `{ output: string }`, matching presentation mode.
+- Changes participate in editor undo/redo history; queries do not add history entries.
+- Like existing SDK mutations, REPL calls suppress host `contentChange` / `slideChange` events. Use `editor.document.getContent()` to read the content.
+- Empty or non-string commands reject with `INVALID_REPL_COMMAND`; syntax and execution errors reject with `REPL_EXECUTE_FAILED`.
+- Execution errors do not guarantee rollback of earlier changes. The SDK synchronizes the resulting state; recorded changes can be undone.
+
 ## Command Categories
 
 ### Slide Management

@@ -239,6 +239,22 @@ editor.resize();
 await editor.destroy();
 ```
 
+### 8. REPL API (`editor.repl`)
+
+> Supported since **2.15.0**.
+
+`repl(command: string): Promise<ReplResult>` executes REPL commands and returns `{ output: string }`. Changes support undo and redo.
+
+```typescript
+const { output } = await editor.repl('def A := Point(0,0)');
+console.log(output);
+await editor.history.undo();
+```
+
+Calls do not trigger `contentChange` / `slideChange` events. Use `editor.document.getContent()` to read the latest content. Execution errors do not automatically roll back completed changes.
+
+Use `editor.repl('help')` for command help. See [REPL Capabilities](../repl) for the full command reference.
+
 ## Event Listening
 
 Use `editor.on(event, listener)` to subscribe; it returns an unsubscribe function. You can also use `editor.off(event, listener)` to unsubscribe manually.

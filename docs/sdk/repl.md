@@ -39,6 +39,25 @@ presentation.repl(command: string): Promise<{ output: string }>
 
 每次调用执行**单条**命令。执行失败时 Promise 会 reject，你可以通过错误对象中的 `code` 和 `message` 定位问题。
 
+
+编辑模式同样支持 `repl()`：
+
+```ts
+import { createEditor } from '@dajiaoai/algeo-sdk';
+
+const editor = await createEditor(container, { auth: { appId } });
+const { output } = await editor.repl('def A := Point(0,0)');
+await editor.history.undo();
+await editor.history.redo();
+```
+
+- 返回值与演示模式一致，为 `{ output: string }`。
+- 有效修改纳入编辑器历史记录；查询命令不新增历史记录。
+- 与现有 SDK 写操作一致，REPL 调用不触发宿主的 `contentChange` / `slideChange` 事件。需要内容时调用 `editor.document.getContent()`。
+- 空命令或非字符串参数返回 `INVALID_REPL_COMMAND`；语法或执行错误返回 `REPL_EXECUTE_FAILED`。
+- 执行错误不保证回滚此前已完成的修改；SDK 会同步失败后的实际状态，已记录的修改可撤销。
+
+
 ## 命令分类
 
 ### 画板管理
