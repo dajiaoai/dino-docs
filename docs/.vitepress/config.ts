@@ -241,7 +241,16 @@ export default defineConfig({
             {
               text: '接口参考',
               items: [
-                { text: '智能生图服务', link: '/api/agent' },
+                {
+                  text: '智能生图服务',
+                  collapsed: false,
+                  items: [
+                    { text: '概览', link: '/api/agent' },
+                    { text: '创建任务', link: '/api/agent-create' },
+                    { text: '任务列表', link: '/api/agent-tasks' },
+                    { text: '任务详情', link: '/api/agent-detail' },
+                  ],
+                },
                 {
                   text: '渲染服务',
                   collapsed: false,
@@ -455,7 +464,13 @@ export default defineConfig({
               items: [
                 {
                   text: 'Intelligent Image Generation',
-                  link: '/en/api/agent',
+                  collapsed: false,
+                  items: [
+                    { text: 'Overview', link: '/en/api/agent' },
+                    { text: 'Create a Task', link: '/en/api/agent-create' },
+                    { text: 'Task List', link: '/en/api/agent-tasks' },
+                    { text: 'Task Detail', link: '/en/api/agent-detail' },
+                  ],
                 },
                 {
                   text: 'Render API',
