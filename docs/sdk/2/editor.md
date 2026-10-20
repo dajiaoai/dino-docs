@@ -90,10 +90,13 @@ const content = await editor.document.getContent();
 管理多页画板。
 
 - `getCount(): number`: 获取总页数。
-- `getCurrentIndex(): number`: 获取当前所在页码。
+- `getCurrentIndex(): number`: 获取当前画板索引，从 0 开始。
+- `getInfo(index?: number): Promise<SlideInfo>`: 查询指定画板的信息，从 0 开始。自 SDK `2.15.0` 起支持。
+- `getViewCamera3d(index?: number): Promise<Partial<ViewCamera3d> | null>`: 优先读取已启用的 3D 固定视图，未启用或无配置时返回画板相机已有参数；2D 返回 `null`。自 SDK `2.15.0` 起支持。
+- `setViewCamera3d(options: SetViewCamera3dOptions): Promise<void>`: 局部更新 3D 固定视图及启用状态。 `enabled: false` 保留配置供重新启用，但读取视图和 `contain` / `size` 导出会回退到目标画板的 `camera3d`；读取结果省略 `width`、`height`、`crop`。自 SDK `2.15.0` 起支持。
 - `getViewBounds(index?: number): Promise<ExportViewBound | null>`: 获取指定画板的有限画布导出视野；省略 `index` 时读取当前画板。无限画布返回 `null`。自 SDK `2.14.0` 起支持。
 - `setViewBounds(options: SetViewBoundsOptions): Promise<void>`: 设置指定画板的有限画布边界；省略 `options.index` 时设置当前画板。自 SDK `2.14.0` 起支持。
-- `switchTo(index: number): Promise<void>`: 切换到指定页。
+- `switchTo(index: number): Promise<void>`: 切换到指定画板，索引从 0 开始。
 - `add(): Promise<SlideIndexResult>`: 在末尾添加新画板。
 - `addAt(index: number): Promise<SlideIndexResult>`: 在指定位置插入新画板。
 - `remove(index: number): Promise<void>`: 删除指定画板。

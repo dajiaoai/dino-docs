@@ -6,7 +6,7 @@ description: 使用 SDK 编辑模式按指定视野、内容包围盒或固定�
 # 编辑模式导出图片
 
 ::: tip 在线体验
-在交互示例中切换 `view`、`contain`、`size` 三种模式，实时调整参数并预览多画板导出效果。
+在交互示例中切换 `view`、`contain`、`size` 三种模式，实时调整参数并预览导出效果。
 
 **[打开画板图片导出示例 →](https://dajiaoai.github.io/algeo-sdk/examples/12-export-slide-image.html)**
 :::
@@ -42,14 +42,6 @@ const images = await editor.slides.exportImage(options);
 
 每个模式都可以使用以下公共参数：
 
-```typescript
-interface ExportImageBaseOptions {
-  slideIndices?: number[];
-  format?: 'png' | 'jpg' | 'svg';
-  quality?: number;
-  transparent?: boolean;
-}
-```
 
 | 参数 | 类型 | 必填 | 默认值 | 说明 |
 | --- | --- | --- | --- | --- |
@@ -119,20 +111,27 @@ const images = await editor.slides.exportImage({
 
 ### 3D：`viewCamera3d`
 
-`ExportViewCamera3D` 的字段：
+`viewCamera3d` 必须提供，但允许传入 `{}`。未提供的字段按以下规则补齐：
 
-| 字段 | 类型 | 必填 | 默认值 | 说明 |
-| --- | --- | --- | --- | --- |
-| `width` | `number` | 否 | `1024` | 逻辑输出宽度（px），必须为正整数 |
-| `height` | `number` | 否 | `1024` | 逻辑输出高度（px），必须为正整数 |
-| `offset` | `[number, number, number]` | 否 | 画板 `camera3d.offset` | 相机中心的世界坐标 |
-| `yaw` | `number` | 否 | 画板 `camera3d.yaw` | 水平旋转角，单位为弧度 |
-| `pitch` | `number` | 否 | 画板 `camera3d.pitch` | 俯仰角，单位为弧度 |
-| `scale` | `number` | 否 | 画板 `camera3d.scale` | 3D 相机缩放；值越大，视野越近、可见世界范围越小 |
+- 目标画板已启用固定视图时，以该固定视图为基础。
+- 未启用或没有固定视图时，使用目标画板的 `camera3d` 参数；逻辑视口默认 `1024 × 1024`，默认不截取。
 
-未提供的相机字段均从目标画板文件读取。
+| 字段 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `width` | `number` | 否 | 完整逻辑视口宽高（px），必须为正整数 |
+| `height` | `number` | 否 | 完整逻辑视口宽高（px），必须为正整数 |
+| `offset` | `[number, number, number]` | 否 | 相机中心的世界坐标 |
+| `yaw` | `number` | 否 | 水平旋转角，单位为弧度 |
+| `pitch` | `number` | 否 | 俯仰角，单位为弧度 |
+| `scale` | `number` | 否 | 3D 相机缩放；值越大，视野越近、可见世界范围越小 |
+| `projection` | `'orthographic' \| 'perspective' \| 'oblique'` | 否 | 正交、透视或斜投影 |
+| `obliqueAngle` | `number` | 否 | 斜投影方向角，单位为弧度 |
+| `obliqueScaleRatio` | `number` | 否 | 斜投影退行轴缩放比，必须大于或等于 0 |
+| `cropEnabled` | `boolean` | 否 | 是否启用截取；设为 `false` 可覆盖已保存的截取开关 |
+| `crop` | `{ left, top, right, bottom }` | 否 | 完整逻辑视口内的截取范围，单位为逻辑像素。截取坐标以完整视口左上角为原点，X 向右、Y 向下。 |
 
-3D 中，`scale` 表示 **相机的镜头远近/可见范围**，不是“每世界单位的像素数”。值越大，
+
+3D 中，`scale` 表示 **相机的镜头远近/可见范围**。值越大，
 相机越接近内容、可见世界范围越小；值越小则相机拉远、可见范围越大。它会改变画面构图。
 如只需提高导出清晰度，请保持 `scale` 不变并增大 `pixelRatio`。
 
@@ -144,7 +143,7 @@ const images = await editor.slides.exportImage({
   viewCamera3d: {
     width: 1200,
     height: 800,
-    // 以下字段可选；留空时读取画板文件中的相机配置。
+    // 以下字段可选；省略时使用目标画板的视图基础参数。
     offset: [0, 0, 0],
     yaw: Math.PI / 4,
     pitch: Math.PI / 6,
@@ -153,13 +152,58 @@ const images = await editor.slides.exportImage({
 });
 ```
 
+### 读取固定视图后导出
+
+`getViewCamera3d()` 优先返回目标画板已启用的固定视图；未启用或没有配置时返回画板相机已有参数，不读取已关闭但保留的配置。
+
+| 目标画板状态 | 读取来源 | `getViewCamera3d()` 返回内容 |
+| --- | --- | --- |
+| 3D，固定视图已启用且有配置 | 已启用的固定视图 | 完整相机参数、逻辑宽高及截取配置 |
+| 3D，固定视图已关闭或没有配置 | 目标画板的 `camera3d` | 已有相机参数；省略 `width`、`height`、`crop` |
+| 2D | 不读取 3D 视图 | `null` |
+
+关闭固定视图后，已保存的配置仍可在重新启用时复用，但不参与本次视图读取或 `contain` / `size` 导出。
+
+返回值的角度单位为**度**，字段名为 `yawDeg`、`pitchDeg`、`obliqueAngleDeg`；单次图片导出的对应字段使用**弧度**，需要显式转换。
+
+```typescript
+const info = await editor.slides.getInfo(0);
+const view = await editor.slides.getViewCamera3d(info.index);
+if (view) {
+  const radians = (degrees: number | undefined) =>
+    degrees === undefined ? undefined : degrees * Math.PI / 180;
+  const images = await editor.slides.exportImage({
+    mode: 'view',
+    slideIndices: [info.exportIndex],
+    format: 'png',
+    pixelRatio: 2,
+    viewCamera3d: {
+      offset: view.offset,
+      yaw: radians(view.yawDeg),
+      pitch: radians(view.pitchDeg),
+      scale: view.scale,
+      projection: view.projection,
+      obliqueAngle: radians(view.obliqueAngleDeg),
+      obliqueScaleRatio: view.obliqueScaleRatio,
+      width: view.width,
+      height: view.height,
+      cropEnabled: view.crop !== undefined && view.crop !== null,
+      ...(view.crop ? { crop: view.crop } : {}),
+    },
+  });
+}
+```
+
+固定视图未启用或没有配置时，读取结果不含 `width`、`height`、`crop`，上述调用使用默认逻辑视口且不截取。
+如需保存后复用该视角，使用 `setViewCamera3d`。
+
 ## contain：完整包住内容
 
 `contain` 模式计算画板内容的可视包围盒，并让输出视野以内容为中心。2D 会考虑圆点、
 标签文本等视觉外扩；3D 会计算可见 3D 图元的完整投影范围（包括当前视口外的有限图元），
 避免内容被裁切。最终图片尺寸随内容变化。
 
-如果画板没有可计算的内容包围盒，例如只有坐标轴，则完整保留文件相机的原始视口。
+如果没有可计算的内容包围盒，则保留基础相机视口；3D 目标画板未启用固定视图且视口尚未初始化时，使用 `1024 × 1024` 的逻辑视口。
 
 ### 专属参数
 
@@ -180,8 +224,9 @@ const images = await editor.slides.exportImage({
 输出高度 = 内容包围盒高度 × camera.scale × pixelRatio + 2 × vertical
 ```
 
-2D 的 `camera.scale` 来自目标画板文件；文件中未提供时使用 `50`。3D 则沿用画板的
-`camera3d` 视角和缩放，并以投影包围盒决定画幅；`pixelRatio` 只影响最终分辨率。
+2D 的 `camera.scale` 来自目标画板文件；文件中未提供时使用 `50`。
+
+3D 的 `contain` / `size` 均逐张读取目标画板的视图参数：优先使用已启用的固定视图；未启用或没有配置时使用该画板的 `camera3d`，不读取已关闭但保留的配置。
 
 ```typescript
 const images = await editor.slides.exportImage({
@@ -198,7 +243,7 @@ const images = await editor.slides.exportImage({
 
 ## size：按固定尺寸导出
 
-`size` 模式保证最终图片严格等于指定的 `width × height`。
+`size` 模式保证最终图片严格等于指定的 `width × height`。内容保持比例，居中放入扣除最小留白后的区域；3D 的视图参数与 `contain` 使用相同的目标画板读取规则。
 
 ### 专属参数
 

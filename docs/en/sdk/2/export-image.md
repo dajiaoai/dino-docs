@@ -6,7 +6,7 @@ description: Export images from the SDK editor mode using a viewport, content bo
 # Export Images in Editor Mode
 
 ::: tip Try it online
-Switch between `view`, `contain`, and `size`, adjust parameters in real time, and preview multiple exported slides.
+Switch between `view`, `contain`, and `size`, adjust parameters in real time, and preview the exported images.
 
 **[Open the slide image export example →](https://dajiaoai.github.io/algeo-sdk/examples/12-export-slide-image.html)**
 :::
@@ -41,15 +41,6 @@ const images = await editor.slides.exportImage(options);
 ```
 
 All three modes accept these shared parameters:
-
-```typescript
-interface ExportImageBaseOptions {
-  slideIndices?: number[];
-  format?: 'png' | 'jpg' | 'svg';
-  quality?: number;
-  transparent?: boolean;
-}
-```
 
 | Parameter | Type | Required | Default | Description |
 | --- | --- | --- | --- | --- |
@@ -122,21 +113,26 @@ This example produces a `1000 × 1000` pixel image.
 
 ### 3D: `viewCamera3d`
 
-Fields in `ExportViewCamera3D`:
+`viewCamera3d` is required, but may be `{}`. Omitted fields are filled in as follows:
 
-| Field | Type | Required | Default | Description |
-| --- | --- | --- | --- | --- |
-| `width` | `number` | no | `1024` | Logical output width (px); must be a positive integer |
-| `height` | `number` | no | `1024` | Logical output height (px); must be a positive integer |
-| `offset` | `[number, number, number]` | no | slide `camera3d.offset` | Camera-center world coordinates |
-| `yaw` | `number` | no | slide `camera3d.yaw` | Horizontal rotation angle in radians |
-| `pitch` | `number` | no | slide `camera3d.pitch` | Pitch angle in radians |
-| `scale` | `number` | no | slide `camera3d.scale` | 3D camera scale; larger values zoom in and reduce the visible world range |
+- If the target slide has an enabled fixed view, use that view as the base.
+- If the fixed view is disabled or absent, use the target slide's `camera3d` parameters, with a default `1024 × 1024` logical viewport and no cropping.
 
-Any omitted camera field is read from the target slide file.
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `width` | `number` | no | Full logical viewport width (px); must be a positive integer |
+| `height` | `number` | no | Full logical viewport height (px); must be a positive integer |
+| `offset` | `[number, number, number]` | no | Camera-center world coordinates |
+| `yaw` | `number` | no | Horizontal rotation angle in radians |
+| `pitch` | `number` | no | Pitch angle in radians |
+| `scale` | `number` | no | 3D camera scale; larger values zoom in and reduce the visible world range |
+| `projection` | `'orthographic' \| 'perspective' \| 'oblique'` | no | Orthographic, perspective, or oblique projection |
+| `obliqueAngle` | `number` | no | Oblique projection angle in radians |
+| `obliqueScaleRatio` | `number` | no | Oblique receding-axis scale ratio; must be greater than or equal to 0 |
+| `cropEnabled` | `boolean` | no | Whether cropping is enabled; set to `false` to override the saved cropping state |
+| `crop` | `{ left, top, right, bottom }` | no | Crop rectangle within the full logical viewport, in logical pixels. The origin is at the top-left, with X increasing rightward and Y increasing downward. |
 
-In 3D, `scale` controls **camera distance and visible range**, not the number of
-pixels per world unit. A larger value moves the camera closer and shows a smaller
+In 3D, `scale` controls **camera distance and visible range**. A larger value moves the camera closer and shows a smaller
 world range; a smaller value moves it farther away and shows a larger range. It
 changes the composition. To increase export sharpness, keep `scale` unchanged and
 increase `pixelRatio`.
@@ -149,7 +145,7 @@ const images = await editor.slides.exportImage({
   viewCamera3d: {
     width: 1200,
     height: 800,
-    // These fields are optional and fall back to the slide camera when omitted.
+    // These fields are optional; omitted fields use the target slide's base view parameters.
     offset: [0, 0, 0],
     yaw: Math.PI / 4,
     pitch: Math.PI / 6,
@@ -157,6 +153,51 @@ const images = await editor.slides.exportImage({
   pixelRatio: 2,
 });
 ```
+
+### Read a fixed view before exporting
+
+`getViewCamera3d()` returns the target slide's enabled fixed view first. If disabled or absent, it returns the slide camera's existing parameters and ignores any disabled saved configuration.
+
+| Target slide state | Data source | `getViewCamera3d()` result |
+| --- | --- | --- |
+| 3D, with an enabled and configured fixed view | Enabled fixed view | Complete camera parameters, logical dimensions, and crop configuration |
+| 3D, with a disabled or absent fixed view | Target slide's `camera3d` | Existing camera parameters; `width`, `height`, and `crop` are omitted |
+| 2D | No 3D view is read | `null` |
+
+Disabling a fixed view retains its configuration for re-enabling, but excludes it from view reads and `contain` / `size` exports.
+
+Returned angles are in **degrees**, using `yawDeg`, `pitchDeg`, and `obliqueAngleDeg`. The corresponding image export fields use **radians**, so convert them explicitly.
+
+```typescript
+const info = await editor.slides.getInfo(0);
+const view = await editor.slides.getViewCamera3d(info.index);
+if (view) {
+  const radians = (degrees: number | undefined) =>
+    degrees === undefined ? undefined : degrees * Math.PI / 180;
+  const images = await editor.slides.exportImage({
+    mode: 'view',
+    slideIndices: [info.exportIndex],
+    format: 'png',
+    pixelRatio: 2,
+    viewCamera3d: {
+      offset: view.offset,
+      yaw: radians(view.yawDeg),
+      pitch: radians(view.pitchDeg),
+      scale: view.scale,
+      projection: view.projection,
+      obliqueAngle: radians(view.obliqueAngleDeg),
+      obliqueScaleRatio: view.obliqueScaleRatio,
+      width: view.width,
+      height: view.height,
+      cropEnabled: view.crop !== undefined && view.crop !== null,
+      ...(view.crop ? { crop: view.crop } : {}),
+    },
+  });
+}
+```
+
+When the fixed view is disabled or absent, the read result omits `width`, `height`, and `crop`; the call above uses the default logical viewport without cropping.
+To save the view for reuse, use `setViewCamera3d`.
 
 ## contain: include all content
 
@@ -166,8 +207,7 @@ and label text are included. For 3D, the complete projected extent of visible 3D
 primitives is used, including finite primitives outside the current viewport.
 Final image dimensions vary with the content.
 
-If the slide has no calculable content bounds—for example, it contains only
-coordinate axes—the original file camera viewport is preserved.
+If no content bounds can be calculated, the base camera viewport is preserved. For a 3D target slide with no enabled fixed view and an uninitialized viewport, a `1024 × 1024` logical viewport is used.
 
 ### Mode-specific parameters
 
@@ -189,7 +229,9 @@ output width = content bounds width × camera.scale × pixelRatio + 2 × horizon
 output height = content bounds height × camera.scale × pixelRatio + 2 × vertical
 ```
 
-For 2D, `camera.scale` comes from the target slide file and defaults to `50` when absent. For 3D, the slide's `camera3d` view and scale are retained, the projected content bounds determine the canvas, and `pixelRatio` affects only final resolution.
+For 2D, `camera.scale` comes from the target slide file and defaults to `50` when absent.
+
+For 3D, both `contain` and `size` read each target slide's view parameters: use the enabled fixed view first; if disabled or absent, use that slide's `camera3d`. Disabled saved configurations are ignored.
 
 ```typescript
 const images = await editor.slides.exportImage({
@@ -206,7 +248,7 @@ const images = await editor.slides.exportImage({
 
 ## size: export exact dimensions
 
-The `size` mode guarantees that the final image is exactly `width × height`.
+The `size` mode guarantees that the final image is exactly `width × height`. Content keeps its aspect ratio and is centered within the area remaining after minimum padding. For 3D, view parameters follow the same target-slide priority as `contain`.
 
 ### Mode-specific parameters
 

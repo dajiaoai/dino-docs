@@ -95,10 +95,13 @@ const content = await editor.document.getContent();
 Manage multi-slide documents.
 
 - `getCount(): number`: Get the total slide count.
-- `getCurrentIndex(): number`: Get the current slide index.
+- `getCurrentIndex(): number`: Get the current slide index, starting from 0.
+- `getInfo(index?: number): Promise<SlideInfo>`: Query information about a specified slide using a zero-based index. Available since SDK `2.15.0`.
+- `getViewCamera3d(index?: number): Promise<Partial<ViewCamera3d> | null>`: Read the enabled fixed 3D view first; if disabled or absent, return the slide camera's existing parameters. Returns `null` for 2D slides. Available since SDK `2.15.0`.
+- `setViewCamera3d(options: SetViewCamera3dOptions): Promise<void>`: Partially update a fixed 3D view and its enabled state. Setting `enabled: false` retains the configuration for re-enabling, but view reads and `contain` / `size` exports fall back to the target slide's `camera3d`; the read result omits `width`, `height`, and `crop`. Available since SDK `2.15.0`.
 - `getViewBounds(index?: number): Promise<ExportViewBound | null>`: Get the finite canvas export viewport for a specified slide; omitting `index` reads the current slide. Returns `null` for an infinite canvas. Available since SDK `2.14.0`.
 - `setViewBounds(options: SetViewBoundsOptions): Promise<void>`: Set finite canvas bounds for a specified slide; omitting `options.index` uses the current slide. Available since SDK `2.14.0`.
-- `switchTo(index: number): Promise<void>`: Switch to the specified slide.
+- `switchTo(index: number): Promise<void>`: Switch to the specified slide using a zero-based index.
 - `add(): Promise<SlideIndexResult>`: Add a new slide at the end.
 - `addAt(index: number): Promise<SlideIndexResult>`: Insert a new slide at the specified position.
 - `remove(index: number): Promise<void>`: Delete the specified slide.
