@@ -7,6 +7,10 @@ description: Product updates, capability releases, billing changes, maintenance 
 
 This page collects important Dino-GSP Open Platform updates, including new capabilities, capability changes, billing changes, maintenance notices, and usage notes.
 
+## October 2026
+
+- **New capability** · 2026-10-21 · [SDK 2.15.0 Adds Fixed 3D Views and Expands Image Export](./2026-10-21-sdk-2-15-0-3d-view-export)
+
 ## September 2026
 
 - **New capability** · 2026-09-20 · [Transparent Image Export Now Supported](./2026-09-20-transparent-image-export)

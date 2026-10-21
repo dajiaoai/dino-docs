@@ -307,6 +307,10 @@ export default defineConfig({
               text: '2026 年',
               items: [
                 {
+                  text: 'SDK 2.15.0：3D 固定视图与图片导出升级',
+                  link: '/announcements/2026-10-21-sdk-2-15-0-3d-view-export',
+                },
+                {
                   text: '支持透明图片导出',
                   link: '/announcements/2026-09-20-transparent-image-export',
                 },
@@ -530,6 +534,10 @@ export default defineConfig({
             {
               text: '2026',
               items: [
+                {
+                  text: 'SDK 2.15.0 Adds Fixed 3D Views and Expands Image Export',
+                  link: '/en/announcements/2026-10-21-sdk-2-15-0-3d-view-export',
+                },
                 {
                   text: 'Transparent Image Export Now Supported',
                   link: '/en/announcements/2026-09-20-transparent-image-export',
