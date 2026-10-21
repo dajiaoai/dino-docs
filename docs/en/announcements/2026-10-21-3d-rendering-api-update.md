@@ -1,8 +1,8 @@
 ---
 title: 3D Rendering API Update — Degree Angles, Fixed Views, and Cropping
-description: Generated projects include recommended views and bounds for direct export after optional editor adjustments. Also updates 3D angles, viewport defaults, and cropping; only 3D rendering is affected.
+description: Generated projects include recommended views and bounds for direct export after optional editor adjustments. Render API and MCP both receive updated 3D export parameters; only 3D rendering is affected.
 date: "2026-10-21"
-modules: [api]
+modules: [api, mcp]
 topics: [export, ai]
 ---
 
@@ -14,7 +14,7 @@ topics: [export, ai]
 - Affected users: Developers exporting 3D slides through the Render API or MCP; only 3D rendering is affected
 - Action required: Review angle fields, default dimensions, and fixed-view settings in existing 3D integrations
 
-Previously, radian angles and difficult view and dimension settings made it hard to complete the workflow from drawing and saving a view to exporting a 3D image. This update addresses those problems with degree-based request angles, explicit fixed-view precedence, and cropping within a full viewport to make export framing easier to control consistently.
+Previously, radian angles and difficult view and dimension settings made it hard to complete the workflow from drawing and saving a view to exporting a 3D image. This update addresses those problems across both the Render API and MCP with degree-based request angles, explicit fixed-view precedence, and cropping within a full viewport to make export framing easier to control consistently.
 
 **Only 3D rendering is affected. Existing 2D rendering calls require no migration.** The endpoint remains `POST /api/render/v2`.
 
@@ -91,7 +91,17 @@ jq '{
 
 The crop measures `1000 × 600` logical pixels. With `pixelRatio: 2`, the final PNG is **2000 × 1200 pixels**. Adjust the camera and crop to fit your actual figure. The final physical PNG width and height after cropping must each be at most `2048` pixels; exceeding either limit returns HTTP `422` without automatic downscaling.
 
-## Connecting Drawing, Fixed Views, and Export
+## MCP Receives the Same 3D Export Parameter Update
+
+The MCP `export_image_3d` tool also gains updated export parameters and follows the same 3D view rules as the Render API:
+
+- Use `view3D` for a single export override. Set `yawDeg`, `pitchDeg`, and `obliqueAngleDeg` in degrees; response `camera` angles remain in radians.
+- Set the full logical viewport with `width` and `height`, and its crop area with `crop`. Use top-level `pixelRatio` to adjust output resolution. Final physical width and height after cropping must each be at most `2048` pixels.
+- Each field uses explicit parameters, the enabled fixed view, then protocol defaults. When the project already has a suitable fixed view, omit `view3D` from `export_image_3d` to reuse its saved camera, dimensions, and crop.
+
+Existing MCP 3D export integrations should also review angle fields, dimensions, and fixed-view settings. This change does not affect 2D exports.
+
+### Connecting Drawing, Fixed Views, and Export
 
 When drawing 3D geometry through MCP, use `view_camera3d` to save a fixed view for presentation and export, including viewing angles, full viewport dimensions, and crop area. Fixed views are stored separately from editing views and can be reused for consistent exports.
 
