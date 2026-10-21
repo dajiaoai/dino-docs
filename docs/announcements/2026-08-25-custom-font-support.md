@@ -1,6 +1,9 @@
 ---
 title: SDK、MCP 与 API 自定义字体能力上线
 description: SDK 2.12.0 内嵌画板支持传入自定义字体，MCP 和 API 支持为画板内容指定字体。
+date: "2026-08-25"
+modules: [sdk, api, mcp]
+topics: [fonts-assets]
 ---
 
 # SDK、MCP 与 API 自定义字体能力上线

@@ -1,6 +1,9 @@
 ---
 title: SDK 2.10.0 导出、自动重绘与演示模式更新
 description: SDK 2.10.0 升级画板图片与 LaTeX 导出能力，支持容器恢复可见时自动重绘，并调整演示模式鉴权、路由和 UI 配置。
+date: "2026-07-27"
+modules: [sdk]
+topics: [editing, export]
 ---
 
 # SDK 2.10.0 导出、自动重绘与演示模式更新

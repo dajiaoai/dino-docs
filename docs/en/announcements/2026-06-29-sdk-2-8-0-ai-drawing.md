@@ -1,6 +1,9 @@
 ---
 title: Embedded Editor AI Drawing, API, and Usage Reporting Are Now Available
 description: Starting from SDK 2.8.0, embedded editor mode can enable the AI Chat panel, with the embedded-mode AI drawing API, console usage reporting, and billing flow now available.
+date: "2026-06-29"
+modules: [sdk, api, console]
+topics: [editing, ai, billing]
 ---
 
 # Embedded Editor AI Drawing, API, and Usage Reporting Are Now Available

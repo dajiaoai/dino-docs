@@ -1,6 +1,9 @@
 ---
 title: SDK 2.11.0 Adds Image Libraries, Third-Party Images, and REPL Image Support
 description: SDK 2.11.0 connects custom image libraries to the editor, lets MCP and API workflows insert third-party images into slides, and adds Image definitions to the REPL protocol.
+date: "2026-08-17"
+modules: [sdk, api, mcp]
+topics: [editing, fonts-assets]
 ---
 
 # SDK 2.11.0 Adds Image Libraries, Third-Party Images, and REPL Image Support

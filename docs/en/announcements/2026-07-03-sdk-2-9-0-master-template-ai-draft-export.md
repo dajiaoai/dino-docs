@@ -1,6 +1,9 @@
 ---
 title: SDK 2.9.0 Updates Master Templates, AI Drafts, and Export Formats
 description: SDK 2.9.0 adds master template APIs for embedded modes, AI draft set and clear support in editor mode, and SVG / LaTeX export formats.
+date: "2026-07-03"
+modules: [sdk]
+topics: [editing, export, ai, templates]
 ---
 
 # SDK 2.9.0 Updates Master Templates, AI Drafts, and Export Formats

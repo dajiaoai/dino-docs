@@ -301,60 +301,6 @@ export default defineConfig({
           '/announcements/': [
             {
               text: '公告中心',
-              items: [{ text: '全部公告', link: '/announcements/' }],
-            },
-            {
-              text: '2026 年',
-              items: [
-                {
-                  text: 'SDK 2.15.0：3D 固定视图与图片导出升级',
-                  link: '/announcements/2026-10-21-sdk-2-15-0-3d-view-export',
-                },
-                {
-                  text: '支持透明图片导出',
-                  link: '/announcements/2026-09-20-transparent-image-export',
-                },
-                {
-                  text: 'API 支持立体几何渲染',
-                  link: '/announcements/2026-09-16-3d-rendering-api',
-                },
-                {
-                  text: 'MCP 与 SDK 支持立体几何图片渲染',
-                  link: '/announcements/2026-09-02-3d-rendering-api-mcp-sdk',
-                },
-                {
-                  text: '智能生图 API 服务调价：更强底模，更低成本',
-                  link: '/announcements/2026-09-01-api-pricing-reduction',
-                },
-                {
-                  text: 'SDK、MCP 与 API 自定义字体能力上线',
-                  link: '/announcements/2026-08-25-custom-font-support',
-                },
-                {
-                  text: 'SDK 2.11.0 图片素材库、第三方图片与 REPL 能力更新',
-                  link: '/announcements/2026-08-17-sdk-2-11-0-image-assets-repl',
-                },
-                {
-                  text: '控制台充值与订单管理上线',
-                  link: '/announcements/2026-07-27-console-recharge-order-management',
-                },
-                {
-                  text: 'SDK 2.10.0 导出、自动重绘与演示模式更新',
-                  link: '/announcements/2026-07-27-sdk-2-10-0-export-resize-presentation',
-                },
-                {
-                  text: 'SDK 2.9.0 母版、AI 草稿与导出能力更新',
-                  link: '/announcements/2026-07-03-sdk-2-9-0-master-template-ai-draft-export',
-                },
-                {
-                  text: '渲染接口参数与智能生图母版能力更新',
-                  link: '/announcements/2026-06-29-render-agent-template-update',
-                },
-                {
-                  text: '内嵌编辑器 AI 绘图能力上线',
-                  link: '/announcements/2026-06-29-sdk-2-8-0-ai-drawing',
-                },
-              ],
             },
           ],
           '/CONTACT': [],
@@ -529,56 +475,6 @@ export default defineConfig({
           '/en/announcements/': [
             {
               text: 'Updates',
-              items: [{ text: 'All Updates', link: '/en/announcements/' }],
-            },
-            {
-              text: '2026',
-              items: [
-                {
-                  text: 'SDK 2.15.0 Adds Fixed 3D Views and Expands Image Export',
-                  link: '/en/announcements/2026-10-21-sdk-2-15-0-3d-view-export',
-                },
-                {
-                  text: 'Transparent Image Export Now Supported',
-                  link: '/en/announcements/2026-09-20-transparent-image-export',
-                },
-                {
-                  text: 'API Support for 3D Geometry Rendering',
-                  link: '/en/announcements/2026-09-16-3d-rendering-api',
-                },
-                {
-                  text: 'Intelligent Image Generation API Pricing Update',
-                  link: '/en/announcements/2026-09-01-api-pricing-reduction',
-                },
-                {
-                  text: 'Custom Font Support for the SDK, MCP, and API',
-                  link: '/en/announcements/2026-08-25-custom-font-support',
-                },
-                {
-                  text: 'SDK 2.11.0 Adds Image Libraries, Third-Party Images, and REPL Image Support',
-                  link: '/en/announcements/2026-08-17-sdk-2-11-0-image-assets-repl',
-                },
-                {
-                  text: 'Console Top-up and Order Management Now Available',
-                  link: '/en/announcements/2026-07-27-console-recharge-order-management',
-                },
-                {
-                  text: 'SDK 2.10.0 Updates Export, Automatic Resize, and Presentation Mode',
-                  link: '/en/announcements/2026-07-27-sdk-2-10-0-export-resize-presentation',
-                },
-                {
-                  text: 'SDK 2.9.0 Updates Master Templates, AI Drafts, and Export Formats',
-                  link: '/en/announcements/2026-07-03-sdk-2-9-0-master-template-ai-draft-export',
-                },
-                {
-                  text: 'Render API Parameters and Agent Template Support Updated',
-                  link: '/en/announcements/2026-06-29-render-agent-template-update',
-                },
-                {
-                  text: 'Embedded Editor AI Drawing Launch',
-                  link: '/en/announcements/2026-06-29-sdk-2-8-0-ai-drawing',
-                },
-              ],
             },
           ],
           '/en/CONTACT': [],

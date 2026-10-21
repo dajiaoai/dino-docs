@@ -1,6 +1,9 @@
 ---
 title: 智能生图 API 服务调价：更强底模，更低成本
 description: 智能生图 API 自 2026 年 9 月 1 日起全线调整为 7.5 折，模型能力同步升级。
+date: "2026-08-27"
+modules: [api]
+topics: [ai, billing]
 ---
 
 # 智能生图 API 服务调价：更强底模，更低成本

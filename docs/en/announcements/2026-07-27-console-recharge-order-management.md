@@ -1,6 +1,9 @@
 ---
 title: Console Top-up and Order Management Now Available
 description: The Dino-GSP Open Platform console now supports self-service top-up, resource pack purchases, WeChat Pay, and order management.
+date: "2026-07-27"
+modules: [console]
+topics: [billing]
 ---
 
 # Console Top-up and Order Management Now Available

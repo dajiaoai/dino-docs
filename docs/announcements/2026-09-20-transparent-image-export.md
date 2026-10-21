@@ -1,6 +1,9 @@
 ---
 title: 支持透明图片导出
 description: SDK、MCP 与 HTTP API 支持通过 transparent 参数导出透明背景图片，适用于 PNG 和 SVG。
+date: "2026-09-20"
+modules: [sdk, api, mcp]
+topics: [export]
 ---
 
 # 支持透明图片导出

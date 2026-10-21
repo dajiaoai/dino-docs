@@ -1,6 +1,9 @@
 ---
 title: 控制台充值与订单管理上线
 description: 大角几何开放平台控制台上线自助充值、资源包购买、微信支付和订单管理能力。
+date: "2026-07-27"
+modules: [console]
+topics: [billing]
 ---
 
 # 控制台充值与订单管理上线

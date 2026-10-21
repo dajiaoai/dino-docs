@@ -1,6 +1,9 @@
 ---
 title: Render API Parameters and Agent Template Support Updated
 description: The Render API now uses viewBound viewport parameters, and both Render API and Agent API support style templates.
+date: "2026-06-29"
+modules: [api]
+topics: [export, ai, templates]
 ---
 
 # Render API Parameters and Agent Template Support Updated

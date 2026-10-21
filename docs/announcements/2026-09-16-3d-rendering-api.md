@@ -1,6 +1,9 @@
 ---
 title: API 支持立体几何渲染
 description: 通过 PNG 导出 API 渲染立体几何画板，支持自定义相机视角、投影模式与输出分辨率。
+date: "2026-09-16"
+modules: [api]
+topics: [export]
 ---
 
 # API 支持立体几何渲染

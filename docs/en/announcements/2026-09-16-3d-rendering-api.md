@@ -1,6 +1,9 @@
 ---
 title: API Support for 3D Geometry Rendering
 description: Render 3D geometry slides through the PNG export API with custom camera views, projection modes, and output resolution.
+date: "2026-09-16"
+modules: [api]
+topics: [export]
 ---
 
 # API Support for 3D Geometry Rendering

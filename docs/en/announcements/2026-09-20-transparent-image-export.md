@@ -1,6 +1,9 @@
 ---
 title: Transparent Image Export Now Supported
 description: Export PNG and SVG images with transparent backgrounds through the SDK, MCP, and HTTP API using the transparent parameter.
+date: "2026-09-20"
+modules: [sdk, api, mcp]
+topics: [export]
 ---
 
 # Transparent Image Export Now Supported

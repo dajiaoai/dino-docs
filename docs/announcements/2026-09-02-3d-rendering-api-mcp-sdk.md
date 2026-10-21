@@ -1,6 +1,9 @@
 ---
 title: MCP 与 SDK 支持立体几何图片渲染
 description: 大角几何现已支持通过 MCP 和 SDK 导出立体几何画板图片。
+date: "2026-09-02"
+modules: [sdk, mcp]
+topics: [export]
 ---
 
 # MCP 与 SDK 支持立体几何图片渲染

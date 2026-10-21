@@ -1,6 +1,9 @@
 ---
 title: 内嵌编辑器 AI 绘图能力、API 与用量统计上线
 description: SDK 2.8.0 起，内嵌编辑模式可开启 AI 对话面板，并配套上线内嵌模式 AI 生图 API、控制台用量显示与扣费机制。
+date: "2026-06-29"
+modules: [sdk, api, console]
+topics: [editing, ai, billing]
 ---
 
 # 内嵌编辑器 AI 绘图能力、API 与用量统计上线

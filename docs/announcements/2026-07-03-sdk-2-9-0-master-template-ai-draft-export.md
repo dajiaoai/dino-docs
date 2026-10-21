@@ -1,6 +1,9 @@
 ---
 title: SDK 2.9.0 母版、AI 草稿与导出能力更新
 description: SDK 2.9.0 新增内嵌模式母版风格设置、编辑器 AI 草稿设置与清空，并扩展 SVG 和 LaTeX 导出能力。
+date: "2026-07-03"
+modules: [sdk]
+topics: [editing, export, ai, templates]
 ---
 
 # SDK 2.9.0 母版、AI 草稿与导出能力更新

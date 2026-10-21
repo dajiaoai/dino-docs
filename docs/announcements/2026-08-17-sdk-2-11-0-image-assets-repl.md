@@ -1,6 +1,9 @@
 ---
 title: SDK 2.11.0 图片素材库、第三方图片与 REPL 能力更新
 description: SDK 2.11.0 支持接入自有图片素材库，MCP 和 API 支持向画板插入第三方图片，REPL 协议新增 Image 图片定义能力。
+date: "2026-08-17"
+modules: [sdk, api, mcp]
+topics: [editing, fonts-assets]
 ---
 
 # SDK 2.11.0 图片素材库、第三方图片与 REPL 能力更新

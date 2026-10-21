@@ -1,6 +1,9 @@
 ---
 title: SDK 2.10.0 Updates Export, Automatic Resize, and Presentation Mode
 description: SDK 2.10.0 upgrades slide image and LaTeX export, redraws embeds when hidden containers become visible, and updates presentation authentication, routes, and UI options.
+date: "2026-07-27"
+modules: [sdk]
+topics: [editing, export]
 ---
 
 # SDK 2.10.0 Updates Export, Automatic Resize, and Presentation Mode

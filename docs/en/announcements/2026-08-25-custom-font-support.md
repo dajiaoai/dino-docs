@@ -1,6 +1,9 @@
 ---
 title: Custom Font Support for the SDK, MCP, and API
 description: SDK 2.12.0 Embedded Canvas accepts custom fonts, while MCP and APIs can specify fonts for canvas content.
+date: "2026-08-25"
+modules: [sdk, api, mcp]
+topics: [fonts-assets]
 ---
 
 # Custom Font Support for the SDK, MCP, and API

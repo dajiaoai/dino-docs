@@ -1,6 +1,9 @@
 ---
 title: 渲染接口参数与智能生图母版能力更新
 description: 渲染接口切换为 viewBound 视口参数，并支持在渲染接口和智能生图接口中传入风格母版。
+date: "2026-06-29"
+modules: [api]
+topics: [export, ai, templates]
 ---
 
 # 渲染接口参数与智能生图母版能力更新

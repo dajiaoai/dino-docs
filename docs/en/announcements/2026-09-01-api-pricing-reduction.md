@@ -1,6 +1,9 @@
 ---
 title: "Intelligent Image Generation API Pricing Update: Stronger Foundation Models, Lower Costs"
 description: The Intelligent Image Generation API will adopt new pricing on September 1, 2026, with model capabilities upgraded at the same time.
+date: "2026-08-27"
+modules: [api]
+topics: [ai, billing]
 ---
 
 # Intelligent Image Generation API Pricing Update: Stronger Foundation Models, Lower Costs

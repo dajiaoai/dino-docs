@@ -1,6 +1,9 @@
 ---
 title: SDK 2.15.0：3D 固定视图与图片导出升级
 description: SDK 2.15.0 新增 3D 固定视图能力，扩展 3D 图片导出，方便为立体几何保存展示角度、调整构图并输出课件与题库配图。
+date: "2026-10-21"
+modules: [sdk]
+topics: [editing, export]
 ---
 
 # SDK 2.15.0：3D 固定视图与图片导出升级

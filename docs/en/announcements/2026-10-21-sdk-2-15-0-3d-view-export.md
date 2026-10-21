@@ -1,6 +1,9 @@
 ---
 title: SDK 2.15.0 Adds Fixed 3D Views and Expands Image Export
 description: SDK 2.15.0 adds fixed 3D views and expands 3D image export, making it easier to save viewing angles, adjust framing, and create images for lessons and question banks.
+date: "2026-10-21"
+modules: [sdk]
+topics: [editing, export]
 ---
 
 # SDK 2.15.0 Adds Fixed 3D Views and Expands Image Export
