@@ -17,22 +17,22 @@ description: 旧版 PNG 渲染接口参数、请求示例及迁移到 /api/rende
 
 ## 迁移到 v2
 
-迁移时保留 `content`、`slideIndex` 与 `template`，将 `viewBound` 的边界和顶层 `scale`、`pixelRatio` 合并到 `view2D`，例如：
+迁移时保留 `content`、`slideIndex`、`template` 与顶层 `pixelRatio`，将 `viewBound` 的四个边界和 `scale` 放入 `view2D`：
 
 ```json
 {
+  "pixelRatio": 2,
   "view2D": {
     "left": -10,
     "right": 10,
     "bottom": -10,
     "top": 10,
-    "scale": 50,
-    "pixelRatio": 2
+    "scale": 50
   }
 }
 ```
 
-以上仅为视图参数片段，完整请求仍需包含 `content`。如需使用保存的相机，可同时省略 `view2D` 与 `view3D`；3D 输出使用 `view3D`。旧版顶层 `pixelRatio` 迁移到 `view2D.pixelRatio`，该字段可选，默认 `1`；3D 输出使用 `view3D.pixelRatio`。
+以上仅为视图参数片段，完整请求必须包含 `content`。服务按目标画板类型选择渲染模式；同时省略两个视图时，使用固定视图或协议默认值。覆盖 3D 视图参数使用 `view3D`，请求角度使用 `yawDeg`、`pitchDeg` 等度数字段。顶层 `pixelRatio` 默认 `1`；视图内 `view2D.pixelRatio`、`view3D.pixelRatio` 保留兼容且优先级更高。默认值和裁剪参数详见 [PNG v2](./render-v2)。
 
 ## 旧版请求参数
 

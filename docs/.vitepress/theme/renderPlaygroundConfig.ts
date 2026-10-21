@@ -16,6 +16,7 @@ export interface RenderPlaygroundConfig {
   title: string;
   outputLabel: 'PNG' | 'SVG';
   modes: readonly RenderViewMode[];
+  topLevelFields?: readonly NumericField[];
   view2D: {
     requestKey: 'view2D' | 'viewBound';
     fields: readonly NumericField[];
@@ -49,14 +50,21 @@ const pixelRatio2DField = {
 } as const satisfies NumericField;
 
 const fields3D = [
-  { key: 'yaw', help: '水平观察角，弧度；留空沿用画板。', placeholder: '沿用画板' },
-  { key: 'pitch', help: '俯仰观察角，弧度；留空沿用画板。', placeholder: '沿用画板' },
-  { key: 'obliqueAngle', help: '斜投影方向角，弧度；留空沿用画板。', placeholder: '沿用画板' },
-  { key: 'obliqueScaleRatio', help: '斜投影退行轴缩放比例，非负；留空沿用画板。', placeholder: '沿用画板', nonNegative: true },
-  { key: 'scale', help: '相机缩放比例，正数；留空沿用画板。', placeholder: '沿用画板', positive: true },
-  { key: 'width', help: '逻辑输出宽度，正整数；默认 1024。', placeholder: '1024', positive: true, integer: true },
-  { key: 'height', help: '逻辑输出高度，正整数；默认 1024。', placeholder: '1024', positive: true, integer: true },
-  { key: 'pixelRatio', help: '输出设备像素比，正数；默认 1，物理宽高 = 逻辑宽高 × 此值。', placeholder: '1', positive: true },
+  { key: 'yawDeg', help: '水平观察角，单位为度；显式值优先，其次为已启用固定视图，否则默认 45。', placeholder: '45' },
+  { key: 'pitchDeg', help: '俯仰观察角，单位为度；显式值优先，其次为已启用固定视图，否则默认 45。', placeholder: '45' },
+  { key: 'obliqueAngleDeg', help: '斜投影方向角，单位为度；显式值优先，其次为已启用固定视图，否则默认 45。', placeholder: '45' },
+  { key: 'obliqueScaleRatio', help: '斜投影退行轴缩放比例，非负；留空使用已启用固定视图，否则默认 0.5。', placeholder: '0.5', nonNegative: true },
+  { key: 'scale', help: '相机缩放比例，正数；留空使用已启用固定视图，否则默认 0.1。', placeholder: '0.1', positive: true },
+  { key: 'width', help: '完整逻辑视口宽度，正整数；留空使用已启用固定视图，否则默认 1920。', placeholder: '1920', positive: true, integer: true },
+  { key: 'height', help: '完整逻辑视口高度，正整数；留空使用已启用固定视图，否则默认 1080。', placeholder: '1080', positive: true, integer: true },
+  { ...pixelRatio2DField, help: '兼容参数；优先于顶层 pixelRatio，推荐填写顶层参数。' },
+] as const satisfies readonly NumericField[];
+
+export const cropFields = [
+  { key: 'left', help: '左边界，须大于或等于 0。', placeholder: '0', nonNegative: true },
+  { key: 'top', help: '上边界，须大于或等于 0。', placeholder: '0', nonNegative: true },
+  { key: 'right', help: '右边界，须大于 left，且不超过完整视口宽度。', placeholder: '1920', positive: true },
+  { key: 'bottom', help: '下边界，须大于 top，且不超过完整视口高度。', placeholder: '1080', positive: true },
 ] as const satisfies readonly NumericField[];
 
 const flat2DModes = ['auto', '2d'] as const satisfies readonly RenderViewMode[];
@@ -67,9 +75,14 @@ export const renderPlaygroundConfigs = {
     title: '导出 PNG',
     outputLabel: 'PNG',
     modes: ['auto', '2d', '3d'],
+    topLevelFields: [pixelRatio2DField],
     view2D: {
       requestKey: 'view2D',
-      fields: [...boundsFields, scaleField, pixelRatio2DField],
+      fields: [
+        ...boundsFields.map(field => ({ ...field, required: false, help: '逻辑坐标边界；四项须同时填写或全部留空，留空使用固定范围或默认范围。' })),
+        { ...scaleField, help: '每逻辑单位的像素数，正数；留空使用固定范围 scale，否则默认 50。', placeholder: '50' },
+        { ...pixelRatio2DField, help: '兼容参数；优先于顶层 pixelRatio，推荐填写顶层参数。' },
+      ],
       topLevelFields: [],
     },
     view3D: { requestKey: 'view3D', fields: fields3D },

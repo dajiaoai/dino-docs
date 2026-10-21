@@ -15,22 +15,22 @@ description: Legacy PNG render endpoint parameters, examples, and migration to /
 
 ## Migrate to v2
 
-To migrate, keep `content`, `slideIndex`, and `template`, and move `viewBound` bounds and top-level `scale` and `pixelRatio` into `view2D`, for example:
+To migrate, keep `content`, `slideIndex`, `template`, and top-level `pixelRatio`. Move the four `viewBound` bounds and `scale` into `view2D`:
 
 ```json
 {
+  "pixelRatio": 2,
   "view2D": {
     "left": -10,
     "right": 10,
     "bottom": -10,
     "top": 10,
-    "scale": 50,
-    "pixelRatio": 2
+    "scale": 50
   }
 }
 ```
 
-This is a view-parameter fragment; include the required `content` in the request. Omit both `view2D` and `view3D` to use the saved camera. For 3D output, use `view3D`. Move the legacy top-level `pixelRatio` to `view2D.pixelRatio` for 2D output; it is optional and defaults to `1`. For 3D output, use `view3D.pixelRatio`.
+This is a view-parameter fragment; the full request must include `content`. The service selects rendering from the target slide type. Omit both views to use the fixed view or protocol defaults. For 3D view overrides, use `view3D` with degree fields such as `yawDeg` and `pitchDeg`. Top-level `pixelRatio` defaults to `1`; nested `view2D.pixelRatio` and `view3D.pixelRatio` remain compatible and take priority. See [PNG v2](./render-v2) for defaults and cropping.
 
 ## Legacy request parameters
 

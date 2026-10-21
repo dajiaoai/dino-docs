@@ -8,6 +8,10 @@ topics: [export]
 
 # API Support for 3D Geometry Rendering
 
+::: warning Deprecated
+The 3D API parameters and request example in this announcement are deprecated. See the [latest 3D rendering API update](./2026-10-21-3d-rendering-api-update) for current integration and migration instructions. The content below is retained as a historical record.
+:::
+
 - Type: New capability
 - Published: 2026-09-16
 - Effective: 2026-09-16

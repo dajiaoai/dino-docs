@@ -1,5 +1,6 @@
 import {
   getRenderPlaygroundConfig,
+  cropFields,
   type NumericField,
   type RenderPlaygroundVariant,
   type RenderViewMode,
@@ -14,6 +15,8 @@ export interface PlaygroundInput {
   template: string;
   slideIndex: string | number;
   transparent?: boolean;
+  pixelRatio?: string | number;
+  crop?: Record<string, string | number>;
   mode: RenderViewMode;
   view2D: Record<string, string | number>;
   view3D: Record<string, string | number>;
@@ -72,6 +75,17 @@ function buildView3D(input: PlaygroundInput, fields: readonly NumericField[]) {
     if (!['orthographic', 'perspective', 'oblique'].includes(input.projection)) throw new Error('view3D.projection 无效。');
     view.projection = input.projection;
   }
+  const crop = numericFields(input.crop ?? {}, cropFields, 'view3D.crop.');
+  if (Object.keys(crop).length) {
+    if (Object.keys(crop).length !== 4 || !(crop.left < crop.right) || !(crop.top < crop.bottom)) {
+      throw new Error('view3D.crop 须完整提供 left、top、right、bottom，且 left < right、top < bottom。');
+    }
+    if ((typeof view.width === 'number' && crop.right > view.width)
+      || (typeof view.height === 'number' && crop.bottom > view.height)) {
+      throw new Error('view3D.crop 不能超出完整逻辑视口。');
+    }
+    view.crop = crop;
+  }
   return view;
 }
 
@@ -88,12 +102,16 @@ export function buildBody(input: PlaygroundInput) {
   if (input.template.trim()) body.template = jsonObject(input.template, 'template');
   if (input.transparent) body.transparent = true;
 
+  Object.assign(body, numericFields({ pixelRatio: input.pixelRatio ?? '' }, config.topLevelFields ?? []));
   Object.assign(body, numericFields(input.view2D, config.view2D.topLevelFields));
   if (input.mode === 'auto') return body;
 
   if (input.mode === '2d') {
     const view = numericFields(input.view2D, config.view2D.fields, `${config.view2D.requestKey}.`);
-    validateBounds(view, config.view2D.requestKey);
+    const boundCount = ['left', 'right', 'bottom', 'top'].filter(key => key in view).length;
+    if (boundCount || config.view2D.fields.some(field => field.required)) {
+      validateBounds(view, config.view2D.requestKey);
+    }
     body[config.view2D.requestKey] = view;
     return body;
   }

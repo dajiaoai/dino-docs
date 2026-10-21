@@ -42,9 +42,9 @@ test('2D and 3D modes include only the selected view, preserving zero and option
   assert.equal(two.view3D, undefined);
   assert.equal(two.slideIndex, 2);
   assert.deepEqual(two.template, {});
-  const three = JSON.parse(buildRequest(config({ mode: '3d', offset: '[0,1,2]', projection: 'oblique', view3D: { yaw: '0', obliqueScaleRatio: '0', width: '1280', height: '720', pixelRatio: '2' } })).body);
+  const three = JSON.parse(buildRequest(config({ mode: '3d', offset: '[0,1,2]', projection: 'oblique', view3D: { yawDeg: '0', obliqueScaleRatio: '0', width: '1280', height: '720', pixelRatio: '2' } })).body);
   assert.equal(three.view2D, undefined);
-  assert.deepEqual(three.view3D, { yaw: 0, obliqueScaleRatio: 0, width: 1280, height: 720, pixelRatio: 2, offset: [0, 1, 2], projection: 'oblique' });
+  assert.deepEqual(three.view3D, { yawDeg: 0, obliqueScaleRatio: 0, width: 1280, height: 720, pixelRatio: 2, offset: [0, 1, 2], projection: 'oblique' });
   assert.deepEqual(JSON.parse(buildRequest(config({ mode: '3d' })).body).view3D, {});
 });
 test('invalid JSON, bounds, dimensions and nonfinite values are rejected', () => {
@@ -52,7 +52,7 @@ test('invalid JSON, bounds, dimensions and nonfinite values are rejected', () =>
     { content: '' }, { content: '[]' }, { content: 'null' }, { template: '[]' },
     { slideIndex: '0' }, { slideIndex: '1.5' },
     { mode: '2d', view2D: { left: '10', right: '-10', bottom: '0', top: '1' } },
-    { mode: '2d', view2D: {} },
+    { mode: '2d', view2D: { left: '0' } },
     { mode: '3d', view3D: { scale: 'Infinity' } },
     { mode: '3d', view3D: { pixelRatio: '0' } },
     { mode: '3d', view3D: { width: '1.5' } },
@@ -66,7 +66,7 @@ test('cURL shell quoting round-trips request headers and body without evaluating
   const request = buildRequest(config({ requestId: "demo'$(echo unsafe)", content: JSON.stringify({ text: "a'b\n`whoami` $HOME" }) }));
   // Replace curl with an argument recorder: no network request is made.
   const script = `curl() { printf '%s\\0' "$@"; }\n${toCurl(request)}`;
-  const result = spawnSync('bash', ['-c', script], { encoding: 'utf8' });
+  const result = spawnSync('bash', ['-s'], { input: script, encoding: 'utf8' });
   assert.equal(result.status, 0);
   assert.deepEqual(result.stdout.split('\0').slice(0, -1), [
     '-X', 'POST', request.url,
@@ -76,9 +76,9 @@ test('cURL shell quoting round-trips request headers and body without evaluating
 });
 
 test('numeric inputs produced by Vue preserve zero and accept edited dimensions', () => {
-  const body = JSON.parse(buildRequest(config({ slideIndex: 2, mode: '3d', view3D: { width: 1280, yaw: 0, obliqueScaleRatio: 0 } })).body);
+  const body = JSON.parse(buildRequest(config({ slideIndex: 2, mode: '3d', view3D: { width: 1280, yawDeg: 0, obliqueScaleRatio: 0 } })).body);
   assert.equal(body.slideIndex, 2);
-  assert.deepEqual(body.view3D, { yaw: 0, obliqueScaleRatio: 0, width: 1280 });
+  assert.deepEqual(body.view3D, { yawDeg: 0, obliqueScaleRatio: 0, width: 1280 });
   assert.throws(() => buildRequest(config({ mode: '3d', view3D: { width: 0 } })));
 });
 
@@ -120,4 +120,42 @@ test('legacy rejects 3D and incomplete or inverted explicit bounds', () => {
     { mode: '3d' }, { mode: '2d', view2D: {} },
     { mode: '2d', view2D: { left: 10, right: 0, bottom: -10, top: 10 } },
   ]) assert.throws(() => buildRequest(config({ variant: 'png-legacy', ...overrides })));
+});
+
+test('v2 accepts omitted bounds but rejects partially supplied bounds', () => {
+  for (const view2D of [{}, { scale: '50' }, { pixelRatio: '2' }]) {
+    const body = JSON.parse(buildRequest(config({ mode: '2d', view2D })).body);
+    assert.deepEqual(body.view2D, Object.fromEntries(Object.entries(view2D).map(([k, v]) => [k, Number(v)])));
+  }
+  for (const view2D of [{ left: 0 }, { left: 0, right: 1, bottom: 0 }]) {
+    assert.throws(() => buildRequest(config({ mode: '2d', view2D })));
+  }
+});
+
+test('v2 top-level pixelRatio works in every mode and preserves nested overrides', () => {
+  for (const mode of ['auto', '2d', '3d']) {
+    const body = JSON.parse(buildRequest(config({ mode, pixelRatio: '2', view2D: { pixelRatio: 3 }, view3D: { pixelRatio: 4 } })).body);
+    assert.equal(body.pixelRatio, 2);
+    if (mode === '2d') assert.equal(body.view2D.pixelRatio, 3);
+    if (mode === '3d') assert.equal(body.view3D.pixelRatio, 4);
+    if (mode === 'auto') assert.equal(body.view2D ?? body.view3D, undefined);
+  }
+  for (const pixelRatio of [0, -1, 'Infinity', 'abc']) assert.throws(() => buildRequest(config({ pixelRatio })));
+});
+
+test('v2 serializes degree angles and crop without changing framing or units', () => {
+  const body = JSON.parse(buildRequest(config({ mode: '3d', pixelRatio: 2,
+    view3D: { yawDeg: 45, pitchDeg: 0, obliqueAngleDeg: -45, width: 1280, height: 720 },
+    crop: { left: '0', top: '10', right: '1000', bottom: '700' },
+  })).body);
+  assert.deepEqual(body.view3D, { yawDeg: 45, pitchDeg: 0, obliqueAngleDeg: -45, width: 1280, height: 720,
+    crop: { left: 0, top: 10, right: 1000, bottom: 700 } });
+  for (const crop of [
+    { left: 0 }, { left: -1, top: 0, right: 10, bottom: 10 },
+    { left: 10, top: 0, right: 10, bottom: 10 }, { left: 0, top: 10, right: 10, bottom: 5 },
+    { left: 0, top: 0, right: 1281, bottom: 720 }, { left: 0, top: 0, right: 1280, bottom: 721 },
+    { left: 0, top: 0, right: 'Infinity', bottom: 10 },
+  ]) assert.throws(() => buildRequest(config({ mode: '3d', view3D: { width: 1280, height: 720 }, crop })));
+  assert.equal(JSON.parse(buildRequest(config({ mode: '3d', crop: {} })).body).view3D.crop, undefined);
+  assert.equal(JSON.parse(buildRequest(config({ mode: '2d', crop: { left: 0 } })).body).view3D, undefined);
 });

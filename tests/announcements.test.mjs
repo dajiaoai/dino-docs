@@ -38,7 +38,8 @@ test('every existing article keeps its URL, has valid metadata, and sorts by pub
   assert.equal(announcements.length, pages.length);
   assert.equal(new Set(announcements.map(item => item.url)).size, pages.length);
   const all = filterAnnouncements(announcements, 'zh');
-  assert.match(all[0].url, /2026-10-21-sdk-2-15-0/);
+  assert.equal(all[0].date, '2026-10-21');
+  assert.deepEqual(all.map(item => item.date), all.map(item => item.date).sort().reverse());
   const pricingIndex = all.findIndex(item => item.url.includes('2026-09-01-api-pricing-reduction'));
   assert.equal(all[pricingIndex].date, '2026-08-27');
   assert.match(all[pricingIndex - 1].url, /2026-09-02/);

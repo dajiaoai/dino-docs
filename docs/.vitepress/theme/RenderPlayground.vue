@@ -2,7 +2,7 @@
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue';
 import { DEFAULT_PLAYGROUND_ENVIRONMENT, loadPlaygroundEnvironment, savePlaygroundEnvironment } from './playgroundEnvironment';
 import { buildRequest, toCurl, type PlaygroundInput } from './renderPlayground';
-import { getRenderPlaygroundConfig, type RenderPlaygroundVariant } from './renderPlaygroundConfig';
+import { cropFields, getRenderPlaygroundConfig, type RenderPlaygroundVariant } from './renderPlaygroundConfig';
 import defaultRenderContent from './defaultRenderContent.json';
 
 const defaultContent = JSON.stringify(defaultRenderContent, null, 2);
@@ -11,9 +11,10 @@ const hasValue = (value: unknown) => value !== undefined && value !== null && St
 const props = withDefaults(defineProps<{ variant?: RenderPlaygroundVariant }>(), { variant: 'png-v2' });
 const playground = computed(() => getRenderPlaygroundConfig(props.variant));
 const supports3D = computed(() => playground.value.modes.includes('3d'));
+const topLevelFields = computed(() => playground.value.topLevelFields ?? []);
 const view3DFields = computed(() => playground.value.view3D?.fields ?? []);
 const viewModeHint = computed(() => supports3D.value
-  ? 'view2D 与 view3D 互斥；自动模式不发送这两个字段。'
+  ? '服务根据目标画板自动选择 2D 或 3D 渲染，并读取对应视图参数；view2D 与 view3D 互斥。自动模式省略视图参数，使用固定视图或默认值。'
   : `仅支持 2D ${playground.value.outputLabel}；自动模式省略 ${playground.value.view2D.requestKey}，使用画板保存的视口。`);
 const fieldId = (name: string) => `render-${props.variant}-${name}`;
 const dialog = ref<HTMLDialogElement>();
@@ -33,7 +34,7 @@ const input = reactive<PlaygroundInput>({
   ...DEFAULT_PLAYGROUND_ENVIRONMENT, requestId: '',
   content: defaultContent, template: '', slideIndex: '', transparent: false, mode: 'auto',
   view2D: { left: '-10', right: '10', bottom: '-10', top: '10', scale: '', pixelRatio: '' },
-  view3D: {}, offset: '', projection: '',
+  view3D: {}, offset: '', projection: '', pixelRatio: '', crop: {},
 });
 const cacheMessage = ref('Base URL 和 Authorization 修改后自动保存，供本站 Playground 共用。');
 let restoringEnvironment = false;
@@ -176,7 +177,8 @@ onBeforeUnmount(() => { controller?.abort(); });
               <div class="field-control"><label class="field-name" :for="fieldId('slideIndex')">slideIndex</label> <em>可选 · number</em><button v-if="hasValue(input.slideIndex)" class="field-reset" type="button" aria-label="重置 slideIndex" @click.prevent="input.slideIndex = ''">重置</button><input :id="fieldId('slideIndex')" v-model="input.slideIndex" type="number" min="1" step="1" placeholder="1" /><small>从 1 开始的画板序号，留空使用默认值 1。</small></div>
               <div class="field-control"><label class="field-name" :for="fieldId('template')">template</label> <em>可选 · object</em><button v-if="hasValue(input.template)" class="field-reset" type="button" aria-label="重置 template" @click.prevent="input.template = ''">重置</button><textarea :id="fieldId('template')" v-model="input.template" rows="3" placeholder="留空沿用目标画板样式" spellcheck="false" /><small>渲染母版 JSON 对象，可从大角几何母版页面下载。</small></div>
               <label class="checkbox-field"><input v-model="input.transparent" type="checkbox" /><span><span class="field-name">transparent</span> <em>可选 · boolean</em><small>是否跳过背景色填充。</small></span></label>
-              <div class="field-control"><label class="field-name" :for="fieldId('mode')">视图模式</label><button v-if="input.mode !== 'auto'" class="field-reset" type="button" aria-label="重置视图模式" @click.prevent="input.mode = 'auto'">重置</button><select :id="fieldId('mode')" v-model="input.mode"><option value="auto">自动 · 使用画板保存的相机</option><option value="2d">{{ playground.view2D.requestKey }} · 指定 2D 视口</option><option v-if="supports3D" value="3d">view3D · 指定 3D 相机</option></select><small>{{ viewModeHint }}</small></div>
+              <div v-for="field in topLevelFields" :key="field.key" class="field-control"><label class="field-name" :for="fieldId(field.key)">{{ field.key }}</label> <em>可选 · number</em><button v-if="hasValue(input.pixelRatio)" class="field-reset" type="button" aria-label="重置 pixelRatio" @click.prevent="input.pixelRatio = ''">重置</button><input :id="fieldId(field.key)" v-model="input.pixelRatio" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }} 视图内兼容参数优先于此值。</small></div>
+              <div class="field-control"><label class="field-name" :for="fieldId('mode')">视图模式</label><button v-if="input.mode !== 'auto'" class="field-reset" type="button" aria-label="重置视图模式" @click.prevent="input.mode = 'auto'">重置</button><select :id="fieldId('mode')" v-model="input.mode"><option value="auto">自动 · 使用画板视图</option><option value="2d">{{ playground.view2D.requestKey }} · 指定 2D 视口</option><option v-if="supports3D" value="3d">view3D · 指定 3D 相机</option></select><small>{{ viewModeHint }}</small></div>
               <div v-if="input.mode === '2d'" class="fields">
                 <div class="field-control" v-for="field in playground.view2D.fields" :key="field.key"><label class="field-name" :for="fieldId('view2D.' + field.key)">{{ playground.view2D.requestKey }}.{{ field.key }}</label><button v-if="hasValue(input.view2D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view2D[field.key] = ''">重置</button><input :id="fieldId('view2D.' + field.key)" v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div>
               </div>
@@ -184,10 +186,12 @@ onBeforeUnmount(() => { controller?.abort(); });
                 <div class="field-control" v-for="field in playground.view2D.topLevelFields" :key="field.key"><label class="field-name" :for="fieldId('view2D.' + field.key)">{{ field.key }}</label> <em>可选 · number</em><button v-if="hasValue(input.view2D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view2D[field.key] = ''">重置</button><input :id="fieldId('view2D.' + field.key)" v-model="input.view2D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div>
               </div>
               <template v-if="playground.view3D && input.mode === '3d'">
-                <p class="hint">强制 3D 渲染。目标画板需为 3D 画板；所有相机属性均可选。</p>
-                <div class="field-control"><label class="field-name" :for="fieldId('offset')">view3D.offset</label><button v-if="hasValue(input.offset)" class="field-reset" type="button" aria-label="重置 offset" @click.prevent="input.offset = ''">重置</button><input :id="fieldId('offset')" v-model="input.offset" placeholder="[0, 0, 0]" /><small>相机中心，[x, y, z] 数组；留空沿用画板。</small></div>
-                <div class="field-control"><label class="field-name" :for="fieldId('projection')">view3D.projection</label><button v-if="hasValue(input.projection)" class="field-reset" type="button" aria-label="重置 projection" @click.prevent="input.projection = ''">重置</button><select :id="fieldId('projection')" v-model="input.projection"><option value="">沿用画板</option><option value="orthographic">orthographic · 正交投影</option><option value="perspective">perspective · 透视投影</option><option value="oblique">oblique · 斜投影</option></select><small>投影模式，留空沿用目标画板保存值。</small></div>
+                <p class="hint">目标画板为 3D 时读取这些参数；逐字段使用显式值、已启用固定视图或协议默认值。</p>
+                <div class="field-control"><label class="field-name" :for="fieldId('offset')">view3D.offset</label><button v-if="hasValue(input.offset)" class="field-reset" type="button" aria-label="重置 offset" @click.prevent="input.offset = ''">重置</button><input :id="fieldId('offset')" v-model="input.offset" placeholder="[0, 0, 0]" /><small>画面中心的世界坐标 [x, y, z]；留空使用已启用固定视图，否则默认 [0, 0, 0]。</small></div>
+                <div class="field-control"><label class="field-name" :for="fieldId('projection')">view3D.projection</label><button v-if="hasValue(input.projection)" class="field-reset" type="button" aria-label="重置 projection" @click.prevent="input.projection = ''">重置</button><select :id="fieldId('projection')" v-model="input.projection"><option value="">固定视图或默认值</option><option value="orthographic">orthographic · 正交投影</option><option value="perspective">perspective · 透视投影</option><option value="oblique">oblique · 斜投影</option></select><small>投影模式；留空使用已启用固定视图，否则默认 orthographic。</small></div>
                 <div class="fields"><div class="field-control" v-for="field in view3DFields" :key="field.key"><label class="field-name" :for="fieldId('view3D.' + field.key)">view3D.{{ field.key }}</label><button v-if="hasValue(input.view3D[field.key])" class="field-reset" type="button" :aria-label="'重置 ' + field.key" @click.prevent="input.view3D[field.key] = ''">重置</button><input :id="fieldId('view3D.' + field.key)" v-model="input.view3D[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div></div>
+                <p class="hint">view3D.crop：完整逻辑视口内的裁剪矩形，左上为原点；四项须同时填写或全部留空。完整渲染后裁剪；留空使用固定视图已启用的裁剪，否则不裁剪。</p>
+                <div v-if="input.crop" class="fields"><div v-for="field in cropFields" :key="field.key" class="field-control"><label class="field-name" :for="fieldId('crop.' + field.key)">view3D.crop.{{ field.key }}</label><button v-if="hasValue(input.crop[field.key])" class="field-reset" type="button" :aria-label="'重置 crop.' + field.key" @click.prevent="input.crop[field.key] = ''">重置</button><input :id="fieldId('crop.' + field.key)" v-model="input.crop[field.key]" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }}</small></div></div>
               </template>
             </fieldset>
           </div>
