@@ -47,8 +47,11 @@ export function createSdkSidebar(
 
         {
           text: isEnglish ? 'Editor Mode' : '编辑模式',
-          link: getStableV2Path(localePrefix, 'editor'),
           items: [
+            {
+              text: isEnglish ? 'Editor Mode Integration' : '编辑模式接入',
+              link: getStableV2Path(localePrefix, 'editor'),
+            },
             {
               text: isEnglish
                 ? 'Export Images in Editor Mode'
