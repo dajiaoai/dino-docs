@@ -1,111 +1,149 @@
 ---
 title: Consistent Image Export Across Workflows
-description: Use one precise crop window across SDK, MCP, and other export workflows to reliably control planar-geometry composition and image dimensions.
+description: Save a finite canvas for planar geometry (2D) or a fixed view for solid geometry (3D) to preserve composition and output bounds across generation, manual editing, and later processing.
 ---
 
 # Consistent Image Export Across Workflows
 
-When the same planar geometry canvas is exported repeatedly from the editor, a host webpage, MCP automation, or backend jobs, do not rely on “fit content,” the current camera, or a fixed output size to keep results consistent. Define one **precise crop window** for the canvas, then pass the same world-coordinate range and scale to every export workflow.
+A geometry project may start with AI generation, continue through manual editing, and eventually be exported through the SDK, MCP, or Dino-GSP APIs. Save the composition parameters in the project so that each step can reuse the same bounds, viewing direction, and image dimensions.
 
-## Key recommendations
+**Use a finite canvas for planar geometry (2D), and a fixed view for solid geometry (3D).** Configure this whether the project is generated through MCP or edited manually. Projects generated through the Dino-GSP AI figure generation API automatically include an AI-recommended finite canvas or fixed view. Review the subject, annotations, and margins before reusing it.
 
-1. **Projects initialized through MCP**: the AI should set a recommended canvas range based on the problem content and intended composition.
-2. **Projects initialized with an embedded canvas**: a person should set the precise finite-canvas range in the canvas UI and use those bounds as the shared source of truth for subsequent exports.
-3. **Image export**: use SDK `view` mode with an explicit, precise `viewBound`. MCP exports must also explicitly provide the four bounds for the same range and `scale`. Do not omit the bounds and fall back to the current camera, an automatic bounding box, or a server-side default viewport.
+![Feature comparison: a 2D finite canvas defines coordinate bounds and layout scale; a 3D fixed view defines the camera and crop, saved for reuse in later editing and exports](https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/783ad5d6-finite-canvas-fixed-view.png)
 
-![Setting a finite canvas with MCP](https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/bfc86552-screenshot-20260903-142809.png)
+## Set the bounds during generation and editing
+
+| Project source | Recommended action |
+| --- | --- |
+| Manual editing, including an embedded SDK canvas | After adjusting the composition, set a finite canvas for 2D or save and enable a fixed view for 3D. Then save the project so later exports can reuse the composition. |
+| Dino-GSP AI figure generation API | Keep the AI-recommended finite canvas or fixed view, review and adjust it as needed, and save it with the complete project. |
+| Generation with a custom agent | After drawing, ask the AI to recommend crop parameters based on the geometry, text, and annotations. For 2D, provide bounds and a layout scale, then set a finite canvas. For 3D, provide viewing angles, zoom, full viewport dimensions, and a crop rectangle, then configure and enable a fixed view. Keep the subject and annotations fully visible, geometric relationships clear, and margins balanced. Check and adjust an export preview, then report the final parameters. |
+
+Preview the project before handoff. Check that the subject and annotations are fully visible, margins are suitable, and the 3D view clearly shows geometric relationships.
+
+Reuse these parameters during later editing. If the composition needs to change, update the finite canvas or fixed view and save the project for subsequent steps.
+
+## 2D and 3D fields have different meanings
+
+| Item | Planar geometry (2D): finite canvas | Solid geometry (3D): fixed view |
+| --- | --- | --- |
+| Project fields | `slides[].viewBounds` | `slides[].viewCamera3d`, with `viewCamera3dEnabled: true` |
+| What defines the view | World-coordinate bounds: `minX`, `maxX`, `minY`, `maxY` | Camera center, viewing angles, projection, zoom, full viewport dimensions, and an optional crop rectangle |
+| `scale` | Logical pixels per world-coordinate unit; changing it with unchanged bounds changes the logical output dimensions | Camera zoom; increasing it zooms in and reduces the visible world range, changing composition. The 2D size formula does not apply. |
+| Rectangle coordinates | Export `left/right/bottom/top` are world coordinates, with Y pointing up and `bottom < top` | `crop.left/top/right/bottom` are logical pixel coordinates within the full viewport, with the origin at the top left, Y pointing down, and `top < bottom` |
+| Image dimensions | Calculated from world-coordinate bounds, `scale`, and `pixelRatio` | Calculated from full logical viewport `width/height` or the enabled crop rectangle, and `pixelRatio` |
+
+`pixelRatio` controls the physical pixel dimensions of the export. With the same composition, use the same multiplier to keep pixel dimensions consistent.
+
+To increase resolution alone, adjust `pixelRatio` and keep the view parameters unchanged.
+
+## Planar geometry: set a finite canvas
+
+A finite canvas defines the output bounds in world coordinates and the layout scale. There are three ways to configure it.
+
+### Call REPL through the SDK
+
+In SDK edit mode, use `editor.repl()` to set bounds for the current 2D canvas:
+
+```ts
+await editor.repl('view_bounds (-6, 6, -4, 4, 50)');
+```
+
+The arguments are `minX`, `maxX`, `minY`, `maxY`, and `scale`.
+
+- `view_bounds`: query the current settings.
+- `view_bounds infinite`: restore an infinite canvas.
+
+### Ask the AI to make changes through MCP
+
+Give an AI connected through MCP a request such as:
+
+> Set a finite canvas for the current 2D canvas. Recommend bounds and a layout scale that best present the subject and annotations. Check an export preview to ensure all content is visible with suitable margins, and report the final parameters.
+
+The AI runs `view_bounds` through MCP's `repl` tool to save the bounds to the canvas.
+
+### Adjust it in the embedded canvas
+
+In the embedded canvas editor, configure the finite canvas bounds and layout scale. Check the preview, then save the complete project.
+
 ![Setting a finite canvas in the canvas UI](https://dl.easeplay.vip/algeo/685b4c2009d5753784ebe7df/8640b67d-screenshot-20260903-142123.png)
 
-## Why automatic cropping cannot guarantee consistency
+## Solid geometry: configure and enable a fixed view
 
-`contain` mode changes with the bounding box of visible objects. Adding annotations or helper lines, changing hidden-object state, or moving an element can all alter the image edges and final dimensions. When the crop window is omitted, different environments can also read different current cameras or default viewports.
+A 3D fixed view saves the viewing direction, projection, camera center, viewport dimensions, and crop bounds. The same three configuration methods are available.
 
-A precise crop window fixes both the range being drawn and the number of logical pixels rendered per world-coordinate unit:
+### Call REPL through the SDK
 
-```ts
-const crop = {
-  left: -6,
-  right: 6,
-  top: 4,
-  bottom: -4,
-  scale: 50,
-};
-```
-
-These finite-canvas parameters describe a logical image with a width of `12 × 50 = 600 px` and a height of `8 × 50 = 400 px`. They are saved with the project. At export time, read the precise range from the project instead of writing approximate values separately at each call site.
-
-::: tip A shared `viewBound` across protocols
-For planar geometry, MCP, the embedded SDK, and the Render API all use the same world-coordinate crop semantics: `{ left, right, bottom, top }`. The SDK places `scale` inside `viewBound`; MCP and the Render API accept `scale` at the top level.
-:::
-
-## SDK: use `view` mode
+In SDK edit mode, use `editor.repl()` to configure and enable a fixed view for the current 3D canvas:
 
 ```ts
-const viewBound = {
-  left: crop.left,
-  top: crop.top,
-  right: crop.right,
-  bottom: crop.bottom,
-  scale: crop.scale,
-};
-
-const images = await editor.slides.exportImage({
-  mode: 'view',
-  format: 'png',
-  viewBound,
-  pixelRatio: 1,
-});
+await editor.repl(`view_camera3d {
+  offset: (0, 0, 0);
+  projection: "orthographic";
+  yawDeg: 45;
+  pitchDeg: 30;
+  scale: 0.1;
+  width: 1200;
+  height: 800;
+  crop: (100, 50, 1100, 750);
+}`);
 ```
 
-The SDK calculates output pixels as:
+This command sets the parameters and enables the fixed view.
 
-```text
-width = (right - left) × scale × pixelRatio
-height = (top - bottom) × scale × pixelRatio
-```
+- `view_camera3d`: query only; does not enable the view.
+- `view_camera3d off`: disable the view while retaining its parameters.
+- `view_camera3d on`: enable the view again.
 
-If the canvas already has a finite canvas configured, read its export view and pass it directly to `exportImage`:
+### Ask the AI to make changes through MCP
 
-```ts
-const viewBound = await editor.slides.getViewBounds();
-if (!viewBound) throw new Error('The current canvas has no finite canvas configured');
-```
+Give an AI connected through MCP a request such as:
 
-## MCP: set the canvas to finite mode
+> Configure and enable a fixed view for the current 3D canvas. Recommend viewing angles, zoom, viewport dimensions, and crop bounds that clearly show the geometric relationships. Check an export preview to ensure the subject and annotations are fully visible with suitable margins, and report the final parameters.
 
-After MCP initializes a project, the AI can call `view_bounds` through `repl` to set a recommended finite canvas range for the current 2D canvas:
+The AI runs `view_camera3d` through MCP's `repl` tool to save and enable the configuration.
 
-```text
-view_bounds (-1, 13, -1, 10, 50)
-```
+### Adjust it in the embedded canvas
 
-The five parameters are `minX`, `maxX`, `minY`, `maxY`, and `scale`, in that order. This example uses the X range `[-1, 13]`, the Y range `[-1, 10]`, and renders each world-coordinate unit at `50` logical pixels. The range is saved on the current canvas in the project so later SDK, MCP, or API exports can read and reuse it.
+In the embedded canvas editor, configure the fixed view's viewing angles, zoom, viewport dimensions, and crop bounds.
 
-`view_bounds` is available only for 2D canvases. To restore an infinite canvas, run `view_bounds infinite`.
+Check the preview, then enable the fixed view and save the complete project.
 
-## MCP: provide the crop window explicitly
+![Setting a 3D fixed view in the embedded canvas](https://luhuidev.oss-cn-beijing.aliyuncs.com/f737a40ea667abd2b84657d3.png)
 
-MCP `export_image` also fixes the planar-geometry crop window through `viewBound` and `scale`.
+## Reuse the configuration downstream
 
-```ts
-{
-  sessionId,
-  slideIndex: 1,
-  viewBound: {
-    left: crop.left,
-    right: crop.right,
-    bottom: crop.bottom,
-    top: crop.top,
-  },
-  scale: crop.scale,
-}
-```
+**Set a finite canvas or fixed view during initial generation and save the complete project. Later steps can reuse it without repeatedly adjusting the composition.**
 
-## Troubleshooting common differences
+### MCP
 
-| Symptom | Common cause | Resolution |
-| --- | --- | --- |
-| Image dimensions change with content | `contain` or an automatic bounding box is used | Switch to a precise crop window |
-| Composition matches but pixel dimensions differ | `scale` or SDK `pixelRatio` differs | Fix both values and verify them with the formula |
+Ask the AI to export using the bounds and viewing direction saved in the project. Use `export_image` for 2D or `export_image_3d` for 3D, without specifying view parameters again.
 
-Related documentation: [Export images in edit mode](../sdk/2/export-image) and the [MCP guide](../ai/mcp/).
+See the [MCP documentation](../ai/mcp/) for setup and usage.
+
+### Dino-GSP PNG API
+
+Call `POST /api/render/v2` with the complete project as `content` and the target canvas as `slideIndex`. Omit `view2D` / `view3D` to reuse the saved configuration.
+
+See the [PNG export API](../api/render-v2) for request examples and optional parameters.
+
+### Embedded SDK canvas
+
+Read the saved configuration and pass it to `exportImage` with `mode: 'view'`:
+
+- **2D**: read it with `getViewBounds()` and pass the result as `viewBound`.
+- **3D**: read it with `getViewCamera3d()` and pass the result as `viewCamera3d`.
+
+See [SDK image export](../sdk/2/export-image) for complete examples.
+
+When the composition needs to change, update the finite canvas or fixed view and save the project. Later steps can reuse the new configuration.
+
+## Troubleshooting differences
+
+| Symptom | What to check |
+| --- | --- |
+| Editor preview differs from backend export | Was the finite canvas / fixed view saved? Is the 3D fixed view enabled? Was the editing camera used by mistake? |
+| Image edges or dimensions change after adding annotations | Did the export switch to fitting content, or recalculate the bounds automatically? |
+| Incorrect 3D angle, zoom, or crop | Were degrees confused with radians, 2D scale with 3D scale, or world coordinates with viewport pixel coordinates? |
+| Matching composition but different pixel dimensions | Check `pixelRatio`, the 2D layout scale, or the 3D full viewport and crop enable flag. |
+| A temporary export is correct but the next step differs | Were only per-export parameters overridden, without saving the new configuration to the complete project? |
