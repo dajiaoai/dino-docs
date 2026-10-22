@@ -101,9 +101,13 @@ export default defineConfig({
   lastUpdated: true,
   sitemap: {
     hostname: HOSTNAME,
+    transformItems: (items) => items.filter((item) =>
+      !/^(en\/)?reference\/(master-template|consistent-image-export)(\.html)?$/.test(item.url)
+    ),
   },
   transformHead({ page, pageData, title, description }) {
-    const canonical = getCanonicalUrl(page);
+    const redirect = pageData.frontmatter?.redirect as string | undefined;
+    const canonical = redirect ? `${HOSTNAME}${redirect}` : getCanonicalUrl(page);
     const ogTitle = (pageData.frontmatter?.title as string) || title;
     const ogDesc = (pageData.frontmatter?.description as string) || description;
     const head: HeadConfig[] = [
@@ -114,6 +118,12 @@ export default defineConfig({
       ['meta', { name: 'twitter:title', content: ogTitle }],
       ['meta', { name: 'twitter:description', content: ogDesc }],
     ];
+    if (redirect) {
+      head.push(
+        ['meta', { name: 'robots', content: 'noindex' }],
+        ['script', {}, `window.location.replace(${JSON.stringify(redirect)} + window.location.search + window.location.hash);`],
+      );
+    }
     if (page.startsWith('en/')) {
       head.push(['meta', { property: 'og:locale', content: 'en' }]);
     } else {
@@ -162,6 +172,7 @@ export default defineConfig({
               { text: 'API 接入', link: '/api/' },
               { text: 'AI 接入', link: '/ai/' },
               { text: '通用规范', link: '/reference/' },
+              { text: '教程', link: '/tutorials/' },
             ],
           },
           { text: '公告', link: '/announcements/' },
@@ -284,16 +295,19 @@ export default defineConfig({
                 { text: '字体支持', link: '/reference/fonts' },
               ],
             },
+          ],
+          '/tutorials/': [
             {
               text: '教程',
               items: [
+                { text: '概览', link: '/tutorials/' },
                 {
                   text: '如何使用风格母版',
-                  link: '/reference/master-template',
+                  link: '/tutorials/master-template',
                 },
                 {
                   text: '多环节图片导出尺寸一致性',
-                  link: '/reference/consistent-image-export',
+                  link: '/tutorials/consistent-image-export',
                 },
               ],
             },
@@ -324,6 +338,7 @@ export default defineConfig({
               { text: 'API Access', link: '/en/api/' },
               { text: 'AI Access', link: '/en/ai/' },
               { text: 'Common Standards', link: '/en/reference/' },
+              { text: 'Tutorials', link: '/en/tutorials/' },
             ],
           },
           { text: 'Updates', link: '/en/announcements/' },
@@ -458,16 +473,19 @@ export default defineConfig({
                 { text: 'Font Support', link: '/en/reference/fonts' },
               ],
             },
+          ],
+          '/en/tutorials/': [
             {
               text: 'Tutorials',
               items: [
+                { text: 'Overview', link: '/en/tutorials/' },
                 {
                   text: 'How to Use Style Master Templates',
-                  link: '/en/reference/master-template',
+                  link: '/en/tutorials/master-template',
                 },
                 {
                   text: 'Consistent Image Export Across Workflows',
-                  link: '/en/reference/consistent-image-export',
+                  link: '/en/tutorials/consistent-image-export',
                 },
               ],
             },

@@ -15,6 +15,7 @@ import AnnouncementList from './AnnouncementList.vue';
 import AnnouncementArticleTags from './AnnouncementArticleTags.vue';
 import AnnouncementRelated from './AnnouncementRelated.vue';
 import AnnouncementSidebar from './AnnouncementSidebar.vue';
+import RedirectPage from './RedirectPage.vue';
 import { syncAnnouncementLocation } from './useAnnouncements';
 import {
   enableAutoPageTracking,
@@ -43,6 +44,7 @@ export default {
     app.component('AgentPlayground', AgentPlayground);
     app.component('ProjectViewer', ProjectViewer);
     app.component('AnnouncementList', AnnouncementList);
+    app.component('RedirectPage', RedirectPage);
 
     if (typeof window === 'undefined') return;
 
