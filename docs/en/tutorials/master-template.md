@@ -81,7 +81,7 @@ Submit the template with your drawing prompt. Run the following command in the d
 ```bash
 curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
-  -F "model=dinogeo-1-pro" \
+  -F "model=dinogeo-1" \
   -F "content=Draw an equilateral triangle with side length 4 and label its vertices A, B, C." \
   -F "template=<./template.json"
 ```

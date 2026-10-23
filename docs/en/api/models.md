@@ -15,8 +15,11 @@ Dino Geometry models are built on a Harness Agent mechanism that interprets math
 
 | Model | Profile | Recommended for |
 | --- | --- | --- |
-| `dinogeo-1` | Standard — optimized for cost and throughput | Routine geometry figures, bulk question bank production, AI courseware |
-| `dinogeo-1-pro` | Professional — optimized for quality and complex-problem stability | Complex integrated problems, image-reference reconstruction, proof diagrams, high-value content |
+| `dinogeo-1` | Basic drawing and drawing from provided solutions | Basic geometry figures; problem or explanation diagrams based on an existing solution or solution steps |
+| `dinogeo-1-pro` | Drawing that requires problem solving, calculations, or complex reasoning | Problems the model must solve, calculate, derive, or prove before drawing |
+
+Choose based on whether the task requires the model to carry out complex reasoning. Even for a complex problem, `dinogeo-1` can be used when a complete solution is provided and the task is to draw from it.
+
 
 For pricing, see [API Billing](/en/api/pricing).
 

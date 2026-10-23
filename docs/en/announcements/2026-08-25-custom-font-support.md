@@ -83,7 +83,7 @@ Include the font requirement in `content` when calling `POST /api/agent/run`:
 ```bash
 curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
-  -F "model=dinogeo-1-pro" \
+  -F "model=dinogeo-1" \
   -F "content=Draw an equilateral triangle. Use Times New Roman for point labels and sans-serif for explanatory text."
 ```
 

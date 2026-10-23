@@ -80,7 +80,7 @@ await presentation.mode.setMasterTemplate(masterTemplateContent);
 ```bash
 curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
-  -F "model=dinogeo-1-pro" \
+  -F "model=dinogeo-1" \
   -F "content=请画一个边长为 4 的正三角形，标注顶点 A、B、C。" \
   -F "template=<./template.json"
 ```

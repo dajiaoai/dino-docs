@@ -20,27 +20,35 @@ description: 提交文字、参考图片和可选母版，创建异步智能生�
 | 字段      | 类型   | 必填 | 说明                                                                              |
 | --------- | ------ | ---- | --------------------------------------------------------------------------------- |
 | `model`   | string | 是   | agent 使用的模型别名，详见[模型说明](/api/models)。 |
-| `content` | string | 否   | 用户要执行的绘图任务描述。                                                        |
+| `content` | string | 否   | 清晰、完整的题目与绘图要求；如有解析或解题步骤，建议一并提供。                                                        |
 | `template` | string | 否 | 风格母版数据，传入母版 JSON 字符串。可在[大角几何母版](https://dajiaoai.com/master-templates)页面下载母版数据。 |
-| `images`  | file[] | 否   | 图片字段，字段名固定为 `images`，最多 10 张；通过重复传多个 `images` 表单项上传。 |
+| `images`  | file[] | 否   | 建议上传清晰的题目原图，也可附解析图片。字段名固定为 `images`，最多 10 张；通过重复传多个 `images` 表单项上传。 |
 
 说明：`model` 为必填字段。`content` 与图片至少需要提供一个。若只传图片而不传 `content`，服务会自动补默认提示。
+
+## 模型选择与输入建议
+
+`dinogeo-1` 适合基础制图，以及已有解析、可按解析绘制的题目；`dinogeo-1-pro` 适合需要模型自行解题、解算等复杂推理后再制图的题目。
+
+请提供清晰、完整的题目，说明已知条件、所求问题和绘图要求；如有原图，建议一并上传，如有解析或解题步骤，也建议一并提供，帮助模型准确理解题意与图形关系。
+
+详见[模型说明](/api/models)。
 
 ## 示例请求
 
 ```bash
 curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
-  -F "model=dinogeo-1-pro" \
-  -F "content=请画一个边长为 4 的正三角形，并给出一个可拖拽的顶点 A。" \
+  -F "model=dinogeo-1" \
+  -F "content=请绘制边长为 4 的正三角形 ABC，标注各顶点和边长。" \
   -F "template=<./template.json"
 ```
 
 ```bash
 curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
-  -F "model=dinogeo-1-pro" \
-  -F "content=请综合这些参考图绘制对应的几何图形。" \
+  -F "model=dinogeo-1" \
+  -F "content=题目：三角形 ABC 中，AB=AC=5，BC=6，求 BC 边上的高 AD。解析：D 为 BC 中点，BD=3，由勾股定理得 AD=4。请按题目原图和解析绘制图形，标注 D、直角及各线段长度。" \
   -F "images=@./example-1.png;type=image/png" \
   -F "images=@./example-2.png;type=image/png"
 ```

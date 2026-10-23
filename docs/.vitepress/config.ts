@@ -248,6 +248,7 @@ export default defineConfig({
                 { text: '概览', link: '/api/' },
                 { text: '鉴权说明', link: '/api/auth' },
                 { text: 'API 计费说明', link: '/api/pricing' },
+                { text: '模型说明', link: '/api/models' },
               ],
             },
             {
@@ -274,7 +275,6 @@ export default defineConfig({
                     { text: '旧版 PNG 与迁移', link: '/api/api-render' },
                   ],
                 },
-                { text: '模型说明', link: '/api/models' },
               ],
             },
           ],
@@ -423,6 +423,7 @@ export default defineConfig({
                 { text: 'Overview', link: '/en/api/' },
                 { text: 'Authentication', link: '/en/api/auth' },
                 { text: 'API Billing', link: '/en/api/pricing' },
+                { text: 'Models', link: '/en/api/models' },
               ],
             },
             {
@@ -449,7 +450,6 @@ export default defineConfig({
                     { text: 'Legacy PNG & Migration', link: '/en/api/api-render' },
                   ],
                 },
-                { text: 'Models', link: '/en/api/models' },
               ],
             },
           ],

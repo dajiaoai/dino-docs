@@ -393,7 +393,7 @@ export default function App() {
             <span className="eyebrow">QUESTION BANK PIPELINE</span>
             <h1>把题目，变成可交互的标准几何图</h1>
             <p>
-              题目文本支持 LaTeX，可批量产出静态图片和能被 SDK 加载的工程文件。
+              请提供清晰、完整的题目，有原图和解析时建议一并提供。题目文本支持 LaTeX，可批量产出静态图片和能被 SDK 加载的工程文件。
             </p>
           </div>
           <button
@@ -444,8 +444,8 @@ export default function App() {
                   }
                   required
                 >
-                  <option value="dinogeo-1">dinogeo-1</option>
-                  <option value="dinogeo-1-pro">dinogeo-1-pro</option>
+                  <option value="dinogeo-1">dinogeo-1 · 基础制图 / 已有解析</option>
+                  <option value="dinogeo-1-pro">dinogeo-1-pro · 解题 / 解算 / 复杂推理</option>
                 </select>
               </label>
               <label>

@@ -83,7 +83,7 @@ style Text { font: "Times New Roman"; }
 ```bash
 curl -X POST https://api.dajiaoai.com/api/agent/run \
   -H "Authorization: Bearer djo_xxx" \
-  -F "model=dinogeo-1-pro" \
+  -F "model=dinogeo-1" \
   -F "content=画一个等边三角形，点标签使用 Times New Roman，说明文字使用 sans-serif。"
 ```
 

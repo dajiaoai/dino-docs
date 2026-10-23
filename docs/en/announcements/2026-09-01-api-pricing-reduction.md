@@ -40,7 +40,9 @@ The following results are from Dino Geometry's internal evaluation. The test set
 | Image-reference reconstruction accuracy | 83% | 93% |
 | Average generation latency | 30.26 s | 51.64 s |
 
-`dinogeo-1` is suited to high-volume, standardized geometry-diagram generation, balancing speed and cost. `dinogeo-1-pro` is designed for complex integrated problems, proof diagrams, and high-fidelity image-reference reconstruction, with higher generation success rates and reconstruction accuracy.
+`dinogeo-1` is suited to basic diagram drawing and drawing from a provided solution or explanation. Use `dinogeo-1-pro` when the model needs to solve the problem, perform calculations, or carry out other complex reasoning before drawing.
+
+Provide a clear, complete problem statement, including the given conditions, what needs to be found, and the drawing requirements. Include the original diagram if available, and any solution, explanation, or solution steps to help the model understand the problem and geometric relationships.
 
 > Note: These are internal test results. Actual results may vary depending on input content, task complexity, and calling environment.
 
