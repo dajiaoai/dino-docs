@@ -31,5 +31,5 @@ description: 描述大角几何开放平台智能生图接口，支持异步任�
 
 1. 调用 [`POST /api/agent/run`](/api/agent-create) 创建任务。
 2. 获取 `taskId`。
-3. 轮询 [`GET /api/agent/tasks/:taskId`](/api/agent-detail) 直到状态变为 `finished` 或 `error`。
-4. `finished` 时读取 `artifactUrl` 下载产物。
+3. 轮询 [`GET /api/agent/tasks/:taskId`](/api/agent-detail) 直到状态变为 `incomplete`、`finished` 或 `error`。
+4. `incomplete` 或 `finished` 时读取 `artifactUrl` 下载产物。

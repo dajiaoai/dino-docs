@@ -90,8 +90,8 @@ export function getAgentPollInterval(elapsedMs: number) {
   return elapsedMs < 30_000 ? 2_000 : 5_000;
 }
 
-export function isAgentTerminalStatus(status: unknown): status is 'finished' | 'error' {
-  return status === 'finished' || status === 'error';
+export function isAgentTerminalStatus(status: unknown): status is 'incomplete' | 'finished' | 'error' {
+  return status === 'incomplete' || status === 'finished' || status === 'error';
 }
 
 export function resolveArtifactUrl(value: unknown, baseUrl: string) {
@@ -123,7 +123,7 @@ export interface AgentQueryInput {
 }
 
 export type AgentQueryVariant = 'tasks' | 'detail';
-export const AGENT_TASK_STATUSES = ['created', 'running', 'finished', 'error'] as const;
+export const AGENT_TASK_STATUSES = ['created', 'running', 'incomplete', 'finished', 'error'] as const;
 
 export function buildAgentQueryRequest(input: AgentQueryInput, variant: AgentQueryVariant) {
   const baseUrl = validateBaseUrl(input.baseUrl);

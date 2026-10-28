@@ -81,6 +81,7 @@ test('polling cadence and terminal statuses follow the Agent task contract', () 
   assert.equal(getAgentPollInterval(29_999), 2_000);
   assert.equal(getAgentPollInterval(30_000), 5_000);
   assert.equal(isAgentTerminalStatus('finished'), true);
+  assert.equal(isAgentTerminalStatus('incomplete'), true);
   assert.equal(isAgentTerminalStatus('error'), true);
   assert.equal(isAgentTerminalStatus('running'), false);
 });
@@ -103,6 +104,8 @@ test('task list queries omit blank defaults and include pagination and status fi
   const request = buildAgentQueryRequest(queryInput({ page: 2, pageSize: '100', status: 'finished' }), 'tasks');
   assert.equal(request.url, 'https://api.example.com/api/agent/tasks?page=2&pageSize=100&status=finished');
   assert.equal('formData' in request, false);
+  const incomplete = buildAgentQueryRequest(queryInput({ status: 'incomplete' }), 'tasks');
+  assert.equal(incomplete.url, 'https://api.example.com/api/agent/tasks?status=incomplete');
 });
 
 test('task queries reject invalid pagination, status, service URLs and header injection', () => {

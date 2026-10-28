@@ -31,5 +31,5 @@ See [Authentication](/en/api/auth) for auth and [API Billing](/en/api/pricing) f
 
 1. Call [`POST /api/agent/run`](/en/api/agent-create) to create a task.
 2. Receive the `taskId`.
-3. Poll [`GET /api/agent/tasks/:taskId`](/en/api/agent-detail) until the status is `finished` or `error`.
-4. When `finished`, download the result from `artifactUrl`.
+3. Poll [`GET /api/agent/tasks/:taskId`](/en/api/agent-detail) until the status is `incomplete`, `finished`, or `error`.
+4. When `incomplete` or `finished`, download the result from `artifactUrl`.

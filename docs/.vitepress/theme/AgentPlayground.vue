@@ -213,7 +213,7 @@ async function send() {
       const task = detail.task;
       taskStatus.value = task.status;
       if (!isAgentTerminalStatus(task.status)) continue;
-      if (task.status === 'finished') {
+      if (task.status === 'incomplete' || task.status === 'finished') {
         artifactUrl.value = resolveArtifactUrl(task.artifactUrl, baseUrl) ?? '';
         if (!artifactUrl.value) error.value = '任务已完成，但未返回有效的 HTTP(S) artifactUrl。';
       } else {
@@ -338,7 +338,7 @@ onBeforeUnmount(() => {
           <section ref="responseSection" class="response" aria-label="任务响应" :aria-busy="busy">
             <div class="section-heading"><h3>{{ variant === 'tasks' ? '查询响应' : '任务状态' }}</h3><span v-if="response" class="status" :class="{ failed: response.status >= 400 }">HTTP {{ response.status }} {{ response.statusText }} · {{ response.elapsed }} ms</span></div>
             <p v-if="taskStatus" class="task-status" :class="{ failed: taskStatus === 'error' }">状态：{{ taskStatus }}<span v-if="taskId"> · taskId：{{ taskId }}</span></p>
-            <small v-if="taskStatus">created 表示等待执行，running 表示正在生成，finished 表示已完成，error 表示失败。</small>
+            <small v-if="taskStatus">created 表示等待执行，running 表示正在生成，incomplete 表示判定需求不清晰，AI 无法绘图（具体理由见 extra.output 字段），finished 表示画图成功，error 表示失败。</small>
             <div v-if="busy" class="progress-callout" role="status">
               <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
               <div><strong>{{ progressTitle }}</strong><span>{{ isCreate ? (taskId ? '正在自动查询生成进度，任务完成后会在此显示结果。' : '正在提交绘图任务，请稍候。') : '正在获取最新任务数据，请稍候。' }}</span></div>
