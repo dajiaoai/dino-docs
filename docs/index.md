@@ -1,6 +1,7 @@
 ---
 layout: home
 title: 大角几何开放平台
+titleTemplate: ":title|官网"
 description: 面向开发者与合作伙伴的几何开放平台，涵盖嵌入式 SDK、接口服务与 AI 几何能力
 
 hero:
