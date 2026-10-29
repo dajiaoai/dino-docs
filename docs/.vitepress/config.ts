@@ -66,6 +66,9 @@ gtag('config', '${GA_ID}');`,
 export default defineConfig({
   head: [
     ...gaHead,
+    ...(process.argv.includes('build') || process.env.DINO_UET_DEV === '1'
+      ? [['script', { defer: '', src: '/microsoft-uet.js' }] as HeadConfig]
+      : []),
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'theme-color', content: '#3c8772' }],
     ['meta', { property: 'og:type', content: 'website' }],

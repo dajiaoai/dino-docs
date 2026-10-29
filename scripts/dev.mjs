@@ -3,6 +3,8 @@ import { fileURLToPath } from 'node:url';
 
 const npm = 'npm';
 const root = fileURLToPath(new URL('..', import.meta.url));
+if (process.argv.includes('--uet')) process.env.DINO_UET_DEV = '1';
+console.log(`Microsoft UET: ${process.env.DINO_UET_DEV === '1' ? 'enabled (187264185)' : 'disabled (enable with npm run dev:uet)'}`);
 let stopping = false;
 
 const commands = [

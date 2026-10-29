@@ -1,9 +1,10 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { uetDevPlugin } from '../../scripts/uet-dev';
 
 export default defineConfig({
   base: '/demos/question-bank/',
-  plugins: [react()],
+  plugins: [react(), uetDevPlugin()],
   server: {
     proxy: {
       '/dl-proxy': {

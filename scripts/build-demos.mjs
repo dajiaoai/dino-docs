@@ -1,5 +1,5 @@
 import { spawn } from 'node:child_process';
-import { cp, mkdir, readdir, readFile, rm } from 'node:fs/promises';
+import { cp, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -59,6 +59,11 @@ for (const entry of entries.filter((item) => item.isDirectory())) {
   await cp(path.join(demoRoot, 'dist'), path.join(outputRoot, metadata.id), {
     recursive: true,
   });
+
+  // Demo entry pages bypass VitePress's global head configuration.
+  const indexPath = path.join(outputRoot, metadata.id, 'index.html');
+  const html = await readFile(indexPath, 'utf8');
+  await writeFile(indexPath, html.replace('</head>', '<script defer src="/microsoft-uet.js"></script></head>'));
 }
 
 console.log(`Demos copied to ${path.relative(root, outputRoot)}`);
