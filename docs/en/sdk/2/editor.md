@@ -38,9 +38,10 @@ Use `ui` to control visibility of editor panels.
 | `ui.slidePanel`   | `boolean` | `true`  | Whether to show the slide manager. Hidden by default when there is only one slide.                                    |
 | `ui.toolboxPanel` | `boolean` | `true`  | Whether to show the drawing toolbox                                          |
 | `ui.algebraPanel` | `boolean` | `true`  | Whether to show the algebra panel                                            |
+| `ui.masterTemplatePanel` | `boolean` | `false` | Whether to show the master template panel; enable explicitly. Supported since `2.16.0`. See [System Master Template Panel](./master-templates) for data configuration. |
 | `ui.docPanel`     | `boolean` | `true`  | Whether to show the document panel                                           |
 | `ui.helpEntry`    | `boolean` | `true`  | Whether to show the help entry in editor mode. Supported since `2.7.0`.      |
-| `ui.aiChatPanel`  | `boolean` | `true`  | Whether to show the AI Chat panel. Supported since `2.8.0`.                  |
+| `ui.aiChatPanel`  | `boolean` | `false`  | Whether to show the AI Chat panel. Supported since `2.8.0`.                  |
 
 ## API Module Reference
 
@@ -59,6 +60,7 @@ interface AlgeoEditorCreateOptions {
   ui?: AlgeoEditorUiConfig;
   fonts?: AlgeoFontConfig;
   resourceLibrary?: ResourceLibraryProvider;
+  masterTemplates?: MasterTemplateCallbacks;
 }
 ```
 
@@ -71,6 +73,7 @@ interface AlgeoEditorCreateOptions {
 | `ui`              | `AlgeoEditorUiConfig`     | no       | Editor UI visibility configuration                                  |
 | `fonts`           | `AlgeoFontConfig`         | no       | Font resources, picker catalog, and default font. Supported since `2.12.0`. |
 | `resourceLibrary` | `ResourceLibraryProvider` | no       | Host-provided read-only image library. Supported since `2.11.0`.     |
+| `masterTemplates` | `MasterTemplateCallbacks` | no | System master template list callback, supported since `2.16.0`. Use with `ui.masterTemplatePanel`; see [System Master Template Panel](./master-templates). |
 
 Initialization priority: `initialContent` > `shareId` > a blank board in the specified `initialMode`. When `initialContent` is provided, the shared file is not requested. When loading existing content, the board modes stored in that content are preserved.
 
@@ -166,7 +169,7 @@ Dynamically adjust the UI and master template style.
 
 - `getUiConfig(): AlgeoEditorUiConfig`: Get the SDK-side cached UI configuration.
 - `setUiConfig(config: Partial<AlgeoEditorUiConfig>): Promise<void>`: Dynamically toggle UI element visibility at runtime.
-- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: Set and persist the project's master template style. Supported since `2.9.0`.
+- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: Set and persist the project's master template style. Supported since `2.9.0`. For usage, see [Setting a Master Template through the API](./master-templates#setting-a-master-template-through-the-api).
 
 ```typescript
 const ui = editor.mode.getUiConfig();
@@ -261,6 +264,14 @@ await editor.history.undo();
 Calls do not trigger `contentChange` / `slideChange` events. Use `editor.document.getContent()` to read the latest content. Execution errors do not automatically roll back completed changes.
 
 Use `editor.repl('help')` for command help. See [REPL Capabilities](../repl) for the full command reference.
+
+### 9. Master Template List (`masterTemplates`)
+
+> Supported since **2.16.0**.
+
+Pass `masterTemplates.listSystem` when creating the editor and set `ui.masterTemplatePanel: true` to display system master templates, cover images, and previews within the canvas. Clicking **Apply** in the list or preview dialog applies the template to the current slide.
+
+See [System Master Template Panel](./master-templates) for complete integration examples, field descriptions, and error handling.
 
 ## Event Listening
 

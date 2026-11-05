@@ -33,9 +33,10 @@ const editor: EmbeddedEditor = await createEditor(container, {
 | `ui.slidePanel`   | `boolean` | `true` | 是否显示画板管理器。单个画板时默认不显示。                          |
 | `ui.toolboxPanel` | `boolean` | `true` | 是否显示绘图工具栏                              |
 | `ui.algebraPanel` | `boolean` | `true` | 是否显示代数面板                                |
+| `ui.masterTemplatePanel` | `boolean` | `false` | 是否显示母版面板，需显式开启。从 `2.16.0` 起支持。数据接入见[系统母版面板](./master-templates)。 |
 | `ui.docPanel`     | `boolean` | `true` | 是否显示文档面板                                |
 | `ui.helpEntry`    | `boolean` | `true` | 是否显示编辑模式的帮助入口。从 `2.7.0` 起支持。 |
-| `ui.aiChatPanel`  | `boolean` | `true` | 是否显示 AI 对话面板。从 `2.8.0` 起支持。       |
+| `ui.aiChatPanel`  | `boolean` | `false` | 是否显示 AI 对话面板。从 `2.8.0` 起支持。       |
 
 ## API 模块参考
 
@@ -54,6 +55,7 @@ interface AlgeoEditorCreateOptions {
   ui?: AlgeoEditorUiConfig;
   fonts?: AlgeoFontConfig;
   resourceLibrary?: ResourceLibraryProvider;
+  masterTemplates?: MasterTemplateCallbacks;
 }
 ```
 
@@ -66,6 +68,7 @@ interface AlgeoEditorCreateOptions {
 | `ui`              | `AlgeoEditorUiConfig`     | 否   | 编辑器 UI 显隐配置                                           |
 | `fonts`           | `AlgeoFontConfig`         | 否   | 字体资源、字体选择器列表及默认字体。从 `2.12.0` 起支持。     |
 | `resourceLibrary` | `ResourceLibraryProvider` | 否   | 宿主提供的只读图片素材库。从 `2.11.0` 起支持。               |
+| `masterTemplates` | `MasterTemplateCallbacks` | 否 | 系统母版列表回调，从 `2.16.0` 起支持。配合 `ui.masterTemplatePanel` 使用，见[系统母版面板](./master-templates)。 |
 
 初始化优先级：`initialContent` > `shareId` > 指定 `initialMode` 的空画板。提供 `initialContent` 时不会请求分享文件；加载已有内容时，以内容中保存的画板模式为准。
 
@@ -161,7 +164,7 @@ await editor.history.clear();
 
 - `getUiConfig(): AlgeoEditorUiConfig`: 获取 SDK 当前缓存的 UI 配置。
 - `setUiConfig(config: Partial<AlgeoEditorUiConfig>): Promise<void>`: 运行时动态切换 UI 元件的显隐。
-- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: 设置并固定工程母版风格。从 `2.9.0` 起支持。
+- `setMasterTemplate(template: string): Promise<SetMasterTemplateResult>`: 设置并固定工程母版风格。从 `2.9.0` 起支持。 使用方式详见[通过 API 设置母版](./master-templates#通过-api-设置母版)。
 
 ```typescript
 const ui = editor.mode.getUiConfig();
@@ -258,6 +261,14 @@ await editor.history.undo();
 调用不触发 `contentChange` / `slideChange` 事件；读取最新内容请用 `editor.document.getContent()`。执行失败时，已完成的修改不会自动回滚。
 
 使用 `editor.repl('help')` 查看命令帮助，完整指令见 [REPL 能力](../repl)。
+
+### 9. 风格母版列表（`masterTemplates`）
+
+> 从 **2.16.0** 起支持。
+
+创建编辑器时传入 `masterTemplates.listSystem`，并设置 `ui.masterTemplatePanel: true`，可在画板内展示系统母版列表、封面和预览。列表及预览弹窗中的「应用」作用于当前画板。
+
+完整接入示例、字段说明与错误处理见[系统母版面板](./master-templates)。
 
 ## 事件监听
 
