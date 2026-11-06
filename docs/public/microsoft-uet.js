@@ -4,6 +4,11 @@
 
   (function (w, d, t, u, o) {
     w[u] = w[u] || [];
+    // Keep the site's existing granted default explicit before the first hit.
+    // Prepend it so any queued consent choice still takes precedence.
+    if (Array.isArray(w[u])) {
+      w[u].unshift('consent', 'default', { ad_storage: 'granted' });
+    }
     o.ts = new Date().getTime();
     var n = d.createElement(t);
     n.src = 'https://bat.bing.net/bat.js?ti=' + o.ti + (u !== 'uetq' ? '&q=' + u : '');
