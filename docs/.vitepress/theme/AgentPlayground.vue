@@ -44,6 +44,8 @@ const error = ref('');
 const taskStatus = ref('');
 const taskId = ref('');
 const artifactUrl = ref('');
+const shareMessage = ref('');
+watch(artifactUrl, () => { shareMessage.value = ''; });
 const response = ref<{ status: number; statusText: string; body: string; headers: string; elapsed: number }>();
 const imagePreviews = ref<{ file: File; url: string }[]>([]);
 const input = reactive<AgentPlaygroundInput & AgentQueryInput>({
@@ -112,6 +114,16 @@ function removeImage(index: number) {
 async function copyCurl() {
   try { await navigator.clipboard.writeText(preview.value.curl); copied.value = true; }
   catch { error.value = '复制失败，请手动选择并复制 cURL。'; }
+}
+async function shareProject() {
+  if (!artifactUrl.value) return;
+  const url = new URL(viewerLink(artifactUrl.value), window.location.href).href;
+  try {
+    await navigator.clipboard.writeText(url);
+    shareMessage.value = '分享链接已复制';
+  } catch {
+    shareMessage.value = '复制失败，请右键“查看生成的工程”复制链接。';
+  }
 }
 function wait(ms: number, signal: AbortSignal) {
   return new Promise<void>((resolve, reject) => {
@@ -343,7 +355,13 @@ onBeforeUnmount(() => {
               <svg aria-hidden="true" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg>
               <div><strong>{{ progressTitle }}</strong><span>{{ isCreate ? (taskId ? '正在自动查询生成进度，任务完成后会在此显示结果。' : '正在提交绘图任务，请稍候。') : '正在获取最新任务数据，请稍候。' }}</span></div>
             </div>
-            <p v-if="artifactUrl" class="artifact"><a :href="viewerLink(artifactUrl)" target="_blank" rel="noopener noreferrer">查看生成的工程 ↗</a> · <a :href="artifactUrl" target="_blank" rel="noopener noreferrer">下载 .algeo</a></p>
+            <div v-if="artifactUrl" class="artifact">
+              <div class="artifact-actions">
+                <a :href="viewerLink(artifactUrl)" target="_blank" rel="noopener noreferrer">查看生成的工程 ↗</a> · <a :href="artifactUrl" target="_blank" rel="noopener noreferrer">下载 .algeo</a>
+                <template v-if="isCreate && taskStatus === 'finished'"> · <button class="share-project" type="button" @click="shareProject">分享</button></template>
+              </div>
+              <small v-if="shareMessage" role="status">{{ shareMessage }}</small>
+            </div>
             <p v-if="error" class="error" role="alert">{{ error }}</p>
             <template v-if="response"><div class="tabs"><button type="button" :aria-pressed="responseTab === 'body'" @click="responseTab = 'body'">响应正文</button><button type="button" :aria-pressed="responseTab === 'headers'" @click="responseTab = 'headers'">响应头</button></div><pre><code>{{ responseTab === 'body' ? response.body : response.headers || '（无可读取的响应头）' }}</code></pre></template>
             <p v-else-if="!busy && !error" class="empty">{{ isCreate ? '提交任务后，在这里查看创建响应、轮询状态和最终结果。' : '发送查询后，在这里查看 HTTP 状态码和响应内容。' }}</p>
@@ -370,6 +388,9 @@ onBeforeUnmount(() => {
 .progress-callout span { display: block; margin-top: 2px; font-size: 12px; line-height: 1.7; }
 :global(.dark) .progress-callout { border-color: #60a5fa40; border-left-color: #60a5fa; background: #60a5fa14; color: #93c5fd; }
 .artifact { padding: 12px; border: 1px solid var(--vp-c-divider); border-radius: 6px; }
+.artifact-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.share-project { font-weight: 500; color: var(--vp-c-brand-1); text-decoration: underline; text-underline-offset: 2px; transition: color .25s, opacity .25s; cursor: pointer; }
+.share-project:hover { color: var(--vp-c-brand-2); }
 .launch { flex-shrink: 0; }
 footer span { min-width: 0; overflow-wrap: anywhere; }
 input[type="file"]::file-selector-button { margin-right: 12px; padding: 4px 10px; border: 1px solid var(--vp-c-divider); border-radius: 4px; background: var(--vp-c-bg-soft); color: var(--vp-c-text-1); cursor: pointer; }
