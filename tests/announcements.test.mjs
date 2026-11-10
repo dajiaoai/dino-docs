@@ -38,7 +38,7 @@ test('every existing article keeps its URL, has valid metadata, and sorts by pub
   assert.equal(announcements.length, pages.length);
   assert.equal(new Set(announcements.map(item => item.url)).size, pages.length);
   const all = filterAnnouncements(announcements, 'zh');
-  assert.equal(all[0].date, '2026-10-21');
+  assert.equal(all[0].date, '2026-11-10');
   assert.deepEqual(all.map(item => item.date), all.map(item => item.date).sort().reverse());
   const pricingIndex = all.findIndex(item => item.url.includes('2026-09-01-api-pricing-reduction'));
   assert.equal(all[pricingIndex].date, '2026-08-27');
@@ -50,7 +50,9 @@ test('every existing article keeps its URL, has valid metadata, and sorts by pub
 test('a multi-module announcement appears once in every matching module', () => {
   for (const module of ['sdk', 'api', 'mcp']) {
     const matches = filterAnnouncements(announcements, 'zh', { module });
-    assert.equal(matches.filter(item => item.url.includes('transparent-image-export')).length, 1);
+    for (const slug of ['transparent-image-export', 'preset-styles-sdk-mcp-api']) {
+      assert.equal(matches.filter(item => item.url.includes(slug)).length, 1);
+    }
     assert.ok(matches.every(item => item.modules.includes(module)));
   }
   const consoleUpdates = filterAnnouncements(announcements, 'zh', { module: 'console' });
