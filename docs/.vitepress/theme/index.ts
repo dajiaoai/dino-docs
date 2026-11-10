@@ -2,6 +2,7 @@ import { h } from 'vue';
 import { useData } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
 import './style.css';
+import './documentImageLinks.css';
 import HeroIllustration from './HeroIllustration.vue';
 import HeroInfo from './HeroInfo.vue';
 import CopyDocButton from './CopyDocButton.vue';
@@ -17,6 +18,7 @@ import AnnouncementRelated from './AnnouncementRelated.vue';
 import AnnouncementSidebar from './AnnouncementSidebar.vue';
 import RedirectPage from './RedirectPage.vue';
 import { syncAnnouncementLocation } from './useAnnouncements';
+import { enableDocumentImageLinks } from './documentImageLinks';
 import {
   enableAutoPageTracking,
   enableAutoErrorTracking,
@@ -47,6 +49,9 @@ export default {
     app.component('RedirectPage', RedirectPage);
 
     if (typeof window === 'undefined') return;
+
+    const disposeImageLinks = enableDocumentImageLinks();
+    import.meta.hot?.dispose(disposeImageLinks);
 
     const previousAfterRouteChange = router.onAfterRouteChange;
     router.onAfterRouteChange = async (href) => {

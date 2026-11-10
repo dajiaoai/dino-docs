@@ -1,0 +1,8 @@
+.vp-doc img[data-doc-image-link] {
+  cursor: zoom-in;
+}
+
+.vp-doc img[data-doc-image-link]:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 4px;
+}
