@@ -51,8 +51,6 @@ legend { width: 100%; font-size: 16px; font-weight: 600; margin-bottom: 16px; bo
 .field-name { color: #2563eb; }
 .field-reset { float: right; padding: 0 4px; color: var(--vp-c-text-2); font-size: 12px; font-weight: 400; cursor: pointer; border-radius: 4px; }
 .field-reset:hover { color: var(--vp-c-brand-1); background: var(--vp-c-bg-soft); }
-.content-actions { float: right; display: inline-flex; gap: 8px; }
-.content-actions .field-reset { float: none; }
 :global(.dark) .field-name { color: #60a5fa; }
 label, .field-control { display: block; font-weight: 500; margin-bottom: 16px; }
 .field-control > label { display: inline; margin: 0; }

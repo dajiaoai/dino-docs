@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, reactive, ref, watch } from 'vue';
+import PlaygroundTextarea from './PlaygroundTextarea.vue';
+import { templateTextareaActions, type TextareaAction } from './playgroundTextarea';
 import { DEFAULT_PLAYGROUND_ENVIRONMENT, loadPlaygroundEnvironment, savePlaygroundEnvironment } from './playgroundEnvironment';
 import { buildRequest, toCurl, type PlaygroundInput } from './renderPlayground';
 import { cropFields, getRenderPlaygroundConfig, type RenderPlaygroundVariant } from './renderPlaygroundConfig';
 import defaultRenderContent from './defaultRenderContent.json';
 
 const defaultContent = JSON.stringify(defaultRenderContent, null, 2);
+const contentTextareaActions: TextareaAction[] = [
+  { id: 'upload', label: '本地上传', upload: { accept: '.algeo,.json,application/json' } },
+  { id: 'example', label: '恢复示例' },
+  { id: 'clear', label: '清空' },
+];
 const hasValue = (value: unknown) => value !== undefined && value !== null && String(value).length > 0;
 
 const props = withDefaults(defineProps<{ variant?: RenderPlaygroundVariant }>(), { variant: 'png-v2' });
@@ -69,14 +76,6 @@ function closed() {
   nextTick(() => trigger.value?.focus());
 }
 function close() { dialog.value?.close(); }
-async function importContent(event: Event) {
-  const target = event.target as HTMLInputElement;
-  const file = target.files?.[0];
-  if (!file) return;
-  try { input.content = await file.text(); error.value = ''; }
-  catch { error.value = '无法读取文件，请重新选择或粘贴项目 JSON。'; }
-  target.value = '';
-}
 async function copyCurl() {
   try { await navigator.clipboard.writeText(preview.value.curl); copied.value = true; }
   catch { error.value = '复制失败，请手动选择并复制 cURL。'; }
@@ -172,10 +171,15 @@ onBeforeUnmount(() => { controller?.abort(); });
               <div class="field-control"><label class="field-name" :for="fieldId('requestId')">x-request-id</label> <em>可选</em><button v-if="hasValue(input.requestId)" class="field-reset" type="button" aria-label="重置 requestId" @click.prevent="input.requestId = ''">重置</button><input :id="fieldId('requestId')" v-model="input.requestId" placeholder="留空自动生成 UUID" /><small>业务请求标识，省略时由服务生成。</small></div>
             </fieldset>
             <fieldset><legend>请求体配置</legend>
-              <div class="field-control"><label class="field-name" :for="fieldId('content')">content</label> <em><span class="required">必填</span> · FileContentLatest</em><span class="content-actions"><button class="field-reset" type="button" title="恢复默认项目 content" @click.prevent="input.content = defaultContent">重置</button><button v-if="hasValue(input.content)" class="field-reset" type="button" aria-label="清空 content" @click.prevent="input.content = ''">清空</button></span><small>完整项目内容，对应文档中的 content。粘贴 JSON 或导入 .algeo 文件。</small><textarea :id="fieldId('content')" v-model="input.content" rows="8" placeholder="粘贴完整项目 JSON" spellcheck="false" /></div>
-              <label class="file-label">导入项目<input type="file" accept=".algeo,.json,application/json" @change="importContent" /></label>
+              <PlaygroundTextarea :id="fieldId('content')" v-model="input.content" label="content" :actions="contentTextareaActions" rows="8" placeholder="粘贴完整项目 JSON" :spellcheck="false" @action="input.content = $event === 'example' ? defaultContent : ''">
+                <template #meta><em><span class="required">必填</span> · FileContentLatest</em></template>
+                <template #help>完整项目内容，对应文档中的 content。粘贴 JSON 或上传 .algeo / .json 文件。</template>
+              </PlaygroundTextarea>
               <div class="field-control"><label class="field-name" :for="fieldId('slideIndex')">slideIndex</label> <em>可选 · number</em><button v-if="hasValue(input.slideIndex)" class="field-reset" type="button" aria-label="重置 slideIndex" @click.prevent="input.slideIndex = ''">重置</button><input :id="fieldId('slideIndex')" v-model="input.slideIndex" type="number" min="1" step="1" placeholder="1" /><small>从 1 开始的画板序号，留空使用默认值 1。</small></div>
-              <div class="field-control"><label class="field-name" :for="fieldId('template')">template</label> <em>可选 · object</em><button v-if="hasValue(input.template)" class="field-reset" type="button" aria-label="重置 template" @click.prevent="input.template = ''">重置</button><textarea :id="fieldId('template')" v-model="input.template" rows="3" placeholder="留空沿用目标画板样式" spellcheck="false" /><small>渲染母版 JSON 对象，可从大角几何母版页面下载。</small></div>
+              <PlaygroundTextarea :id="fieldId('template')" v-model="input.template" label="template" :actions="templateTextareaActions" rows="3" placeholder="留空沿用目标画板样式" :spellcheck="false" @action="input.template = ''">
+                <template #meta><em>可选 · object</em></template>
+                <template #help>渲染母版 JSON 对象，可从<a href="https://dajiaoai.com/master-templates" target="_blank" rel="noopener noreferrer">大角几何母版</a>下载。</template>
+              </PlaygroundTextarea>
               <label class="checkbox-field"><input v-model="input.transparent" type="checkbox" /><span><span class="field-name">transparent</span> <em>可选 · boolean</em><small>是否跳过背景色填充。</small></span></label>
               <div v-for="field in topLevelFields" :key="field.key" class="field-control"><label class="field-name" :for="fieldId(field.key)">{{ field.key }}</label> <em>可选 · number</em><button v-if="hasValue(input.pixelRatio)" class="field-reset" type="button" aria-label="重置 pixelRatio" @click.prevent="input.pixelRatio = ''">重置</button><input :id="fieldId(field.key)" v-model="input.pixelRatio" type="number" step="any" :placeholder="field.placeholder" /><small>{{ field.help }} 视图内兼容参数优先于此值。</small></div>
               <div class="field-control"><label class="field-name" :for="fieldId('mode')">视图模式</label><button v-if="input.mode !== 'auto'" class="field-reset" type="button" aria-label="重置视图模式" @click.prevent="input.mode = 'auto'">重置</button><select :id="fieldId('mode')" v-model="input.mode"><option value="auto">自动 · 使用画板视图</option><option value="2d">{{ playground.view2D.requestKey }} · 指定 2D 视口</option><option v-if="supports3D" value="3d">view3D · 指定 3D 相机</option></select><small>{{ viewModeHint }}</small></div>
