@@ -26,7 +26,7 @@ npm install @dajiaoai/algeo-sdk@2
 
 Before using the SDK, understand the two main operating modes:
 
-- **Presentation Mode**: Focuses on interactive content display. Supports loading a share ID or structured file, switching slides, and executing REPL commands.
+- **Presentation Mode**: Focuses on interactive content display. Supports loading a share ID or structured file and switching slides.
 - **Editor Mode**: Provides a geometry content creation environment. Supports adding/removing slides, UI customization, undo/redo, and save interactions with the host.
 
 ## 3. Quick Integration

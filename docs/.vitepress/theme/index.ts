@@ -9,6 +9,7 @@ import CopyDocButton from './CopyDocButton.vue';
 import UnitConverter from './UnitConverter.vue';
 import RenderPlayground from './RenderPlayground.vue';
 import AgentPlayground from './AgentPlayground.vue';
+import DemoButton from './DemoButton.vue';
 import ProjectViewer from './ProjectViewer.vue';
 import CommunityQrCard from './CommunityQrCard.vue';
 import HomePlatform from './HomePlatform.vue';
@@ -44,6 +45,7 @@ export default {
     app.component('UnitConverter', UnitConverter);
     app.component('RenderPlayground', RenderPlayground);
     app.component('AgentPlayground', AgentPlayground);
+    app.component('DemoButton', DemoButton);
     app.component('ProjectViewer', ProjectViewer);
     app.component('AnnouncementList', AnnouncementList);
     app.component('RedirectPage', RedirectPage);

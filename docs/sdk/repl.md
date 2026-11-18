@@ -5,60 +5,42 @@ description: REPL 接入方式、命令能力、动画与交互、输出与错�
 
 # REPL 能力
 
-REPL（Read-Eval-Print Loop）是大角几何画板的交互式命令接口，面向 AI 与开发者提供完整画板控制能力。
+<DemoButton href="https://dajiaoai.github.io/algeo-sdk/examples/20-repl?mode=editor" label="体验 REPL" />
 
-通过 REPL 可以完成：
+通过 REPL，AI 和开发者可以用命令自动绘图、调整样式、编排动画并验证计算结果，快速生成可交互的几何内容。
 
-- 多画板管理
-- 定义对象、标签与样式
-- 动画与交互（滑动条、播放按钮、事件动作序列）
-- 表达式求值与结果校验
-- 就近选点与交点构造
-- 帮助主题查询
-
-输出统一为文本（表格或单行文本），便于展示和自动化解析。
+::: warning
+REPL 仅支持在编辑模式下使用；演示模式下支持不完整，不推荐使用。
+:::
 
 ## 接入方式
 
-```ts
-import { createPresentation } from '@dajiaoai/algeo-sdk';
-
-const presentation = await createPresentation(container, {
-  auth: { appId },
-});
-
-await presentation.loadShareById('33TA3484');
-const { output } = await presentation.repl('list');
-```
-
-接口定义：
-
-```ts
-presentation.repl(command: string): Promise<{ output: string }>
-```
-
-每次调用执行**单条**命令。执行失败时 Promise 会 reject，你可以通过错误对象中的 `code` 和 `message` 定位问题。
-
-
-编辑模式同样支持 `repl()`：
+编辑模式的 `editor.repl()` 自 SDK **2.15.0** 起支持。
 
 ```ts
 import { createEditor } from '@dajiaoai/algeo-sdk';
 
 const editor = await createEditor(container, { auth: { appId } });
 const { output } = await editor.repl('def A := Point(0,0)');
-await editor.history.undo();
-await editor.history.redo();
 ```
 
-- 返回值与演示模式一致，为 `{ output: string }`。
-- 有效修改纳入编辑器历史记录；查询命令不新增历史记录。
-- 与现有 SDK 写操作一致，REPL 调用不触发宿主的 `contentChange` / `slideChange` 事件。需要内容时调用 `editor.document.getContent()`。
-- 空命令或非字符串参数返回 `INVALID_REPL_COMMAND`；语法或执行错误返回 `REPL_EXECUTE_FAILED`。
-- 执行错误不保证回滚此前已完成的修改；SDK 会同步失败后的实际状态，已记录的修改可撤销。
+```ts
+editor.repl(command: string): Promise<{ output: string }>
+```
 
+输入为一条 REPL 命令字符串，返回 `{ output: string }`，其中 `output` 为执行结果的文本。
 
 ## 命令分类
+
+### 帮助
+
+遇到任何不确定的用法，例如命令语法、对象类型或样式属性，都可以先使用 `help` 查询。知道主题时使用 `help <Topic>`；不确定主题名称时，使用 `search <关键词>` 搜索。
+
+| 命令           | 说明                                                    |
+| -------------- | ------------------------------------------------------- |
+| `help`         | 默认帮助                                                |
+| `help <Topic>` | 按主题查询（命令、类型、syntax、globals、transform 等） |
+| `search <关键词>` / `help search <关键词>` | 搜索帮助主题和正文；多个关键词用 `\|` 分隔，匹配任一关键词，忽略大小写 |
 
 ### 画板管理
 
@@ -84,7 +66,7 @@ idOrIdx：可用**编号**（从 1 开始）或 **ID**（如 `slide_abc123`）�
 | `label <ID> := <Expr>`        | 同上                                                       |
 | `undef <ID1> <ID2> ...`       | 删除一个或多个定义                                         |
 | `rename <OldID> to <NewID>`   | 重命名元素                                                 |
-| `clear`                       | 清空当前画板                                               |
+| `clear`                       | 删除当前画板所有定义及标签，不重置默认样式或视图                                               |
 | `eval <Expr>`                 | 求表达式值，用于计算/验证                                  |
 
 ### 对象上选点与交点
@@ -106,13 +88,6 @@ idOrIdx：可用**编号**（从 1 开始）或 **ID**（如 `slide_abc123`）�
 
 **选择器**：`Background`、`XAxis`、`YAxis`、`Grid`、`#<ID>`、`<Type>:label`、`#<ID>:label`。
 
-### 帮助
-
-| 命令           | 说明                                                    |
-| -------------- | ------------------------------------------------------- |
-| `help`         | 默认帮助                                                |
-| `help <Topic>` | 按主题查询（命令、类型、syntax、globals、transform 等） |
-
 ### 动画与交互（Slider / Button）
 
 | 命令/语法                        | 说明                             |
@@ -133,45 +108,168 @@ idOrIdx：可用**编号**（从 1 开始）或 **ID**（如 `slide_abc123`）�
 - 滑动条控制：`play s1`、`stop s1`、`set s1 to 3`、`set s1 to 3 in 1s`
 - 时序：`wait 1s`、`parallel do ... end`
 
-建议配合 `help Slider`、`help Button`、`help animation` 获取完整语法与枚举说明。
+### 状态查询
+
+- `info`：查询当前画板、2D/3D 模式、定义摘要及预设样式。
+
+### 空间选点与求交
+
+```text
+snap_point P := sphere near (0, 0, 3)
+intersect Q := line3d with sphere near (0, 0, 3)
+intersect section := plane with sphere
+```
+
+二维对象使用 `near (x,y)`，空间对象使用 `near (x,y,z)`，与当前视图无关；坐标须求值为有限实数。省略 ID 时自动命名。空间选点支持 Line3D、Segment3D、Circle3D、Curve3D、Plane3D、Polygon3D、Disk、Sphere、ConeSurface、CylinderSurface。实体应先取面，例如 `prism.sideFace(1)`。
+
+选点保留对象依赖和可拖动参数；`near` 只用于创建时初始化，不是持续吸附目标。解析交点保留候选索引，父对象变化后不会重新按原 `near` 位置选择；二维数值求交还受初始位置和收敛影响。未找到交点时报错，不创建交点定义。
+
+面与面求交线不使用 `near`，按对象组合返回单个 Line3D、Circle3D 或交线列表。列表会自动渲染，可用 `.size` 查询数量、`.get(1)` 取第一项；单个交线对象没有列表的 `.size`。
+
+### 样式选择器与预设
+
+其他选择器包括 `Point`、`Point3D`、`*:label`、`XAxis3D`、`YAxis3D`、`ZAxis3D`、`WorkingPlane`。使用 `Point.强调` 或 `Point:label.强调` 创建、修改预设，再通过 `style #A { theme: "强调"; }` 引用已有预设。`theme: unset` 取消关联；任意样式属性可用 `unset` 清除。
+
+类型默认样式会影响后续作图，不会覆盖已有的单独样式或子对象继承样式。只调整已有对象时使用对象 ID。类型默认样式不允许设置 `hidden`；隐藏对象使用 `style #A { hidden: true; }`。子对象样式需通过 `list` 查找实际 ID，不能直接将 `tri.edge(1)` 这样的表达式用作样式选择器。
+
+### 几何模式与视图
+
+| 命令 | 说明 |
+| --- | --- |
+| `mode [2d\|3d]` | 查询或切换几何视图 |
+| `view_bounds` | 查询 2D 范围、排版比例、相机和视口 |
+| `view_bounds (minX,maxX,minY,maxY,scale)` | 设置 2D 有限画布，scale 为每逻辑单位的排版像素数 |
+| `view_bounds infinite` | 设置无限画布 |
+| `view_camera3d` | 查询 3D 固定视图，不修改设置 |
+| `view_camera3d on` / `view_camera3d off` | 启用/停用固定视图；停用时保留参数 |
+| `view_camera3d { field: value; ... }` | 局部更新并启用固定视图 |
+
+`view_bounds` 仅用于 2D，`view_camera3d` 仅用于 3D。固定视图保存演示与导出所用的参数快照，不改变当前编辑相机，不建立表达式依赖。字段包括 `offset`、`yawDeg`、`pitchDeg`、`scale`、`projection`、`obliqueAngleDeg`、`obliqueScaleRatio`、`width`、`height`、`crop`。投影类型为 `"orthographic"` / `"perspective"` / `"oblique"`；`crop: none` 取消裁剪。
+
+### 事件、Reveal 与 JSX
+
+| 命令 | 说明 |
+| --- | --- |
+| `on <ID>.<event> do ... end` | 设置事件处理程序 |
+| `check_event <ID>.<event>` | 查询事件处理程序 |
+| `reveal <动作> at <步骤ID>` | 添加独立 Reveal 动作 |
+| `reveal_list` | 列出当前画板独立动作 |
+| `del_reveal <步骤ID>...` | 删除指定步骤的所有独立动作 |
+| `blank_click_next_slide [on\|off]` | 查询或设置文件级“点击空白处翻页”选项，默认关闭 |
+
+事件支持 `wait`、`show`、`hide`、`toggle`、`draw`、滑动条的 `play` / `stop` / `set` 及 `parallel do … end`。
+
+独立 Reveal 支持 `show <ID>`、`hide <ID>`、`draw <ID>`、`color <ID> with #颜色`、`set <滑动条ID> to <表达式>`，可加 `in <时长>`。步骤 ID 为 `start` 或 `1`、`2.1` 等数字分段编号，按数字分段排序；同一步骤可有多个动作。`start` 立即生效；其他显示、隐藏、绘制和赋值动作省略时长时默认为 1 秒，颜色省略时长时立即改变。时长单位可为 `s`、`m`、`h`，省略单位按秒。`draw` 仅支持平面图元。
+
+```text
+reveal hide A at start
+reveal draw A in 0.5s at 1
+reveal color A with #ff0000 in 1s at 2
+```
+
+JSX 可写入定义，如 `def title := <Text fontSize={24}>标题</Text>`。内嵌 `<Reveal>` 作用于其父 UI 元素；`reveal_list` / `del_reveal` 只管理独立动作。
 
 ## 几何类型与构造
 
+以下为常用构造表达式，可作为 `def <ID> := <Expr>` 的右侧。角度参数默认使用弧度，角度制数值需加 `°`，如 `60°`。
+
 ### 点
 
-- `Point(x, y)`：定点
-- `Point(?:=x, ?:=y)`：动点（可拖拽）
-- `MidPoint(A, B)`：中点
+- `Point(x, y)`：固定坐标点；`Point(?:=x, ?:=y)`：可拖动点。
+- `Point(Obj, t)`：支持的线、圆、弧或曲线上的点；使用 `?:=初值` 使参数可拖动。
+- `Midpoint(A, B)`：两点的中点。
 
-### 直线类
+### 直线、射线与线段
 
-- `Line(P1, P2)`、`Segment(P1, P2)`、`Ray(Start, Through)`
-- `PerpLine(Line, Point)`、`ParallelLine(Line, Point)`、`PerpBisector(Segment)`
-- `Tangent(CircleOrArc, Point)`、`AngleBisector<Angle>`
+- `Line(P1, P2)`、`Line(y = 2*x + 1)`：两点直线或直线方程。
+- `Segment(P1, P2)`、`Ray(Start, Through)`：线段和射线。
+- `PerpLine(LineOrSegmentOrRay, Point)`、`ParallelLine(LineOrSegmentOrRay, Point)`：过点作垂线、平行线。
+- `PerpBisector(Segment)`：垂直平分线；`AngleBisector(Angle)`：角平分射线。
+- `Tangent(CircleOrArcOrEllipseOrEllipticArc, Point, Index)`：选择一条切线；索引从 1 开始，可省略，默认 1。
 
-### 圆与弧
+### 角
 
-- `Circle(Center, Radius)` / `Circle(Center, Point)`
-- `Circumcircle(P1, P2, P3)`、`Arc(...)`、`SemiCircle(P1, P2)`
+- `Angle(A, Vertex, B)`：由三点构造角，第二个点是顶点。
+- `Angle(Vertex, StartPoint, AngleValue)`：由顶点、起始方向上的点和角度值构造角。
+
+### 圆、圆弧与扇形
+
+- `Circle(Center, Radius)`、`Circle(Center, Point)`：由圆心和半径或圆上一点构造圆。
+- `Circumcircle(P1, P2, P3)`：三点外接圆。
+- `Arc(Center, Radius, StartAngle, EndAngle)`：由圆心、半径和起止角构造圆弧。
+- `Arc(Center, StartPoint, EndPoint)`：第一点为圆心，半径取圆心到起点的距离；终点参数确定结束方向。
+- `Semicircle(P1, P2)`：以两点为直径端点构造半圆弧。
+- `Sector(Arc)`：由圆弧及其两条半径构造扇形区域，返回 `Region`，例如 `Sector(Arc(Point(0,0), 2, 90°, 0°))`。
+
+圆弧沿角度减小的方向（顺时针）从起始角走到结束角。
+
+### 椭圆与椭圆弧
+
+- `Ellipse(Center, RadiusX, RadiusY, Rotation)`：中心、两个半轴长度和旋转角。
+- `EllipseFromFoci(Focus1, Focus2, Point)`：两焦点和椭圆上一点。
+- `EllipseFromAxes(AxisEnd1, AxisEnd2, Point)`：一条轴的两个端点和椭圆上一点。
+- `EllipticArc(Center, RadiusX, RadiusY, Rotation, StartAngle, EndAngle)`：椭圆参数及起止参数角。
+- `EllipticArcFromFoci(Focus1, Focus2, StartPoint, EndPoint)`、`EllipticArcFromAxes(AxisEnd1, AxisEnd2, StartPoint, EndPoint)`：由焦点或轴端点构造椭圆弧。
+
+椭圆弧的起止角为参数角，不是点与中心连线的方向角。
 
 ### 多边形
 
-- `Polygon(...Points)`、`Polygon(A, B, NumEdges)`、`Parallelogram(P1, P2, P3)`
+- `Polygon(P1, P2, P3, ...)`、`Polygon([P1, P2, P3, ...])`：由顶点或点列表构造多边形。
+- `Polygon(A, B, NumEdges)`：以 A、B 为前两个顶点，逆时针构造正多边形。
+- `Parallelogram(P1, P2, P3)`：三个连续顶点构造平行四边形。
+
+### 区域与路径
+
+- `Region("路径数据")`：从路径字符串构造区域。
+- `PathBuilder(Point).lineTo(Point).close.buildRegion`：逐段构造闭合区域；也支持 `.arcTo(Point, Circle, Sweep)` 圆弧段。
+- `Inter(A, B)`、`Unite(A, B)`、`Subtract(A, B)`、`Exclude(A, B)`：区域交集、并集、差集和异或。
+
+圆和多边形可自动转换为 `Region` 参与区域运算；扇形通过 `Sector(Arc)` 创建。区域支持 `.area` 和 `.centroid`。
+
+### 线段图、刻度与尺寸标注
+
+- `SegmentDiagram(P1, P2)`：带两个端点刻度的线段图，返回 `Segment`。
+- `Tick(LineOrSegmentOrRay, Parameter)`：在线对象上创建刻度。
+- `BraceDimension(P1, P2)` / `Dimension(P1, P2)`：大括号尺寸标注。
+- `ArrowDimension(P1, P2)`：双箭头尺寸标注；刻度可自动转换为端点。
 
 ### 曲线
 
-- 显函数：`Curve(y=x²)`
-- 参数：`Curve(x(t), y(t), start, end)`
-- 隐函数：`Curve(f(x,y)=0)`
+- `Curve(y = x^2)`、`Curve(x = y^2)`、`Curve(x^2)`：显函数。
+- `Curve(x^2, Start, End)`：限定显函数的参数范围。
+- `Curve(cos(t), sin(t), Start, End)`：使用自由变量 `t` 的参数曲线，必须指定范围。
+- `Curve(x^2 + y^2 = 4)`：隐函数曲线；隐函数形式不接受区间参数。
 
 ### 变换
 
-- `Translate(Obj, Point)`、`Rotate(Obj, Angle, Center)`、`Reflect(Obj, Line)`、`Scale(Obj, Factor, Center)`
+- `Translate(Obj, Vector)`：平移，二维向量用 `Point(dx, dy)` 表示。
+- `Rotate(Obj, AngleValue, Center)`、`Scale(Obj, Factor, Center)`：旋转和缩放。
+- `Reflect(Obj, Point)`、`Reflect(Obj, LineOrSegmentOrRay)`：中心对称和轴对称。
 
-### 交点
+上述变换也可作用于同类型几何对象的列表。
 
-- `Intersect(A, B, Index)`：初等几何对象交点，Index 从 1 开始
-- `eval Intersect(A, B)`：列出所有交点
+### 交点与交线
+
+- `Intersect(A, B, Index)`：支持的对象组合的指定交点，索引从 1 开始。
+- `Intersect(A, B)`：支持的对象组合的交点列表，可用 `eval Intersect(A, B)` 求值。
+- `IntersectLine(SurfaceA, SurfaceB)`：空间面对象的交线，返回单个交线或列表，取决于对象组合。
+
+### 立体几何
+
+空间构造使用 `Point3D`；在 `mode 3d` 视图中显示。
+
+- `Point3D(x, y, z)`、`Point3D(?:=x, ?:=y, ?:=z)`：固定坐标点和可拖动点。
+- `Line3D(A, B)`、`Segment3D(A, B)`、`Angle3D(A, Vertex, B)`：空间直线、线段和角。
+- `Plane3D(A, B, C)`、`Plane3D(Line, Point)`、`Polygon3D([A, B, C, ...])`：平面与空间多边形。
+- `Circle3D(Center, NormalLine, Radius)`、`Circumcircle3D(A, B, C)`：空间圆。
+- `Disk(Center, Axis)`：圆面片；`Axis` 为法向量，长度为半径，用 `Point3D` 表示。
+- `Sphere(Center, Radius)`、`Sphere(Center, Point)`：球面。
+- `ConeSurface(BaseCenter, Apex, Radius)`、`CylinderSurface(BaseCenter, TopCenter, Radius)`：锥面和柱面。
+- `Pyramid(BasePolygon, Apex)`、`Prism(BasePolygon, TopFirst)`：棱锥和棱柱，`TopFirst` 是第一个底面顶点对应的顶面点。
+- `Cube(A, B, C)`、`Cuboid(A, B, C, TopOfC)`、`RegularTetrahedron(A, B, C)`：立方体、长方体和正四面体；A、B、C 为底面连续顶点，并须满足相应几何约束。
+- `Cone(BaseCenter, Apex, Radius)`、`Cylinder(BaseCenter, TopCenter, Radius)`：圆锥和圆柱；也支持 `Cone(BaseCircleOrDisk, Height)`、`Cylinder(BaseCircleOrDisk, Height)`。
+- `Curve3D(cos(t), sin(t), t, Start, End)`：空间参数曲线。
 
 ## 标签与文本
 
@@ -189,9 +287,9 @@ idOrIdx：可用**编号**（从 1 开始）或 **ID**（如 `slide_abc123`）�
 
 ## 输入规则与行为细节
 
-- AlgeoSDK 的 `presentation.repl(command)` 按单条命令执行。
-- MCP/Agent 的 `algeo_repl` 按 `commands[]` 顺序批量执行。
-- 空字符串、纯空白、`--` 注释会返回空输出。
+- AlgeoSDK 的 `editor.repl(command)` 按单条命令执行。
+- MCP/Agent 的 `algeo_repl` 按 `commands[]` 顺序执行；单条失败后继续后续命令，应检查每项结果的 `success` 和输出，不能只检查顶层状态。
+- SDK 拒绝空字符串和纯空白；非空的纯注释命令返回空输出。MCP 中空命令会跳过。
 - `#` 不是注释语法，会触发语法错误。
 - `help` 主题不区分大小写，且会对下划线做归一化（例如 `help LIST_SLIDES`）。
 
@@ -199,51 +297,6 @@ idOrIdx：可用**编号**（从 1 开始）或 **ID**（如 `slide_abc123`）�
 
 - **注释**：`--` 单行注释
 - **标识符**：字母开头，可含数字、下划线
-- **坐标**：1 单位 ≈ 50px，建议在 ±10 内
+- **坐标**：逻辑单位与像素的比例取决于画布和相机；2D 排版先查询 `view_bounds`，不要固定假设为 50px。
+- **列表**：下标从 1 开始；`.flat` 是属性，不加括号。用 `Range`、`List.iterate` 批量构造。
 - **几何约束**：优先用几何构造，避免用坐标近似
-
-## 快速示例
-
-```
--- 查询帮助
-help
-help Point
-help Curve
-
--- 画板操作
-list_slides
-new_slide
-switch_slide 1
-
--- 定义几何对象
-def A := Point(0,0)
-def B := Point(1,0)
-def l := Line(A,B)
-def c := Circle(A, 2)
-
--- 交点
-def P := Intersect(l, c, 1)
-
--- 标签
-label A := "{{id}}"
-
--- 样式
-style XAxis, YAxis { show: true; }
-style #A { color: #FF0000; pointSize: 7; }
-
--- 查询与验证
-list
-eval A.x + B.x
-
--- 动画（隐藏滑动条 + 自动播放）
-def t1 := Slider(?:=0).withMin(0).withMax(1).withSpeed(1).withDirection(SliderDirection.pingpong).autoPlay()
-style #t1 { hidden: true; }
-def Q := Point(l, t1)
-
--- 播放按钮
-def btn := Button("播放")
-on btn.click do
-	play t1
-end
-check_event btn.click
-```

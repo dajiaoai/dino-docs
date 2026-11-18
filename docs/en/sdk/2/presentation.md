@@ -90,13 +90,6 @@ Jump to the slide at the specified index (0-based).
 
 Get the total number of slides in the current document.
 
-### `repl(command: string): Promise<{ output: string }>`
-
-Core API: send a REPL execution sequence to the canvas. Can be used for automated drawing, parameter setting, and more.
-
-- **Example**: `presentation.repl('def A := Point(0,0)')`
-- **Full command reference**: [REPL Capabilities](/en/sdk/repl)
-
 ### `mode`
 
 - `getUiConfig()`: Get the current UI configuration.
