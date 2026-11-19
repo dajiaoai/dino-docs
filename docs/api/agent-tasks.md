@@ -59,6 +59,12 @@ curl "https://api.dajiaoai.com/api/agent/tasks?page=1&pageSize=20&status=finishe
 }
 ```
 
+## 失败响应
+
+HTTP `400` 表示 `page`、`pageSize` 或 `status` 等查询参数无效。
+
+完整列表见[API 错误码](/api/error-codes#http-status)。
+
 ## 状态说明
 
 列表响应中每个任务的 `status` 含义如下，与任务详情接口一致。
@@ -72,6 +78,8 @@ curl "https://api.dajiaoai.com/api/agent/tasks?page=1&pageSize=20&status=finishe
 | `error` | 任务执行失败，按原有失败及退款规则处理。 | 是 |
 
 轮询时遇到 `incomplete`、`finished` 或 `error` 均应停止。历史终态任务不会重新分类。
+
+执行失败的任务仍以 HTTP `200` 返回，且 `status: "error"`。通过 `extra.errorCode` 和 `extra.errorMessage` 排查，见[智能生图任务错误码](/api/error-codes#agent-task)。
 
 ## 输出字段
 

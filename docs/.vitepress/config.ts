@@ -104,13 +104,19 @@ export default defineConfig({
   lastUpdated: true,
   sitemap: {
     hostname: HOSTNAME,
-    transformItems: (items) => items.filter((item) =>
-      !/^(en\/)?reference\/(master-template|consistent-image-export)(\.html)?$/.test(item.url)
-    ),
+    transformItems: (items) =>
+      items.filter(
+        (item) =>
+          !/^(en\/)?reference\/(master-template|consistent-image-export)(\.html)?$/.test(
+            item.url,
+          ),
+      ),
   },
   transformHead({ page, pageData, title, description }) {
     const redirect = pageData.frontmatter?.redirect as string | undefined;
-    const canonical = redirect ? `${HOSTNAME}${redirect}` : getCanonicalUrl(page);
+    const canonical = redirect
+      ? `${HOSTNAME}${redirect}`
+      : getCanonicalUrl(page);
     const ogTitle = (pageData.frontmatter?.title as string) || title;
     const ogDesc = (pageData.frontmatter?.description as string) || description;
     const head: HeadConfig[] = [
@@ -124,7 +130,11 @@ export default defineConfig({
     if (redirect) {
       head.push(
         ['meta', { name: 'robots', content: 'noindex' }],
-        ['script', {}, `window.location.replace(${JSON.stringify(redirect)} + window.location.search + window.location.hash);`],
+        [
+          'script',
+          {},
+          `window.location.replace(${JSON.stringify(redirect)} + window.location.search + window.location.hash);`,
+        ],
       );
     }
     if (page.startsWith('en/')) {
@@ -159,7 +169,9 @@ export default defineConfig({
     // The Copy Doc button decodes it to copy
     // real markdown instead of the rendered (plain text) DOM content.
     const rawMarkdown = rawMarkdownMap.get(pageData.relativePath) ?? '';
-    return { rawMarkdownEncoded: encodeMarkdownSource(rawMarkdown) } as unknown as Partial<typeof pageData>;
+    return {
+      rawMarkdownEncoded: encodeMarkdownSource(rawMarkdown),
+    } as unknown as Partial<typeof pageData>;
   },
   locales: {
     root: {
@@ -225,9 +237,7 @@ export default defineConfig({
           '/ai/': [
             {
               text: 'AI 接入',
-              items: [
-                { text: '概览', link: '/ai/' },
-              ],
+              items: [{ text: '概览', link: '/ai/' }],
             },
             {
               text: 'MCP',
@@ -239,9 +249,7 @@ export default defineConfig({
             },
             {
               text: 'Agent Skill',
-              items: [
-                { text: '安装大角几何 Skill', link: '/ai/skill/' },
-              ],
+              items: [{ text: '安装大角几何 Skill', link: '/ai/skill/' }],
             },
           ],
           '/api/': [
@@ -252,6 +260,7 @@ export default defineConfig({
                 { text: '鉴权说明', link: '/api/auth' },
                 { text: 'API 计费说明', link: '/api/pricing' },
                 { text: '模型说明', link: '/api/models' },
+                { text: 'API 错误码', link: '/api/error-codes' },
               ],
             },
             {
@@ -394,9 +403,7 @@ export default defineConfig({
           '/en/ai/': [
             {
               text: 'AI Access',
-              items: [
-                { text: 'Overview', link: '/en/ai/' },
-              ],
+              items: [{ text: 'Overview', link: '/en/ai/' }],
             },
             {
               text: 'MCP',
@@ -427,6 +434,7 @@ export default defineConfig({
                 { text: 'Authentication', link: '/en/api/auth' },
                 { text: 'API Billing', link: '/en/api/pricing' },
                 { text: 'Models', link: '/en/api/models' },
+                { text: 'API Error Codes', link: '/en/api/error-codes' },
               ],
             },
             {
@@ -450,7 +458,10 @@ export default defineConfig({
                     { text: 'Export PNG', link: '/en/api/render-v2' },
                     { text: 'Export SVG', link: '/en/api/render-svg' },
                     { text: 'Export TikZ', link: '/en/api/render-tikz' },
-                    { text: 'Legacy PNG & Migration', link: '/en/api/api-render' },
+                    {
+                      text: 'Legacy PNG & Migration',
+                      link: '/en/api/api-render',
+                    },
                   ],
                 },
               ],

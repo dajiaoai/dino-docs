@@ -25,6 +25,6 @@ Authorization: Bearer djo_xxx
 
 ## 常见错误
 
-| 状态码 | 原因 |
-| --- | --- |
-| `401` | API Key 无效 |
+HTTP `401` 表示 Bearer 凭证缺失、格式错误，或 API Key 无效或未启用。
+
+完整列表见[API 错误码](/api/error-codes#auth-billing)。

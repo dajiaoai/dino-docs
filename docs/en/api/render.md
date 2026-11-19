@@ -33,17 +33,6 @@ See [Export PNG](./render-v2) for `POST /api/render/v2` parameters and examples.
 
 ## Error responses
 
-| Status | Cause |
-| --- | --- |
-| `400` | Invalid parameters or `content` does not conform to the [Dino-GSP project file protocol](/en/reference/algeo-file-protocol) |
-| `401` | Invalid API key |
-| `422` | Legacy endpoints reject projects containing 3D geometry (`UNSUPPORTED_3D_GEOMETRY`); v2 errors are listed below |
+Check the project content and request parameters if the API returns `400`. If a 2D export rejects 3D geometry with `422` / `UNSUPPORTED_3D_GEOMETRY`, use PNG v2 for 3D canvases.
 
-| Error code | HTTP status | Retryable | Description |
-| --- | --- | --- | --- |
-| `RENDER_QUEUE_FULL` | `503` | Yes | Render queue is full; response includes `Retry-After: 1`. |
-| `RENDER_TIMEOUT` | `504` | Yes | Total queue and execution time exceeded the limit. |
-| `RENDER_CANCELLED` | `499` | Yes | Client cancelled the request or the service shut down while the task was queued. |
-| `RENDER_INVALID_REQUEST` | `422` | No | Invalid target slide, non-3D target, or output dimensions exceed the limit. |
-| `RENDER_WORKER_FAILED` | `500` | Yes | Render worker exited unexpectedly or the task failed. |
-| `UNSUPPORTED_3D_PRIMITIVE` | `422` | No | Target slide contains 3D primitives not yet implemented by the native backend. |
+See the [API Error Codes](/en/api/error-codes#render) for the full list.

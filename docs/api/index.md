@@ -42,6 +42,10 @@ Authorization: Bearer djo_xxx
 
 API Key 在[控制台](https://open.dajiaoai.com/console)中生成。详见[鉴权说明](/api/auth)。
 
+## 错误处理
+
+完整列表见[API 错误码](/api/error-codes#http-status)。
+
 ## 接入咨询
 
 如需了解[控制台](https://open.dajiaoai.com/console)使用、申请更高配额，请前往[联系我们](../CONTACT)。

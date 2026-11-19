@@ -42,6 +42,10 @@ Authorization: Bearer djo_xxx
 
 API keys are generated in the [console](https://open.dajiaoai.com/console). See [Authentication](/en/api/auth) for details.
 
+## Errors
+
+See the [API Error Codes](/en/api/error-codes#http-status) for the full list.
+
 ## Get in touch
 
 For [console](https://open.dajiaoai.com/console) access or higher quota requests, see [Contact](../CONTACT).

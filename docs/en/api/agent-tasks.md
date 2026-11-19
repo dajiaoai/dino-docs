@@ -57,6 +57,12 @@ curl "https://api.dajiaoai.com/api/agent/tasks?page=1&pageSize=20&status=finishe
 }
 ```
 
+## Error responses
+
+HTTP `400` means a query parameter such as `page`, `pageSize`, or `status` is invalid.
+
+See the [API Error Codes](/en/api/error-codes#http-status) for the full list.
+
 ## Status definitions
 
 Each task's `status` in the list response has the same meaning as in the task detail response.
@@ -70,6 +76,8 @@ Each task's `status` in the list response has the same meaning as in the task de
 | `error` | Task execution failed; existing failure and refund rules apply. | Yes |
 
 Stop polling on `incomplete`, `finished`, or `error`. Historical terminal tasks are not reclassified.
+
+Failed tasks return HTTP `200` with `status: "error"`. See [Agent task error codes](/en/api/error-codes#agent-task) for `extra.errorCode` and `extra.errorMessage`.
 
 ## Output fields
 

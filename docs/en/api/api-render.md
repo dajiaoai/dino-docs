@@ -113,3 +113,9 @@ height = round(logical canvas height × pixelRatio)
 ```
 
 In this example, the viewport is `20 × 20` logical units and `scale` is `50`, so the logical render size is `1000 × 1000`. With `pixelRatio` set to `2`, the returned `width` and `height`, as well as the actual PNG dimensions, are `2000 × 2000`. Neither final dimension may exceed `2048` pixels.
+
+## Error responses
+
+`422` / `UNSUPPORTED_3D_GEOMETRY` means the project contains 3D geometry. This PNG endpoint supports 2D projects only.
+
+See the [API Error Codes](/en/api/error-codes#render) for the full list.

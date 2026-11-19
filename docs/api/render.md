@@ -33,17 +33,6 @@ PNG 导出推荐使用 `POST /api/render/v2`。已有 `/api/render` 接入可查
 
 ## 失败响应
 
-| 状态码 | 原因 |
-| --- | --- |
-| `400` | 参数不通过，或 `content` 不符合[大角工程文件（.algeo）数据协议](/reference/algeo-file-protocol) |
-| `401` | API Key 无效 |
-| `422` | 旧版接口拒绝包含 3D 几何的项目（`UNSUPPORTED_3D_GEOMETRY`）；v2 错误见下表 |
+遇到 `400` 时，检查工程内容及请求参数。2D 导出遇到 `422` / `UNSUPPORTED_3D_GEOMETRY` 时，3D 画板请改用 PNG v2 导出。
 
-| 错误码 | HTTP 状态 | 可重试 | 说明 |
-| --- | --- | --- | --- |
-| `RENDER_QUEUE_FULL` | `503` | 是 | 渲染队列已满；响应带 `Retry-After: 1`。 |
-| `RENDER_TIMEOUT` | `504` | 是 | 排队与执行总时间超过限制。 |
-| `RENDER_CANCELLED` | `499` | 是 | 客户端取消请求或服务关闭时任务仍在排队。 |
-| `RENDER_INVALID_REQUEST` | `422` | 否 | 目标画板无效、不是 3D 画板，或请求的输出尺寸超过限制。 |
-| `RENDER_WORKER_FAILED` | `500` | 是 | 渲染工作线程异常退出或任务执行失败。 |
-| `UNSUPPORTED_3D_PRIMITIVE` | `422` | 否 | 目标画板包含原生后端尚未实现的 3D 图元。 |
+完整列表见[API 错误码](/api/error-codes#render)。

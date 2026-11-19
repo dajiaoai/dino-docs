@@ -209,4 +209,4 @@ jq '{
 | `400` | 同时传入 `view2D`、`view3D`，或字段不符合 Schema，例如 `crop: null`。 |
 | `422` / `RENDER_INVALID_REQUEST` | 视图与目标画板维度不匹配、解析后的边界或裁剪范围无效，或最终 PNG 物理宽、高任一超过 `2048`。 |
 
-见[渲染接口失败响应](./render#失败响应)。
+完整列表见[API 错误码](/api/error-codes#render)。

@@ -157,3 +157,13 @@ Check the following first:
 - The `Authorization` header is present
 - The value includes the exact `Bearer ` prefix
 - The endpoint is exactly `https://api.dajiaoai.com/mcp`
+
+## MCP request errors {#mcp}
+
+| HTTP status | Meaning |
+| --- | --- |
+| `400` | Invalid MCP request or session argument, mismatched session IDs, or an invalid `create_session` call. |
+| `401` | Missing or invalid Bearer credentials. |
+| `404` | The project session ID is unknown, expired, or outside the current credential scope. |
+
+If a rendering tool returns `isError: true` with a JSON error in its text content, look up `error.code` in [API render error codes](/en/api/error-codes#render).

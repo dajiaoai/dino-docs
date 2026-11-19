@@ -87,4 +87,6 @@ Returns `200 OK`:
 
 ## Error responses
 
-See [render error responses](./render#error-responses).
+`422` / `UNSUPPORTED_3D_GEOMETRY` means the project contains 3D geometry. This TikZ endpoint supports 2D projects only.
+
+See the [API Error Codes](/en/api/error-codes#render) for the full list.

@@ -31,6 +31,10 @@ export function createSdkSidebar(
           text: 'REPL',
           link: localizePath(localePrefix, 'sdk/repl'),
         },
+        {
+          text: isEnglish ? 'SDK Error Codes' : 'SDK 错误码',
+          link: localizePath(localePrefix, 'sdk/error-codes'),
+        },
       ],
     },
     {

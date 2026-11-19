@@ -209,4 +209,4 @@ For existing `/api/render` integrations, see the [legacy endpoint and migration 
 | `400` | Both `view2D` and `view3D` are provided, or a field fails schema validation (for example, `crop: null`). |
 | `422` / `RENDER_INVALID_REQUEST` | View type does not match the target slide, resolved bounds or crop are invalid, or the final physical PNG width or height exceeds `2048`. |
 
-See [render error responses](./render#error-responses).
+See the [API Error Codes](/en/api/error-codes#render) for the full list.

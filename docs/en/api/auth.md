@@ -25,6 +25,6 @@ Authorization: Bearer djo_xxx
 
 ## Common errors
 
-| Status | Cause |
-| --- | --- |
-| `401` | Invalid API key |
+HTTP `401` means the Bearer header is missing or malformed, or the API key is invalid or inactive.
+
+See the [API Error Codes](/en/api/error-codes#auth-billing) for the full list.

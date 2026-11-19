@@ -90,4 +90,6 @@ jq '{
 
 ## 失败响应
 
-见[渲染接口失败响应](./render#失败响应)。
+`422` / `UNSUPPORTED_3D_GEOMETRY` 表示项目包含 3D 几何。此 SVG 接口仅支持 2D 项目。
+
+完整列表见[API 错误码](/api/error-codes#render)。

@@ -115,3 +115,9 @@ height = round(logical canvas height × pixelRatio)
 ```
 
 本例的视口宽高均为 `20` 个逻辑单位，`scale` 为 `50`，因此逻辑渲染尺寸为 `1000 × 1000`；当 `pixelRatio` 为 `2` 时，返回的 `width`、`height` 以及实际 PNG 尺寸均为 `2000 × 2000`。最终宽度和高度均不得超过 `2048` 像素。
+
+## 失败响应
+
+`422` / `UNSUPPORTED_3D_GEOMETRY` 表示项目包含 3D 几何。此 PNG 接口仅支持 2D 项目。
+
+完整列表见[API 错误码](/api/error-codes#render)。

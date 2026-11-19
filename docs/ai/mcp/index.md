@@ -158,3 +158,13 @@ claude mcp add --transport http dino-gsp https://api.dajiaoai.com/mcp --header "
 - `Authorization` 请求头是否存在
 - 是否使用了准确的 `Bearer ` 前缀
 - 服务地址是否填写为 `https://api.dajiaoai.com/mcp`
+
+## MCP 请求错误 {#mcp}
+
+| HTTP 状态 | 含义 |
+| --- | --- |
+| `400` | MCP 请求或会话参数无效、会话 ID 不一致，或 `create_session` 调用方式不正确。 |
+| `401` | Bearer 凭证缺失或无效。 |
+| `404` | 工程会话 ID 不存在、已过期，或不在当前凭证的作用域内。 |
+
+渲染工具返回 `isError: true` 且文本内容包含 JSON 错误时，按其中的 `error.code` 查询 [API 渲染错误码](/api/error-codes#render)。

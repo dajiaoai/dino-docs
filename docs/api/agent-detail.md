@@ -50,6 +50,8 @@ curl https://api.dajiaoai.com/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
 | --- | --- |
 | `404` | 任务不存在，或不属于当前 API Key 作用域 |
 
+完整列表见[API 错误码](/api/error-codes#http-status)。
+
 ## 状态说明
 
 详情响应中 `task.status` 的含义如下；输出文本位于 `task.extra.output`。
@@ -63,6 +65,8 @@ curl https://api.dajiaoai.com/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
 | `error` | 任务执行失败，按原有失败及退款规则处理。 | 是 |
 
 轮询时遇到 `incomplete`、`finished` 或 `error` 均应停止。历史终态任务不会重新分类。
+
+执行失败的任务仍以 HTTP `200` 返回，且 `status: "error"`。通过 `extra.errorCode` 和 `extra.errorMessage` 排查，见[智能生图任务错误码](/api/error-codes#agent-task)。
 
 ## 输出字段
 
@@ -86,4 +90,3 @@ curl https://api.dajiaoai.com/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
 ## 产物说明
 
 任务进入 `incomplete` 或 `finished` 后，`artifactUrl` 指向大角几何工程文件（`.algeo`）。
-

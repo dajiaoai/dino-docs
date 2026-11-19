@@ -48,6 +48,8 @@ curl https://api.dajiaoai.com/api/agent/tasks/6844db73f1d0c0e74f5e9d01 \
 | --- | --- |
 | `404` | Task not found or not within the current API key scope |
 
+See the [API Error Codes](/en/api/error-codes#http-status) for the full list.
+
 ## Status definitions
 
 In the detail response, status is at `task.status` and final text is at `task.extra.output`.
@@ -61,6 +63,8 @@ In the detail response, status is at `task.status` and final text is at `task.ex
 | `error` | Task execution failed; existing failure and refund rules apply. | Yes |
 
 Stop polling on `incomplete`, `finished`, or `error`. Historical terminal tasks are not reclassified.
+
+Failed tasks return HTTP `200` with `status: "error"`. See [Agent task error codes](/en/api/error-codes#agent-task) for `extra.errorCode` and `extra.errorMessage`.
 
 ## Output fields
 
@@ -84,4 +88,3 @@ If you need help troubleshooting an issue, provide the information in `extra` to
 ## Artifact
 
 When the task reaches `incomplete` or `finished`, `artifactUrl` points to a Dino Geometry project file (`.algeo`).
-
