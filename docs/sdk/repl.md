@@ -146,28 +146,15 @@ intersect section := plane with sphere
 
 `view_bounds` 仅用于 2D，`view_camera3d` 仅用于 3D。固定视图保存演示与导出所用的参数快照，不改变当前编辑相机，不建立表达式依赖。字段包括 `offset`、`yawDeg`、`pitchDeg`、`scale`、`projection`、`obliqueAngleDeg`、`obliqueScaleRatio`、`width`、`height`、`crop`。投影类型为 `"orthographic"` / `"perspective"` / `"oblique"`；`crop: none` 取消裁剪。
 
-### 事件、Reveal 与 JSX
+### 事件与交互
 
 | 命令 | 说明 |
 | --- | --- |
 | `on <ID>.<event> do ... end` | 设置事件处理程序 |
 | `check_event <ID>.<event>` | 查询事件处理程序 |
-| `reveal <动作> at <步骤ID>` | 添加独立 Reveal 动作 |
-| `reveal_list` | 列出当前画板独立动作 |
-| `del_reveal <步骤ID>...` | 删除指定步骤的所有独立动作 |
 | `blank_click_next_slide [on\|off]` | 查询或设置文件级“点击空白处翻页”选项，默认关闭 |
 
 事件支持 `wait`、`show`、`hide`、`toggle`、`draw`、滑动条的 `play` / `stop` / `set` 及 `parallel do … end`。
-
-独立 Reveal 支持 `show <ID>`、`hide <ID>`、`draw <ID>`、`color <ID> with #颜色`、`set <滑动条ID> to <表达式>`，可加 `in <时长>`。步骤 ID 为 `start` 或 `1`、`2.1` 等数字分段编号，按数字分段排序；同一步骤可有多个动作。`start` 立即生效；其他显示、隐藏、绘制和赋值动作省略时长时默认为 1 秒，颜色省略时长时立即改变。时长单位可为 `s`、`m`、`h`，省略单位按秒。`draw` 仅支持平面图元。
-
-```text
-reveal hide A at start
-reveal draw A in 0.5s at 1
-reveal color A with #ff0000 in 1s at 2
-```
-
-JSX 可写入定义，如 `def title := <Text fontSize={24}>标题</Text>`。内嵌 `<Reveal>` 作用于其父 UI 元素；`reveal_list` / `del_reveal` 只管理独立动作。
 
 ## 几何类型与构造
 

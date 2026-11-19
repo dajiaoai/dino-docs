@@ -123,28 +123,15 @@ Additional selectors include `Point`, `Point3D`, `*:label`, `XAxis3D`, `YAxis3D`
 
 Type defaults affect future drawing and do not override existing per-object settings or inherited child styles. Use object IDs when changing existing objects. Type defaults cannot set `hidden`; use `style #A { hidden: true; }`. Use `list` to find generated sub-object IDs instead of using an expression such as `tri.edge(1)` as a selector.
 
-### Events, Reveal Steps, and JSX
+### Events and Interaction
 
 | Command | Description |
 | --- | --- |
 | `on <ID>.<event> do ... end` | Set an event handler |
 | `check_event <ID>.<event>` | Query the handler |
-| `reveal <action> at <stepID>` | Add a standalone Reveal action |
-| `reveal_list` | List standalone actions |
-| `del_reveal <stepID>...` | Delete all standalone actions at the specified steps |
 | `blank_click_next_slide [on\|off]` | Query/set the file-level blank-click navigation option; default off |
 
 Events support `wait`, `show`, `hide`, `toggle`, `draw`, slider `play` / `stop` / `set`, and `parallel do … end`.
-
-Standalone Reveal supports `show <ID>`, `hide <ID>`, `draw <ID>`, `color <ID> with #color`, and `set <sliderID> to <expression>`, with optional `in <duration>`. Step IDs are `start` or numeric segments such as `1` and `2.1`, sorted numerically by segment. Multiple actions can share a step. `start` applies immediately. Other visibility, draw, and set actions default to one second; color changes default to immediate. Durations accept `s`, `m`, or `h`, defaulting to seconds. `draw` supports 2D primitives only.
-
-```text
-reveal hide A at start
-reveal draw A in 0.5s at 1
-reveal color A with #ff0000 in 1s at 2
-```
-
-JSX can be used in definitions, for example `def title := <Text fontSize={24}>Title</Text>`. Inline `<Reveal>` actions affect their parent UI element. `reveal_list` and `del_reveal` manage standalone actions only.
 
 ## Geometry Types and Constructions
 
