@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { defineConfig } from 'vitepress';
-import type { HeadConfig } from 'vitepress';
+import type { DefaultTheme, HeadConfig } from 'vitepress';
 import type { Plugin } from 'vite';
 import { createSdkSidebar } from './sdkVersions';
 import { encodeMarkdownSource } from './markdownSource';
@@ -41,6 +41,24 @@ function getCanonicalUrl(page: string): string {
     .replace(/\/index$/, '')
     .replace(/^index$/, '');
   return path ? `${HOSTNAME}/${path}` : `${HOSTNAME}/`;
+}
+
+function withCollapsibleSidebarGroups(
+  sidebar: Record<string, DefaultTheme.SidebarItem[]>,
+): DefaultTheme.SidebarMulti {
+  function withExpandedDefault(item: DefaultTheme.SidebarItem): DefaultTheme.SidebarItem {
+    if (!item.items?.length) return item;
+
+    return {
+      ...item,
+      collapsed: item.collapsed ?? false,
+      items: item.items.map(withExpandedDefault),
+    };
+  }
+
+  return Object.fromEntries(
+    Object.entries(sidebar).map(([route, items]) => [route, items.map(withExpandedDefault)]),
+  );
 }
 
 const gaHead: HeadConfig[] = process.argv.includes('build')
@@ -198,7 +216,7 @@ export default defineConfig({
           },
           { text: '主站', link: 'https://dajiaoai.com' },
         ],
-        sidebar: {
+        sidebar: withCollapsibleSidebarGroups({
           '/guide/': [
             {
               text: '指南',
@@ -330,7 +348,7 @@ export default defineConfig({
             },
           ],
           '/CONTACT': [],
-        },
+        }),
       },
     },
     en: {
@@ -361,7 +379,7 @@ export default defineConfig({
           { text: 'Contact', link: '/en/CONTACT' },
           { text: 'Main Site', link: 'https://dajiaoai.com' },
         ],
-        sidebar: {
+        sidebar: withCollapsibleSidebarGroups({
           '/en/guide/': [
             {
               text: 'Guide',
@@ -510,7 +528,7 @@ export default defineConfig({
             },
           ],
           '/en/CONTACT': [],
-        },
+        }),
       },
     },
   },
