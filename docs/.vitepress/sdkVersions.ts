@@ -38,6 +38,19 @@ export function createSdkSidebar(
       ],
     },
     {
+      text: isEnglish ? 'Access & Licensing' : '接入与授权',
+      items: [
+        {
+          text: isEnglish ? 'Free Use' : '免费使用说明',
+          link: localizePath(localePrefix, 'sdk/FREE_USE'),
+        },
+        {
+          text: isEnglish ? 'Commercial License' : '商业许可说明',
+          link: localizePath(localePrefix, 'sdk/COMMERCIAL_LICENSE'),
+        },
+      ],
+    },
+    {
       text: isEnglish ? 'Latest SDK 2.x' : '最新 SDK 2.x',
       items: [
         {
@@ -86,20 +99,6 @@ export function createSdkSidebar(
         {
           text: isEnglish ? 'Examples' : '示例中心',
           link: 'https://dajiaoai.github.io/algeo-sdk/',
-        },
-      ],
-    },
-
-    {
-      text: isEnglish ? 'Access & Licensing' : '接入与授权',
-      items: [
-        {
-          text: isEnglish ? 'Free Use' : '免费使用说明',
-          link: localizePath(localePrefix, 'sdk/FREE_USE'),
-        },
-        {
-          text: isEnglish ? 'Commercial License' : '商业许可说明',
-          link: localizePath(localePrefix, 'sdk/COMMERCIAL_LICENSE'),
         },
       ],
     },
