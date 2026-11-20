@@ -28,12 +28,16 @@ export function createSdkSidebar(
           link: localizePath(localePrefix, 'sdk/'),
         },
         {
-          text: 'REPL',
-          link: localizePath(localePrefix, 'sdk/repl'),
+          text: isEnglish ? 'Authorization' : '鉴权说明',
+          link: getStableV2Path(localePrefix, 'auth'),
         },
         {
-          text: isEnglish ? 'SDK Error Codes' : 'SDK 错误码',
+          text: isEnglish ? 'Error Codes' : '错误码',
           link: localizePath(localePrefix, 'sdk/error-codes'),
+        },
+        {
+          text: 'REPL',
+          link: localizePath(localePrefix, 'sdk/repl'),
         },
       ],
     },

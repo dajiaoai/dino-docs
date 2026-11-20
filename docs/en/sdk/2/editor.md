@@ -11,7 +11,7 @@ Editor mode provides the host application with a full geometry creation environm
 
 - **Full-featured**: Built-in complete dynamic geometry engine and toolbar.
 - **Customizable UI**: Hide specific panels to match your application layout.
-- **Strict authorization**: A valid `appId` must be provided during initialization.
+- **Strict authorization**: Provide a valid `appId` during initialization.
 
 ## Creating an Instance
 
@@ -26,7 +26,7 @@ const editor: EmbeddedEditor = await createEditor(container, {
 });
 ```
 
-See [Getting Started](./getting-started.html#_4-getting-an-appid) for how to get an `appId`.
+See [SDK Authorization](./auth) for application registration and local testing.
 
 ### UI Configuration
 
@@ -51,7 +51,7 @@ The SDK organizes the editor API into modules:
 
 ```typescript
 interface AlgeoEditorCreateOptions {
-  auth: {
+  auth?: {
     appId: string;
   };
   shareId?: string;
@@ -66,7 +66,7 @@ interface AlgeoEditorCreateOptions {
 
 | Option            | Type                      | Required | Description                                                         |
 | ----------------- | ------------------------- | -------- | ------------------------------------------------------------------- |
-| `auth.appId`      | `string`                  | yes      | Open Platform application ID for editor-mode authorization          |
+| `auth.appId`      | `string`                  | Required outside the local environment | Open Platform application ID |
 | `shareId`         | `string`                  | no       | Shared file ID to load during initialization                        |
 | `initialContent`  | `FileContentLatest`       | no       | Initial file content; takes precedence over `shareId`                |
 | `initialMode`      | `'2d' \| '3d'`         | no       | Blank board mode; defaults to `'2d'`. Supported since `2.15.0`.                                |

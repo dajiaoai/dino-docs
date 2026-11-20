@@ -106,7 +106,7 @@ unified entry point, place mode-specific options under `editor` or `presentation
 
 ## 4. Getting an appId
 
-SDK requires `auth.appId` when creating either a Presentation Mode or Editor Mode instance. Follow these steps to obtain one:
+Use `auth.appId` to authorize a registered presentation or editor integration.
 
 1. **Access Developer Console**: Go to the [Dino-GSP Open Platform Console](https://open.dajiaoai.com/console/dashboard)
 2. **Register Application**: Create a new application in the [console](https://open.dajiaoai.com/console) and fill in the application details
@@ -114,9 +114,10 @@ SDK requires `auth.appId` when creating either a Presentation Mode or Editor Mod
 
 Need help? [Contact us](../../CONTACT).
 
+Once you have your `appId`, see [SDK Authorization](./auth) to configure your domain allowlist and test the integration.
+
 ## 5. FAQ
 
-- **Why does SDK 2.x require an appId?** It ensures the legitimacy and security of your application. Pass it during initialization for both Presentation Mode and Editor Mode.
 - **Does appId expire?** Your appId is valid long-term, but you can manage it in the [console](https://open.dajiaoai.com/console).
 
 ## 6. Next Steps

@@ -106,7 +106,7 @@ const editor = await create(container, {
 
 ## 4. 获取 appId
 
-SDK 创建演示模式或编辑模式实例时，都需要通过 `auth.appId` 进行身份验证。您可以通过以下步骤获取：
+正式接入演示或编辑模式时，使用 `auth.appId` 完成应用鉴权。
 
 1. **访问开发者控制台**：前往 [大角几何开放平台控制台](https://open.dajiaoai.com/console/dashboard)
 2. **注册应用**：在[控制台](https://open.dajiaoai.com/console)中创建新应用并填写应用信息
@@ -114,9 +114,10 @@ SDK 创建演示模式或编辑模式实例时，都需要通过 `auth.appId` �
 
 如需协助，请 [联系我们](../../CONTACT)。
 
+获取 `appId` 后，请参阅 [SDK 鉴权说明](./auth) 配置域名白名单并完成联调。
+
 ## 5. 常见问题
 
-- **为什么 SDK 2.x 需要 appId？** 这是为了确保应用的合法性和安全性，演示模式和编辑模式都应在初始化时传入。
 - **appId 有过期时间吗？** 您的 appId 长期有效，但可在[控制台](https://open.dajiaoai.com/console)中管理。
 
 ## 6. 下一步建议

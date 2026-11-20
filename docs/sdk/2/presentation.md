@@ -27,13 +27,13 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 });
 ```
 
-`appId` 获取方式详见[快速开始：获取 appId](./getting-started.html#_4-获取-appid)。
+`appId` 注册、本地免填规则和初始化失败处理见 [SDK 鉴权说明](./auth)。
 
 ### 创建参数 (`AlgeoPresentationCreateOptions`)
 
 | 参数         | 类型                                | 必填 | 说明                                                   |
 | ------------ | ----------------------------------- | ---- | ------------------------------------------------------ |
-| `auth.appId` | `string`                            | 是   | 开放平台应用 ID，用于演示模式鉴权                      |
+| `auth.appId` | `string`                            | 非本机环境必填 | 开放平台应用 ID，用于授权演示模式的 SDK 控制能力 |
 | `shareId`    | `string`                            | 否   | 初始化时加载的分享文件 ID                              |
 | `ui`         | `AlgeoPresentationUiConfig`         | 否   | 演示模式 UI 显隐配置                                   |
 | `fonts`      | `AlgeoFontConfig`                   | 否   | 字体资源及默认字体配置。从 `2.12.0` 起支持。           |
@@ -62,6 +62,8 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 | `ui.zoomControl`   | `boolean` | `true` | 是否显示放大缩小栏。从 `2.10.0` 起支持。 |
 
 ## API 参考
+
+填写 `auth.appId` 时，SDK 在创建 iframe 前校验宿主主机名是否在应用白名单内。校验失败会直接返回初始化错误。
 
 ### `loadShareById(id: string): Promise<{ success: true }>`
 

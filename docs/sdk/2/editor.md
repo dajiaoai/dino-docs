@@ -6,7 +6,7 @@
 
 - **功能完备**：内置完整的动态几何引擎与工具栏。
 - **UI 可定制**：可以隐藏特定面板以匹配您的应用布局。
-- **严格鉴权**：必须提供有效的 `appId` 完成初始化。
+- **严格鉴权**：提供有效的 `appId` 完成初始化。
 
 ## 实例创建
 
@@ -21,7 +21,7 @@ const editor: EmbeddedEditor = await createEditor(container, {
 });
 ```
 
-`appId` 获取方式详见 [快速开始](./getting-started.html#_4-获取-appid)。
+应用注册和本地联调见 [SDK 鉴权说明](./auth)。
 
 ### UI 配置
 
@@ -46,7 +46,7 @@ SDK 将编辑器的 API 进行了模块化拆分：
 
 ```typescript
 interface AlgeoEditorCreateOptions {
-  auth: {
+  auth?: {
     appId: string;
   };
   shareId?: string;
@@ -61,7 +61,7 @@ interface AlgeoEditorCreateOptions {
 
 | 参数              | 类型                      | 必填 | 说明                                                         |
 | ----------------- | ------------------------- | ---- | ------------------------------------------------------------ |
-| `auth.appId`      | `string`                  | 是   | 开放平台应用 ID，用于编辑模式鉴权                            |
+| `auth.appId`      | `string`                  | 非本机环境必填 | 开放平台应用 ID |
 | `shareId`         | `string`                  | 否   | 初始化时加载的分享文件 ID                                    |
 | `initialContent`  | `FileContentLatest`       | 否   | 初始文件内容，优先级高于 `shareId`                            |
 | `initialMode`      | `'2d' \| '3d'`         | 否   | 空白画板模式，默认 `'2d'`。从 `2.15.0` 起支持。                                   |

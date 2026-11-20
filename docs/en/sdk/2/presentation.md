@@ -27,13 +27,13 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 });
 ```
 
-See [Getting Started: Getting an appId](./getting-started.html#_4-getting-an-appid) for how to get an `appId`.
+See [SDK Authorization](./auth) for application registration, local use, and initialization errors.
 
 ### Create Options (`AlgeoPresentationCreateOptions`)
 
 | Option       | Type                                | Required | Description                                                       |
 | ------------ | ----------------------------------- | -------- | ----------------------------------------------------------------- |
-| `auth.appId` | `string`                            | yes      | Open Platform application ID for presentation-mode authorization |
+| `auth.appId` | `string`                            | Required outside the local environment | Open Platform application ID for programmatic presentation controls |
 | `shareId`    | `string`                            | no       | Shared file ID to load during initialization                     |
 | `ui`         | `AlgeoPresentationUiConfig`         | no       | Presentation UI visibility configuration                         |
 | `fonts`      | `AlgeoFontConfig`                   | no       | Font resources and default font. Supported since `2.12.0`.       |
@@ -63,9 +63,7 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 
 ## API Reference
 
-After creation, the SDK checks the current page `hostname` against the Open Platform
-allowlist using `auth.appId`. If the check fails, the iframe still initializes and an
-instance is returned, but subsequent presentation APIs reject and log the method name.
+When `auth.appId` is supplied, the SDK checks the host name against the Open Platform allowlist before creating the iframe. A failed check rejects initialization.
 
 ### `loadShareById(id: string): Promise<{ success: true }>`
 
