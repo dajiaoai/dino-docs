@@ -63,7 +63,7 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 
 ## API 参考
 
-填写 `auth.appId` 时，SDK 在创建 iframe 前校验宿主主机名是否在应用白名单内。校验失败会直接返回初始化错误。
+首次调用 `switchSlide` 等需要授权的方法时，SDK 校验 `auth.appId` 和宿主主机名。校验失败时，该方法返回错误。
 
 ### `loadShareById(id: string): Promise<{ success: true }>`
 

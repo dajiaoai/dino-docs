@@ -63,7 +63,7 @@ const presentation: EmbeddedPresentation = await createPresentation(container, {
 
 ## API Reference
 
-When `auth.appId` is supplied, the SDK checks the host name against the Open Platform allowlist before creating the iframe. A failed check rejects initialization.
+The first call to an authorized method such as `switchSlide` checks `auth.appId` and the host name against the Open Platform allowlist. The method rejects if the check fails.
 
 ### `loadShareById(id: string): Promise<{ success: true }>`
 
